@@ -106,7 +106,18 @@ export function removeStoredToken(): void {
 export function getStoredUser(): User | null {
   if (typeof window === 'undefined') return null;
   const userData = localStorage.getItem('user_data');
-  return userData ? JSON.parse(userData) : null;
+  if (!userData) return null;
+  
+  try {
+    const parsed = JSON.parse(userData);
+    // Basic validation to ensure it has User properties
+    if (parsed && typeof parsed === 'object' && parsed._id && parsed.email) {
+      return parsed as User;
+    }
+    return null;
+  } catch {
+    return null;
+  }
 }
 
 export function setStoredUser(user: User): void {
