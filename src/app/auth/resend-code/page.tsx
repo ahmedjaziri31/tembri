@@ -92,7 +92,7 @@ export default function ResendCodePage() {
             </div>
             <CardTitle className="text-2xl font-bold">Code sent successfully</CardTitle>
             <CardDescription>
-              We've sent a verification code to
+              We&apos;ve sent a verification code to
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">

@@ -190,7 +190,7 @@ export default function SettingsPage() {
                       Show Activity Status
                     </Label>
                     <p className="text-sm text-gray-600 dark:text-gray-400">
-                      Let others see when you're active
+                      Let others see when you&apos;re active
                     </p>
                   </div>
                   <Switch

@@ -3,7 +3,7 @@
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
 
 // API response types
-interface ApiResponse<T = any> {
+interface ApiResponse<T = unknown> {
   success: boolean;
   message: string;
   data?: T;
@@ -93,13 +93,13 @@ export function removeStoredToken(): void {
   localStorage.removeItem('user_data');
 }
 
-export function getStoredUser(): any | null {
+export function getStoredUser(): Record<string, unknown> | null {
   if (typeof window === 'undefined') return null;
   const userData = localStorage.getItem('user_data');
   return userData ? JSON.parse(userData) : null;
 }
 
-export function setStoredUser(user: any): void {
+export function setStoredUser(user: Record<string, unknown>): void {
   if (typeof window === 'undefined') return;
   localStorage.setItem('user_data', JSON.stringify(user));
 }

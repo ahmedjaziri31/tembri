@@ -138,7 +138,7 @@ export default function DashboardPage() {
             Welcome back, John! 👋
           </h1>
           <p className="text-gray-600 dark:text-gray-400 mt-2">
-            Here's what's happening with your job search today.
+            Here's what&apos;s happening with your job search today.
           </p>
         </div>
 
