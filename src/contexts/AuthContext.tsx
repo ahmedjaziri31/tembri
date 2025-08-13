@@ -57,19 +57,33 @@ export function AuthProvider({ children }: AuthProviderProps) {
   }, [])
 
   const login = async (email: string, password: string) => {
-    try {
-      const response = await authApi.login({ email, password })
-      setToken(response.token)
-      setUser(response.user)
-    } catch (error) {
-      throw error // Re-throw to handle in component
+    // This is now handled directly in the login page component
+    // We just update the context from localStorage
+    const storedToken = localStorage.getItem('auth_token')
+    const storedUser = localStorage.getItem('user_data')
+    
+    if (storedToken && storedUser) {
+      setToken(storedToken)
+      try {
+        const userData = JSON.parse(storedUser)
+        setUser(userData)
+      } catch (error) {
+        console.error('Error parsing stored user data:', error)
+        throw new Error('Invalid stored user data')
+      }
     }
   }
 
   const logout = () => {
     setToken(null)
     setUser(null)
-    authApi.logout()
+    // Clear localStorage
+    localStorage.removeItem('auth_token')
+    localStorage.removeItem('user_data')
+    // Redirect to login
+    if (typeof window !== 'undefined') {
+      window.location.href = '/auth/login'
+    }
   }
 
   const updateUser = (userData: Partial<User>) => {

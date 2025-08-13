@@ -23,6 +23,7 @@ import {
   Mail
 } from 'lucide-react'
 import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 
 const navigation = [
   { name: 'Dashboard', href: '/dashboard', icon: Home },
@@ -41,21 +42,36 @@ export function DashboardLayout({
 }) {
   const { theme, toggleTheme } = useStore()
   const pathname = usePathname()
+  const router = useRouter()
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [sidebarMinimized, setSidebarMinimized] = useState(false)
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false)
   const [notificationsOpen, setNotificationsOpen] = useState(false)
   const [mounted, setMounted] = useState(false)
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
 
-  // Handle hydration
+  // Handle hydration and authentication check
   useEffect(() => {
     setMounted(true)
-  }, [])
+    
+    // Check authentication
+    const token = localStorage.getItem('auth_token')
+    const userData = localStorage.getItem('user_data')
+    
+    if (token && userData) {
+      setIsAuthenticated(true)
+    } else {
+      // Redirect to login if not authenticated
+      router.push('/auth/login')
+    }
+  }, [router])
 
   const handleLogout = () => {
-    console.log('Logging out...')
-    // Handle logout logic here
-    // router.push('/auth/login')
+    // Clear localStorage
+    localStorage.removeItem('auth_token')
+    localStorage.removeItem('user_data')
+    // Redirect to login
+    router.push('/auth/login')
   }
 
   const toggleProfileDropdown = () => {
@@ -78,8 +94,8 @@ export function DashboardLayout({
     closeAllDropdowns()
   }, [pathname])
 
-  // Prevent hydration mismatch by not rendering theme-dependent content until mounted
-  if (!mounted) {
+  // Prevent hydration mismatch by not rendering theme-dependent content until mounted and authenticated
+  if (!mounted || !isAuthenticated) {
     return (
       <div className="min-h-screen">
         <div className="bg-background text-foreground">

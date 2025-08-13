@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Eye, EyeOff, Mail, Lock, AlertCircle } from 'lucide-react'
 import { Button } from '../../../components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../../components/ui/card'
@@ -9,7 +9,7 @@ import { Label } from '../../../components/ui/label'
 import { Checkbox } from '../../../components/ui/checkbox'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { useAuth } from '../../../contexts/AuthContext'
+// import { useAuth } from '../../../contexts/AuthContext' // Not needed anymore
 
 export default function LoginPage() {
   const [email, setEmail] = useState('')
@@ -20,7 +20,17 @@ export default function LoginPage() {
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
   const router = useRouter()
-  const { login } = useAuth()
+  // const { login } = useAuth() // Not needed anymore
+  
+  // Check if already logged in
+  useEffect(() => {
+    const token = localStorage.getItem('auth_token')
+    const userData = localStorage.getItem('user_data')
+    
+    if (token && userData) {
+      router.push('/dashboard')
+    }
+  }, [router])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -29,19 +39,38 @@ export default function LoginPage() {
     setSuccess('')
     
     try {
-      // Call auth context login method
-      await login(email, password)
+      // Test user credentials
+      const testEmail = 'tembri@Maisonelrais.com'
+      const testPassword = '123456'
       
-      setSuccess('Login successful! Redirecting to dashboard...')
-      
-      // Redirect after successful login
-      setTimeout(() => {
-        router.push('/dashboard')
-      }, 1000)
+      if (email === testEmail && password === testPassword) {
+        // Create mock user data
+        const userData = {
+          _id: '1',
+          firstName: 'Jaziri',
+          lastName: 'Ahmed',
+          email: testEmail,
+          role: 'admin',
+          isActive: true
+        }
+        
+        // Store in localStorage
+        localStorage.setItem('auth_token', 'mock-jwt-token-123')
+        localStorage.setItem('user_data', JSON.stringify(userData))
+        
+        setSuccess('Login successful! Redirecting to dashboard...')
+        
+        // Redirect after successful login
+        setTimeout(() => {
+          router.push('/dashboard')
+        }, 1000)
+      } else {
+        setError('Invalid credentials. Use: tembri@Maisonelrais.com / 123456')
+      }
       
     } catch (err: any) {
       console.error('Login error:', err)
-      setError(err.message || 'Login failed. Please check your credentials and try again.')
+      setError('Login failed. Please try again.')
     } finally {
       setIsLoading(false)
     }
@@ -165,12 +194,6 @@ export default function LoginPage() {
                   Keep me signed in
                 </Label>
               </div>
-              <Link
-                href="/auth/forgot-password"
-                className="text-sm text-blue-600 hover:text-blue-500"
-              >
-                Forgot password?
-              </Link>
             </div>
 
             <Button type="submit" className="w-full" disabled={isLoading}>
@@ -179,10 +202,9 @@ export default function LoginPage() {
           </form>
 
           <div className="text-center text-sm">
-            <span className="text-muted-foreground">Don't have an account? </span>
-            <Link href="/auth/signup" className="text-blue-600 hover:text-blue-500 font-medium">
-              Sign up
-            </Link>
+            <span className="text-muted-foreground">
+              Use: tembri@Maisonelrais.com / 123456
+            </span>
           </div>
         </CardContent>
       </Card>
