@@ -65,7 +65,7 @@ export default function LoginPage() {
           router.push('/dashboard')
         }, 1000)
       } else {
-        setError('Invalid credentials. Use: tembri@Maisonelrais.com / 123456')
+        setError('Wrong password. Please try again.')
       }
       
     } catch (err: any) {
@@ -203,7 +203,7 @@ export default function LoginPage() {
 
           <div className="text-center text-sm">
             <span className="text-muted-foreground">
-              Use: tembri@Maisonelrais.com / 123456
+              Enter your credentials to access the dashboard
             </span>
           </div>
         </CardContent>
