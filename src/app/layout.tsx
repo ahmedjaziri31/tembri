@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Djubatusr",
-  description: "djubatusr platform for recruitment",
+  title: "Maison Elaris",
+  description: "Maison Elaris - Marketing Agency",
 };
 
 export default function RootLayout({
