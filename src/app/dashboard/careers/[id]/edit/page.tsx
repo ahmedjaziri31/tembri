@@ -50,7 +50,7 @@ interface PositionFormData {
 export default function EditPositionPage() {
   const router = useRouter()
   const params = useParams()
-  const positionId = params.id as string
+  const positionId = params?.id as string
   
   const [isLoading, setIsLoading] = useState(false)
   const [isFetching, setIsFetching] = useState(true)

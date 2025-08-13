@@ -56,7 +56,7 @@ interface Customer {
 export default function CustomerActivitiesPage() {
   const router = useRouter()
   const params = useParams()
-  const customerId = params.id as string
+  const customerId = params?.id as string
   
   const [isLoading, setIsLoading] = useState(true)
   const [customer, setCustomer] = useState<Customer | null>(null)

@@ -54,7 +54,7 @@ interface CustomerFormData {
 export default function EditCustomerPage() {
   const router = useRouter()
   const params = useParams()
-  const customerId = params.id as string
+  const customerId = params?.id as string
   
   const [isLoading, setIsLoading] = useState(false)
   const [isFetching, setIsFetching] = useState(true)

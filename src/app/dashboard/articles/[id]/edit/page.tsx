@@ -28,7 +28,7 @@ interface Article {
 export default function EditArticlePage() {
   const router = useRouter()
   const params = useParams()
-  const articleId = params.id as string
+  const articleId = params?.id as string
   
   const [isLoading, setIsLoading] = useState(false)
   const [isFetching, setIsFetching] = useState(true)
