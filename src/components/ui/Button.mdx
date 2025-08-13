@@ -1,0 +1,301 @@
+import { Meta, Primary, Controls, Story, Source, Canvas } from '@storybook/blocks'
+import * as ButtonStories from './button.stories'
+
+<Meta of={ButtonStories} />
+
+# Button Component
+
+The Button component is a versatile, accessible button built with Radix UI primitives and styled with Tailwind CSS. It supports multiple variants, sizes, icons, and interactive states.
+
+## Design System
+
+Our button follows a comprehensive design system with clear visual hierarchy and consistent spacing.
+
+### Primary Buttons with Icons
+
+These are the main call-to-action buttons featuring prominent styling with icons for enhanced visual communication.
+
+<Canvas of={ButtonStories.PrimaryVariations} />
+
+### Secondary Buttons with Icons  
+
+Secondary buttons provide alternative actions while maintaining visual consistency with icon support.
+
+<Canvas of={ButtonStories.SecondaryVariations} />
+
+### Outlined Buttons with Icons
+
+Outlined buttons provide a subtle border style with icon support, perfect for secondary actions.
+
+<Canvas of={ButtonStories.OutlinedButtonWithIconVariations} />
+
+### Outlined Buttons without Icons
+
+Clean outlined buttons focusing on text content with a subtle border treatment.
+
+<Canvas of={ButtonStories.OutlinedButtonWithoutIcon} />
+
+### Linked Buttons with Left Icons
+
+Text-only buttons with left icons, perfect for navigation and subtle interactions.
+
+<Canvas of={ButtonStories.LinkedButtonWithLeftIconVariations} />
+
+### Linked Buttons without Icons
+
+Minimal text-only buttons for the most subtle interactions.
+
+<Canvas of={ButtonStories.LinkedButtonWithoutIcon} />
+
+### Linked Buttons with Right Icons
+
+Text-only buttons with right icons, ideal for forward navigation and action indicators.
+
+<Canvas of={ButtonStories.LinkedButtonWithRightIconVariations} />
+
+### Primary Buttons without Icons
+
+Clean primary buttons focusing on text content for straightforward actions.
+
+<Canvas of={ButtonStories.PrimaryWithoutIcon} />
+
+### Secondary Buttons without Icons
+
+Minimal secondary buttons providing subtle action options.
+
+<Canvas of={ButtonStories.SecondaryWithoutIcon} />
+
+## Basic Usage
+
+<Canvas of={ButtonStories.Primary} />
+
+<Source 
+  code={`
+import { Button } from '@/components/ui/button'
+import { Plus } from 'lucide-react'
+
+function MyComponent() {
+  return (
+    <Button variant="primary" icon={<Plus />}>
+      My account
+    </Button>
+  )
+}
+  `}
+  language="tsx"
+/>
+
+## Variants
+
+The button component supports multiple visual variants:
+
+- **primary**: Main call-to-action style with blue background
+- **secondary**: Alternative action with subtle styling  
+- **primary-outline**: Primary style with outline instead of fill
+- **secondary-outline**: Secondary style with border
+- **outlined**: Blue outline style for secondary actions
+- **outline**: General outline style
+- **ghost**: Minimal style for subtle actions
+- **linked**: Text-only link style with underline on hover
+- **link**: Standard link styling
+- **destructive**: For dangerous actions
+
+## Icon Positioning
+
+Icons can be positioned at the start or end of the button:
+
+<Source
+  code={`
+// Left icon
+<Button variant="outlined" icon={<Plus />}>
+  My account
+</Button>
+
+// Right icon  
+<Button variant="linked" endIcon={<Plus />}>
+  My account
+</Button>
+
+// Both icons
+<Button variant="primary" icon={<User />} endIcon={<Plus />}>
+  My account
+</Button>
+  `}
+  language="tsx"
+/>
+
+## Sizes
+
+Multiple size options are available:
+
+<Canvas of={ButtonStories.Sizes} />
+
+- **sm**: Small (32px height)
+- **default**: Default (36px height) 
+- **lg**: Large (40px height)
+- **xl**: Extra large (48px height)
+- **icon**: Square icon-only button (36px × 36px)
+
+## Interactive States
+
+### Loading State
+
+<Canvas of={ButtonStories.LoadingState} />
+
+### Disabled State
+
+<Canvas of={ButtonStories.DisabledState} />
+
+## Predefined Components
+
+For common use cases, we provide predefined button components:
+
+### PrimaryButtonWithIcon
+
+<Canvas of={ButtonStories.PredefinedPrimaryWithIcon} />
+
+### SecondaryButtonWithIcon  
+
+<Canvas of={ButtonStories.PredefinedSecondaryWithIcon} />
+
+### OutlinedButtonWithIcon
+
+<Canvas of={ButtonStories.PredefinedOutlinedWithIcon} />
+
+### LinkedButtonWithLeftIcon
+
+<Canvas of={ButtonStories.PredefinedLinkedWithLeftIcon} />
+
+### LinkedButtonWithRightIcon
+
+<Canvas of={ButtonStories.PredefinedLinkedWithRightIcon} />
+
+### AccountButton
+
+<Canvas of={ButtonStories.PredefinedAccountButton} />
+
+## API Reference
+
+<Primary />
+
+<Controls />
+
+## Accessibility
+
+- Full keyboard navigation support
+- ARIA attributes for screen readers  
+- Focus management with visible focus indicators
+- Semantic HTML button element
+- Disabled state handling
+- High contrast support for outlined variants
+- Proper color contrast ratios
+
+## Examples
+
+### Button Groups
+
+<Source
+  code={`
+<div className="flex gap-2">
+  <Button variant="primary">Save</Button>
+  <Button variant="outlined">Cancel</Button>
+</div>
+  `}
+  language="tsx"
+/>
+
+### Navigation Buttons
+
+<Source
+  code={`
+<div className="flex gap-4">
+  <Button variant="linked" icon={<ArrowLeft />}>
+    Back
+  </Button>
+  <Button variant="linked" endIcon={<ArrowRight />}>
+    Next
+  </Button>
+</div>
+  `}
+  language="tsx"
+/>
+
+### Action Buttons
+
+<Source
+  code={`
+<div className="space-y-2">
+  <Button variant="primary" icon={<Plus />}>
+    Add New
+  </Button>
+  <Button variant="outlined" icon={<Edit />}>
+    Edit
+  </Button>
+  <Button variant="linked" icon={<Trash />}>
+    Delete
+  </Button>
+</div>
+  `}
+  language="tsx"
+/>
+
+### Loading Button
+
+<Source
+  code={`
+import { Button } from '@/components/ui/button'
+
+function SubmitButton() {
+  const [isLoading, setIsLoading] = useState(false)
+  
+  return (
+    <Button 
+      variant="primary" 
+      loading={isLoading}
+      onClick={() => setIsLoading(true)}
+    >
+      {isLoading ? 'Submitting...' : 'Submit'}
+    </Button>
+  )
+}
+  `}
+  language="tsx"
+/>
+
+### Form Buttons
+
+<Source
+  code={`
+<div className="flex justify-end gap-2">
+  <Button variant="outlined" type="button">
+    Cancel
+  </Button>
+  <Button variant="primary" type="submit">
+    Save Changes
+  </Button>
+</div>
+  `}
+  language="tsx"
+/>
+
+## Best Practices
+
+### Hierarchy
+
+- Use **primary** buttons for main actions (save, submit, confirm)
+- Use **outlined** buttons for secondary actions (cancel, edit)
+- Use **linked** buttons for navigation and subtle actions
+- Limit to one primary button per section/form
+
+### Icons
+
+- Use icons to enhance meaning, not replace clear text
+- Keep icon usage consistent across similar actions
+- Position icons logically (left for input actions, right for forward navigation)
+
+### Accessibility
+
+- Provide descriptive text, not just icons
+- Use proper contrast ratios for all variants
+- Test with keyboard navigation and screen readers
+- Include loading and disabled states for async actions 
