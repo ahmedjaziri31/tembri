@@ -134,7 +134,7 @@ export function DashboardLayout({
             <div className="flex items-center">
               {!sidebarMinimized && (
                 <h1 className="text-xl font-bold text-gray-900 dark:text-white">
-                  Maison Elrais
+                  Maison Elaris
                 </h1>
               )}
               {sidebarMinimized && (

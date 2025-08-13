@@ -59,7 +59,7 @@ interface Position {
 export default function ApplicantsPage() {
   const router = useRouter()
   const params = useParams()
-  const positionId = params?.id as string
+  const positionId = params.id as string
   
   const [isLoading, setIsLoading] = useState(true)
   const [position, setPosition] = useState<Position | null>(null)

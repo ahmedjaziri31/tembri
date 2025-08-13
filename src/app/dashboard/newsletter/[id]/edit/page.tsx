@@ -45,7 +45,7 @@ interface NewsletterFormData {
 export default function EditNewsletterPage() {
   const router = useRouter()
   const params = useParams()
-  const newsletterId = params?.id as string
+  const newsletterId = params.id as string
   
   const [isLoading, setIsLoading] = useState(false)
   const [isFetching, setIsFetching] = useState(true)
