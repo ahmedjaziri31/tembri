@@ -11,7 +11,6 @@ import { ContactSupport } from './ContactSupport'
 import { 
   Home, 
   User, 
-  Settings, 
   Bell, 
   Search,
   Menu,
@@ -32,7 +31,6 @@ const navigation = [
   { name: 'CRM', href: '/dashboard/crm', icon: Users },
   { name: 'Newsletter', href: '/dashboard/newsletter', icon: Mail },
   { name: 'Profile', href: '/dashboard/profile', icon: User },
-  { name: 'Settings', href: '/dashboard/settings', icon: Settings },
 ]
 
 export function DashboardLayout({

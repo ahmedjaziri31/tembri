@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { User, Settings, LogOut } from 'lucide-react'
+import { User, LogOut } from 'lucide-react'
 import { Button } from './ui/button'
 
 interface ProfileDropdownProps {
@@ -51,14 +51,7 @@ export function ProfileDropdown({ isOpen, onClose, onLogout }: ProfileDropdownPr
             Profile
           </Link>
           
-          <Link
-            href="/dashboard/settings"
-            onClick={onClose}
-            className="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-          >
-            <Settings className="w-4 h-4 mr-3" />
-            Settings
-          </Link>
+          
         </div>
 
         {/* Logout Section */}
