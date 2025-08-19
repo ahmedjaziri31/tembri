@@ -8,69 +8,103 @@ import { Input } from '../../../../components/ui/input'
 import { Label } from '../../../../components/ui/label'
 import { Textarea } from '../../../../components/ui/textarea'
 import { LoadingButton } from '../../../../components/ui/loading-button'
-import { ArrowLeft, Save, Briefcase, ChevronDown, Plus, X } from 'lucide-react'
+import { ArrowLeft, Save, Briefcase, ChevronDown, Plus, X, AlertCircle, CheckCircle } from 'lucide-react'
+import { careersApi } from '../../../../lib/api'
 
 interface PositionFormData {
   title: string
   description: string
   department: string
-  location: string
-  type: 'full-time' | 'part-time' | 'contract' | 'internship'
-  level: 'entry' | 'mid' | 'senior' | 'lead'
-  status: 'open' | 'closed' | 'paused'
+  locationType: 'remote' | 'hybrid' | 'onsite'
+  locationCity: string
+  locationState: string
+  employmentType: 'full-time' | 'part-time' | 'contract' | 'internship'
+  employmentLevel: 'entry' | 'mid' | 'senior' | 'lead'
+  status: 'draft' | 'published' | 'paused' | 'closed'
   salaryMin: string
   salaryMax: string
   currency: string
-  requirements: string[]
+  skills: string[]
   benefits: string[]
+  priority: 'low' | 'medium' | 'high'
+  visibility: 'public' | 'private'
 }
 
 export default function NewPositionPage() {
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
-  const [newRequirement, setNewRequirement] = useState('')
+  const [error, setError] = useState('')
+  const [successMessage, setSuccessMessage] = useState('')
+  const [newSkill, setNewSkill] = useState('')
   const [newBenefit, setNewBenefit] = useState('')
   
   const [formData, setFormData] = useState<PositionFormData>({
     title: '',
     description: '',
     department: '',
-    location: '',
-    type: 'full-time',
-    level: 'mid',
-    status: 'open',
+    locationType: 'remote',
+    locationCity: '',
+    locationState: '',
+    employmentType: 'full-time',
+    employmentLevel: 'mid',
+    status: 'draft',
     salaryMin: '',
     salaryMax: '',
     currency: 'USD',
-    requirements: [],
-    benefits: []
+    skills: [],
+    benefits: [],
+    priority: 'medium',
+    visibility: 'public'
   })
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
+    setError('')
+    setSuccessMessage('')
 
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000))
-      
-      // Here you would make your API call to create the position
-      console.log('Creating position:', {
-        ...formData,
-        salary: {
-          min: parseInt(formData.salaryMin),
-          max: parseInt(formData.salaryMax),
-          currency: formData.currency
+      // Transform form data to match backend structure
+      const createData = {
+        title: formData.title,
+        description: formData.description,
+        department: formData.department,
+        location: {
+          type: formData.locationType,
+          city: formData.locationCity,
+          state: formData.locationState
         },
-        applicantsCount: 0,
-        createdAt: new Date().toISOString().split('T')[0],
-        updatedAt: new Date().toISOString().split('T')[0]
-      })
+        employment: {
+          type: formData.employmentType,
+          level: formData.employmentLevel
+        },
+        compensation: {
+          salaryMin: formData.salaryMin ? parseInt(formData.salaryMin) : 0,
+          salaryMax: formData.salaryMax ? parseInt(formData.salaryMax) : 0,
+          currency: formData.currency,
+          benefits: formData.benefits
+        },
+        requirements: {
+          skills: formData.skills
+        },
+        status: formData.status,
+        visibility: formData.visibility,
+        priority: formData.priority
+      }
 
-      // Navigate back to careers list
+      const response = await careersApi.create(createData)
+      
+      if (response.success) {
+        setSuccessMessage('Position created successfully!')
+        setTimeout(() => {
       router.push('/dashboard/careers')
-    } catch (error) {
+        }, 1500)
+      } else {
+        setError(response.error?.message || 'Failed to create position')
+      }
+    } catch (error: any) {
       console.error('Error creating position:', error)
+      setError(error.message || 'An unexpected error occurred')
     } finally {
       setIsLoading(false)
     }
@@ -83,20 +117,20 @@ export default function NewPositionPage() {
     }))
   }
 
-  const addRequirement = () => {
-    if (newRequirement.trim()) {
+  const addSkill = () => {
+    if (newSkill.trim()) {
       setFormData(prev => ({
         ...prev,
-        requirements: [...prev.requirements, newRequirement.trim()]
+        skills: [...prev.skills, newSkill.trim()]
       }))
-      setNewRequirement('')
+      setNewSkill('')
     }
   }
 
-  const removeRequirement = (index: number) => {
+  const removeSkill = (index: number) => {
     setFormData(prev => ({
       ...prev,
-      requirements: prev.requirements.filter((_, i) => i !== index)
+      skills: prev.skills.filter((_, i) => i !== index)
     }))
   }
 
@@ -135,6 +169,26 @@ export default function NewPositionPage() {
           <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">Create New Position</h1>
         </div>
       </div>
+
+      {/* Error Banner */}
+      {error && (
+        <div className="bg-red-50 dark:bg-red-900/50 border border-red-200 dark:border-red-800 rounded-lg p-4">
+          <div className="flex items-center gap-2">
+            <AlertCircle className="h-5 w-5 text-red-600 dark:text-red-400" />
+            <p className="text-red-700 dark:text-red-300">{error}</p>
+          </div>
+        </div>
+      )}
+
+      {/* Success Banner */}
+      {successMessage && (
+        <div className="bg-green-50 dark:bg-green-900/50 border border-green-200 dark:border-green-800 rounded-lg p-4">
+          <div className="flex items-center gap-2">
+            <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-400" />
+            <p className="text-green-700 dark:text-green-300">{successMessage}</p>
+          </div>
+        </div>
+      )}
 
       {/* Form */}
       <form onSubmit={handleSubmit} className="space-y-6">
@@ -185,13 +239,42 @@ export default function NewPositionPage() {
                   </div>
 
                   <div>
-                    <Label htmlFor="location">Location *</Label>
+                    <Label htmlFor="locationType">Location Type *</Label>
+                    <div className="relative mt-1">
+                      <select
+                        id="locationType"
+                        value={formData.locationType}
+                        onChange={(e) => handleInputChange('locationType', e.target.value)}
+                        className="w-full appearance-none bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2.5 pr-8 text-sm font-medium text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-400 dark:focus:border-blue-400 hover:border-gray-400 dark:hover:border-gray-500 transition-colors cursor-pointer"
+                      >
+                        <option value="remote">Remote</option>
+                        <option value="hybrid">Hybrid</option>
+                        <option value="onsite">Onsite</option>
+                      </select>
+                      <ChevronDown className="absolute right-2.5 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-500 dark:text-gray-400 pointer-events-none" />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="locationCity">City</Label>
                     <Input
-                      id="location"
-                      value={formData.location}
-                      onChange={(e) => handleInputChange('location', e.target.value)}
-                      placeholder="e.g., Remote, New York, NY"
-                      required
+                      id="locationCity"
+                      value={formData.locationCity}
+                      onChange={(e) => handleInputChange('locationCity', e.target.value)}
+                      placeholder="e.g., San Francisco"
+                      className="mt-1"
+                    />
+                  </div>
+
+                  <div>
+                    <Label htmlFor="locationState">State</Label>
+                    <Input
+                      id="locationState"
+                      value={formData.locationState}
+                      onChange={(e) => handleInputChange('locationState', e.target.value)}
+                      placeholder="e.g., CA"
                       className="mt-1"
                     />
                   </div>
@@ -199,39 +282,39 @@ export default function NewPositionPage() {
               </CardContent>
             </Card>
 
-            {/* Requirements */}
+            {/* Skills */}
             <Card>
               <CardHeader>
-                <CardTitle>Requirements</CardTitle>
+                <CardTitle>Required Skills</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>
-                  <Label>Add Requirement</Label>
+                  <Label>Add Skill</Label>
                   <div className="flex gap-2 mt-1">
                     <Input
-                      value={newRequirement}
-                      onChange={(e) => setNewRequirement(e.target.value)}
-                      placeholder="e.g., 3+ years of React experience"
-                      onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), addRequirement())}
+                      value={newSkill}
+                      onChange={(e) => setNewSkill(e.target.value)}
+                      placeholder="e.g., React, Node.js, MongoDB"
+                      onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), addSkill())}
                     />
-                    <Button type="button" onClick={addRequirement} size="sm">
+                    <Button type="button" onClick={addSkill} size="sm">
                       <Plus className="w-4 h-4" />
                     </Button>
                   </div>
                 </div>
 
-                {formData.requirements.length > 0 && (
+                {formData.skills.length > 0 && (
                   <div className="space-y-2">
-                    <Label>Requirements List</Label>
+                    <Label>Skills List</Label>
                     <div className="space-y-2">
-                      {formData.requirements.map((req, index) => (
+                      {formData.skills.map((skill, index) => (
                         <div key={index} className="flex items-center gap-2 p-2 bg-gray-50 dark:bg-gray-700 rounded">
-                          <span className="flex-1 text-sm">{req}</span>
+                          <span className="flex-1 text-sm">{skill}</span>
                           <Button
                             type="button"
                             variant="ghost"
                             size="sm"
-                            onClick={() => removeRequirement(index)}
+                            onClick={() => removeSkill(index)}
                             className="h-6 w-6 p-0"
                           >
                             <X className="w-3 h-3" />
@@ -298,36 +381,36 @@ export default function NewPositionPage() {
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>
-                  <Label htmlFor="type">Employment Type</Label>
+                  <Label htmlFor="employmentType">Employment Type</Label>
                   <div className="relative mt-1">
                     <select
-                      id="type"
-                      value={formData.type}
-                      onChange={(e) => handleInputChange('type', e.target.value)}
+                      id="employmentType"
+                      value={formData.employmentType}
+                      onChange={(e) => handleInputChange('employmentType', e.target.value)}
                       className="w-full appearance-none bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2.5 pr-8 text-sm font-medium text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-400 dark:focus:border-blue-400 hover:border-gray-400 dark:hover:border-gray-500 transition-colors cursor-pointer"
                     >
-                      <option value="full-time" className="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100">Full Time</option>
-                      <option value="part-time" className="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100">Part Time</option>
-                      <option value="contract" className="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100">Contract</option>
-                      <option value="internship" className="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100">Internship</option>
+                      <option value="full-time">Full Time</option>
+                      <option value="part-time">Part Time</option>
+                      <option value="contract">Contract</option>
+                      <option value="internship">Internship</option>
                     </select>
                     <ChevronDown className="absolute right-2.5 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-500 dark:text-gray-400 pointer-events-none" />
                   </div>
                 </div>
 
                 <div>
-                  <Label htmlFor="level">Experience Level</Label>
+                  <Label htmlFor="employmentLevel">Experience Level</Label>
                   <div className="relative mt-1">
                     <select
-                      id="level"
-                      value={formData.level}
-                      onChange={(e) => handleInputChange('level', e.target.value)}
+                      id="employmentLevel"
+                      value={formData.employmentLevel}
+                      onChange={(e) => handleInputChange('employmentLevel', e.target.value)}
                       className="w-full appearance-none bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2.5 pr-8 text-sm font-medium text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-400 dark:focus:border-blue-400 hover:border-gray-400 dark:hover:border-gray-500 transition-colors cursor-pointer"
                     >
-                      <option value="entry" className="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100">Entry Level</option>
-                      <option value="mid" className="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100">Mid Level</option>
-                      <option value="senior" className="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100">Senior Level</option>
-                      <option value="lead" className="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100">Lead/Principal</option>
+                      <option value="entry">Entry Level</option>
+                      <option value="mid">Mid Level</option>
+                      <option value="senior">Senior Level</option>
+                      <option value="lead">Lead/Principal</option>
                     </select>
                     <ChevronDown className="absolute right-2.5 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-500 dark:text-gray-400 pointer-events-none" />
                   </div>
@@ -342,9 +425,43 @@ export default function NewPositionPage() {
                       onChange={(e) => handleInputChange('status', e.target.value)}
                       className="w-full appearance-none bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2.5 pr-8 text-sm font-medium text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-400 dark:focus:border-blue-400 hover:border-gray-400 dark:hover:border-gray-500 transition-colors cursor-pointer"
                     >
-                      <option value="open" className="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100">Open</option>
-                      <option value="paused" className="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100">Paused</option>
-                      <option value="closed" className="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100">Closed</option>
+                      <option value="draft">Draft</option>
+                      <option value="published">Published</option>
+                      <option value="paused">Paused</option>
+                      <option value="closed">Closed</option>
+                    </select>
+                    <ChevronDown className="absolute right-2.5 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-500 dark:text-gray-400 pointer-events-none" />
+                  </div>
+                </div>
+
+                <div>
+                  <Label htmlFor="priority">Priority</Label>
+                  <div className="relative mt-1">
+                    <select
+                      id="priority"
+                      value={formData.priority}
+                      onChange={(e) => handleInputChange('priority', e.target.value)}
+                      className="w-full appearance-none bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2.5 pr-8 text-sm font-medium text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-400 dark:focus:border-blue-400 hover:border-gray-400 dark:hover:border-gray-500 transition-colors cursor-pointer"
+                    >
+                      <option value="low">Low</option>
+                      <option value="medium">Medium</option>
+                      <option value="high">High</option>
+                    </select>
+                    <ChevronDown className="absolute right-2.5 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-500 dark:text-gray-400 pointer-events-none" />
+                  </div>
+                </div>
+
+                <div>
+                  <Label htmlFor="visibility">Visibility</Label>
+                  <div className="relative mt-1">
+                    <select
+                      id="visibility"
+                      value={formData.visibility}
+                      onChange={(e) => handleInputChange('visibility', e.target.value)}
+                      className="w-full appearance-none bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2.5 pr-8 text-sm font-medium text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-400 dark:focus:border-blue-400 hover:border-gray-400 dark:hover:border-gray-500 transition-colors cursor-pointer"
+                    >
+                      <option value="public">Public</option>
+                      <option value="private">Private</option>
                     </select>
                     <ChevronDown className="absolute right-2.5 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-500 dark:text-gray-400 pointer-events-none" />
                   </div>

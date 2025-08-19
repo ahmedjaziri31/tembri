@@ -8,18 +8,22 @@ import { Input } from '../../../../components/ui/input'
 import { Label } from '../../../../components/ui/label'
 import { Textarea } from '../../../../components/ui/textarea'
 import { LoadingButton } from '../../../../components/ui/loading-button'
-import { ArrowLeft, Save, FileText, ChevronDown } from 'lucide-react'
+import { ArrowLeft, Save, FileText, ChevronDown, AlertCircle, X } from 'lucide-react'
+import { articlesApi } from '../../../../lib/api'
 
 export default function NewArticlePage() {
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
   const [formData, setFormData] = useState({
     title: '',
     content: '',
-    excerpt: '',
+    description: '',
+    shortDescription: '',
     category: '',
     tags: '',
-    status: 'draft' as 'draft' | 'published' | 'archived'
+    status: 'draft' as 'draft' | 'published' | 'archived',
+    visibility: 'public' as 'public' | 'private' | 'unlisted'
   })
 
   const calculateReadTime = (content: string) => {
@@ -31,25 +35,40 @@ export default function NewArticlePage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
+    setError(null)
 
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000))
-      
-      // Here you would make your API call to create the article
-      console.log('Creating article:', {
-        ...formData,
-        readTime: calculateReadTime(formData.content),
-        author: 'Jaziri Ahmed',
-        createdAt: new Date().toISOString().split('T')[0],
-        updatedAt: new Date().toISOString().split('T')[0],
-        publishedAt: formData.status === 'published' ? new Date().toISOString().split('T')[0] : undefined
-      })
+      // Prepare article data
+      const articleData = {
+        title: formData.title,
+        content: formData.content,
+        description: formData.description,
+        shortDescription: formData.shortDescription,
+        category: formData.category,
+        tags: formData.tags.split(',').map(tag => tag.trim()).filter(tag => tag.length > 0),
+        status: formData.status,
+        visibility: formData.visibility,
+        analytics: {
+          views: 0,
+          reads: 0,
+          shares: 0,
+          comments: 0,
+          likes: 0
+        }
+      }
 
-      // Navigate back to articles list
-      router.push('/dashboard/articles')
-    } catch (error) {
-      console.error('Error creating article:', error)
+      // Create article via API
+      const response = await articlesApi.create(articleData)
+      
+      if (response.success) {
+        // Navigate back to articles list
+        router.push('/dashboard/articles')
+      } else {
+        throw new Error('Failed to create article')
+      }
+    } catch (err) {
+      console.error('Error creating article:', err)
+      setError(err instanceof Error ? err.message : 'Failed to create article')
     } finally {
       setIsLoading(false)
     }
@@ -81,6 +100,24 @@ export default function NewArticlePage() {
         </div>
       </div>
 
+      {/* Error Banner */}
+      {error && (
+        <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+          <div className="flex items-center">
+            <AlertCircle className="w-5 h-5 text-red-500 mr-2" />
+            <span className="text-red-700">{error}</span>
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              onClick={() => setError(null)}
+              className="ml-auto"
+            >
+              <X className="w-4 h-4" />
+            </Button>
+          </div>
+        </div>
+      )}
+
       {/* Form */}
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -104,12 +141,25 @@ export default function NewArticlePage() {
                 </div>
 
                 <div>
-                  <Label htmlFor="excerpt">Excerpt *</Label>
+                  <Label htmlFor="shortDescription">Short Description *</Label>
                   <Textarea
-                    id="excerpt"
-                    value={formData.excerpt}
-                    onChange={(e) => handleInputChange('excerpt', e.target.value)}
+                    id="shortDescription"
+                    value={formData.shortDescription}
+                    onChange={(e) => handleInputChange('shortDescription', e.target.value)}
                     placeholder="Brief description of the article..."
+                    required
+                    rows={2}
+                    className="mt-1"
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="description">Description *</Label>
+                  <Textarea
+                    id="description"
+                    value={formData.description}
+                    onChange={(e) => handleInputChange('description', e.target.value)}
+                    placeholder="Detailed description with HTML content..."
                     required
                     rows={3}
                     className="mt-1"
@@ -185,6 +235,23 @@ export default function NewArticlePage() {
                   <p className="text-sm text-gray-500 mt-1">
                     Separate tags with commas
                   </p>
+                </div>
+
+                <div>
+                  <Label htmlFor="visibility">Visibility</Label>
+                  <div className="relative mt-1">
+                    <select
+                      id="visibility"
+                      value={formData.visibility}
+                      onChange={(e) => handleInputChange('visibility', e.target.value)}
+                      className="w-full appearance-none bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2.5 pr-8 text-sm font-medium text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-400 dark:focus:border-blue-400 hover:border-gray-400 dark:hover:border-gray-500 transition-colors cursor-pointer"
+                    >
+                      <option value="public" className="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100">Public</option>
+                      <option value="private" className="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100">Private</option>
+                      <option value="unlisted" className="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100">Unlisted</option>
+                    </select>
+                    <ChevronDown className="absolute right-2.5 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-500 dark:text-gray-400 pointer-events-none" />
+                  </div>
                 </div>
               </CardContent>
             </Card>

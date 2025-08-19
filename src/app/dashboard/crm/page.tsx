@@ -1,7 +1,7 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../../components/ui/card'
+import { useState, useEffect, useCallback } from 'react'
+
 import { Button } from '../../../components/ui/button'
 import { Input } from '../../../components/ui/input'
 import { Badge } from '../../../components/ui/badge'
@@ -10,7 +10,6 @@ import {
   Search,
   Edit,
   Trash2,
-  Eye,
   Calendar,
   MapPin,
   Users,
@@ -23,132 +22,64 @@ import {
   Clock,
   Phone,
   Mail,
-  Building,
   DollarSign,
   ChevronDown,
   Activity,
   Target
 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
+import { crmApi } from '../../../lib/api'
 
 interface Customer {
-  id: string
-  firstName: string
-  lastName: string
-  email: string
-  phone: string
-  company: string
-  position: string
-  location: string
-  status: 'new' | 'contacted' | 'qualified' | 'proposal' | 'negotiation' | 'closed-won' | 'closed-lost'
-  source: 'website' | 'referral' | 'social-media' | 'email-campaign' | 'cold-outreach' | 'event'
-  dealValue: number
-  currency: string
-  assignedTo: string
-  tags: string[]
-  lastContact: string
-  nextFollowUp?: string
-  createdAt: string
-  updatedAt: string
+  _id: string
+  type?: 'individual' | 'company'
+  firstName?: string
+  lastName?: string
+  companyName?: string
+  displayName?: string
+  email?: string
+  phone?: string
+  addresses?: Array<{
+    city?: string
+    state?: string
+    country?: string
+  }>
+  status?: 'lead' | 'prospect' | 'customer' | 'inactive' | 'lost'
+  source?: string
+  assignedTo?: {
+    _id?: string
+    firstName?: string
+    lastName?: string
+  }
+  tags?: string[]
+  priority?: string
+  lifecycle?: { 
+    stage?: string
+    lastContact?: string
+    nextContact?: string
+  }
+  value?: { 
+    estimatedValue?: number
+    currency?: string
+  }
+  engagement?: { 
+    totalActivities?: number
+  }
+  createdAt?: string
+  updatedAt?: string
   notes?: string
-  interactionsCount: number
 }
 
 export default function CRMPage() {
   const router = useRouter()
   
-  const [customers, setCustomers] = useState<Customer[]>([
-    {
-      id: '1',
-      firstName: 'John',
-      lastName: 'Smith',
-      email: 'john.smith@techcorp.com',
-      phone: '+1 (555) 123-4567',
-      company: 'TechCorp Solutions',
-      position: 'CTO',
-      location: 'San Francisco, CA',
-      status: 'qualified',
-      source: 'website',
-      dealValue: 50000,
-      currency: 'USD',
-      assignedTo: 'Jaziri Ahmed',
-      tags: ['Enterprise', 'High Priority', 'Tech'],
-      lastContact: '2024-01-15',
-      nextFollowUp: '2024-01-20',
-      createdAt: '2024-01-10',
-      updatedAt: '2024-01-15',
-      notes: 'Interested in enterprise solution for team of 200+',
-      interactionsCount: 8
-    },
-    {
-      id: '2',
-      firstName: 'Sarah',
-      lastName: 'Johnson',
-      email: 'sarah.j@designstudio.com',
-      phone: '+1 (555) 987-6543',
-      company: 'Creative Design Studio',
-      position: 'Creative Director',
-      location: 'New York, NY',
-      status: 'proposal',
-      source: 'referral',
-      dealValue: 25000,
-      currency: 'USD',
-      assignedTo: 'Jaziri Ahmed',
-      tags: ['Design', 'Creative', 'Mid-size'],
-      lastContact: '2024-01-14',
-      nextFollowUp: '2024-01-18',
-      createdAt: '2024-01-08',
-      updatedAt: '2024-01-14',
-      notes: 'Looking for design collaboration tools',
-      interactionsCount: 12
-    },
-    {
-      id: '3',
-      firstName: 'Michael',
-      lastName: 'Chen',
-      email: 'michael.chen@startup.io',
-      phone: '+1 (555) 456-7890',
-      company: 'InnovateTech Startup',
-      position: 'Founder & CEO',
-      location: 'Austin, TX',
-      status: 'new',
-      source: 'social-media',
-      dealValue: 15000,
-      currency: 'USD',
-      assignedTo: 'Jaziri Ahmed',
-      tags: ['Startup', 'SaaS', 'Young Company'],
-      lastContact: '2024-01-13',
-      createdAt: '2024-01-13',
-      updatedAt: '2024-01-13',
-      notes: 'Startup looking for growth tools',
-      interactionsCount: 3
-    },
-    {
-      id: '4',
-      firstName: 'Emily',
-      lastName: 'Davis',
-      email: 'emily.davis@retailchain.com',
-      phone: '+1 (555) 234-5678',
-      company: 'Retail Chain Inc',
-      position: 'Operations Manager',
-      location: 'Chicago, IL',
-      status: 'closed-won',
-      source: 'email-campaign',
-      dealValue: 75000,
-      currency: 'USD',
-      assignedTo: 'Jaziri Ahmed',
-      tags: ['Retail', 'Large Deal', 'Operations'],
-      lastContact: '2024-01-12',
-      createdAt: '2024-01-05',
-      updatedAt: '2024-01-12',
-      notes: 'Successfully closed - retail management solution',
-      interactionsCount: 15
-    }
-  ])
+  const [customers, setCustomers] = useState<Customer[]>([])
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const [successMessage, setSuccessMessage] = useState<string | null>(null)
 
   const [searchTerm, setSearchTerm] = useState('')
   const [filterStatus, setFilterStatus] = useState<string>('all')
-  const [filterSource, setFilterSource] = useState<string>('all')
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null)
   const [showDeleteModal, setShowDeleteModal] = useState(false)
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null)
@@ -156,53 +87,58 @@ export default function CRMPage() {
   const [itemsPerPage, setItemsPerPage] = useState(10)
   const [isProcessing, setIsProcessing] = useState<string | null>(null)
 
-  // Filter customers based on search and filters
-  const filteredCustomers = customers.filter(customer => {
-    const matchesSearch = 
-      `${customer.firstName} ${customer.lastName}`.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      customer.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      customer.company.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      customer.position.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      customer.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()))
-    
-    const matchesStatus = filterStatus === 'all' || customer.status === filterStatus
-    const matchesSource = filterSource === 'all' || customer.source === filterSource
-    
-    return matchesSearch && matchesStatus && matchesSource
-  })
+  // Fetch customers from API
+  const fetchCustomers = useCallback(async () => {
+    setLoading(true)
+    setError(null)
+    try {
+      const params: Record<string, string> = {}
+      if (searchTerm.trim()) params.search = searchTerm.trim()
+      if (filterStatus !== 'all') params.status = filterStatus
+      
+      const response = await crmApi.getAll(params)
+      if (response.success) {
+        setCustomers((response.data as {customers?: Customer[]})?.customers || [])
+      } else {
+        setError((response as {error?: {message: string}})?.error?.message || 'Failed to load customers')
+      }
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Failed to load customers')
+    } finally {
+      setLoading(false)
+    }
+  }, [searchTerm, filterStatus])
 
-  // Pagination logic
-  const totalItems = filteredCustomers.length
+  useEffect(() => {
+    fetchCustomers()
+  }, [fetchCustomers])
+
+  // Pagination logic - customers are already filtered by the API
+  const totalItems = customers.length
   const totalPages = Math.ceil(totalItems / itemsPerPage)
   const startIndex = (currentPage - 1) * itemsPerPage
   const endIndex = startIndex + itemsPerPage
-  const paginatedCustomers = filteredCustomers.slice(startIndex, endIndex)
+  const paginatedCustomers = customers.slice(startIndex, endIndex)
+  const statuses = ['all', 'lead', 'prospect', 'customer', 'inactive', 'lost']
 
-  const sources = Array.from(new Set(customers.map(customer => customer.source)))
-  const statuses = ['all', 'new', 'contacted', 'qualified', 'proposal', 'negotiation', 'closed-won', 'closed-lost']
-
-  const getStatusColor = (status: Customer['status']) => {
+  const getStatusColor = (status: string) => {
     switch (status) {
-      case 'new': return 'bg-blue-100 text-blue-800 border-blue-200'
-      case 'contacted': return 'bg-purple-100 text-purple-800 border-purple-200'
-      case 'qualified': return 'bg-yellow-100 text-yellow-800 border-yellow-200'
-      case 'proposal': return 'bg-orange-100 text-orange-800 border-orange-200'
-      case 'negotiation': return 'bg-indigo-100 text-indigo-800 border-indigo-200'
-      case 'closed-won': return 'bg-green-100 text-green-800 border-green-200'
-      case 'closed-lost': return 'bg-red-100 text-red-800 border-red-200'
+      case 'lead': return 'bg-blue-100 text-blue-800 border-blue-200'
+      case 'prospect': return 'bg-yellow-100 text-yellow-800 border-yellow-200'
+      case 'customer': return 'bg-green-100 text-green-800 border-green-200'
+      case 'inactive': return 'bg-gray-100 text-gray-800 border-gray-200'
+      case 'lost': return 'bg-red-100 text-red-800 border-red-200'
       default: return 'bg-gray-100 text-gray-800 border-gray-200'
     }
   }
 
-  const getStatusIcon = (status: Customer['status']) => {
+  const getStatusIcon = (status: string) => {
     switch (status) {
-      case 'new': return <Clock className="w-4 h-4 text-blue-500" />
-      case 'contacted': return <Phone className="w-4 h-4 text-purple-500" />
-      case 'qualified': return <Target className="w-4 h-4 text-yellow-500" />
-      case 'proposal': return <Eye className="w-4 h-4 text-orange-500" />
-      case 'negotiation': return <Activity className="w-4 h-4 text-indigo-500" />
-      case 'closed-won': return <CheckCircle className="w-4 h-4 text-green-500" />
-      case 'closed-lost': return <AlertCircle className="w-4 h-4 text-red-500" />
+      case 'lead': return <Clock className="w-4 h-4 text-blue-500" />
+      case 'prospect': return <Target className="w-4 h-4 text-yellow-500" />
+      case 'customer': return <CheckCircle className="w-4 h-4 text-green-500" />
+      case 'inactive': return <Phone className="w-4 h-4 text-gray-500" />
+      case 'lost': return <AlertCircle className="w-4 h-4 text-red-500" />
       default: return <Clock className="w-4 h-4 text-gray-500" />
     }
   }
@@ -238,45 +174,61 @@ export default function CRMPage() {
     }
   }, [activeDropdown])
 
-  const handleDeleteCustomer = () => {
+  const handleDeleteCustomer = async () => {
     if (!selectedCustomer) return
     
-    setCustomers(customers.filter(customer => customer.id !== selectedCustomer.id))
-    setShowDeleteModal(false)
-    setSelectedCustomer(null)
+    try {
+      await crmApi.delete(selectedCustomer._id)
+      setCustomers(customers.filter(customer => customer._id !== selectedCustomer._id))
+      setShowDeleteModal(false)
+      setSelectedCustomer(null)
+      setSuccessMessage('Customer deleted successfully')
+      setTimeout(() => setSuccessMessage(null), 3000)
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Failed to delete customer')
+      setTimeout(() => setError(null), 3000)
+    }
   }
 
-  const handleUpdateStatus = async (customer: Customer, newStatus: Customer['status']) => {
-    setIsProcessing(customer.id)
+  const handleUpdateStatus = async (customer: Customer, action: string) => {
+    const id = customer._id
+    setIsProcessing(id)
     
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000))
+      // Mark qualified: set status to 'prospect' and lifecycle.stage to 'consideration'
+      const payload = action === 'qualified'
+        ? { 
+            status: 'prospect',
+            lifecycle: { 
+              stage: 'consideration',
+              lastContact: new Date().toISOString()
+            }
+          }
+        : { status: action }
       
-      const updatedCustomer: Customer = {
-        ...customer,
-        status: newStatus,
-        updatedAt: new Date().toISOString().split('T')[0],
-        lastContact: new Date().toISOString().split('T')[0]
-      }
-
-      setCustomers(prev => prev.map(c => c.id === customer.id ? updatedCustomer : c))
+      await crmApi.update(id, payload)
+      await fetchCustomers() // Refresh the list
       setActiveDropdown(null)
-    } catch (error) {
-      console.error('Error updating customer status:', error)
+      setSuccessMessage('Customer status updated successfully')
+      setTimeout(() => setSuccessMessage(null), 3000)
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Failed to update customer status')
+      setTimeout(() => setError(null), 3000)
     } finally {
       setIsProcessing(null)
     }
   }
 
   const handleEmailCustomer = (customer: Customer) => {
-    const subject = encodeURIComponent(`Follow up - ${customer.company}`)
-    const body = encodeURIComponent(`Hi ${customer.firstName},
+    const firstName = customer.firstName || customer.displayName?.split(' ')[0] || 'Customer'
+    const company = customer.companyName || 'your company'
+    const subject = encodeURIComponent(`Follow up - ${company}`)
+    const body = encodeURIComponent(`Hi ${firstName},
 
-I hope this email finds you well. I wanted to follow up on our previous conversation regarding ${customer.company}'s needs.
+I hope this email finds you well. I wanted to follow up on our previous conversation regarding ${company}'s needs.
 
 Best regards,
-${customer.assignedTo}`)
+Sales Team`)
 
     const mailtoUrl = `mailto:${customer.email}?subject=${subject}&body=${body}`
     window.location.href = mailtoUrl
@@ -312,6 +264,18 @@ ${customer.assignedTo}`)
             Add New Lead
           </Button>
         </div>
+
+        {/* Error and Success Messages */}
+        {error && (
+          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg dark:bg-red-900/50 dark:border-red-800 dark:text-red-300">
+            {error}
+          </div>
+        )}
+        {successMessage && (
+          <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg dark:bg-green-900/50 dark:border-green-800 dark:text-green-300">
+            {successMessage}
+          </div>
+        )}
 
         {/* Search and Filters */}
         <div className="flex items-center gap-4">
@@ -378,7 +342,16 @@ ${customer.assignedTo}`)
                 </tr>
               </thead>
               <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-                {paginatedCustomers.length === 0 ? (
+                {loading ? (
+                  <tr>
+                    <td colSpan={6} className="px-6 py-16 text-center">
+                      <div className="flex items-center justify-center">
+                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+                        <span className="ml-3 text-gray-500 dark:text-gray-400">Loading customers...</span>
+                      </div>
+                    </td>
+                  </tr>
+                ) : paginatedCustomers.length === 0 ? (
                   <tr>
                     <td colSpan={6} className="px-6 py-16 text-center">
                       <Users className="w-12 h-12 text-gray-400 mx-auto mb-4" />
@@ -396,75 +369,78 @@ ${customer.assignedTo}`)
                   </tr>
                 ) : (
                   paginatedCustomers.map(customer => (
-                    <tr key={customer.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
+                    <tr key={customer._id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="flex items-center">
                           <div className="flex-shrink-0 h-10 w-10">
                             <div className="h-10 w-10 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center">
                               <span className="text-blue-600 dark:text-blue-400 font-medium text-sm">
-                                {customer.firstName[0]}{customer.lastName[0]}
+                                {(customer.displayName || `${customer.firstName || ''} ${customer.lastName || ''}`).trim().slice(0, 2).toUpperCase()}
                               </span>
                             </div>
                           </div>
                           <div className="ml-4">
                             <div className="flex items-center gap-2">
                               <div className="text-sm font-medium text-gray-900 dark:text-white">
-                                {customer.firstName} {customer.lastName}
+                                {customer.displayName || `${customer.firstName || ''} ${customer.lastName || ''}`.trim() || 'Unknown'}
                               </div>
-                              {getStatusIcon(customer.status)}
+                              {getStatusIcon(customer.status || 'lead')}
                             </div>
                             <div className="text-sm text-gray-500 dark:text-gray-400">
-                              {customer.email}
+                              {customer.email || '—'}
                             </div>
                             <div className="text-xs text-gray-400 dark:text-gray-500 mt-1 flex items-center gap-1">
                               <MapPin className="w-3 h-3" />
-                              {customer.location}
+                              {customer.addresses?.[0]
+                                ? `${customer.addresses[0].city || ''}${customer.addresses[0].city && customer.addresses[0].state ? ', ' : ''}${customer.addresses[0].state || ''}`
+                                : '—'
+                              }
                             </div>
                           </div>
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="text-sm font-medium text-gray-900 dark:text-white">
-                          {customer.company}
+                          {customer.companyName || '—'}
                         </div>
                         <div className="text-sm text-gray-500 dark:text-gray-400">
-                          {customer.position}
+                          {customer.type || '—'}
                         </div>
                         <div className="flex flex-wrap gap-1 mt-1">
-                          {customer.tags.slice(0, 2).map(tag => (
+                          {(customer.tags || []).slice(0, 2).map(tag => (
                             <Badge key={tag} variant="outline" className="text-xs">
                               {tag}
                             </Badge>
                           ))}
-                          {customer.tags.length > 2 && (
-                            <span className="text-xs text-gray-500">+{customer.tags.length - 2}</span>
+                          {(customer.tags || []).length > 2 && (
+                            <span className="text-xs text-gray-500">+{(customer.tags || []).length - 2}</span>
                           )}
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <Badge 
-                          className={`${getStatusColor(customer.status)} text-xs font-medium px-2.5 py-0.5 rounded-full`}
+                          className={`${getStatusColor(customer.status || 'lead')} text-xs font-medium px-2.5 py-0.5 rounded-full`}
                         >
-                          {customer.status.replace('-', ' ')}
+                          {(customer.status || 'lead').replace('-', ' ')}
                         </Badge>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="text-sm font-medium text-gray-900 dark:text-white flex items-center gap-1">
                           <DollarSign className="w-4 h-4 text-green-500" />
-                          {formatCurrency(customer.dealValue, customer.currency)}
+                          {formatCurrency(customer.value?.estimatedValue || 0, customer.value?.currency || 'USD')}
                         </div>
                         <div className="text-xs text-gray-500 dark:text-gray-400">
-                          {customer.interactionsCount} interactions
+                          {customer.engagement?.totalActivities || 0} interactions
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                         <div className="flex items-center gap-1">
                           <Calendar className="w-4 h-4" />
-                          {formatDate(customer.lastContact)}
+                          {customer.lifecycle?.lastContact ? formatDate(customer.lifecycle.lastContact) : '—'}
                         </div>
-                        {customer.nextFollowUp && (
+                        {customer.lifecycle?.nextContact && (
                           <div className="text-xs text-orange-600 dark:text-orange-400 mt-1">
-                            Follow up: {formatDate(customer.nextFollowUp)}
+                            Follow up: {formatDate(customer.lifecycle.nextContact)}
                           </div>
                         )}
                       </td>
@@ -475,13 +451,13 @@ ${customer.assignedTo}`)
                             size="sm"
                             onClick={(e) => {
                               e.stopPropagation()
-                              setActiveDropdown(activeDropdown === customer.id ? null : customer.id)
+                              setActiveDropdown(activeDropdown === customer._id ? null : customer._id)
                             }}
                             className="p-1"
                           >
                             <MoreVertical className="w-4 h-4" />
                           </Button>
-                          {activeDropdown === customer.id && (
+                          {activeDropdown === customer._id && (
                             <div 
                               className="absolute right-0 mt-1 w-48 bg-white dark:bg-gray-800 rounded-md shadow-lg z-10 border border-gray-200 dark:border-gray-700"
                               onClick={(e) => e.stopPropagation()}
@@ -489,18 +465,18 @@ ${customer.assignedTo}`)
                               <div className="py-1">
                                 <button
                                   onClick={() => {
-                                    router.push(`/dashboard/crm/${customer.id}/activities`)
+                                    router.push(`/dashboard/crm/${customer._id}/activities`)
                                     setActiveDropdown(null)
                                   }}
                                   className="flex items-center px-4 py-2 text-sm text-blue-600 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left"
                                 >
                                   <Activity className="w-4 h-4 mr-2" />
-                                  View Activities ({customer.interactionsCount})
+                                  View Activities ({customer.engagement?.totalActivities || 0})
                                 </button>
                                 
                                 <button
                                   onClick={() => {
-                                    router.push(`/dashboard/crm/${customer.id}/edit`)
+                                    router.push(`/dashboard/crm/${customer._id}/edit`)
                                     setActiveDropdown(null)
                                   }}
                                   className="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left"
@@ -518,21 +494,21 @@ ${customer.assignedTo}`)
                                 </button>
                                 
                                 <button
-                                  onClick={() => window.open(`tel:${customer.phone}`, '_self')}
+                                  onClick={() => window.open(`tel:${customer.phone || ''}`, '_self')}
                                   className="flex items-center px-4 py-2 text-sm text-purple-600 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left"
                                 >
                                   <Phone className="w-4 h-4 mr-2" />
                                   Call Customer
                                 </button>
                                 
-                                {customer.status !== 'closed-won' && customer.status !== 'closed-lost' && (
+                                {customer.status !== 'customer' && (
                                   <button
                                     onClick={() => handleUpdateStatus(customer, 'qualified')}
-                                    disabled={isProcessing === customer.id}
+                                    disabled={isProcessing === customer._id}
                                     className="flex items-center px-4 py-2 text-sm text-yellow-600 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left disabled:opacity-50"
                                   >
                                     <Target className="w-4 h-4 mr-2" />
-                                    {isProcessing === customer.id ? 'Updating...' : 'Mark Qualified'}
+                                    {isProcessing === customer._id ? 'Updating...' : 'Mark Qualified'}
                                   </button>
                                 )}
                                 
@@ -619,7 +595,7 @@ ${customer.assignedTo}`)
                 Delete Customer
               </h2>
               <p className="text-gray-600 dark:text-gray-400 mb-6">
-                Are you sure you want to delete "{selectedCustomer.firstName} {selectedCustomer.lastName}" from {selectedCustomer.company}? This action cannot be undone and will remove all interaction history.
+                Are you sure you want to delete &ldquo;{selectedCustomer.displayName || `${selectedCustomer.firstName || ''} ${selectedCustomer.lastName || ''}`.trim() || 'this customer'}&rdquo; from {selectedCustomer.companyName || 'their company'}? This action cannot be undone and will remove all interaction history.
               </p>
               <div className="flex justify-end gap-3">
                 <Button variant="outline" onClick={() => setShowDeleteModal(false)}>

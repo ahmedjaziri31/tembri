@@ -8,21 +8,48 @@ import { Input } from '../../../../../components/ui/input'
 import { Label } from '../../../../../components/ui/label'
 import { Textarea } from '../../../../../components/ui/textarea'
 import { LoadingButton } from '../../../../../components/ui/loading-button'
-import { ArrowLeft, Save, FileText, ChevronDown } from 'lucide-react'
+import { ArrowLeft, Save, FileText, ChevronDown, AlertCircle, X, Loader2 } from 'lucide-react'
+import { articlesApi } from '../../../../../lib/api'
 
 interface Article {
-  id: string
+  _id: string
   title: string
+  slug: string
   content: string
-  excerpt: string
-  author: string
+  description: string
+  shortDescription: string
+  author: {
+    userId: string
+    name: string
+    email: string
+    details?: {
+      _id: string
+      firstName: string
+      lastName: string
+      email: string
+      profileImage?: string
+    }
+  }
   status: 'draft' | 'published' | 'archived'
   category: string
   tags: string[]
+  visibility: 'public' | 'private' | 'unlisted'
+  featured: boolean
+  analytics: {
+    views: number
+    reads: number
+    shares: number
+    comments: number
+    likes: number
+  }
+  seo?: {
+    metaTitle: string
+    metaDescription: string
+    metaKeywords: string[]
+  }
   createdAt: string
   updatedAt: string
   publishedAt?: string
-  readTime: number
 }
 
 export default function EditArticlePage() {
@@ -32,96 +59,66 @@ export default function EditArticlePage() {
   
   const [isLoading, setIsLoading] = useState(false)
   const [isFetching, setIsFetching] = useState(true)
+  const [error, setError] = useState<string | null>(null)
   const [article, setArticle] = useState<Article | null>(null)
   const [formData, setFormData] = useState({
     title: '',
     content: '',
-    excerpt: '',
+    description: '',
+    shortDescription: '',
     category: '',
     tags: '',
-    status: 'draft' as 'draft' | 'published' | 'archived'
+    status: 'draft' as 'draft' | 'published' | 'archived',
+    visibility: 'public' as 'public' | 'private' | 'unlisted'
   })
 
-  // Mock data - replace with actual API call
-  const mockArticles: Article[] = [
-    {
-      id: '1',
-      title: 'Getting Started with React and TypeScript',
-      content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-      excerpt: 'Learn the basics of React with TypeScript and best practices for modern web development.',
-      author: 'Jaziri Ahmed',
-      status: 'published',
-      category: 'Technology',
-      tags: ['React', 'TypeScript', 'Frontend'],
-      createdAt: '2024-01-15',
-      updatedAt: '2024-01-15',
-      publishedAt: '2024-01-15',
-      readTime: 5
-    },
-    {
-      id: '2',
-      title: 'Advanced JavaScript Patterns',
-      content: 'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
-      excerpt: 'Explore advanced JavaScript patterns and techniques for better code organization.',
-      author: 'Jaziri Ahmed',
-      status: 'draft',
-      category: 'Programming',
-      tags: ['JavaScript', 'Patterns', 'Advanced'],
-      createdAt: '2024-01-10',
-      updatedAt: '2024-01-12',
-      readTime: 8
-    },
-    {
-      id: '3',
-      title: 'Building Scalable Web Applications',
-      content: 'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-      excerpt: 'Best practices for building scalable and maintainable web applications.',
-      author: 'Jaziri Ahmed',
-      status: 'published',
-      category: 'Architecture',
-      tags: ['Scalability', 'Web Development', 'Best Practices'],
-      createdAt: '2024-01-05',
-      updatedAt: '2024-01-05',
-      publishedAt: '2024-01-06',
-      readTime: 12
+  // Helper function to get author name
+  const getAuthorName = (author: Article['author']): string => {
+    if (author?.name) return author.name
+    if (author?.details?.firstName && author?.details?.lastName) {
+      return `${author.details.firstName} ${author.details.lastName}`
     }
-  ]
+    return 'Unknown Author'
+  }
 
   useEffect(() => {
     const fetchArticle = async () => {
+      if (!articleId) return
+      
       setIsFetching(true)
+      setError(null)
+      
       try {
-        // Simulate API call
-        await new Promise(resolve => setTimeout(resolve, 500))
+        const response = await articlesApi.getById(articleId)
         
-        // Find article by ID - replace with actual API call
-        const foundArticle = mockArticles.find(a => a.id === articleId)
-        
-        if (foundArticle) {
-          setArticle(foundArticle)
+        if (response.success && response.data) {
+          // Handle nested article structure from API response
+          const fetchedArticle = response.data.article || response.data
+          setArticle(fetchedArticle)
           setFormData({
-            title: foundArticle.title,
-            content: foundArticle.content,
-            excerpt: foundArticle.excerpt,
-            category: foundArticle.category,
-            tags: foundArticle.tags.join(', '),
-            status: foundArticle.status
+            title: fetchedArticle.title,
+            content: fetchedArticle.content,
+            description: fetchedArticle.description || '',
+            shortDescription: fetchedArticle.shortDescription || '',
+            category: fetchedArticle.category,
+            tags: Array.isArray(fetchedArticle.tags) ? fetchedArticle.tags.join(', ') : '',
+            status: fetchedArticle.status,
+            visibility: fetchedArticle.visibility || 'public'
           })
         } else {
-          // Article not found, redirect to articles list
-          router.push('/dashboard/articles')
+          setError('Article not found')
+          setTimeout(() => router.push('/dashboard/articles'), 2000)
         }
-      } catch (error) {
-        console.error('Error fetching article:', error)
-        router.push('/dashboard/articles')
+      } catch (err) {
+        console.error('Error fetching article:', err)
+        setError(err instanceof Error ? err.message : 'Failed to load article')
+        setTimeout(() => router.push('/dashboard/articles'), 2000)
       } finally {
         setIsFetching(false)
       }
     }
 
-    if (articleId) {
-      fetchArticle()
-    }
+    fetchArticle()
   }, [articleId, router])
 
   const calculateReadTime = (content: string) => {
@@ -133,24 +130,35 @@ export default function EditArticlePage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
+    setError(null)
 
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000))
-      
-      // Here you would make your API call to update the article
-      console.log('Updating article:', {
-        ...formData,
-        id: articleId,
-        readTime: calculateReadTime(formData.content),
-        updatedAt: new Date().toISOString().split('T')[0],
-        publishedAt: formData.status === 'published' ? (article?.publishedAt || new Date().toISOString().split('T')[0]) : undefined
-      })
+      // Prepare updated article data - only send changed fields
+      const updateData = {
+        title: formData.title.trim(),
+        content: formData.content,
+        description: formData.description,
+        shortDescription: formData.shortDescription,
+        category: formData.category.trim(),
+        tags: formData.tags.split(',').map(tag => tag.trim()).filter(tag => tag.length > 0),
+        status: formData.status,
+        visibility: formData.visibility
+      }
 
-      // Navigate back to articles list
-      router.push('/dashboard/articles')
-    } catch (error) {
-      console.error('Error updating article:', error)
+      // Update article via API
+      console.log('Updating article:', articleId, 'with data:', updateData)
+      const response = await articlesApi.update(articleId, updateData)
+      
+      if (response.success) {
+        // Navigate back to articles list
+        router.push('/dashboard/articles')
+      } else {
+        throw new Error(response.message || 'Failed to update article')
+      }
+    } catch (err) {
+      console.error('Error updating article:', err)
+      const errorMessage = err instanceof Error ? err.message : 'Failed to update article'
+      setError(errorMessage)
     } finally {
       setIsLoading(false)
     }
@@ -183,9 +191,38 @@ export default function EditArticlePage() {
         </div>
         <div className="flex items-center justify-center py-12">
           <div className="text-center">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
-            <p className="text-gray-500 mt-2">Loading article...</p>
+            <Loader2 className="w-8 h-8 text-blue-600 mx-auto mb-4 animate-spin" />
+            <p className="text-gray-500">Loading article...</p>
           </div>
+        </div>
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="space-y-6">
+        <div className="flex items-center gap-4">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => router.back()}
+            className="flex items-center gap-2"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            Back
+          </Button>
+          <div className="flex items-center gap-3">
+            <FileText className="w-6 h-6 text-blue-600" />
+            <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">Error Loading Article</h1>
+          </div>
+        </div>
+        <div className="bg-red-50 border border-red-200 rounded-lg p-6">
+          <div className="flex items-center">
+            <AlertCircle className="w-5 h-5 text-red-500 mr-2" />
+            <span className="text-red-700">{error}</span>
+          </div>
+          <p className="text-red-600 mt-2">Redirecting to articles list...</p>
         </div>
       </div>
     )
@@ -214,6 +251,24 @@ export default function EditArticlePage() {
         </div>
       </div>
 
+      {/* Error Banner */}
+      {error && (
+        <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+          <div className="flex items-center">
+            <AlertCircle className="w-5 h-5 text-red-500 mr-2" />
+            <span className="text-red-700">{error}</span>
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              onClick={() => setError(null)}
+              className="ml-auto"
+            >
+              <X className="w-4 h-4" />
+            </Button>
+          </div>
+        </div>
+      )}
+
       {/* Form */}
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -237,12 +292,25 @@ export default function EditArticlePage() {
                 </div>
 
                 <div>
-                  <Label htmlFor="excerpt">Excerpt *</Label>
+                  <Label htmlFor="shortDescription">Short Description *</Label>
                   <Textarea
-                    id="excerpt"
-                    value={formData.excerpt}
-                    onChange={(e) => handleInputChange('excerpt', e.target.value)}
+                    id="shortDescription"
+                    value={formData.shortDescription}
+                    onChange={(e) => handleInputChange('shortDescription', e.target.value)}
                     placeholder="Brief description of the article..."
+                    required
+                    rows={2}
+                    className="mt-1"
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="description">Description *</Label>
+                  <Textarea
+                    id="description"
+                    value={formData.description}
+                    onChange={(e) => handleInputChange('description', e.target.value)}
+                    placeholder="Detailed description with HTML content..."
                     required
                     rows={3}
                     className="mt-1"
@@ -319,6 +387,23 @@ export default function EditArticlePage() {
                     Separate tags with commas
                   </p>
                 </div>
+
+                <div>
+                  <Label htmlFor="visibility">Visibility</Label>
+                  <div className="relative mt-1">
+                    <select
+                      id="visibility"
+                      value={formData.visibility}
+                      onChange={(e) => handleInputChange('visibility', e.target.value)}
+                      className="w-full appearance-none bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2.5 pr-8 text-sm font-medium text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-400 dark:focus:border-blue-400 hover:border-gray-400 dark:hover:border-gray-500 transition-colors cursor-pointer"
+                    >
+                      <option value="public" className="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100">Public</option>
+                      <option value="private" className="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100">Private</option>
+                      <option value="unlisted" className="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100">Unlisted</option>
+                    </select>
+                    <ChevronDown className="absolute right-2.5 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-500 dark:text-gray-400 pointer-events-none" />
+                  </div>
+                </div>
               </CardContent>
             </Card>
 
@@ -330,7 +415,7 @@ export default function EditArticlePage() {
               <CardContent className="space-y-3 text-sm">
                 <div className="flex justify-between">
                   <span className="text-gray-500">Author:</span>
-                  <span>{article.author}</span>
+                  <span>{getAuthorName(article.author)}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-500">Created:</span>

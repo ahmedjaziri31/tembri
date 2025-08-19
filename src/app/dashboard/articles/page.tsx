@@ -1,24 +1,18 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../../components/ui/card'
 import { Button } from '../../../components/ui/button'
 import { Input } from '../../../components/ui/input'
-import { Label } from '../../../components/ui/label'
-import { Textarea } from '../../../components/ui/textarea'
 import { Badge } from '../../../components/ui/badge'
 import { 
   Plus,
   Search,
   Edit,
   Trash2,
-  Eye,
   Calendar,
-  User,
   FileText,
   MoreVertical,
   Filter,
-  SortDesc,
   X,
   ChevronLeft,
   ChevronRight,
@@ -27,94 +21,138 @@ import {
   Clock,
   Send,
   Archive,
-  ChevronDown
+  ChevronDown,
+  Loader2
 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
+import { articlesApi } from '../../../lib/api'
 
 interface Article {
-  id: string
+  _id: string
   title: string
+  slug: string
   content: string
-  excerpt: string
-  author: string
+  description: string
+  shortDescription: string
+  author: {
+    userId: string
+    name: string
+    email: string
+    details?: {
+      _id: string
+      firstName: string
+      lastName: string
+      email: string
+      profileImage?: string
+    }
+  }
   status: 'draft' | 'published' | 'archived'
   category: string
   tags: string[]
+  visibility: 'public' | 'private' | 'unlisted'
+  featured: boolean
+  analytics: {
+    views: number
+    reads: number
+    shares: number
+    comments: number
+    likes: number
+  }
+  seo?: {
+    metaTitle: string
+    metaDescription: string
+    metaKeywords: string[]
+  }
   createdAt: string
   updatedAt: string
   publishedAt?: string
-  readTime: number
 }
 
 export default function ArticlesPage() {
   const router = useRouter()
   
-  const [articles, setArticles] = useState<Article[]>([
-    {
-      id: '1',
-      title: 'Getting Started with React and TypeScript',
-      content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-      excerpt: 'Learn the basics of React with TypeScript and best practices for modern web development.',
-      author: 'Jaziri Ahmed',
-      status: 'published',
-      category: 'Technology',
-      tags: ['React', 'TypeScript', 'Frontend'],
-      createdAt: '2024-01-15',
-      updatedAt: '2024-01-15',
-      publishedAt: '2024-01-15',
-      readTime: 5
-    },
-    {
-      id: '2',
-      title: 'Advanced JavaScript Patterns',
-      content: 'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-      excerpt: 'Explore advanced JavaScript patterns and techniques for better code organization.',
-      author: 'Jaziri Ahmed',
-      status: 'draft',
-      category: 'Programming',
-      tags: ['JavaScript', 'Patterns', 'Advanced'],
-      createdAt: '2024-01-10',
-      updatedAt: '2024-01-12',
-      readTime: 8
-    },
-    {
-      id: '3',
-      title: 'Building Scalable Web Applications',
-      content: 'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
-      excerpt: 'Best practices for building scalable and maintainable web applications.',
-      author: 'Jaziri Ahmed',
-      status: 'published',
-      category: 'Architecture',
-      tags: ['Scalability', 'Web Development', 'Best Practices'],
-      createdAt: '2024-01-05',
-      updatedAt: '2024-01-05',
-      publishedAt: '2024-01-06',
-      readTime: 12
-    }
-  ])
+  const [articles, setArticles] = useState<Article[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+  const [successMessage, setSuccessMessage] = useState<string | null>(null)
 
   const [searchTerm, setSearchTerm] = useState('')
   const [filterStatus, setFilterStatus] = useState<string>('all')
-  const [filterCategory, setFilterCategory] = useState<string>('all')
   const [selectedArticle, setSelectedArticle] = useState<Article | null>(null)
   const [showDeleteModal, setShowDeleteModal] = useState(false)
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null)
+  const [dropdownPosition, setDropdownPosition] = useState<{[key: string]: 'bottom' | 'top'}>({})
   const [currentPage, setCurrentPage] = useState(1)
   const [itemsPerPage, setItemsPerPage] = useState(10)
   const [isProcessing, setIsProcessing] = useState<string | null>(null)
 
+  // Fetch articles from backend
+  const fetchArticles = async () => {
+    try {
+      setLoading(true)
+      setError(null)
+      console.log('Fetching articles...')
+      const response = await articlesApi.getAll()
+      console.log('Articles API response:', response)
+      
+      if (response.success && response.data) {
+        // Handle nested articles structure from API response
+        const articlesData = response.data.articles || response.data
+        console.log('Processed articles data:', articlesData)
+        setArticles(Array.isArray(articlesData) ? articlesData : [])
+      } else {
+        console.error('API response not successful:', response)
+        setError('Failed to load articles')
+      }
+    } catch (err) {
+      console.error('Error fetching articles:', err)
+      const errorMessage = err instanceof Error ? err.message : 'Failed to load articles'
+      setError(errorMessage)
+    } finally {
+      setLoading(false)
+    }
+  }
 
+  // Load articles on component mount
+  useEffect(() => {
+    fetchArticles()
+  }, [])
+
+
+
+  // Helper function to get author name
+  const getAuthorName = (author: Article['author']): string => {
+    if (!author) return 'Unknown Author'
+    
+    if (author.name && typeof author.name === 'string') {
+      return author.name
+    }
+    
+    if (author.details?.firstName && author.details?.lastName) {
+      return `${author.details.firstName} ${author.details.lastName}`.trim()
+    }
+    
+    if (author.details?.firstName) {
+      return author.details.firstName
+    }
+    
+    return 'Unknown Author'
+  }
 
   // Filter articles based on search and filters
   const filteredArticles = articles.filter(article => {
-    const matchesSearch = article.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         article.content.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         article.author.toLowerCase().includes(searchTerm.toLowerCase())
+    const authorName = getAuthorName(article.author)
+    const searchTermLower = searchTerm.toLowerCase()
+    
+    const matchesSearch = searchTerm === '' || 
+      (article.title && article.title.toLowerCase().includes(searchTermLower)) ||
+      (article.content && article.content.toLowerCase().includes(searchTermLower)) ||
+      (article.shortDescription && article.shortDescription.toLowerCase().includes(searchTermLower)) ||
+      (authorName && authorName.toLowerCase().includes(searchTermLower))
     
     const matchesStatus = filterStatus === 'all' || article.status === filterStatus
-    const matchesCategory = filterCategory === 'all' || article.category === filterCategory
     
-    return matchesSearch && matchesStatus && matchesCategory
+    return matchesSearch && matchesStatus
   })
 
   // Pagination logic
@@ -124,8 +162,8 @@ export default function ArticlesPage() {
   const endIndex = startIndex + itemsPerPage
   const paginatedArticles = filteredArticles.slice(startIndex, endIndex)
 
-  const categories = Array.from(new Set(articles.map(article => article.category)))
-  const statuses = ['all', 'draft', 'published', 'archived']
+  // Get unique statuses from actual articles data
+  const statuses = ['all', ...Array.from(new Set(articles.map(article => article.status)))]
 
   const getStatusColor = (status: Article['status']) => {
     switch (status) {
@@ -158,6 +196,7 @@ export default function ArticlesPage() {
   useEffect(() => {
     const handleClickOutside = () => {
       setActiveDropdown(null)
+      setDropdownPosition({}) // Clean up position state
     }
 
     if (activeDropdown) {
@@ -166,54 +205,91 @@ export default function ArticlesPage() {
     }
   }, [activeDropdown])
 
-  const handleDeleteArticle = () => {
+  const handleDeleteArticle = async () => {
     if (!selectedArticle) return
     
-    setArticles(articles.filter(article => article.id !== selectedArticle.id))
-    setShowDeleteModal(false)
-    setSelectedArticle(null)
+    try {
+      const response = await articlesApi.delete(selectedArticle._id)
+      if (response.success) {
+        setArticles(articles.filter(article => article._id !== selectedArticle._id))
+        setShowDeleteModal(false)
+        setSelectedArticle(null)
+      } else {
+        throw new Error('Failed to delete article')
+      }
+    } catch (error) {
+      console.error('Error deleting article:', error)
+      setError(error instanceof Error ? error.message : 'Failed to delete article')
+    }
   }
 
   const handlePublishArticle = async (article: Article) => {
-    setIsProcessing(article.id)
+    setIsProcessing(article._id)
     
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000))
-      
-      const updatedArticle: Article = {
-        ...article,
-        status: 'published',
-        publishedAt: new Date().toISOString().split('T')[0],
-        updatedAt: new Date().toISOString().split('T')[0]
+      // Update only the status field
+      const updateData = {
+        status: 'published'
       }
-
-      setArticles(prev => prev.map(a => a.id === article.id ? updatedArticle : a))
-      setActiveDropdown(null)
+      
+      console.log('Publishing article:', article._id, 'with data:', updateData)
+      const response = await articlesApi.update(article._id, updateData)
+      if (response.success) {
+        // Update local state immediately for better UX
+        setArticles(prev => prev.map(a => 
+          a._id === article._id 
+            ? { ...a, status: 'published', publishedAt: new Date().toISOString() }
+            : a
+        ))
+        setActiveDropdown(null)
+        setDropdownPosition({})
+        setSuccessMessage('Article published successfully!')
+        setTimeout(() => setSuccessMessage(null), 3000)
+      } else {
+        throw new Error('Failed to publish article')
+      }
     } catch (error) {
       console.error('Error publishing article:', error)
+      const errorMessage = error instanceof Error ? error.message : 'Failed to publish article'
+      setError(errorMessage)
+      // Refresh articles on error to ensure consistency
+      await fetchArticles()
     } finally {
       setIsProcessing(null)
     }
   }
 
   const handleArchiveArticle = async (article: Article) => {
-    setIsProcessing(article.id)
+    setIsProcessing(article._id)
     
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000))
-      
-      const updatedArticle: Article = {
-        ...article,
-        status: 'archived',
-        updatedAt: new Date().toISOString().split('T')[0]
+      // Update only the status field
+      const updateData = {
+        status: 'archived'
       }
-
-      setArticles(prev => prev.map(a => a.id === article.id ? updatedArticle : a))
-      setActiveDropdown(null)
+      
+      console.log('Archiving article:', article._id, 'with data:', updateData)
+      const response = await articlesApi.update(article._id, updateData)
+      if (response.success) {
+        // Update local state immediately for better UX
+        setArticles(prev => prev.map(a => 
+          a._id === article._id 
+            ? { ...a, status: 'archived' }
+            : a
+        ))
+        setActiveDropdown(null)
+        setDropdownPosition({})
+        setSuccessMessage('Article archived successfully!')
+        setTimeout(() => setSuccessMessage(null), 3000)
+      } else {
+        throw new Error('Failed to archive article')
+      }
     } catch (error) {
       console.error('Error archiving article:', error)
+      const errorMessage = error instanceof Error ? error.message : 'Failed to archive article'
+      setError(errorMessage)
+      // Refresh articles on error to ensure consistency
+      await fetchArticles()
     } finally {
       setIsProcessing(null)
     }
@@ -223,6 +299,7 @@ export default function ArticlesPage() {
     setSelectedArticle(article)
     setShowDeleteModal(true)
     setActiveDropdown(null)
+    setDropdownPosition({}) // Clean up position state
   }
 
   return (
@@ -232,6 +309,42 @@ export default function ArticlesPage() {
         <FileText className="w-6 h-6 text-blue-600" />
         <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">Article Management</h1>
       </div>
+
+      {/* Success Banner */}
+      {successMessage && (
+        <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+          <div className="flex items-center">
+            <CheckCircle className="w-5 h-5 text-green-500 mr-2" />
+            <span className="text-green-700">{successMessage}</span>
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              onClick={() => setSuccessMessage(null)}
+              className="ml-auto"
+            >
+              <X className="w-4 h-4" />
+            </Button>
+          </div>
+        </div>
+      )}
+
+      {/* Error Banner */}
+      {error && (
+        <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+          <div className="flex items-center">
+            <AlertCircle className="w-5 h-5 text-red-500 mr-2" />
+            <span className="text-red-700">{error}</span>
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              onClick={() => setError(null)}
+              className="ml-auto"
+            >
+              <X className="w-4 h-4" />
+            </Button>
+          </div>
+        </div>
+      )}
 
       {/* Content Section */}
       <div className="space-y-6">
@@ -289,7 +402,7 @@ export default function ArticlesPage() {
 
         {/* Table */}
         <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
-          <div className="overflow-x-auto">
+          <div className="overflow-x-auto overflow-y-visible">
             <table className="w-full">
               <thead className="bg-gray-50 dark:bg-gray-700 border-b border-gray-200 dark:border-gray-600">
                 <tr>
@@ -311,7 +424,19 @@ export default function ArticlesPage() {
                 </tr>
               </thead>
               <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-                {paginatedArticles.length === 0 ? (
+                {loading ? (
+                  <tr>
+                    <td colSpan={5} className="px-6 py-16 text-center">
+                      <Loader2 className="w-8 h-8 text-blue-600 mx-auto mb-4 animate-spin" />
+                      <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
+                        Loading articles...
+                      </h3>
+                      <p className="text-gray-500 dark:text-gray-400">
+                        Please wait while we fetch your articles
+                      </p>
+                    </td>
+                  </tr>
+                ) : paginatedArticles.length === 0 ? (
                   <tr>
                     <td colSpan={5} className="px-6 py-16 text-center">
                       <FileText className="w-12 h-12 text-gray-400 mx-auto mb-4" />
@@ -329,7 +454,7 @@ export default function ArticlesPage() {
                   </tr>
                 ) : (
                   paginatedArticles.map(article => (
-                    <tr key={article.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
+                    <tr key={article._id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="flex items-center">
                           <div className="flex-shrink-0 h-10 w-10">
@@ -345,10 +470,14 @@ export default function ArticlesPage() {
                               {getStatusIcon(article.status)}
                             </div>
                             <div className="text-sm text-gray-500 dark:text-gray-400 max-w-md truncate">
-                              {article.excerpt}
+                              {article.shortDescription}
                             </div>
-                            <div className="text-xs text-gray-400 dark:text-gray-500 mt-1">
-                              By {article.author} • {article.readTime} min read
+                            <div className="text-xs text-gray-400 dark:text-gray-500 mt-1 flex items-center gap-2">
+                              <span>By {getAuthorName(article.author)}</span>
+                              <span>•</span>
+                              <span>{article.analytics.views} views</span>
+                              <span>•</span>
+                              <span>{article.analytics.likes} likes</span>
                             </div>
                           </div>
                         </div>
@@ -372,27 +501,41 @@ export default function ArticlesPage() {
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                        <div className="relative">
+                        <div className="relative" style={{ zIndex: 1 }}>
                           <Button
                             variant="ghost"
                             size="sm"
                             onClick={(e) => {
                               e.stopPropagation()
-                              setActiveDropdown(activeDropdown === article.id ? null : article.id)
+                              const rect = e.currentTarget.getBoundingClientRect()
+                              const windowHeight = window.innerHeight
+                              const spaceBelow = windowHeight - rect.bottom
+                              const dropdownHeight = 150 // Approximate height of dropdown
+                              
+                              // Position dropdown above if not enough space below
+                              const position = spaceBelow < dropdownHeight ? 'top' : 'bottom'
+                              setDropdownPosition(prev => ({...prev, [article._id]: position}))
+                              setActiveDropdown(activeDropdown === article._id ? null : article._id)
                             }}
                             className="p-1"
                           >
                             <MoreVertical className="w-4 h-4" />
                           </Button>
-                          {activeDropdown === article.id && (
+                          {activeDropdown === article._id && (
                             <div 
-                              className="absolute right-0 mt-1 w-48 bg-white dark:bg-gray-800 rounded-md shadow-lg z-10 border border-gray-200 dark:border-gray-700"
+                              className={`absolute right-0 w-48 bg-white dark:bg-gray-800 rounded-md shadow-xl border border-gray-200 dark:border-gray-700 ${
+                                dropdownPosition[article._id] === 'top' ? 'bottom-full mb-1' : 'top-full mt-1'
+                              }`}
+                              style={{
+                                zIndex: 9999,
+                                boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)'
+                              }}
                               onClick={(e) => e.stopPropagation()}
                             >
                               <div className="py-1">
                                 <button
                                   onClick={() => {
-                                    router.push(`/dashboard/articles/${article.id}/edit`)
+                                    router.push(`/dashboard/articles/${article._id}/edit`)
                                     setActiveDropdown(null)
                                   }}
                                   className="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left"
@@ -404,22 +547,22 @@ export default function ArticlesPage() {
                                 {article.status === 'draft' && (
                                   <button
                                     onClick={() => handlePublishArticle(article)}
-                                    disabled={isProcessing === article.id}
+                                    disabled={isProcessing === article._id}
                                     className="flex items-center px-4 py-2 text-sm text-green-600 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left disabled:opacity-50"
                                   >
                                     <Send className="w-4 h-4 mr-2" />
-                                    {isProcessing === article.id ? 'Publishing...' : 'Publish'}
+                                    {isProcessing === article._id ? 'Publishing...' : 'Publish'}
                                   </button>
                                 )}
                                 
                                 {article.status === 'published' && (
                                   <button
                                     onClick={() => handleArchiveArticle(article)}
-                                    disabled={isProcessing === article.id}
+                                    disabled={isProcessing === article._id}
                                     className="flex items-center px-4 py-2 text-sm text-yellow-600 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left disabled:opacity-50"
                                   >
                                     <Archive className="w-4 h-4 mr-2" />
-                                    {isProcessing === article.id ? 'Archiving...' : 'Archive'}
+                                    {isProcessing === article._id ? 'Archiving...' : 'Archive'}
                                   </button>
                                 )}
                                 
@@ -508,7 +651,7 @@ export default function ArticlesPage() {
                 Delete Article
               </h2>
               <p className="text-gray-600 dark:text-gray-400 mb-6">
-                Are you sure you want to delete "{selectedArticle.title}"? This action cannot be undone.
+                Are you sure you want to delete &ldquo;{selectedArticle.title}&rdquo;? This action cannot be undone.
               </p>
               <div className="flex justify-end gap-3">
                 <Button variant="outline" onClick={() => setShowDeleteModal(false)}>

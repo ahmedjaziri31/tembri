@@ -73,17 +73,40 @@ async function apiRequest<T>(
 
   try {
     const response = await fetch(url, config);
-    const data = await response.json();
+    
+    let data;
+    try {
+      data = await response.json();
+    } catch (parseError) {
+      throw new Error(`Failed to parse response: ${response.statusText}`);
+    }
 
     if (!response.ok) {
-      throw new Error(data.message || data.error || `HTTP error! status: ${response.status}`);
+      const errorMessage = data.message || data.error || data.details || `HTTP error! status: ${response.status}`;
+      throw new Error(errorMessage);
     }
 
     return data;
   } catch (error) {
     console.error(`API request failed: ${endpoint}`, error);
-    throw error;
+    // Ensure error message is a string
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    throw new Error(errorMessage);
   }
+}
+
+// Build query string while skipping undefined/null/empty values
+function buildQuery(params?: Record<string, unknown>): string {
+  if (!params) return '';
+  const cleaned: Record<string, string> = {};
+  for (const [key, value] of Object.entries(params)) {
+    if (value === undefined || value === null) continue;
+    const str = String(value);
+    if (str.trim() === '') continue;
+    cleaned[key] = str;
+  }
+  const qs = new URLSearchParams(cleaned).toString();
+  return qs ? `?${qs}` : '';
 }
 
 // Token management
@@ -201,14 +224,16 @@ export const articlesApi = {
   },
 
   async publish(id: string) {
-    return apiRequest(`/articles/${id}/publish`, {
-      method: 'PATCH',
+    return apiRequest(`/articles/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify({ status: 'published' }),
     });
   },
 
   async archive(id: string) {
-    return apiRequest(`/articles/${id}/archive`, {
-      method: 'PATCH',
+    return apiRequest(`/articles/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify({ status: 'archived' }),
     });
   }
 };
@@ -244,8 +269,47 @@ export const careersApi = {
     });
   },
 
-  async getApplications(id: string) {
-    return apiRequest(`/careers/${id}/applications`);
+  async publish(id: string) {
+    return apiRequest(`/careers/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify({ status: 'published' }),
+    });
+  },
+
+  async pause(id: string) {
+    return apiRequest(`/careers/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify({ status: 'paused' }),
+    });
+  },
+
+  async close(id: string) {
+    return apiRequest(`/careers/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify({ status: 'closed' }),
+    });
+  },
+
+  async getApplications(id: string, params?: any) {
+    const queryString = buildQuery(params);
+    return apiRequest(`/careers/${id}/applications${queryString}`);
+  },
+
+  async updateApplicationStatus(applicationId: string, data: any) {
+    return apiRequest(`/careers/applications/${applicationId}`, {
+      method: 'PUT',
+      body: JSON.stringify(data),
+    });
+  },
+
+  async deleteApplication(applicationId: string) {
+    return apiRequest(`/careers/applications/${applicationId}`, {
+      method: 'DELETE',
+    });
+  },
+
+  async getStats() {
+    return apiRequest('/careers/stats');
   }
 };
 
@@ -280,8 +344,29 @@ export const crmApi = {
     });
   },
 
-  async getActivities(id: string) {
-    return apiRequest(`/crm/${id}/activities`);
+  async getActivities(id: string, params?: any) {
+    const queryString = buildQuery(params);
+    return apiRequest(`/crm/${id}/activities${queryString}`);
+  },
+
+  async createActivity(customerId: string, data: any) {
+    return apiRequest(`/crm/${customerId}/activities`, {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+  },
+
+  async updateActivity(activityId: string, data: any) {
+    return apiRequest(`/crm/activities/${activityId}`, {
+      method: 'PUT',
+      body: JSON.stringify(data),
+    });
+  },
+
+  async deleteActivity(activityId: string) {
+    return apiRequest(`/crm/activities/${activityId}`, {
+      method: 'DELETE',
+    });
   }
 };
 
@@ -335,10 +420,47 @@ export const newsletterApi = {
   }
 };
 
+// Notifications API
+export const notificationsApi = {
+  async getAll(params?: any) {
+    const queryString = params ? '?' + new URLSearchParams(params).toString() : '';
+    return apiRequest(`/notifications${queryString}`);
+  },
+
+  async markAsRead(id: string) {
+    return apiRequest(`/notifications/${id}/read`, {
+      method: 'PUT',
+    });
+  },
+
+  async markAllAsRead() {
+    return apiRequest('/notifications/read-all', {
+      method: 'PUT',
+    });
+  },
+
+  async delete(id: string) {
+    return apiRequest(`/notifications/${id}`, {
+      method: 'DELETE',
+    });
+  },
+
+  async clearAll() {
+    return apiRequest('/notifications/clear-all', {
+      method: 'DELETE',
+    });
+  },
+
+  async getStats() {
+    return apiRequest('/notifications/stats');
+  }
+};
+
 export default {
   authApi,
   articlesApi,
   careersApi,
   crmApi,
-  newsletterApi
+  newsletterApi,
+  notificationsApi
 };

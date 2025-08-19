@@ -27,32 +27,60 @@ import {
   ChevronDown,
   User,
   GraduationCap,
-  Building
+  Building,
+  AlertCircle
 } from 'lucide-react'
+import { careersApi } from '../../../../../lib/api'
 
-interface Applicant {
-  id: string
-  firstName: string
-  lastName: string
-  email: string
-  phone: string
-  location: string
-  appliedAt: string
-  status: 'new' | 'reviewed' | 'interviewing' | 'rejected' | 'hired'
-  resumeUrl?: string
-  coverLetter?: string
-  experience: string
-  education: string
-  skills: string[]
-  rating?: number
-  notes?: string
+interface Application {
+  _id: string
+  careerId: string
+  applicant: {
+    firstName: string
+    lastName: string
+    email: string
+    phone?: string
+    location?: string
+    currentTitle?: string
+    experience?: {
+      years: number
+      description: string
+    }
+    education?: {
+      degree: string
+      school: string
+      year: number
+    }
+  }
+  documents?: {
+    resume?: {
+      url: string
+      filename: string
+    }
+    coverLetter?: string
+  }
+  responses?: any[]
+  status: 'submitted' | 'under-review' | 'shortlisted' | 'interviewing' | 'offered' | 'hired' | 'rejected'
+  stage: string
+  timeline: any[]
+  evaluation?: {
+    overallRating?: number
+    skills?: any[]
+    notes?: string
+  }
+  createdAt: string
+  updatedAt: string
 }
 
 interface Position {
-  id: string
+  _id: string
   title: string
   department: string
-  location: string
+  location: {
+    type: string
+    city?: string
+    state?: string
+  }
   status: string
 }
 
@@ -62,146 +90,137 @@ export default function ApplicantsPage() {
   const positionId = params.id as string
   
   const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState('')
   const [position, setPosition] = useState<Position | null>(null)
-  const [applicants, setApplicants] = useState<Applicant[]>([])
+  const [allApplications, setAllApplications] = useState<Application[]>([])
   const [searchTerm, setSearchTerm] = useState('')
   const [filterStatus, setFilterStatus] = useState<string>('all')
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null)
   const [currentPage, setCurrentPage] = useState(1)
   const [itemsPerPage, setItemsPerPage] = useState(10)
+  const [isUpdating, setIsUpdating] = useState<string | null>(null)
+  const [apiTotal, setApiTotal] = useState(0)
 
-  // Mock data - in real app, this would come from API
-  const mockPosition: Position = {
-    id: positionId,
-    title: 'Senior Full Stack Developer',
-    department: 'Engineering',
-    location: 'Remote',
-    status: 'open'
+  const fetchData = async () => {
+    setIsLoading(true)
+    setError('')
+    
+    try {
+      // Fetch position details and all applications (client-side filter + pagination)
+      const [positionResponse, applicationsResponse] = await Promise.all([
+        careersApi.getById(positionId),
+        careersApi.getApplications(positionId, { page: 1, limit: 1000 })
+      ])
+      
+      if (positionResponse.success && applicationsResponse.success) {
+        setPosition(positionResponse.data.career)
+        setAllApplications(applicationsResponse.data.applications || [])
+        setApiTotal(applicationsResponse.pagination?.total || (applicationsResponse.data.applications?.length ?? 0))
+      } else {
+        setError(positionResponse.error?.message || applicationsResponse.error?.message || 'Failed to fetch data')
+      }
+    } catch (error: any) {
+      console.error('Error fetching data:', error)
+      setError(error.message || 'An unexpected error occurred')
+    } finally {
+      setIsLoading(false)
+    }
   }
 
-  const mockApplicants: Applicant[] = [
-    {
-      id: '1',
-      firstName: 'John',
-      lastName: 'Doe',
-      email: 'john.doe@email.com',
-      phone: '+1 (555) 123-4567',
-      location: 'San Francisco, CA',
-      appliedAt: '2024-01-15',
-      status: 'new',
-      resumeUrl: '/resumes/john-doe.pdf',
-      experience: '5 years',
-      education: 'BS Computer Science, Stanford University',
-      skills: ['React', 'Node.js', 'TypeScript', 'AWS', 'PostgreSQL'],
-      coverLetter: 'I am excited to apply for this position...',
-      rating: 4
-    },
-    {
-      id: '2',
-      firstName: 'Sarah',
-      lastName: 'Johnson',
-      email: 'sarah.johnson@email.com',
-      phone: '+1 (555) 987-6543',
-      location: 'New York, NY',
-      appliedAt: '2024-01-14',
-      status: 'reviewed',
-      resumeUrl: '/resumes/sarah-johnson.pdf',
-      experience: '7 years',
-      education: 'MS Software Engineering, MIT',
-      skills: ['React', 'Python', 'Docker', 'Kubernetes', 'MongoDB'],
-      rating: 5
-    },
-    {
-      id: '3',
-      firstName: 'Michael',
-      lastName: 'Chen',
-      email: 'michael.chen@email.com',
-      phone: '+1 (555) 456-7890',
-      location: 'Seattle, WA',
-      appliedAt: '2024-01-13',
-      status: 'interviewing',
-      resumeUrl: '/resumes/michael-chen.pdf',
-      experience: '3 years',
-      education: 'BS Computer Engineering, UC Berkeley',
-      skills: ['Vue.js', 'Express.js', 'Redis', 'GraphQL'],
-      rating: 4
-    },
-    {
-      id: '4',
-      firstName: 'Emily',
-      lastName: 'Davis',
-      email: 'emily.davis@email.com',
-      phone: '+1 (555) 234-5678',
-      location: 'Austin, TX',
-      appliedAt: '2024-01-12',
-      status: 'rejected',
-      resumeUrl: '/resumes/emily-davis.pdf',
-      experience: '2 years',
-      education: 'BS Information Systems, UT Austin',
-      skills: ['JavaScript', 'HTML', 'CSS', 'React'],
-      rating: 2
-    }
-  ]
-
   useEffect(() => {
-    const fetchData = async () => {
-      setIsLoading(true)
-      try {
-        // Simulate API call
-        await new Promise(resolve => setTimeout(resolve, 500))
-        setPosition(mockPosition)
-        setApplicants(mockApplicants)
-      } catch (error) {
-        console.error('Error fetching data:', error)
-      } finally {
-        setIsLoading(false)
-      }
-    }
-
     if (positionId) {
       fetchData()
     }
   }, [positionId])
 
-  // Filter applicants based on search and filters
-  const filteredApplicants = applicants.filter(applicant => {
-    const matchesSearch = 
-      `${applicant.firstName} ${applicant.lastName}`.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      applicant.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      applicant.skills.some(skill => skill.toLowerCase().includes(searchTerm.toLowerCase()))
+  const handleStatusUpdate = async (applicationId: string, newStatus: string) => {
+    setIsUpdating(applicationId)
+    try {
+      const response = await careersApi.updateApplicationStatus(applicationId, {
+        status: newStatus,
+        notes: `Status changed to ${newStatus}`
+      })
+      
+      if (response.success) {
+        // Refresh data to get updated applications
+        await fetchData()
+        setActiveDropdown(null)
+      } else {
+        setError(response.error?.message || 'Failed to update status')
+      }
+    } catch (error: any) {
+      console.error('Error updating status:', error)
+      setError(error.message || 'Failed to update status')
+    } finally {
+      setIsUpdating(null)
+    }
+  }
+
+  const handleDeleteApplication = async (applicationId: string) => {
+    if (!confirm('Are you sure you want to delete this application?')) return
     
-    const matchesStatus = filterStatus === 'all' || applicant.status === filterStatus
-    
-    return matchesSearch && matchesStatus
+    setIsUpdating(applicationId)
+    try {
+      const response = await careersApi.deleteApplication(applicationId)
+      
+      if (response.success) {
+        // Refresh data to get updated applications
+        await fetchData()
+        setActiveDropdown(null)
+      } else {
+        setError(response.error?.message || 'Failed to delete application')
+      }
+    } catch (error: any) {
+      console.error('Error deleting application:', error)
+      setError(error.message || 'Failed to delete application')
+    } finally {
+      setIsUpdating(null)
+    }
+  }
+
+  // Client-side filtering
+  const filteredApplications = allApplications.filter((application) => {
+    const matchesStatus = filterStatus === 'all' || application.status === filterStatus as any
+    const term = searchTerm.trim().toLowerCase()
+    const matchesSearch = !term || (
+      `${application.applicant.firstName} ${application.applicant.lastName}`.toLowerCase().includes(term) ||
+      (application.applicant.email || '').toLowerCase().includes(term) ||
+      (application.applicant.currentTitle || '').toLowerCase().includes(term)
+    )
+    return matchesStatus && matchesSearch
   })
 
-  // Pagination logic
-  const totalItems = filteredApplicants.length
-  const totalPages = Math.ceil(totalItems / itemsPerPage)
-  const startIndex = (currentPage - 1) * itemsPerPage
-  const endIndex = startIndex + itemsPerPage
-  const paginatedApplicants = filteredApplicants.slice(startIndex, endIndex)
+  // Calculate pagination from filtered
+  const totalItems = filteredApplications.length
+  const totalPages = Math.max(1, Math.ceil(totalItems / itemsPerPage))
+  const startIndex = Math.min((currentPage - 1) * itemsPerPage, Math.max(0, totalItems - 1))
+  const endIndex = Math.min(startIndex + itemsPerPage, totalItems)
+  const paginatedApplications = filteredApplications.slice(startIndex, endIndex)
 
-  const statuses = ['all', 'new', 'reviewed', 'interviewing', 'rejected', 'hired']
+  const statuses = ['all', 'submitted', 'under-review', 'shortlisted', 'interviewing', 'offered', 'hired', 'rejected']
 
-  const getStatusColor = (status: Applicant['status']) => {
+  const getStatusColor = (status: Application['status']) => {
     switch (status) {
-      case 'new': return 'bg-blue-100 text-blue-800 border-blue-200'
-      case 'reviewed': return 'bg-purple-100 text-purple-800 border-purple-200'
+      case 'submitted': return 'bg-blue-100 text-blue-800 border-blue-200'
+      case 'under-review': return 'bg-purple-100 text-purple-800 border-purple-200'
+      case 'shortlisted': return 'bg-indigo-100 text-indigo-800 border-indigo-200'
       case 'interviewing': return 'bg-yellow-100 text-yellow-800 border-yellow-200'
-      case 'rejected': return 'bg-red-100 text-red-800 border-red-200'
+      case 'offered': return 'bg-orange-100 text-orange-800 border-orange-200'
       case 'hired': return 'bg-green-100 text-green-800 border-green-200'
+      case 'rejected': return 'bg-red-100 text-red-800 border-red-200'
       default: return 'bg-gray-100 text-gray-800 border-gray-200'
     }
   }
 
-  const getStatusIcon = (status: Applicant['status']) => {
+  const getStatusIcon = (status: Application['status']) => {
     switch (status) {
-      case 'new': return <Clock className="w-4 h-4 text-blue-500" />
-      case 'reviewed': return <Eye className="w-4 h-4 text-purple-500" />
+      case 'submitted': return <Clock className="w-4 h-4 text-blue-500" />
+      case 'under-review': return <Eye className="w-4 h-4 text-purple-500" />
+      case 'shortlisted': return <Star className="w-4 h-4 text-indigo-500" />
       case 'interviewing': return <Calendar className="w-4 h-4 text-yellow-500" />
-      case 'rejected': return <X className="w-4 h-4 text-red-500" />
+      case 'offered': return <Mail className="w-4 h-4 text-orange-500" />
       case 'hired': return <CheckCircle className="w-4 h-4 text-green-500" />
+      case 'rejected': return <X className="w-4 h-4 text-red-500" />
       default: return <Clock className="w-4 h-4 text-gray-500" />
     }
   }
@@ -297,11 +316,21 @@ export default function ApplicantsPage() {
           <div>
             <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">Applicants</h1>
             <p className="text-sm text-gray-500 dark:text-gray-400">
-              {position.title} • {position.department} • {position.location}
+              {position.title} • {position.department} • {position.location.city ? `${position.location.city}, ${position.location.state}` : position.location.type}
             </p>
           </div>
         </div>
       </div>
+
+      {/* Error Banner */}
+      {error && (
+        <div className="bg-red-50 dark:bg-red-900/50 border border-red-200 dark:border-red-800 rounded-lg p-4">
+          <div className="flex items-center gap-2">
+            <AlertCircle className="h-5 w-5 text-red-600 dark:text-red-400" />
+            <p className="text-red-700 dark:text-red-300">{error}</p>
+          </div>
+        </div>
+      )}
 
       {/* Content Section */}
       <div className="space-y-6">
@@ -309,7 +338,7 @@ export default function ApplicantsPage() {
         <div className="flex items-center justify-between">
           <div>
             <h2 className="text-lg font-medium text-gray-900 dark:text-white">
-              {filteredApplicants.length} Candidates
+              {apiTotal} Candidates
             </h2>
             <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
               Review and manage job applications
@@ -328,7 +357,10 @@ export default function ApplicantsPage() {
             <Input
               placeholder="Search applicants..."
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={(e) => {
+                setSearchTerm(e.target.value)
+                setCurrentPage(1) // Reset to first page on search
+              }}
               className="pl-10 h-10"
             />
           </div>
@@ -340,7 +372,10 @@ export default function ApplicantsPage() {
             <div className="relative">
               <select
                 value={filterStatus}
-                onChange={(e) => setFilterStatus(e.target.value)}
+                onChange={(e) => {
+                  setFilterStatus(e.target.value)
+                  setCurrentPage(1) // Reset to first page on filter
+                }}
                 className="appearance-none bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2.5 pr-8 text-sm font-medium text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-400 dark:focus:border-blue-400 hover:border-gray-400 dark:hover:border-gray-500 transition-colors cursor-pointer min-w-[120px]"
               >
                 <option value="all" className="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100">All</option>
@@ -386,7 +421,7 @@ export default function ApplicantsPage() {
                 </tr>
               </thead>
               <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-                {paginatedApplicants.length === 0 ? (
+                {filteredApplications.length === 0 ? (
                   <tr>
                     <td colSpan={6} className="px-6 py-16 text-center">
                       <User className="w-12 h-12 text-gray-400 mx-auto mb-4" />
@@ -394,71 +429,66 @@ export default function ApplicantsPage() {
                         No applicants found
                       </h3>
                       <p className="text-gray-500 dark:text-gray-400">
-                        No applications received for this position yet
+                        {searchTerm || filterStatus !== 'all' ? 'No applications match your search criteria' : 'No applications received for this position yet'}
                       </p>
                     </td>
                   </tr>
                 ) : (
-                  paginatedApplicants.map(applicant => (
-                    <tr key={applicant.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
+                  paginatedApplications.map(application => (
+                    <tr key={application._id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="flex items-center">
                           <div className="flex-shrink-0 h-10 w-10">
                             <div className="h-10 w-10 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center">
                               <span className="text-blue-600 dark:text-blue-400 font-medium text-sm">
-                                {applicant.firstName[0]}{applicant.lastName[0]}
+                                {application.applicant.firstName[0]}{application.applicant.lastName[0]}
                               </span>
                             </div>
                           </div>
                           <div className="ml-4">
                             <div className="flex items-center gap-2">
                               <div className="text-sm font-medium text-gray-900 dark:text-white">
-                                {applicant.firstName} {applicant.lastName}
+                                {application.applicant.firstName} {application.applicant.lastName}
                               </div>
-                              {getStatusIcon(applicant.status)}
+                              {getStatusIcon(application.status)}
                             </div>
                             <div className="text-sm text-gray-500 dark:text-gray-400">
-                              {applicant.email}
+                              {application.applicant.email}
                             </div>
-                            <div className="text-xs text-gray-400 dark:text-gray-500 mt-1 flex items-center gap-1">
-                              <MapPin className="w-3 h-3" />
-                              {applicant.location}
-                            </div>
+                            {application.applicant.location && (
+                              <div className="text-xs text-gray-400 dark:text-gray-500 mt-1 flex items-center gap-1">
+                                <MapPin className="w-3 h-3" />
+                                {application.applicant.location}
+                              </div>
+                            )}
                           </div>
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="text-sm text-gray-900 dark:text-white">
-                          {applicant.experience}
+                          {application.applicant.experience?.years ? `${application.applicant.experience.years} years` : 'Not specified'}
                         </div>
                         <div className="text-sm text-gray-500 dark:text-gray-400 max-w-xs truncate">
-                          {applicant.education}
+                          {application.applicant.education ? `${application.applicant.education.degree}, ${application.applicant.education.school}` : 'Not specified'}
                         </div>
-                        <div className="flex flex-wrap gap-1 mt-1">
-                          {applicant.skills.slice(0, 3).map(skill => (
-                            <Badge key={skill} variant="outline" className="text-xs">
-                              {skill}
-                            </Badge>
-                          ))}
-                          {applicant.skills.length > 3 && (
-                            <span className="text-xs text-gray-500">+{applicant.skills.length - 3}</span>
-                          )}
+                        <div className="text-xs text-gray-400 dark:text-gray-500 mt-1">
+                          {application.applicant.currentTitle || 'No title specified'}
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <Badge 
-                          className={`${getStatusColor(applicant.status)} text-xs font-medium px-2.5 py-0.5 rounded-full`}
+                          className={`${getStatusColor(application.status)} text-xs font-medium px-2.5 py-0.5 rounded-full`}
                         >
-                          {applicant.status}
+                          {application.status.replace('-', ' ')}
                         </Badge>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        {renderStars(applicant.rating)}
+                        {renderStars(application.evaluation?.overallRating)}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                         <div className="flex items-center gap-1">
                           <Calendar className="w-4 h-4" />
-                          {formatDate(applicant.appliedAt)}
+                          {formatDate(application.createdAt)}
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
@@ -468,13 +498,18 @@ export default function ApplicantsPage() {
                             size="sm"
                             onClick={(e) => {
                               e.stopPropagation()
-                              setActiveDropdown(activeDropdown === applicant.id ? null : applicant.id)
+                              setActiveDropdown(activeDropdown === application._id ? null : application._id)
                             }}
                             className="p-1"
+                            disabled={isUpdating === application._id}
                           >
-                            <MoreVertical className="w-4 h-4" />
+                            {isUpdating === application._id ? (
+                              <div className="w-4 h-4 border-2 border-gray-300 border-t-gray-600 rounded-full animate-spin" />
+                            ) : (
+                              <MoreVertical className="w-4 h-4" />
+                            )}
                           </Button>
-                          {activeDropdown === applicant.id && (
+                          {activeDropdown === application._id && (
                             <div 
                               className="absolute right-0 mt-1 w-48 bg-white dark:bg-gray-800 rounded-md shadow-lg z-10 border border-gray-200 dark:border-gray-700"
                               onClick={(e) => e.stopPropagation()}
@@ -482,9 +517,9 @@ export default function ApplicantsPage() {
                               <div className="py-1">
                                 <button className="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left">
                                   <Eye className="w-4 h-4 mr-2" />
-                                  View Profile
+                                  View Details
                                 </button>
-                                {applicant.resumeUrl && (
+                                {application.documents?.resume && (
                                   <button className="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left">
                                     <Download className="w-4 h-4 mr-2" />
                                     Download Resume
@@ -494,13 +529,34 @@ export default function ApplicantsPage() {
                                   <Mail className="w-4 h-4 mr-2" />
                                   Send Email
                                 </button>
-                                <button className="flex items-center px-4 py-2 text-sm text-green-600 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left">
+                                <button 
+                                  onClick={() => handleStatusUpdate(application._id, 'shortlisted')}
+                                  className="flex items-center px-4 py-2 text-sm text-indigo-600 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left"
+                                >
+                                  <Star className="w-4 h-4 mr-2" />
+                                  Shortlist
+                                </button>
+                                <button 
+                                  onClick={() => handleStatusUpdate(application._id, 'hired')}
+                                  className="flex items-center px-4 py-2 text-sm text-green-600 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left"
+                                >
                                   <CheckCircle className="w-4 h-4 mr-2" />
                                   Mark as Hired
                                 </button>
-                                <button className="flex items-center px-4 py-2 text-sm text-red-600 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left">
+                                <button 
+                                  onClick={() => handleStatusUpdate(application._id, 'rejected')}
+                                  className="flex items-center px-4 py-2 text-sm text-red-600 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left"
+                                >
                                   <X className="w-4 h-4 mr-2" />
                                   Reject
+                                </button>
+                                <div className="border-t border-gray-100 dark:border-gray-600 my-1"></div>
+                                <button 
+                                  onClick={() => handleDeleteApplication(application._id)}
+                                  className="flex items-center px-4 py-2 text-sm text-red-600 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left"
+                                >
+                                  <X className="w-4 h-4 mr-2" />
+                                  Delete Application
                                 </button>
                               </div>
                             </div>
@@ -514,12 +570,12 @@ export default function ApplicantsPage() {
             </table>
           </div>
 
-          {/* Pagination */}
-          {paginatedApplicants.length > 0 && (
+          {/* Pagination: keep visible even if single page when there are results */}
+          {filteredApplications.length > 0 && (
             <div className="bg-white dark:bg-gray-800 px-6 py-3 border-t border-gray-200 dark:border-gray-700 flex items-center justify-between">
               <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
                 <span>
-                  Showing {startIndex + 1} - {Math.min(endIndex, totalItems)} of {totalItems} applicants
+                  Showing {startIndex + 1} - {endIndex} of {totalItems} applicants
                 </span>
               </div>
               <div className="flex items-center gap-2">

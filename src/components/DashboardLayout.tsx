@@ -8,6 +8,7 @@ import { useStore } from '../store/useStore'
 import { ProfileDropdown } from './ProfileDropdown'
 import { NotificationsPanel } from './NotificationsPanel'
 import { ContactSupport } from './ContactSupport'
+import { notificationsApi } from '../lib/api'
 import { 
   Home, 
   User, 
@@ -47,6 +48,20 @@ export function DashboardLayout({
   const [notificationsOpen, setNotificationsOpen] = useState(false)
   const [mounted, setMounted] = useState(false)
   const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [unreadNotificationCount, setUnreadNotificationCount] = useState(0)
+
+  // Fetch notification statistics
+  const fetchNotificationStats = async () => {
+    try {
+      const response = await notificationsApi.getStats()
+      if (response.success && response.data) {
+        setUnreadNotificationCount(response.data.unread || 0)
+      }
+    } catch (error) {
+      console.error('Failed to fetch notification stats:', error)
+      // Silently fail to avoid disrupting the UI
+    }
+  }
 
   // Handle hydration and authentication check
   useEffect(() => {
@@ -58,6 +73,8 @@ export function DashboardLayout({
     
     if (token && userData) {
       setIsAuthenticated(true)
+      // Fetch notification stats after authentication
+      fetchNotificationStats()
     } else {
       // Redirect to login if not authenticated
       router.push('/auth/login')
@@ -80,6 +97,12 @@ export function DashboardLayout({
   const toggleNotifications = () => {
     setNotificationsOpen(!notificationsOpen)
     setProfileDropdownOpen(false) // Close profile when opening notifications
+  }
+
+  // Refresh stats when notifications panel closes
+  const handleNotificationClose = () => {
+    setNotificationsOpen(false)
+    fetchNotificationStats() // Refresh the count
   }
 
   const closeAllDropdowns = () => {
@@ -294,11 +317,15 @@ export function DashboardLayout({
                     onClick={toggleNotifications}
                   >
                     <Bell className="w-5 h-5" />
-                    <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full"></span>
+                    {unreadNotificationCount > 0 && (
+                      <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-semibold">
+                        {unreadNotificationCount > 99 ? '99+' : unreadNotificationCount}
+                      </span>
+                    )}
                   </Button>
                   <NotificationsPanel 
                     isOpen={notificationsOpen}
-                    onClose={() => setNotificationsOpen(false)}
+                    onClose={handleNotificationClose}
                   />
                 </div>
 

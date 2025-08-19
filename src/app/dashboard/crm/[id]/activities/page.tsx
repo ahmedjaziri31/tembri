@@ -28,29 +28,36 @@ import {
   Plus,
   Activity as ActivityIcon
 } from 'lucide-react'
+import { crmApi } from '../../../../../lib/api'
 
 interface Activity {
-  id: string
+  _id: string
   type: 'call' | 'email' | 'meeting' | 'note' | 'task' | 'proposal'
   title: string
   description: string
-  date: string
-  duration?: string
+  scheduledAt?: string
+  completedAt?: string
+  duration?: number
   outcome?: string
-  nextAction?: string
-  createdBy: string
+  followUp?: {
+    required: boolean
+    notes?: string
+  }
+  createdBy?: any
   status: 'completed' | 'scheduled' | 'cancelled'
+  createdAt?: string
 }
 
 interface Customer {
-  id: string
-  firstName: string
-  lastName: string
-  company: string
-  email: string
-  phone: string
-  status: string
-  assignedTo: string
+  _id: string
+  type?: 'individual' | 'company'
+  firstName?: string
+  lastName?: string
+  companyName?: string
+  displayName?: string
+  email?: string
+  phone?: string
+  status?: string
 }
 
 export default function CustomerActivitiesPage() {
@@ -59,6 +66,7 @@ export default function CustomerActivitiesPage() {
   const customerId = params?.id as string
   
   const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
   const [customer, setCustomer] = useState<Customer | null>(null)
   const [activities, setActivities] = useState<Activity[]>([])
   const [searchTerm, setSearchTerm] = useState('')
@@ -67,88 +75,30 @@ export default function CustomerActivitiesPage() {
   const [currentPage, setCurrentPage] = useState(1)
   const [itemsPerPage, setItemsPerPage] = useState(10)
 
-  // Mock data - in real app, this would come from API
-  const mockCustomer: Customer = {
-    id: customerId,
-    firstName: 'John',
-    lastName: 'Smith',
-    company: 'TechCorp Solutions',
-    email: 'john.smith@techcorp.com',
-    phone: '+1 (555) 123-4567',
-    status: 'qualified',
-    assignedTo: 'Jaziri Ahmed'
-  }
-
-  const mockActivities: Activity[] = [
-    {
-      id: '1',
-      type: 'call',
-      title: 'Initial Discovery Call',
-      description: 'Discussed current tech stack and pain points. Customer is interested in enterprise solution for 200+ team members.',
-      date: '2024-01-15',
-      duration: '45 minutes',
-      outcome: 'Positive - customer interested',
-      nextAction: 'Send proposal by end of week',
-      createdBy: 'Jaziri Ahmed',
-      status: 'completed'
-    },
-    {
-      id: '2',
-      type: 'email',
-      title: 'Follow-up Email with Resources',
-      description: 'Sent additional product documentation and case studies relevant to their industry.',
-      date: '2024-01-14',
-      outcome: 'Email opened and links clicked',
-      nextAction: 'Schedule demo call',
-      createdBy: 'Jaziri Ahmed',
-      status: 'completed'
-    },
-    {
-      id: '3',
-      type: 'meeting',
-      title: 'Product Demo Session',
-      description: 'Conducted comprehensive product demo focusing on enterprise features and integrations.',
-      date: '2024-01-12',
-      duration: '60 minutes',
-      outcome: 'Very positive feedback',
-      nextAction: 'Prepare custom proposal',
-      createdBy: 'Jaziri Ahmed',
-      status: 'completed'
-    },
-    {
-      id: '4',
-      type: 'proposal',
-      title: 'Enterprise Proposal Sent',
-      description: 'Sent customized enterprise proposal with 20% discount for annual subscription.',
-      date: '2024-01-10',
-      outcome: 'Under review',
-      nextAction: 'Follow up in 3 days',
-      createdBy: 'Jaziri Ahmed',
-      status: 'completed'
-    },
-    {
-      id: '5',
-      type: 'call',
-      title: 'Proposal Review Call',
-      description: 'Scheduled call to discuss proposal details and answer any questions.',
-      date: '2024-01-18',
-      duration: '30 minutes',
-      nextAction: 'Finalize contract terms',
-      createdBy: 'Jaziri Ahmed',
-      status: 'scheduled'
-    }
-  ]
-
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true)
+      setError(null)
       try {
-        // Simulate API call
-        await new Promise(resolve => setTimeout(resolve, 500))
-        setCustomer(mockCustomer)
-        setActivities(mockActivities)
-      } catch (error) {
-        console.error('Error fetching data:', error)
+        // Fetch customer data
+        const customerResponse = await crmApi.getById(customerId)
+        if (customerResponse.success && customerResponse.data) {
+          setCustomer(customerResponse.data as Customer)
+        } else {
+          setError('Customer not found')
+          return
+        }
+
+        // Fetch activities data
+        const activitiesResponse = await crmApi.getActivities(customerId)
+        if (activitiesResponse.success) {
+          setActivities((activitiesResponse.data as any)?.activities || [])
+        } else {
+          // Activities might not exist yet - that's ok
+          setActivities([])
+        }
+      } catch (err: any) {
+        setError(err.message || 'Failed to load data')
       } finally {
         setIsLoading(false)
       }
@@ -273,11 +223,18 @@ export default function CustomerActivitiesPage() {
           <div>
             <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">Customer Activities</h1>
             <p className="text-sm text-gray-500 dark:text-gray-400">
-              {customer.firstName} {customer.lastName} • {customer.company} • {customer.email}
+              {customer.displayName || `${customer.firstName || ''} ${customer.lastName || ''}`.trim() || 'Unknown'} • {customer.companyName || '—'} • {customer.email || '—'}
             </p>
           </div>
         </div>
       </div>
+
+      {/* Error Message */}
+      {error && (
+        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg dark:bg-red-900/50 dark:border-red-800 dark:text-red-300">
+          {error}
+        </div>
+      )}
 
       {/* Content Section */}
       <div className="space-y-6">
@@ -379,7 +336,7 @@ export default function CustomerActivitiesPage() {
                   </tr>
                 ) : (
                   paginatedActivities.map(activity => (
-                    <tr key={activity.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
+                    <tr key={activity._id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
                       <td className="px-6 py-4">
                         <div className="flex items-start">
                           <div className="flex-shrink-0 mt-1">
@@ -394,7 +351,7 @@ export default function CustomerActivitiesPage() {
                             </div>
                             {activity.duration && (
                               <div className="text-xs text-gray-400 dark:text-gray-500 mt-1">
-                                Duration: {activity.duration}
+                                Duration: {activity.duration} minutes
                               </div>
                             )}
                             {activity.outcome && (
@@ -402,9 +359,9 @@ export default function CustomerActivitiesPage() {
                                 Outcome: {activity.outcome}
                               </div>
                             )}
-                            {activity.nextAction && (
+                            {activity.followUp?.notes && (
                               <div className="text-xs text-orange-600 dark:text-orange-400 mt-1">
-                                Next: {activity.nextAction}
+                                Follow-up: {activity.followUp.notes}
                               </div>
                             )}
                           </div>
@@ -413,7 +370,7 @@ export default function CustomerActivitiesPage() {
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                         <div className="flex items-center gap-1">
                           <Calendar className="w-4 h-4" />
-                          {formatDate(activity.date)}
+                          {formatDate(activity.scheduledAt || activity.completedAt || activity.createdAt || '')}
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
@@ -424,7 +381,9 @@ export default function CustomerActivitiesPage() {
                         </Badge>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                        {activity.createdBy}
+                        {activity.createdBy?.firstName && activity.createdBy?.lastName 
+                          ? `${activity.createdBy.firstName} ${activity.createdBy.lastName}`
+                          : 'System'}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                         <div className="relative">
@@ -433,13 +392,13 @@ export default function CustomerActivitiesPage() {
                             size="sm"
                             onClick={(e) => {
                               e.stopPropagation()
-                              setActiveDropdown(activeDropdown === activity.id ? null : activity.id)
+                              setActiveDropdown(activeDropdown === activity._id ? null : activity._id)
                             }}
                             className="p-1"
                           >
                             <MoreVertical className="w-4 h-4" />
                           </Button>
-                          {activeDropdown === activity.id && (
+                          {activeDropdown === activity._id && (
                             <div 
                               className="absolute right-0 mt-1 w-48 bg-white dark:bg-gray-800 rounded-md shadow-lg z-10 border border-gray-200 dark:border-gray-700"
                               onClick={(e) => e.stopPropagation()}

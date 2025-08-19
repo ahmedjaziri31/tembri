@@ -9,135 +9,169 @@ import { Label } from '../../../../../components/ui/label'
 import { Textarea } from '../../../../../components/ui/textarea'
 import { LoadingButton } from '../../../../../components/ui/loading-button'
 import { ArrowLeft, Save, Users, ChevronDown, Plus, X } from 'lucide-react'
+import { crmApi } from '../../../../../lib/api'
 
 interface Customer {
-  id: string
-  firstName: string
-  lastName: string
-  email: string
-  phone: string
-  company: string
-  position: string
-  location: string
-  status: 'new' | 'contacted' | 'qualified' | 'proposal' | 'negotiation' | 'closed-won' | 'closed-lost'
-  source: 'website' | 'referral' | 'social-media' | 'email-campaign' | 'cold-outreach' | 'event'
-  dealValue: number
-  currency: string
-  assignedTo: string
-  tags: string[]
-  lastContact: string
-  nextFollowUp?: string
-  createdAt: string
-  updatedAt: string
+  _id: string
+  type?: 'individual' | 'company'
+  firstName?: string
+  lastName?: string
+  companyName?: string
+  displayName?: string
+  email?: string
+  phone?: string
+  addresses?: any[]
+  status?: 'lead' | 'prospect' | 'customer' | 'inactive' | 'lost'
+  source?: string
+  assignedTo?: any
+  tags?: string[]
+  priority?: string
+  lifecycle?: { 
+    stage?: string
+    lastContact?: string
+    nextContact?: string
+    contactFrequency?: string
+  }
+  value?: { 
+    estimatedValue?: number
+    currency?: string
+  }
+  engagement?: { 
+    totalActivities?: number
+  }
+  industry?: string
+  companySize?: string
+  createdAt?: string
+  updatedAt?: string
   notes?: string
-  interactionsCount: number
 }
 
 interface CustomerFormData {
+  type: 'individual' | 'company'
   firstName: string
   lastName: string
+  companyName: string
   email: string
   phone: string
-  company: string
-  position: string
-  location: string
-  status: 'new' | 'contacted' | 'qualified' | 'proposal' | 'negotiation' | 'closed-won' | 'closed-lost'
-  source: 'website' | 'referral' | 'social-media' | 'email-campaign' | 'cold-outreach' | 'event'
-  dealValue: string
-  currency: string
-  assignedTo: string
+  addresses: Array<{
+    type: string
+    street: string
+    city: string
+    state: string
+    zipCode: string
+    country: string
+    isPrimary: boolean
+  }>
+  industry: string
+  companySize: string
+  source: string
   tags: string[]
-  nextFollowUp: string
+  priority: 'low' | 'medium' | 'high' | 'urgent'
+  lifecycle: {
+    stage: string
+    nextContact: string
+    contactFrequency: string
+  }
+  value: {
+    estimatedValue: string
+    currency: string
+  }
   notes: string
 }
 
 export default function EditCustomerPage() {
   const router = useRouter()
   const params = useParams()
-  const customerId = params.id as string
+  const customerId = params?.id as string
   
   const [isLoading, setIsLoading] = useState(false)
   const [isFetching, setIsFetching] = useState(true)
+  const [error, setError] = useState<string | null>(null)
   const [customer, setCustomer] = useState<Customer | null>(null)
   const [newTag, setNewTag] = useState('')
   
   const [formData, setFormData] = useState<CustomerFormData>({
+    type: 'individual',
     firstName: '',
     lastName: '',
+    companyName: '',
     email: '',
     phone: '',
-    company: '',
-    position: '',
-    location: '',
-    status: 'new',
+    addresses: [{
+      type: 'office',
+      street: '',
+      city: '',
+      state: '',
+      zipCode: '',
+      country: '',
+      isPrimary: true
+    }],
+    industry: '',
+    companySize: '',
     source: 'website',
-    dealValue: '',
-    currency: 'USD',
-    assignedTo: '',
     tags: [],
-    nextFollowUp: '',
+    priority: 'medium',
+    lifecycle: {
+      stage: 'awareness',
+      nextContact: '',
+      contactFrequency: 'weekly'
+    },
+    value: {
+      estimatedValue: '',
+      currency: 'USD'
+    },
     notes: ''
   })
-
-  // Mock data - replace with actual API call
-  const mockCustomer: Customer = {
-    id: customerId,
-    firstName: 'John',
-    lastName: 'Smith',
-    email: 'john.smith@techcorp.com',
-    phone: '+1 (555) 123-4567',
-    company: 'TechCorp Solutions',
-    position: 'CTO',
-    location: 'San Francisco, CA',
-    status: 'qualified',
-    source: 'website',
-    dealValue: 50000,
-    currency: 'USD',
-    assignedTo: 'Jaziri Ahmed',
-    tags: ['Enterprise', 'High Priority', 'Tech'],
-    lastContact: '2024-01-15',
-    nextFollowUp: '2024-01-20',
-    createdAt: '2024-01-10',
-    updatedAt: '2024-01-15',
-    notes: 'Interested in enterprise solution for team of 200+',
-    interactionsCount: 8
-  }
 
   useEffect(() => {
     const fetchCustomer = async () => {
       setIsFetching(true)
+      setError(null)
       try {
-        // Simulate API call
-        await new Promise(resolve => setTimeout(resolve, 500))
-        
-        // Find customer by ID - replace with actual API call
-        const foundCustomer = mockCustomer
-        
-        if (foundCustomer) {
+        const response = await crmApi.getById(customerId)
+        if (response.success && response.data) {
+          const foundCustomer = (response.data as {customer: Customer}).customer
           setCustomer(foundCustomer)
           setFormData({
-            firstName: foundCustomer.firstName,
-            lastName: foundCustomer.lastName,
-            email: foundCustomer.email,
-            phone: foundCustomer.phone,
-            company: foundCustomer.company,
-            position: foundCustomer.position,
-            location: foundCustomer.location,
-            status: foundCustomer.status,
-            source: foundCustomer.source,
-            dealValue: foundCustomer.dealValue.toString(),
-            currency: foundCustomer.currency,
-            assignedTo: foundCustomer.assignedTo,
-            tags: foundCustomer.tags,
-            nextFollowUp: foundCustomer.nextFollowUp || '',
+            type: foundCustomer.type || 'individual',
+            firstName: foundCustomer.firstName || '',
+            lastName: foundCustomer.lastName || '',
+            companyName: foundCustomer.companyName || '',
+            email: foundCustomer.email || '',
+            phone: foundCustomer.phone || '',
+            addresses: foundCustomer.addresses && foundCustomer.addresses.length > 0 
+              ? foundCustomer.addresses 
+              : [{
+                  type: 'office',
+                  street: '',
+                  city: '',
+                  state: '',
+                  zipCode: '',
+                  country: '',
+                  isPrimary: true
+                }],
+            industry: foundCustomer.industry || '',
+            companySize: foundCustomer.companySize || '',
+            source: foundCustomer.source || 'website',
+            tags: foundCustomer.tags || [],
+            priority: (foundCustomer.priority as 'low' | 'medium' | 'high' | 'urgent') || 'medium',
+            lifecycle: {
+              stage: foundCustomer.lifecycle?.stage || 'awareness',
+              nextContact: foundCustomer.lifecycle?.nextContact ? foundCustomer.lifecycle.nextContact.split('T')[0] : '',
+              contactFrequency: foundCustomer.lifecycle?.contactFrequency || 'weekly'
+            },
+            value: {
+              estimatedValue: foundCustomer.value?.estimatedValue?.toString() || '',
+              currency: foundCustomer.value?.currency || 'USD'
+            },
             notes: foundCustomer.notes || ''
           })
         } else {
-          // Customer not found, redirect to CRM list
+          setError('Customer not found')
           router.push('/dashboard/crm')
         }
-      } catch (error) {
-        console.error('Error fetching customer:', error)
+      } catch (err: unknown) {
+        setError(err instanceof Error ? err.message : 'Failed to load customer')
         router.push('/dashboard/crm')
       } finally {
         setIsFetching(false)
@@ -152,32 +186,73 @@ export default function EditCustomerPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
+    setError(null)
 
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000))
-      
-      // Here you would make your API call to update the customer
-      console.log('Updating customer:', {
-        ...formData,
-        id: customerId,
-        dealValue: parseFloat(formData.dealValue) || 0,
-        updatedAt: new Date().toISOString().split('T')[0]
-      })
+      // Prepare data for API
+      const customerData = {
+        type: formData.type,
+        firstName: formData.type === 'individual' ? formData.firstName : undefined,
+        lastName: formData.type === 'individual' ? formData.lastName : undefined,
+        companyName: formData.type === 'company' ? formData.companyName : undefined,
+        email: formData.email,
+        phone: formData.phone,
+        addresses: formData.addresses.filter(addr => addr.city || addr.state), // Only include non-empty addresses
+        industry: formData.type === 'company' ? formData.industry : undefined,
+        companySize: formData.type === 'company' ? formData.companySize : undefined,
+        source: formData.source,
+        tags: formData.tags,
+        priority: formData.priority,
+        lifecycle: {
+          stage: formData.lifecycle.stage,
+          nextContact: formData.lifecycle.nextContact ? new Date(formData.lifecycle.nextContact).toISOString() : undefined,
+          contactFrequency: formData.lifecycle.contactFrequency
+        },
+        value: {
+          estimatedValue: parseFloat(formData.value.estimatedValue) || 0,
+          currency: formData.value.currency
+        },
+        notes: formData.notes
+      }
 
-      // Navigate back to CRM list
+      const response = await crmApi.update(customerId, customerData)
+      if (response.success) {
       router.push('/dashboard/crm')
-    } catch (error) {
-      console.error('Error updating customer:', error)
+      } else {
+        setError((response as {error?: {message: string}})?.error?.message || 'Failed to update customer')
+      }
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Failed to update customer')
     } finally {
       setIsLoading(false)
     }
   }
 
-  const handleInputChange = (field: keyof CustomerFormData, value: string) => {
+  const handleInputChange = (field: string, value: string) => {
+    setFormData(prev => {
+      if (field.includes('.')) {
+        const [parent, child] = field.split('.')
+        return {
+          ...prev,
+          [parent]: {
+            ...(prev as any)[parent],
+            [child]: value
+          }
+        }
+      }
+      return {
+        ...prev,
+        [field]: value
+      }
+    })
+  }
+
+  const handleAddressChange = (index: number, field: string, value: string) => {
     setFormData(prev => ({
       ...prev,
-      [field]: value
+      addresses: prev.addresses.map((addr, i) => 
+        i === index ? { ...addr, [field]: value } : addr
+      )
     }))
   }
 
@@ -226,8 +301,35 @@ export default function EditCustomerPage() {
     )
   }
 
-  if (!customer) {
-    return null
+  if (isFetching || !customer) {
+    return (
+      <div className="space-y-6">
+        {/* Header */}
+        <div className="flex items-center gap-4">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => router.back()}
+            className="flex items-center gap-2"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            Back
+          </Button>
+          <div className="flex items-center gap-3">
+            <Users className="w-6 h-6 text-blue-600" />
+            <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">Edit Customer</h1>
+          </div>
+        </div>
+
+        {/* Loading State */}
+        <div className="flex items-center justify-center py-16">
+          <div className="flex items-center gap-3">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+            <span className="text-gray-500 dark:text-gray-400">Loading customer data...</span>
+          </div>
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -249,6 +351,13 @@ export default function EditCustomerPage() {
         </div>
       </div>
 
+      {/* Error Message */}
+      {error && (
+        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg dark:bg-red-900/50 dark:border-red-800 dark:text-red-300">
+          {error}
+        </div>
+      )}
+
       {/* Form */}
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -256,33 +365,74 @@ export default function EditCustomerPage() {
           <div className="lg:col-span-2 space-y-6">
             <Card>
               <CardHeader>
+                <CardTitle>Customer Type</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div>
+                  <Label htmlFor="type">Customer Type *</Label>
+                  <div className="relative mt-1">
+                    <select
+                      id="type"
+                      value={formData.type}
+                      onChange={(e) => handleInputChange('type', e.target.value)}
+                      className="w-full appearance-none bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2.5 pr-8 text-sm font-medium text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-400 dark:focus:border-blue-400 hover:border-gray-400 dark:hover:border-gray-500 transition-colors cursor-pointer"
+                    >
+                      <option value="individual">Individual</option>
+                      <option value="company">Company</option>
+                    </select>
+                    <ChevronDown className="absolute right-2.5 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-500 dark:text-gray-400 pointer-events-none" />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
                 <CardTitle>Contact Information</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor="firstName">First Name *</Label>
-                    <Input
-                      id="firstName"
-                      value={formData.firstName}
-                      onChange={(e) => handleInputChange('firstName', e.target.value)}
-                      placeholder="John"
-                      required
-                      className="mt-1"
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="lastName">Last Name *</Label>
-                    <Input
-                      id="lastName"
-                      value={formData.lastName}
-                      onChange={(e) => handleInputChange('lastName', e.target.value)}
-                      placeholder="Smith"
-                      required
-                      className="mt-1"
-                    />
-                  </div>
-                </div>
+                {formData.type === 'individual' ? (
+                  <>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <Label htmlFor="firstName">First Name *</Label>
+                        <Input
+                          id="firstName"
+                          value={formData.firstName}
+                          onChange={(e) => handleInputChange('firstName', e.target.value)}
+                          placeholder="John"
+                          required
+                          className="mt-1"
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor="lastName">Last Name *</Label>
+                        <Input
+                          id="lastName"
+                          value={formData.lastName}
+                          onChange={(e) => handleInputChange('lastName', e.target.value)}
+                          placeholder="Smith"
+                          required
+                          className="mt-1"
+                        />
+                      </div>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div>
+                      <Label htmlFor="companyName">Company Name *</Label>
+                      <Input
+                        id="companyName"
+                        value={formData.companyName}
+                        onChange={(e) => handleInputChange('companyName', e.target.value)}
+                        placeholder="TechCorp Solutions"
+                        required
+                        className="mt-1"
+                      />
+                    </div>
+                  </>
+                )}
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
@@ -292,7 +442,7 @@ export default function EditCustomerPage() {
                       type="email"
                       value={formData.email}
                       onChange={(e) => handleInputChange('email', e.target.value)}
-                      placeholder="john.smith@company.com"
+                      placeholder="contact@company.com"
                       required
                       className="mt-1"
                     />
@@ -310,46 +460,62 @@ export default function EditCustomerPage() {
                   </div>
                 </div>
 
-                <div>
-                  <Label htmlFor="location">Location</Label>
-                  <Input
-                    id="location"
-                    value={formData.location}
-                    onChange={(e) => handleInputChange('location', e.target.value)}
-                    placeholder="New York, NY"
-                    className="mt-1"
-                  />
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle>Company Information</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div>
-                  <Label htmlFor="company">Company Name *</Label>
-                  <Input
-                    id="company"
-                    value={formData.company}
-                    onChange={(e) => handleInputChange('company', e.target.value)}
-                    placeholder="TechCorp Solutions"
-                    required
-                    className="mt-1"
-                  />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="city">City</Label>
+                    <Input
+                      id="city"
+                      value={formData.addresses[0]?.city || ''}
+                      onChange={(e) => handleAddressChange(0, 'city', e.target.value)}
+                      placeholder="New York"
+                      className="mt-1"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="state">State</Label>
+                    <Input
+                      id="state"
+                      value={formData.addresses[0]?.state || ''}
+                      onChange={(e) => handleAddressChange(0, 'state', e.target.value)}
+                      placeholder="NY"
+                      className="mt-1"
+                    />
+                  </div>
                 </div>
 
-                <div>
-                  <Label htmlFor="position">Position/Title</Label>
-                  <Input
-                    id="position"
-                    value={formData.position}
-                    onChange={(e) => handleInputChange('position', e.target.value)}
-                    placeholder="Chief Technology Officer"
-                    className="mt-1"
-                  />
-                </div>
+                {formData.type === 'company' && (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="industry">Industry</Label>
+                      <Input
+                        id="industry"
+                        value={formData.industry}
+                        onChange={(e) => handleInputChange('industry', e.target.value)}
+                        placeholder="Technology"
+                        className="mt-1"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="companySize">Company Size</Label>
+                      <div className="relative mt-1">
+                        <select
+                          id="companySize"
+                          value={formData.companySize}
+                          onChange={(e) => handleInputChange('companySize', e.target.value)}
+                          className="w-full appearance-none bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2.5 pr-8 text-sm font-medium text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        >
+                          <option value="">Select size</option>
+                          <option value="1-10">1-10 employees</option>
+                          <option value="11-50">11-50 employees</option>
+                          <option value="51-200">51-200 employees</option>
+                          <option value="201-500">201-500 employees</option>
+                          <option value="500+">500+ employees</option>
+                        </select>
+                        <ChevronDown className="absolute right-2.5 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-500 dark:text-gray-400 pointer-events-none" />
+                      </div>
+                    </div>
+                  </div>
+                )}
               </CardContent>
             </Card>
 
@@ -427,21 +593,18 @@ export default function EditCustomerPage() {
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>
-                  <Label htmlFor="status">Status</Label>
+                  <Label htmlFor="priority">Priority</Label>
                   <div className="relative mt-1">
                     <select
-                      id="status"
-                      value={formData.status}
-                      onChange={(e) => handleInputChange('status', e.target.value)}
+                      id="priority"
+                      value={formData.priority}
+                      onChange={(e) => handleInputChange('priority', e.target.value)}
                       className="w-full appearance-none bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2.5 pr-8 text-sm font-medium text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-400 dark:focus:border-blue-400 hover:border-gray-400 dark:hover:border-gray-500 transition-colors cursor-pointer"
                     >
-                      <option value="new" className="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100">New</option>
-                      <option value="contacted" className="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100">Contacted</option>
-                      <option value="qualified" className="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100">Qualified</option>
-                      <option value="proposal" className="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100">Proposal</option>
-                      <option value="negotiation" className="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100">Negotiation</option>
-                      <option value="closed-won" className="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100">Closed Won</option>
-                      <option value="closed-lost" className="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100">Closed Lost</option>
+                      <option value="low">Low</option>
+                      <option value="medium">Medium</option>
+                      <option value="high">High</option>
+                      <option value="urgent">Urgent</option>
                     </select>
                     <ChevronDown className="absolute right-2.5 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-500 dark:text-gray-400 pointer-events-none" />
                   </div>
@@ -456,60 +619,69 @@ export default function EditCustomerPage() {
                       onChange={(e) => handleInputChange('source', e.target.value)}
                       className="w-full appearance-none bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2.5 pr-8 text-sm font-medium text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-400 dark:focus:border-blue-400 hover:border-gray-400 dark:hover:border-gray-500 transition-colors cursor-pointer"
                     >
-                      <option value="website" className="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100">Website</option>
-                      <option value="referral" className="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100">Referral</option>
-                      <option value="social-media" className="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100">Social Media</option>
-                      <option value="email-campaign" className="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100">Email Campaign</option>
-                      <option value="cold-outreach" className="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100">Cold Outreach</option>
-                      <option value="event" className="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100">Event</option>
+                      <option value="website">Website</option>
+                      <option value="referral">Referral</option>
+                      <option value="social-media">Social Media</option>
+                      <option value="email-campaign">Email Campaign</option>
+                      <option value="cold-outreach">Cold Outreach</option>
+                      <option value="event">Event</option>
+                      <option value="manual">Manual Entry</option>
                     </select>
                     <ChevronDown className="absolute right-2.5 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-500 dark:text-gray-400 pointer-events-none" />
                   </div>
                 </div>
 
                 <div>
-                  <Label htmlFor="assignedTo">Assigned To</Label>
-                  <Input
-                    id="assignedTo"
-                    value={formData.assignedTo}
-                    onChange={(e) => handleInputChange('assignedTo', e.target.value)}
-                    placeholder="Sales representative"
-                    className="mt-1"
-                  />
+                  <Label htmlFor="lifecycle.stage">Lifecycle Stage</Label>
+                  <div className="relative mt-1">
+                    <select
+                      id="lifecycle.stage"
+                      value={formData.lifecycle.stage}
+                      onChange={(e) => handleInputChange('lifecycle.stage', e.target.value)}
+                      className="w-full appearance-none bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2.5 pr-8 text-sm font-medium text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    >
+                      <option value="awareness">Awareness</option>
+                      <option value="interest">Interest</option>
+                      <option value="consideration">Consideration</option>
+                      <option value="purchase">Purchase</option>
+                      <option value="retention">Retention</option>
+                    </select>
+                    <ChevronDown className="absolute right-2.5 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-500 dark:text-gray-400 pointer-events-none" />
+                  </div>
                 </div>
               </CardContent>
             </Card>
 
             <Card>
               <CardHeader>
-                <CardTitle>Deal Information</CardTitle>
+                <CardTitle>Value Information</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>
-                  <Label htmlFor="currency">Currency</Label>
+                  <Label htmlFor="value.currency">Currency</Label>
                   <div className="relative mt-1">
                     <select
-                      id="currency"
-                      value={formData.currency}
-                      onChange={(e) => handleInputChange('currency', e.target.value)}
+                      id="value.currency"
+                      value={formData.value.currency}
+                      onChange={(e) => handleInputChange('value.currency', e.target.value)}
                       className="w-full appearance-none bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2.5 pr-8 text-sm font-medium text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-400 dark:focus:border-blue-400 hover:border-gray-400 dark:hover:border-gray-500 transition-colors cursor-pointer"
                     >
-                      <option value="USD" className="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100">USD ($)</option>
-                      <option value="EUR" className="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100">EUR (€)</option>
-                      <option value="GBP" className="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100">GBP (£)</option>
-                      <option value="AED" className="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100">AED (د.إ)</option>
+                      <option value="USD">USD ($)</option>
+                      <option value="EUR">EUR (€)</option>
+                      <option value="GBP">GBP (£)</option>
+                      <option value="AED">AED (د.إ)</option>
                     </select>
                     <ChevronDown className="absolute right-2.5 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-500 dark:text-gray-400 pointer-events-none" />
                   </div>
                 </div>
 
                 <div>
-                  <Label htmlFor="dealValue">Deal Value</Label>
+                  <Label htmlFor="value.estimatedValue">Estimated Value</Label>
                   <Input
-                    id="dealValue"
+                    id="value.estimatedValue"
                     type="number"
-                    value={formData.dealValue}
-                    onChange={(e) => handleInputChange('dealValue', e.target.value)}
+                    value={formData.value.estimatedValue}
+                    onChange={(e) => handleInputChange('value.estimatedValue', e.target.value)}
                     placeholder="50000"
                     className="mt-1"
                   />
@@ -523,14 +695,31 @@ export default function EditCustomerPage() {
               </CardHeader>
               <CardContent>
                 <div>
-                  <Label htmlFor="nextFollowUp">Next Follow-up Date</Label>
+                  <Label htmlFor="lifecycle.nextContact">Next Contact Date</Label>
                   <Input
-                    id="nextFollowUp"
+                    id="lifecycle.nextContact"
                     type="date"
-                    value={formData.nextFollowUp}
-                    onChange={(e) => handleInputChange('nextFollowUp', e.target.value)}
+                    value={formData.lifecycle.nextContact}
+                    onChange={(e) => handleInputChange('lifecycle.nextContact', e.target.value)}
                     className="mt-1"
                   />
+                </div>
+                <div>
+                  <Label htmlFor="lifecycle.contactFrequency">Contact Frequency</Label>
+                  <div className="relative mt-1">
+                    <select
+                      id="lifecycle.contactFrequency"
+                      value={formData.lifecycle.contactFrequency}
+                      onChange={(e) => handleInputChange('lifecycle.contactFrequency', e.target.value)}
+                      className="w-full appearance-none bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2.5 pr-8 text-sm font-medium text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    >
+                      <option value="daily">Daily</option>
+                      <option value="weekly">Weekly</option>
+                      <option value="monthly">Monthly</option>
+                      <option value="quarterly">Quarterly</option>
+                    </select>
+                    <ChevronDown className="absolute right-2.5 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-500 dark:text-gray-400 pointer-events-none" />
+                  </div>
                 </div>
               </CardContent>
             </Card>
@@ -543,19 +732,27 @@ export default function EditCustomerPage() {
               <CardContent className="space-y-3 text-sm">
                 <div className="flex justify-between">
                   <span className="text-gray-500">Interactions:</span>
-                  <span>{customer.interactionsCount} activities</span>
+                  <span>{customer.engagement?.totalActivities || 0} activities</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-500">Created:</span>
-                  <span>{new Date(customer.createdAt).toLocaleDateString()}</span>
+                  <span>{customer.createdAt ? new Date(customer.createdAt).toLocaleDateString() : '—'}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-500">Last Updated:</span>
-                  <span>{new Date(customer.updatedAt).toLocaleDateString()}</span>
+                  <span>{customer.updatedAt ? new Date(customer.updatedAt).toLocaleDateString() : '—'}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-500">Last Contact:</span>
-                  <span>{new Date(customer.lastContact).toLocaleDateString()}</span>
+                  <span>{customer.lifecycle?.lastContact ? new Date(customer.lifecycle.lastContact).toLocaleDateString() : '—'}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-500">Status:</span>
+                  <span className="capitalize">{customer.status || 'lead'}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-500">Priority:</span>
+                  <span className="capitalize">{customer.priority || 'medium'}</span>
                 </div>
               </CardContent>
             </Card>

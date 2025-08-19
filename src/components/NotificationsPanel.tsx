@@ -1,58 +1,26 @@
 'use client'
 
-import { Bell, Check, X, Clock, AlertCircle, Info } from 'lucide-react'
+import { useState, useEffect } from 'react'
+import { Bell, Check, X, Clock, AlertCircle, Info, Loader2 } from 'lucide-react'
 import { Button } from './ui/button'
 import { Badge } from './ui/badge'
+import { notificationsApi } from '../lib/api'
 
 interface Notification {
-  id: string
+  _id: string
   title: string
   message: string
   type: 'info' | 'success' | 'warning' | 'error'
-  timestamp: string
   read: boolean
+  createdAt: string
+  priority?: string
+  category?: string
 }
 
 interface NotificationsPanelProps {
   isOpen: boolean
   onClose: () => void
 }
-
-// Mock notifications data
-const mockNotifications: Notification[] = [
-  {
-    id: '1',
-    title: 'New Article Published',
-    message: 'Your article "Getting Started with Next.js" has been published successfully.',
-    type: 'success',
-    timestamp: '2 minutes ago',
-    read: false
-  },
-  {
-    id: '2',
-    title: 'Career Application Received',
-    message: 'A new application has been submitted for the Senior Developer position.',
-    type: 'info',
-    timestamp: '1 hour ago',
-    read: false
-  },
-  {
-    id: '3',
-    title: 'System Maintenance',
-    message: 'Scheduled maintenance will occur tonight at 2:00 AM. Expect 30 minutes of downtime.',
-    type: 'warning',
-    timestamp: '3 hours ago',
-    read: true
-  },
-  {
-    id: '4',
-    title: 'Newsletter Sent',
-    message: 'Your weekly newsletter has been sent to 1,247 subscribers.',
-    type: 'success',
-    timestamp: '1 day ago',
-    read: true
-  }
-]
 
 const getNotificationIcon = (type: Notification['type']) => {
   switch (type) {
@@ -80,10 +48,83 @@ const getNotificationBadgeColor = (type: Notification['type']) => {
   }
 }
 
-export function NotificationsPanel({ isOpen, onClose }: NotificationsPanelProps) {
-  if (!isOpen) return null
+// Helper function to format timestamp
+const formatTimestamp = (createdAt: string) => {
+  const date = new Date(createdAt)
+  const now = new Date()
+  const diffInMs = now.getTime() - date.getTime()
+  const diffInMinutes = Math.floor(diffInMs / (1000 * 60))
+  const diffInHours = Math.floor(diffInMs / (1000 * 60 * 60))
+  const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24))
 
-  const unreadCount = mockNotifications.filter(n => !n.read).length
+  if (diffInMinutes < 60) {
+    return `${diffInMinutes} minute${diffInMinutes !== 1 ? 's' : ''} ago`
+  } else if (diffInHours < 24) {
+    return `${diffInHours} hour${diffInHours !== 1 ? 's' : ''} ago`
+  } else {
+    return `${diffInDays} day${diffInDays !== 1 ? 's' : ''} ago`
+  }
+}
+
+export function NotificationsPanel({ isOpen, onClose }: NotificationsPanelProps) {
+  const [notifications, setNotifications] = useState<Notification[]>([])
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const [unreadCount, setUnreadCount] = useState(0)
+
+  // Fetch notifications when panel opens
+  useEffect(() => {
+    if (isOpen) {
+      fetchNotifications()
+    }
+  }, [isOpen])
+
+  const fetchNotifications = async () => {
+    try {
+      setLoading(true)
+      setError(null)
+      const response = await notificationsApi.getAll({ limit: 20 })
+      
+      console.log('Notifications API response:', response)
+      
+      if (response.success && response.data) {
+        setNotifications(response.data.notifications || [])
+        setUnreadCount(response.data.unreadCount || 0)
+      }
+    } catch (err) {
+      console.error('Failed to fetch notifications:', err)
+      setError(err instanceof Error ? err.message : 'Failed to load notifications')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleMarkAllAsRead = async () => {
+    try {
+      await notificationsApi.markAllAsRead()
+      // Update local state
+      setNotifications(prev => prev.map(n => ({ ...n, read: true })))
+      setUnreadCount(0)
+      onClose()
+    } catch (err) {
+      console.error('Failed to mark all as read:', err)
+    }
+  }
+
+  const handleMarkAsRead = async (notificationId: string) => {
+    try {
+      await notificationsApi.markAsRead(notificationId)
+      // Update local state
+      setNotifications(prev => 
+        prev.map(n => n._id === notificationId ? { ...n, read: true } : n)
+      )
+      setUnreadCount(prev => Math.max(0, prev - 1))
+    } catch (err) {
+      console.error('Failed to mark as read:', err)
+    }
+  }
+
+  if (!isOpen) return null
 
   return (
     <>
@@ -122,24 +163,44 @@ export function NotificationsPanel({ isOpen, onClose }: NotificationsPanelProps)
 
         {/* Notifications List */}
         <div className="overflow-y-auto max-h-80">
-          {mockNotifications.length === 0 ? (
-            <div className="p-6 text-center">
-              <Bell className="w-12 h-12 text-gray-400 mx-auto mb-3" />
+          {loading ? (
+            <div className="p-8 text-center">
+              <Loader2 className="w-8 h-8 mx-auto text-gray-400 dark:text-gray-600 mb-4 animate-spin" />
+              <p className="text-gray-500 dark:text-gray-400">Loading notifications...</p>
+            </div>
+          ) : error ? (
+            <div className="p-8 text-center">
+              <AlertCircle className="w-12 h-12 mx-auto text-red-400 dark:text-red-600 mb-4" />
+              <p className="text-red-500 dark:text-red-400 text-sm">{error}</p>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={fetchNotifications}
+                className="mt-2"
+              >
+                Try Again
+              </Button>
+            </div>
+          ) : notifications.length === 0 ? (
+            <div className="p-8 text-center">
+              <Bell className="w-12 h-12 mx-auto text-gray-400 dark:text-gray-600 mb-4" />
               <p className="text-gray-500 dark:text-gray-400">No notifications yet</p>
             </div>
           ) : (
             <div className="divide-y divide-gray-200 dark:divide-gray-700">
-              {mockNotifications.map((notification) => (
+              {notifications.map((notification) => (
                 <div
-                  key={notification.id}
+                  key={notification._id}
                   className={`p-4 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors cursor-pointer ${
                     !notification.read ? 'bg-blue-50 dark:bg-blue-900/20' : ''
                   }`}
+                  onClick={() => !notification.read && handleMarkAsRead(notification._id)}
                 >
                   <div className="flex items-start space-x-3">
-                    <div className="flex-shrink-0 mt-0.5">
+                    <div className="flex-shrink-0 mt-1">
                       {getNotificationIcon(notification.type)}
                     </div>
+
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center justify-between">
                         <p className={`text-sm font-medium ${
@@ -161,7 +222,7 @@ export function NotificationsPanel({ isOpen, onClose }: NotificationsPanelProps)
                       </p>
                       <div className="flex items-center mt-2 text-xs text-gray-500 dark:text-gray-400">
                         <Clock className="w-3 h-3 mr-1" />
-                        {notification.timestamp}
+                        {formatTimestamp(notification.createdAt)}
                       </div>
                     </div>
                   </div>
@@ -172,17 +233,13 @@ export function NotificationsPanel({ isOpen, onClose }: NotificationsPanelProps)
         </div>
 
         {/* Footer */}
-        {mockNotifications.length > 0 && (
+        {notifications.length > 0 && unreadCount > 0 && (
           <div className="p-4 border-t border-gray-200 dark:border-gray-700">
             <Button
               variant="outline"
               size="sm"
               className="w-full"
-              onClick={() => {
-                // Handle mark all as read
-                console.log('Mark all as read')
-                onClose()
-              }}
+              onClick={handleMarkAllAsRead}
             >
               Mark all as read
             </Button>
@@ -191,4 +248,4 @@ export function NotificationsPanel({ isOpen, onClose }: NotificationsPanelProps)
       </div>
     </>
   )
-} 
+}

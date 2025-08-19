@@ -8,43 +8,80 @@ import { Input } from '../../../../../components/ui/input'
 import { Label } from '../../../../../components/ui/label'
 import { Textarea } from '../../../../../components/ui/textarea'
 import { LoadingButton } from '../../../../../components/ui/loading-button'
-import { ArrowLeft, Save, Briefcase, ChevronDown, Plus, X } from 'lucide-react'
+import { careersApi } from '../../../../../lib/api'
+import { ArrowLeft, Save, Briefcase, ChevronDown, Plus, X, AlertCircle, CheckCircle } from 'lucide-react'
 
 interface Position {
-  id: string
+  _id: string
   title: string
+  slug?: string
   description: string
+  shortDescription?: string
   department: string
-  location: string
-  type: 'full-time' | 'part-time' | 'contract' | 'internship'
-  level: 'entry' | 'mid' | 'senior' | 'lead'
-  status: 'open' | 'closed' | 'paused'
-  salary: {
-    min: number
-    max: number
-    currency: string
+  location: {
+    type: string
+    city?: string
+    state?: string
+    country?: string
   }
-  requirements: string[]
-  benefits: string[]
-  applicantsCount: number
+  employment: {
+  type: 'full-time' | 'part-time' | 'contract' | 'internship'
+    level: 'entry' | 'mid' | 'senior' | 'executive'
+    experience?: string
+  }
+  compensation: {
+    salaryMin: number
+    salaryMax: number
+    currency: string
+    benefits?: string[]
+  }
+  requirements: {
+    skills: string[]
+    education?: string
+    experience?: string
+  }
+  status: 'draft' | 'published' | 'paused' | 'closed' | 'filled'
+  visibility?: string
+  priority?: string
+  hiring: {
+    positions: number
+    filled: number
+    pipeline: {
+      applied: number
+      screening: number
+      interview: number
+      offer: number
+      hired: number
+    }
+  }
+  analytics: {
+    views: number
+    applications: number
+  }
   createdAt: string
   updatedAt: string
+  publishedAt?: string
   closedAt?: string
 }
 
 interface PositionFormData {
   title: string
   description: string
+  shortDescription: string
   department: string
-  location: string
-  type: 'full-time' | 'part-time' | 'contract' | 'internship'
-  level: 'entry' | 'mid' | 'senior' | 'lead'
-  status: 'open' | 'closed' | 'paused'
+  locationType: string
+  locationCity: string
+  locationState: string
+  employmentType: 'full-time' | 'part-time' | 'contract' | 'internship'
+  employmentLevel: 'entry' | 'mid' | 'senior' | 'executive'
+  status: 'draft' | 'published' | 'paused' | 'closed' | 'filled'
   salaryMin: string
   salaryMax: string
   currency: string
-  requirements: string[]
+  skills: string[]
   benefits: string[]
+  visibility: string
+  priority: string
 }
 
 export default function EditPositionPage() {
@@ -55,113 +92,139 @@ export default function EditPositionPage() {
   const [isLoading, setIsLoading] = useState(false)
   const [isFetching, setIsFetching] = useState(true)
   const [position, setPosition] = useState<Position | null>(null)
-  const [newRequirement, setNewRequirement] = useState('')
+  const [newSkill, setNewSkill] = useState('')
   const [newBenefit, setNewBenefit] = useState('')
+  const [error, setError] = useState<string | null>(null)
+  const [successMessage, setSuccessMessage] = useState<string | null>(null)
   
   const [formData, setFormData] = useState<PositionFormData>({
     title: '',
     description: '',
+    shortDescription: '',
     department: '',
-    location: '',
-    type: 'full-time',
-    level: 'mid',
-    status: 'open',
+    locationType: 'remote',
+    locationCity: '',
+    locationState: '',
+    employmentType: 'full-time',
+    employmentLevel: 'mid',
+    status: 'draft',
     salaryMin: '',
     salaryMax: '',
     currency: 'USD',
-    requirements: [],
-    benefits: []
+    skills: [],
+    benefits: [],
+    visibility: 'public',
+    priority: 'medium'
   })
 
-  // Mock data - replace with actual API call
-  const mockPosition: Position = {
-    id: positionId,
-    title: 'Senior Full Stack Developer',
-    description: 'We are looking for an experienced Full Stack Developer to join our dynamic team and help build cutting-edge web applications.',
-    department: 'Engineering',
-    location: 'Remote',
-    type: 'full-time',
-    level: 'senior',
-    status: 'open',
-    salary: {
-      min: 80000,
-      max: 120000,
-      currency: 'USD'
-    },
-    requirements: ['React', 'Node.js', 'TypeScript', '5+ years experience'],
-    benefits: ['Health Insurance', 'Remote Work', '401k', 'Unlimited PTO'],
-    applicantsCount: 23,
-    createdAt: '2024-01-15',
-    updatedAt: '2024-01-15'
-  }
-
+  // Fetch position data from API
   useEffect(() => {
     const fetchPosition = async () => {
+      if (!positionId) {
+        router.push('/dashboard/careers')
+        return
+      }
+
       setIsFetching(true)
+      setError(null)
+      
       try {
-        // Simulate API call
-        await new Promise(resolve => setTimeout(resolve, 500))
+        const response = await careersApi.getById(positionId)
         
-        // Find position by ID - replace with actual API call
-        const foundPosition = mockPosition
+        console.log('Career edit fetch response:', response)
         
-        if (foundPosition) {
-          setPosition(foundPosition)
+        if (response.success && response.data) {
+          const career = (response.data as any).career || (response.data as any)
+          setPosition(career)
+          
+          // Populate form with fetched data
           setFormData({
-            title: foundPosition.title,
-            description: foundPosition.description,
-            department: foundPosition.department,
-            location: foundPosition.location,
-            type: foundPosition.type,
-            level: foundPosition.level,
-            status: foundPosition.status,
-            salaryMin: foundPosition.salary.min.toString(),
-            salaryMax: foundPosition.salary.max.toString(),
-            currency: foundPosition.salary.currency,
-            requirements: foundPosition.requirements,
-            benefits: foundPosition.benefits
+            title: career.title || '',
+            description: career.description || '',
+            shortDescription: career.shortDescription || '',
+            department: career.department || '',
+            locationType: career.location?.type || 'remote',
+            locationCity: career.location?.city || '',
+            locationState: career.location?.state || '',
+            employmentType: career.employment?.type || 'full-time',
+            employmentLevel: career.employment?.level || 'mid',
+            status: career.status || 'draft',
+            salaryMin: career.compensation?.salaryMin?.toString() || '',
+            salaryMax: career.compensation?.salaryMax?.toString() || '',
+            currency: career.compensation?.currency || 'USD',
+            skills: career.requirements?.skills || [],
+            benefits: career.compensation?.benefits || [],
+            visibility: career.visibility || 'public',
+            priority: career.priority || 'medium'
           })
         } else {
-          // Position not found, redirect to careers list
-          router.push('/dashboard/careers')
+          setError('Position not found')
+          setTimeout(() => router.push('/dashboard/careers'), 2000)
         }
-      } catch (error) {
-        console.error('Error fetching position:', error)
-        router.push('/dashboard/careers')
+      } catch (err) {
+        console.error('Error fetching position:', err)
+        setError(err instanceof Error ? err.message : 'Failed to load position')
+        setTimeout(() => router.push('/dashboard/careers'), 2000)
       } finally {
         setIsFetching(false)
       }
     }
 
-    if (positionId) {
       fetchPosition()
-    }
   }, [positionId, router])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
+    setError(null)
+    setSuccessMessage(null)
 
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000))
-      
-      // Here you would make your API call to update the position
-      console.log('Updating position:', {
-        ...formData,
-        id: positionId,
-        salary: {
-          min: parseInt(formData.salaryMin),
-          max: parseInt(formData.salaryMax),
-          currency: formData.currency
+      // Prepare update data to match backend schema
+      const updateData = {
+        title: formData.title.trim(),
+        description: formData.description.trim(),
+        shortDescription: formData.shortDescription.trim(),
+        department: formData.department.trim(),
+        location: {
+          type: formData.locationType,
+          city: formData.locationCity.trim(),
+          state: formData.locationState.trim()
         },
-        updatedAt: new Date().toISOString().split('T')[0]
-      })
-
-      // Navigate back to careers list
+        employment: {
+          type: formData.employmentType,
+          level: formData.employmentLevel
+        },
+        compensation: {
+          salaryMin: parseInt(formData.salaryMin) || 0,
+          salaryMax: parseInt(formData.salaryMax) || 0,
+          currency: formData.currency,
+          benefits: formData.benefits
+        },
+        requirements: {
+          skills: formData.skills
+        },
+        status: formData.status,
+        visibility: formData.visibility,
+        priority: formData.priority
+      }
+      
+      console.log('Updating position with data:', updateData)
+      
+      const response = await careersApi.update(positionId, updateData)
+      
+      if (response.success) {
+        setSuccessMessage('Position updated successfully!')
+        // Navigate back to careers list after a short delay
+        setTimeout(() => {
       router.push('/dashboard/careers')
-    } catch (error) {
-      console.error('Error updating position:', error)
+        }, 1500)
+      } else {
+        setError('Failed to update position')
+      }
+    } catch (err) {
+      console.error('Error updating position:', err)
+      setError(err instanceof Error ? err.message : 'Failed to update position')
     } finally {
       setIsLoading(false)
     }
@@ -174,20 +237,20 @@ export default function EditPositionPage() {
     }))
   }
 
-  const addRequirement = () => {
-    if (newRequirement.trim()) {
+  const addSkill = () => {
+    if (newSkill.trim()) {
       setFormData(prev => ({
         ...prev,
-        requirements: [...prev.requirements, newRequirement.trim()]
+        skills: [...prev.skills, newSkill.trim()]
       }))
-      setNewRequirement('')
+      setNewSkill('')
     }
   }
 
-  const removeRequirement = (index: number) => {
+  const removeSkill = (index: number) => {
     setFormData(prev => ({
       ...prev,
-      requirements: prev.requirements.filter((_, i) => i !== index)
+      skills: prev.skills.filter((_, i) => i !== index)
     }))
   }
 
@@ -236,8 +299,36 @@ export default function EditPositionPage() {
     )
   }
 
-  if (!position) {
-    return null
+  if (error && !position) {
+    return (
+      <div className="space-y-6">
+        <div className="flex items-center gap-4">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => router.back()}
+            className="flex items-center gap-2"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            Back
+          </Button>
+          <div className="flex items-center gap-3">
+            <Briefcase className="w-6 h-6 text-blue-600" />
+            <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">Edit Position</h1>
+          </div>
+        </div>
+        <div className="flex items-center justify-center py-12">
+          <div className="text-center">
+            <AlertCircle className="w-12 h-12 text-red-500 mx-auto mb-4" />
+            <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">Error Loading Position</h3>
+            <p className="text-red-500 mb-4">{error}</p>
+            <Button onClick={() => router.push('/dashboard/careers')}>
+              Go Back to Careers
+            </Button>
+          </div>
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -259,6 +350,22 @@ export default function EditPositionPage() {
         </div>
       </div>
 
+      {/* Success Message */}
+      {successMessage && (
+        <div className="bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-md flex items-center gap-2">
+          <CheckCircle className="w-5 h-5" />
+          <span>{successMessage}</span>
+        </div>
+      )}
+
+      {/* Error Message */}
+      {error && (
+        <div className="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-md flex items-center gap-2">
+          <AlertCircle className="w-5 h-5" />
+          <span>{error}</span>
+        </div>
+      )}
+
       {/* Form */}
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -277,6 +384,18 @@ export default function EditPositionPage() {
                     onChange={(e) => handleInputChange('title', e.target.value)}
                     placeholder="e.g., Senior Full Stack Developer"
                     required
+                    className="mt-1"
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="shortDescription">Short Description</Label>
+                  <Textarea
+                    id="shortDescription"
+                    value={formData.shortDescription}
+                    onChange={(e) => handleInputChange('shortDescription', e.target.value)}
+                    placeholder="Brief summary of the position..."
+                    rows={2}
                     className="mt-1"
                   />
                 </div>
@@ -308,13 +427,42 @@ export default function EditPositionPage() {
                   </div>
 
                   <div>
-                    <Label htmlFor="location">Location *</Label>
+                    <Label htmlFor="locationType">Location Type *</Label>
+                    <div className="relative mt-1">
+                      <select
+                        id="locationType"
+                        value={formData.locationType}
+                        onChange={(e) => handleInputChange('locationType', e.target.value)}
+                        className="w-full appearance-none bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2.5 pr-8 text-sm font-medium text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      >
+                        <option value="remote">Remote</option>
+                        <option value="onsite">On-site</option>
+                        <option value="hybrid">Hybrid</option>
+                      </select>
+                      <ChevronDown className="absolute right-2.5 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-500 pointer-events-none" />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="locationCity">City</Label>
                     <Input
-                      id="location"
-                      value={formData.location}
-                      onChange={(e) => handleInputChange('location', e.target.value)}
-                      placeholder="e.g., Remote, New York, NY"
-                      required
+                      id="locationCity"
+                      value={formData.locationCity}
+                      onChange={(e) => handleInputChange('locationCity', e.target.value)}
+                      placeholder="e.g., New York"
+                      className="mt-1"
+                    />
+                  </div>
+
+                  <div>
+                    <Label htmlFor="locationState">State</Label>
+                    <Input
+                      id="locationState"
+                      value={formData.locationState}
+                      onChange={(e) => handleInputChange('locationState', e.target.value)}
+                      placeholder="e.g., NY"
                       className="mt-1"
                     />
                   </div>
@@ -322,39 +470,39 @@ export default function EditPositionPage() {
               </CardContent>
             </Card>
 
-            {/* Requirements */}
+            {/* Skills */}
             <Card>
               <CardHeader>
-                <CardTitle>Requirements</CardTitle>
+                <CardTitle>Required Skills</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>
-                  <Label>Add Requirement</Label>
+                  <Label>Add Skill</Label>
                   <div className="flex gap-2 mt-1">
                     <Input
-                      value={newRequirement}
-                      onChange={(e) => setNewRequirement(e.target.value)}
-                      placeholder="e.g., 3+ years of React experience"
-                      onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), addRequirement())}
+                      value={newSkill}
+                      onChange={(e) => setNewSkill(e.target.value)}
+                      placeholder="e.g., React, Node.js, TypeScript"
+                      onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), addSkill())}
                     />
-                    <Button type="button" onClick={addRequirement} size="sm">
+                    <Button type="button" onClick={addSkill} size="sm">
                       <Plus className="w-4 h-4" />
                     </Button>
                   </div>
                 </div>
 
-                {formData.requirements.length > 0 && (
+                {formData.skills.length > 0 && (
                   <div className="space-y-2">
-                    <Label>Requirements List</Label>
+                    <Label>Skills List</Label>
                     <div className="space-y-2">
-                      {formData.requirements.map((req, index) => (
+                      {formData.skills.map((skill, index) => (
                         <div key={index} className="flex items-center gap-2 p-2 bg-gray-50 dark:bg-gray-700 rounded">
-                          <span className="flex-1 text-sm">{req}</span>
+                          <span className="flex-1 text-sm">{skill}</span>
                           <Button
                             type="button"
                             variant="ghost"
                             size="sm"
-                            onClick={() => removeRequirement(index)}
+                            onClick={() => removeSkill(index)}
                             className="h-6 w-6 p-0"
                           >
                             <X className="w-3 h-3" />
@@ -421,38 +569,38 @@ export default function EditPositionPage() {
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>
-                  <Label htmlFor="type">Employment Type</Label>
+                  <Label htmlFor="employmentType">Employment Type</Label>
                   <div className="relative mt-1">
                     <select
-                      id="type"
-                      value={formData.type}
-                      onChange={(e) => handleInputChange('type', e.target.value)}
-                      className="w-full appearance-none bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2.5 pr-8 text-sm font-medium text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-400 dark:focus:border-blue-400 hover:border-gray-400 dark:hover:border-gray-500 transition-colors cursor-pointer"
+                      id="employmentType"
+                      value={formData.employmentType}
+                      onChange={(e) => handleInputChange('employmentType', e.target.value)}
+                      className="w-full appearance-none bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2.5 pr-8 text-sm font-medium text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     >
-                      <option value="full-time" className="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100">Full Time</option>
-                      <option value="part-time" className="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100">Part Time</option>
-                      <option value="contract" className="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100">Contract</option>
-                      <option value="internship" className="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100">Internship</option>
+                      <option value="full-time">Full Time</option>
+                      <option value="part-time">Part Time</option>
+                      <option value="contract">Contract</option>
+                      <option value="internship">Internship</option>
                     </select>
-                    <ChevronDown className="absolute right-2.5 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-500 dark:text-gray-400 pointer-events-none" />
+                    <ChevronDown className="absolute right-2.5 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-500 pointer-events-none" />
                   </div>
                 </div>
 
                 <div>
-                  <Label htmlFor="level">Experience Level</Label>
+                  <Label htmlFor="employmentLevel">Experience Level</Label>
                   <div className="relative mt-1">
                     <select
-                      id="level"
-                      value={formData.level}
-                      onChange={(e) => handleInputChange('level', e.target.value)}
-                      className="w-full appearance-none bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2.5 pr-8 text-sm font-medium text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-400 dark:focus:border-blue-400 hover:border-gray-400 dark:hover:border-gray-500 transition-colors cursor-pointer"
+                      id="employmentLevel"
+                      value={formData.employmentLevel}
+                      onChange={(e) => handleInputChange('employmentLevel', e.target.value)}
+                      className="w-full appearance-none bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2.5 pr-8 text-sm font-medium text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     >
-                      <option value="entry" className="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100">Entry Level</option>
-                      <option value="mid" className="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100">Mid Level</option>
-                      <option value="senior" className="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100">Senior Level</option>
-                      <option value="lead" className="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100">Lead/Principal</option>
+                      <option value="entry">Entry Level</option>
+                      <option value="mid">Mid Level</option>
+                      <option value="senior">Senior Level</option>
+                      <option value="executive">Executive</option>
                     </select>
-                    <ChevronDown className="absolute right-2.5 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-500 dark:text-gray-400 pointer-events-none" />
+                    <ChevronDown className="absolute right-2.5 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-500 pointer-events-none" />
                   </div>
                 </div>
 
@@ -463,13 +611,50 @@ export default function EditPositionPage() {
                       id="status"
                       value={formData.status}
                       onChange={(e) => handleInputChange('status', e.target.value)}
-                      className="w-full appearance-none bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2.5 pr-8 text-sm font-medium text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-400 dark:focus:border-blue-400 hover:border-gray-400 dark:hover:border-gray-500 transition-colors cursor-pointer"
+                      className="w-full appearance-none bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2.5 pr-8 text-sm font-medium text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     >
-                      <option value="open" className="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100">Open</option>
-                      <option value="paused" className="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100">Paused</option>
-                      <option value="closed" className="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100">Closed</option>
+                      <option value="draft">Draft</option>
+                      <option value="published">Published</option>
+                      <option value="paused">Paused</option>
+                      <option value="closed">Closed</option>
+                      <option value="filled">Filled</option>
                     </select>
-                    <ChevronDown className="absolute right-2.5 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-500 dark:text-gray-400 pointer-events-none" />
+                    <ChevronDown className="absolute right-2.5 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-500 pointer-events-none" />
+                  </div>
+                </div>
+
+                <div>
+                  <Label htmlFor="visibility">Visibility</Label>
+                  <div className="relative mt-1">
+                    <select
+                      id="visibility"
+                      value={formData.visibility}
+                      onChange={(e) => handleInputChange('visibility', e.target.value)}
+                      className="w-full appearance-none bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2.5 pr-8 text-sm font-medium text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    >
+                      <option value="public">Public</option>
+                      <option value="internal">Internal</option>
+                      <option value="private">Private</option>
+                    </select>
+                    <ChevronDown className="absolute right-2.5 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-500 pointer-events-none" />
+                  </div>
+                </div>
+
+                <div>
+                  <Label htmlFor="priority">Priority</Label>
+                  <div className="relative mt-1">
+                    <select
+                      id="priority"
+                      value={formData.priority}
+                      onChange={(e) => handleInputChange('priority', e.target.value)}
+                      className="w-full appearance-none bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2.5 pr-8 text-sm font-medium text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    >
+                      <option value="low">Low</option>
+                      <option value="medium">Medium</option>
+                      <option value="high">High</option>
+                      <option value="urgent">Urgent</option>
+                    </select>
+                    <ChevronDown className="absolute right-2.5 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-500 pointer-events-none" />
                   </div>
                 </div>
               </CardContent>
@@ -531,18 +716,32 @@ export default function EditPositionPage() {
               </CardHeader>
               <CardContent className="space-y-3 text-sm">
                 <div className="flex justify-between">
-                  <span className="text-gray-500">Applicants:</span>
-                  <span>{position.applicantsCount} candidates</span>
+                  <span className="text-gray-500">Applications:</span>
+                  <span>{position?.analytics?.applications || 0} candidates</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-500">Views:</span>
+                  <span>{position?.analytics?.views || 0}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-500">Positions Open:</span>
+                  <span>{position?.hiring?.positions || 1}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-500">Created:</span>
-                  <span>{new Date(position.createdAt).toLocaleDateString()}</span>
+                  <span>{position ? new Date(position.createdAt).toLocaleDateString() : 'N/A'}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-500">Last Updated:</span>
-                  <span>{new Date(position.updatedAt).toLocaleDateString()}</span>
+                  <span>{position ? new Date(position.updatedAt).toLocaleDateString() : 'N/A'}</span>
                 </div>
-                {position.closedAt && (
+                {position?.publishedAt && (
+                  <div className="flex justify-between">
+                    <span className="text-gray-500">Published:</span>
+                    <span>{new Date(position.publishedAt).toLocaleDateString()}</span>
+                  </div>
+                )}
+                {position?.closedAt && (
                   <div className="flex justify-between">
                     <span className="text-gray-500">Closed:</span>
                     <span>{new Date(position.closedAt).toLocaleDateString()}</span>

@@ -1,16 +1,16 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../../components/ui/card'
+import { useState, useEffect, useCallback } from 'react'
 import { Button } from '../../../components/ui/button'
 import { Input } from '../../../components/ui/input'
 import { Badge } from '../../../components/ui/badge'
+import { careersApi } from '../../../lib/api'
 import { 
   Plus,
   Search,
   Edit,
   Trash2,
-  Eye,
+  X,
   Calendar,
   MapPin,
   Briefcase,
@@ -27,31 +27,68 @@ import {
 import { useRouter } from 'next/navigation'
 
 interface Position {
-  id: string
+  _id: string
   title: string
+  slug?: string
   description: string
+  shortDescription?: string
   department: string
-  location: string
-  type: 'full-time' | 'part-time' | 'contract' | 'internship'
-  level: 'entry' | 'mid' | 'senior' | 'lead'
-  status: 'open' | 'closed' | 'paused'
-  salary: {
-    min: number
-    max: number
-    currency: string
+  location: {
+    type: string
+    city?: string
+    state?: string
+    country?: string
   }
-  requirements: string[]
-  benefits: string[]
-  applicantsCount: number
+  employment: {
+    type: 'full-time' | 'part-time' | 'contract' | 'internship'
+    level: 'entry' | 'mid' | 'senior' | 'executive'
+    experience?: string
+  }
+  compensation: {
+    salaryMin: number
+    salaryMax: number
+    currency: string
+    benefits?: string[]
+  }
+  requirements: {
+    skills: string[]
+    education?: string
+    experience?: string
+  }
+  status: 'draft' | 'published' | 'paused' | 'closed' | 'filled'
+  visibility?: string
+  priority?: string
+  hiring: {
+    positions: number
+    filled: number
+    pipeline: {
+      applied: number
+      screening: number
+      interview: number
+      offer: number
+      hired: number
+    }
+  }
+  analytics: {
+    views: number
+    applications: number
+  }
   createdAt: string
   updatedAt: string
+  publishedAt?: string
   closedAt?: string
 }
 
 export default function CareersPage() {
   const router = useRouter()
   
-  const [positions, setPositions] = useState<Position[]>([
+  const [positions, setPositions] = useState<Position[]>([])
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const [successMessage, setSuccessMessage] = useState<string | null>(null)
+  
+  // Remove the hardcoded data - will be replaced with API fetch
+  /*const [positions, setPositions] = useState<Position[]>([
     {
       id: '1',
       title: 'Senior Full Stack Developer',
@@ -112,11 +149,11 @@ export default function CareersPage() {
       createdAt: '2024-01-05',
       updatedAt: '2024-01-08'
     }
-  ])
+  ])*/
 
   const [searchTerm, setSearchTerm] = useState('')
   const [filterStatus, setFilterStatus] = useState<string>('all')
-  const [filterDepartment, setFilterDepartment] = useState<string>('all')
+  const [filterDepartment] = useState<string>('all')
   const [selectedPosition, setSelectedPosition] = useState<Position | null>(null)
   const [showDeleteModal, setShowDeleteModal] = useState(false)
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null)
@@ -124,18 +161,49 @@ export default function CareersPage() {
   const [itemsPerPage, setItemsPerPage] = useState(10)
   const [isProcessing, setIsProcessing] = useState<string | null>(null)
 
-  // Filter positions based on search and filters
-  const filteredPositions = positions.filter(position => {
-    const matchesSearch = position.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         position.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         position.department.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         position.location.toLowerCase().includes(searchTerm.toLowerCase())
-    
-    const matchesStatus = filterStatus === 'all' || position.status === filterStatus
-    const matchesDepartment = filterDepartment === 'all' || position.department === filterDepartment
-    
-    return matchesSearch && matchesStatus && matchesDepartment
-  })
+  // Fetch positions function with useCallback to avoid dependency issues
+  const fetchPositions = useCallback(async () => {
+    try {
+      setLoading(true)
+      setError(null)
+      
+      const params: Record<string, string> = {}
+      if (searchTerm) params.search = searchTerm
+      if (filterStatus !== 'all') params.status = filterStatus
+      if (filterDepartment !== 'all') params.department = filterDepartment
+      
+      const response = await careersApi.getAll(params)
+      
+      console.log('Careers API response:', response)
+      
+      if (response.success && response.data) {
+        setPositions((response.data as any).careers || [])
+      }
+    } catch (err) {
+      console.error('Failed to fetch positions:', err)
+      setError(err instanceof Error ? err.message : 'Failed to load positions')
+    } finally {
+      setLoading(false)
+    }
+  }, [searchTerm, filterStatus, filterDepartment])
+
+  // Fetch positions when component mounts
+  useEffect(() => {
+    fetchPositions()
+  }, [fetchPositions])
+
+
+
+  // Debounced search
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      fetchPositions()
+    }, 500)
+    return () => clearTimeout(timeoutId)
+  }, [searchTerm, filterStatus, filterDepartment, fetchPositions])
+
+  // Since filtering is now handled by API, just use positions directly
+  const filteredPositions = positions
 
   // Pagination logic
   const totalItems = filteredPositions.length
@@ -144,23 +212,26 @@ export default function CareersPage() {
   const endIndex = startIndex + itemsPerPage
   const paginatedPositions = filteredPositions.slice(startIndex, endIndex)
 
-  const departments = Array.from(new Set(positions.map(position => position.department)))
-  const statuses = ['all', 'open', 'closed', 'paused']
+  const statuses = ['all', 'draft', 'published', 'paused', 'closed', 'filled']
 
   const getStatusColor = (status: Position['status']) => {
     switch (status) {
-      case 'open': return 'bg-green-100 text-green-800 border-green-200'
+      case 'published': return 'bg-green-100 text-green-800 border-green-200'
+      case 'draft': return 'bg-blue-100 text-blue-800 border-blue-200'
       case 'paused': return 'bg-yellow-100 text-yellow-800 border-yellow-200'
       case 'closed': return 'bg-gray-100 text-gray-800 border-gray-200'
+      case 'filled': return 'bg-purple-100 text-purple-800 border-purple-200'
       default: return 'bg-gray-100 text-gray-800 border-gray-200'
     }
   }
 
   const getStatusIcon = (status: Position['status']) => {
     switch (status) {
-      case 'open': return <CheckCircle className="w-4 h-4 text-green-500" />
+      case 'published': return <CheckCircle className="w-4 h-4 text-green-500" />
+      case 'draft': return <Edit className="w-4 h-4 text-blue-500" />
       case 'paused': return <Clock className="w-4 h-4 text-yellow-500" />
       case 'closed': return <AlertCircle className="w-4 h-4 text-gray-500" />
+      case 'filled': return <Users className="w-4 h-4 text-purple-500" />
       default: return <Clock className="w-4 h-4 text-gray-500" />
     }
   }
@@ -174,18 +245,25 @@ export default function CareersPage() {
     })
   }
 
-  const formatSalary = (salary: Position['salary']) => {
+  const formatSalary = (compensation: Position['compensation']) => {
     const formatter = new Intl.NumberFormat('en-US', {
       style: 'currency',
-      currency: salary.currency,
+      currency: compensation.currency,
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
     })
     
-    if (salary.min === salary.max) {
-      return formatter.format(salary.min)
+    if (compensation.salaryMin === compensation.salaryMax) {
+      return formatter.format(compensation.salaryMin)
     }
-    return `${formatter.format(salary.min)} - ${formatter.format(salary.max)}`
+    return `${formatter.format(compensation.salaryMin)} - ${formatter.format(compensation.salaryMax)}`
+  }
+
+  const getLocationDisplay = (location: Position['location']) => {
+    if (location.type === 'remote') return 'Remote'
+    if (location.city && location.state) return `${location.city}, ${location.state}`
+    if (location.city) return location.city
+    return location.type || 'Not specified'
   }
 
   // Close dropdown when clicking outside
@@ -200,54 +278,74 @@ export default function CareersPage() {
     }
   }, [activeDropdown])
 
-  const handleDeletePosition = () => {
+  const handleDeletePosition = async () => {
     if (!selectedPosition) return
     
-    setPositions(positions.filter(position => position.id !== selectedPosition.id))
-    setShowDeleteModal(false)
-    setSelectedPosition(null)
+    try {
+      setIsProcessing(selectedPosition._id)
+      await careersApi.delete(selectedPosition._id)
+      
+      setPositions(positions.filter(position => position._id !== selectedPosition._id))
+      setSuccessMessage('Position deleted successfully')
+      setShowDeleteModal(false)
+      setSelectedPosition(null)
+    } catch (err) {
+      console.error('Failed to delete position:', err)
+      setError(err instanceof Error ? err.message : 'Failed to delete position')
+    } finally {
+      setIsProcessing(null)
+    }
   }
 
   const handleClosePosition = async (position: Position) => {
-    setIsProcessing(position.id)
+    setIsProcessing(position._id)
     
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000))
+      await careersApi.close(position._id)
       
-      const updatedPosition: Position = {
-        ...position,
-        status: 'closed',
-        closedAt: new Date().toISOString().split('T')[0],
-        updatedAt: new Date().toISOString().split('T')[0]
-      }
-
-      setPositions(prev => prev.map(p => p.id === position.id ? updatedPosition : p))
+      // Update local state
+      setPositions(prev => prev.map(p => p._id === position._id ? { ...p, status: 'closed' as const, closedAt: new Date().toISOString() } : p))
       setActiveDropdown(null)
-    } catch (error) {
-      console.error('Error closing position:', error)
+      setSuccessMessage('Position closed successfully')
+    } catch (err) {
+      console.error('Failed to close position:', err)
+      setError(err instanceof Error ? err.message : 'Failed to close position')
     } finally {
       setIsProcessing(null)
     }
   }
 
   const handlePausePosition = async (position: Position) => {
-    setIsProcessing(position.id)
+    setIsProcessing(position._id)
     
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000))
+      await careersApi.pause(position._id)
       
-      const updatedPosition: Position = {
-        ...position,
-        status: 'paused',
-        updatedAt: new Date().toISOString().split('T')[0]
-      }
-
-      setPositions(prev => prev.map(p => p.id === position.id ? updatedPosition : p))
+      // Update local state
+      setPositions(prev => prev.map(p => p._id === position._id ? { ...p, status: 'paused' as const } : p))
       setActiveDropdown(null)
-    } catch (error) {
-      console.error('Error pausing position:', error)
+      setSuccessMessage('Position paused successfully')
+    } catch (err) {
+      console.error('Failed to pause position:', err)
+      setError(err instanceof Error ? err.message : 'Failed to pause position')
+    } finally {
+      setIsProcessing(null)
+    }
+  }
+
+  const handlePublishPosition = async (position: Position) => {
+    setIsProcessing(position._id)
+    
+    try {
+      await careersApi.publish(position._id)
+      
+      // Update local state
+      setPositions(prev => prev.map(p => p._id === position._id ? { ...p, status: 'published' as const, publishedAt: new Date().toISOString() } : p))
+      setActiveDropdown(null)
+      setSuccessMessage('Position published successfully')
+    } catch (err) {
+      console.error('Failed to publish position:', err)
+      setError(err instanceof Error ? err.message : 'Failed to publish position')
     } finally {
       setIsProcessing(null)
     }
@@ -258,6 +356,21 @@ export default function CareersPage() {
     setShowDeleteModal(true)
     setActiveDropdown(null)
   }
+
+  // Clear messages after 5 seconds
+  useEffect(() => {
+    if (successMessage) {
+      const timer = setTimeout(() => setSuccessMessage(null), 5000)
+      return () => clearTimeout(timer)
+    }
+  }, [successMessage])
+
+  useEffect(() => {
+    if (error) {
+      const timer = setTimeout(() => setError(null), 8000)
+      return () => clearTimeout(timer)
+    }
+  }, [error])
 
   return (
     <div className="space-y-6">
@@ -282,6 +395,32 @@ export default function CareersPage() {
             Add New Position
           </Button>
         </div>
+
+        {/* Success Message */}
+        {successMessage && (
+          <div className="bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-md flex items-center justify-between">
+            <span>{successMessage}</span>
+            <button
+              onClick={() => setSuccessMessage(null)}
+              className="text-green-600 hover:text-green-800"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+        )}
+
+        {/* Error Message */}
+        {error && (
+          <div className="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-md flex items-center justify-between">
+            <span>{error}</span>
+            <button
+              onClick={() => setError(null)}
+              className="text-red-600 hover:text-red-800"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+        )}
 
         {/* Search and Filters */}
         <div className="flex items-center gap-4">
@@ -348,7 +487,16 @@ export default function CareersPage() {
                 </tr>
               </thead>
               <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-                {paginatedPositions.length === 0 ? (
+                {loading ? (
+                  <tr>
+                    <td colSpan={6} className="px-6 py-16 text-center">
+                      <div className="flex items-center justify-center">
+                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+                        <span className="ml-3 text-gray-500 dark:text-gray-400">Loading positions...</span>
+                      </div>
+                    </td>
+                  </tr>
+                ) : paginatedPositions.length === 0 ? (
                   <tr>
                     <td colSpan={6} className="px-6 py-16 text-center">
                       <Briefcase className="w-12 h-12 text-gray-400 mx-auto mb-4" />
@@ -366,7 +514,7 @@ export default function CareersPage() {
                   </tr>
                 ) : (
                   paginatedPositions.map(position => (
-                    <tr key={position.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
+                    <tr key={position._id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="flex items-center">
                           <div className="flex-shrink-0 h-10 w-10">
@@ -382,11 +530,11 @@ export default function CareersPage() {
                               {getStatusIcon(position.status)}
                             </div>
                             <div className="text-sm text-gray-500 dark:text-gray-400 max-w-md truncate">
-                              {formatSalary(position.salary)} • {position.type} • {position.level}
+                              {formatSalary(position.compensation)} • {position.employment.type} • {position.employment.level}
                             </div>
                             <div className="text-xs text-gray-400 dark:text-gray-500 mt-1 flex items-center gap-1">
                               <MapPin className="w-3 h-3" />
-                              {position.location}
+                              {getLocationDisplay(position.location)}
                             </div>
                           </div>
                         </div>
@@ -406,7 +554,7 @@ export default function CareersPage() {
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="flex items-center gap-1 text-sm text-gray-900 dark:text-gray-100">
                           <Users className="w-4 h-4 text-gray-400" />
-                          <span className="font-medium">{position.applicantsCount}</span>
+                          <span className="font-medium">{position.analytics.applications}</span>
                           <span className="text-gray-500">candidates</span>
                         </div>
                       </td>
@@ -423,13 +571,13 @@ export default function CareersPage() {
                             size="sm"
                             onClick={(e) => {
                               e.stopPropagation()
-                              setActiveDropdown(activeDropdown === position.id ? null : position.id)
+                              setActiveDropdown(activeDropdown === position._id ? null : position._id)
                             }}
                             className="p-1"
                           >
                             <MoreVertical className="w-4 h-4" />
                           </Button>
-                          {activeDropdown === position.id && (
+                          {activeDropdown === position._id && (
                             <div 
                               className="absolute right-0 mt-1 w-48 bg-white dark:bg-gray-800 rounded-md shadow-lg z-10 border border-gray-200 dark:border-gray-700"
                               onClick={(e) => e.stopPropagation()}
@@ -437,18 +585,18 @@ export default function CareersPage() {
                               <div className="py-1">
                                 <button
                                   onClick={() => {
-                                    router.push(`/dashboard/careers/${position.id}/applicants`)
+                                    router.push(`/dashboard/careers/${position._id}/applicants`)
                                     setActiveDropdown(null)
                                   }}
                                   className="flex items-center px-4 py-2 text-sm text-blue-600 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left"
                                 >
                                   <Users className="w-4 h-4 mr-2" />
-                                  See Applicants ({position.applicantsCount})
+                                  See Applicants ({position.analytics.applications})
                                 </button>
                                 
                                 <button
                                   onClick={() => {
-                                    router.push(`/dashboard/careers/${position.id}/edit`)
+                                    router.push(`/dashboard/careers/${position._id}/edit`)
                                     setActiveDropdown(null)
                                   }}
                                   className="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left"
@@ -457,25 +605,36 @@ export default function CareersPage() {
                                   Edit
                                 </button>
                                 
-                                {position.status === 'open' && (
+                                {(position.status === 'published') && (
                                   <button
                                     onClick={() => handlePausePosition(position)}
-                                    disabled={isProcessing === position.id}
+                                    disabled={isProcessing === position._id}
                                     className="flex items-center px-4 py-2 text-sm text-yellow-600 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left disabled:opacity-50"
                                   >
                                     <Clock className="w-4 h-4 mr-2" />
-                                    {isProcessing === position.id ? 'Pausing...' : 'Pause'}
+                                    {isProcessing === position._id ? 'Pausing...' : 'Pause'}
+                                  </button>
+                                )}
+
+                                {position.status === 'draft' && (
+                                  <button
+                                    onClick={() => handlePublishPosition(position)}
+                                    disabled={isProcessing === position._id}
+                                    className="flex items-center px-4 py-2 text-sm text-green-600 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left disabled:opacity-50"
+                                  >
+                                    <CheckCircle className="w-4 h-4 mr-2" />
+                                    {isProcessing === position._id ? 'Publishing...' : 'Publish'}
                                   </button>
                                 )}
                                 
-                                {position.status === 'open' && (
+                                {(position.status === 'published' || position.status === 'paused') && (
                                   <button
                                     onClick={() => handleClosePosition(position)}
-                                    disabled={isProcessing === position.id}
+                                    disabled={isProcessing === position._id}
                                     className="flex items-center px-4 py-2 text-sm text-red-600 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left disabled:opacity-50"
                                   >
                                     <AlertCircle className="w-4 h-4 mr-2" />
-                                    {isProcessing === position.id ? 'Closing...' : 'Close Position'}
+                                    {isProcessing === position._id ? 'Closing...' : 'Close Position'}
                                   </button>
                                 )}
                                 
@@ -562,7 +721,7 @@ export default function CareersPage() {
                 Delete Position
               </h2>
               <p className="text-gray-600 dark:text-gray-400 mb-6">
-                Are you sure you want to delete "{selectedPosition.title}"? This action cannot be undone and will remove all associated applicant data.
+                Are you sure you want to delete &ldquo;{selectedPosition.title}&rdquo;? This action cannot be undone and will remove all associated applicant data.
               </p>
               <div className="flex justify-end gap-3">
                 <Button variant="outline" onClick={() => setShowDeleteModal(false)}>
