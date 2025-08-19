@@ -369,6 +369,7 @@ export default function NewCustomerPage() {
                       <option value="USD" className="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100">USD ($)</option>
                       <option value="EUR" className="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100">EUR (€)</option>
                       <option value="GBP" className="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100">GBP (£)</option>
+                      <option value="AED" className="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100">AED (د.إ)</option>
                     </select>
                     <ChevronDown className="absolute right-2.5 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-500 dark:text-gray-400 pointer-events-none" />
                   </div>
