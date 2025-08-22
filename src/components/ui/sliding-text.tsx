@@ -37,12 +37,9 @@ export function SlidingText({
                   "opacity-80 hover:opacity-100 transition-opacity duration-500"
                 )}
                 style={{
-                  textShadow: '0 0 80px rgba(16, 185, 129, 0.4), 0 0 40px rgba(255, 255, 255, 0.1)',
-                  WebkitTextStroke: '1px rgba(255, 255, 255, 0.1)',
-                  background: 'linear-gradient(135deg, #ffffff 0%, #a3f3a3 50%, #ffffff 100%)',
-                  WebkitBackgroundClip: 'text',
+                  WebkitTextStroke: '2px rgba(255, 255, 255, 0.3)',
                   WebkitTextFillColor: 'transparent',
-                  backgroundClip: 'text',
+                  textShadow: '0 0 50px rgba(255, 255, 255, 0.1)',
                 }}
               >
                 {text.toUpperCase()}
@@ -74,12 +71,9 @@ export function SlidingText({
                   "opacity-60 hover:opacity-80 transition-opacity duration-500"
                 )}
                 style={{
-                  textShadow: '0 0 60px rgba(16, 185, 129, 0.3), 0 0 30px rgba(255, 255, 255, 0.05)',
-                  WebkitTextStroke: '1px rgba(255, 255, 255, 0.05)',
-                  background: 'linear-gradient(135deg, #ffffff40 0%, #a3f3a340 50%, #ffffff40 100%)',
-                  WebkitBackgroundClip: 'text',
+                  WebkitTextStroke: '2px rgba(255, 255, 255, 0.2)',
                   WebkitTextFillColor: 'transparent',
-                  backgroundClip: 'text',
+                  textShadow: '0 0 30px rgba(255, 255, 255, 0.05)',
                 }}
               >
                 {text.toUpperCase()}

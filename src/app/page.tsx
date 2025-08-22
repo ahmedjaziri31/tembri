@@ -147,59 +147,53 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* Hero Section */}
-      <main className="relative z-20 flex-1 flex items-center justify-center min-h-[calc(100vh-120px)]">
-        <div className="w-full max-w-7xl mx-auto px-6 text-center">
-          {/* Main Hero Text */}
-          <div className="space-y-2 mb-16">
-            {/* First Row */}
-            <div className="flex justify-center items-center space-x-8">
-              <h1 
-                className="font-hero text-6xl sm:text-7xl md:text-8xl lg:text-9xl xl:text-[10rem] 2xl:text-[12rem] text-transparent"
-                style={{
-                  WebkitTextStroke: '2px rgba(255, 255, 255, 0.3)',
-                  textShadow: '0 0 50px rgba(255, 255, 255, 0.1)',
-                }}
-              >
-                MAISON
-              </h1>
-              <h1 
-                className="font-hero text-6xl sm:text-7xl md:text-8xl lg:text-9xl xl:text-[10rem] 2xl:text-[12rem] text-transparent"
-                style={{
-                  WebkitTextStroke: '2px rgba(255, 255, 255, 0.3)',
-                  textShadow: '0 0 50px rgba(255, 255, 255, 0.1)',
-                }}
-              >
-                MAISON
-              </h1>
-            </div>
-            
-            {/* Second Row */}
-            <div className="flex justify-center items-center space-x-8">
-              <h1 
-                className="font-hero text-6xl sm:text-7xl md:text-8xl lg:text-9xl xl:text-[10rem] 2xl:text-[12rem] text-transparent"
-                style={{
-                  WebkitTextStroke: '2px rgba(255, 255, 255, 0.3)',
-                  textShadow: '0 0 50px rgba(255, 255, 255, 0.1)',
-                }}
-              >
-                ELARIS
-              </h1>
-              <h1 
-                className="font-hero text-6xl sm:text-7xl md:text-8xl lg:text-9xl xl:text-[10rem] 2xl:text-[12rem] text-transparent"
-                style={{
-                  WebkitTextStroke: '2px rgba(255, 255, 255, 0.3)',
-                  textShadow: '0 0 50px rgba(255, 255, 255, 0.1)',
-                }}
-              >
-              ELARIS
-              </h1>
+      {/* Hero Section with Infinite Scrolling Logos */}
+      <main className="relative z-20 flex flex-col justify-between min-h-[calc(100vh-120px)]">
+        {/* Infinite Scrolling Logos - Centered */}
+        <div className="flex-1 flex items-center justify-center">
+          <div className="w-full max-w-full mx-auto">
+            <div className="w-full overflow-hidden relative py-8">
+              {/* Seamless infinite scroll container */}
+              <div className="flex animate-infinite-scroll">
+                {/* First set of logos */}
+                <div className="flex flex-shrink-0">
+                  {Array.from({ length: 12 }).map((_, index) => (
+                    <div key={`first-${index}`} className="flex-shrink-0 mx-8 lg:mx-12">
+                      <img 
+                        src="/home/logo2.png" 
+                        alt="Maison Elaris" 
+                        className="h-32 sm:h-40 md:h-48 lg:h-56 xl:h-64 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity duration-500"
+                        style={{
+                          filter: 'drop-shadow(0 0 20px rgba(255, 255, 255, 0.1))',
+                        }}
+                      />
+                    </div>
+                  ))}
+                </div>
+                {/* Duplicate set for seamless loop */}
+                <div className="flex flex-shrink-0">
+                  {Array.from({ length: 12 }).map((_, index) => (
+                    <div key={`second-${index}`} className="flex-shrink-0 mx-8 lg:mx-12">
+                      <img 
+                        src="/home/logo2.png" 
+                        alt="Maison Elaris" 
+                        className="h-32 sm:h-40 md:h-48 lg:h-56 xl:h-64 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity duration-500"
+                        style={{
+                          filter: 'drop-shadow(0 0 20px rgba(255, 255, 255, 0.1))',
+                        }}
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
+        </div>
 
-          {/* Tagline */}
-          <div className="max-w-4xl mx-auto">
-            <p className="text-white text-lg md:text-xl lg:text-2xl font-light tracking-wider leading-relaxed">
+        {/* Tagline - Bottom */}
+        <div className="pb-8 lg:pb-12">
+          <div className="max-w-6xl mx-auto px-6 text-center">
+            <p className="text-white text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl font-light tracking-wider whitespace-nowrap overflow-hidden">
               WHERE STRATEGY MEETS STORY. POWERED BY DATA. DRIVEN BY VISION.
             </p>
           </div>
