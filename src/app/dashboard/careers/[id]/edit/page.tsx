@@ -87,7 +87,7 @@ interface PositionFormData {
 export default function EditPositionPage() {
   const router = useRouter()
   const params = useParams()
-  const positionId = params.id as string
+  const positionId = params?.id as string
   
   const [isLoading, setIsLoading] = useState(false)
   const [isFetching, setIsFetching] = useState(true)
@@ -758,7 +758,7 @@ export default function EditPositionPage() {
               <CardContent className="space-y-3">
                 <LoadingButton
                   type="submit"
-                  loading={isLoading}
+                  isLoading={isLoading}
                   className="w-full bg-blue-600 hover:bg-blue-700"
                 >
                   <Save className="w-4 h-4 mr-2" />

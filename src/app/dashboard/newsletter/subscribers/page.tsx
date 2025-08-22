@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../../../components/ui/card'
 import { Button } from '../../../../components/ui/button'
+import { OverlayDropdown } from '../../../../components/ui/overlay-dropdown'
 import { Input } from '../../../../components/ui/input'
 import { Badge } from '../../../../components/ui/badge'
 import { 
@@ -535,35 +536,22 @@ export default function SubscribersPage() {
                           </div>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                          <div className="relative">
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={(e) => {
-                                e.stopPropagation()
-                                setActiveDropdown(activeDropdown === subscriber.id ? null : subscriber.id)
+                          <OverlayDropdown
+                            isOpen={activeDropdown === subscriber.id}
+                            onToggle={() => setActiveDropdown(activeDropdown === subscriber.id ? null : subscriber.id)}
+                            onClose={() => setActiveDropdown(null)}
+                          >
+                            <button
+                              onClick={() => {
+                                openDeleteModal(subscriber)
+                                setActiveDropdown(null)
                               }}
-                              className="p-1"
+                              className="flex items-center px-4 py-2 text-sm text-red-600 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left"
                             >
-                              <MoreVertical className="w-4 h-4" />
-                            </Button>
-                            {activeDropdown === subscriber.id && (
-                              <div 
-                                className="absolute right-0 mt-1 w-48 bg-white dark:bg-gray-800 rounded-md shadow-lg z-10 border border-gray-200 dark:border-gray-700"
-                                onClick={(e) => e.stopPropagation()}
-                              >
-                                <div className="py-1">
-                                  <button
-                                    onClick={() => openDeleteModal(subscriber)}
-                                    className="flex items-center px-4 py-2 text-sm text-red-600 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left"
-                                  >
-                                    <Trash2 className="w-4 h-4 mr-2" />
-                                    Remove Subscriber
-                                  </button>
-                                </div>
-                              </div>
-                            )}
-                          </div>
+                              <Trash2 className="w-4 h-4 mr-2" />
+                              Remove Subscriber
+                            </button>
+                          </OverlayDropdown>
                         </td>
                       </tr>
                     )

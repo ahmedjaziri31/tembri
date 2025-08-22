@@ -93,7 +93,7 @@ export default function EditArticlePage() {
         
         if (response.success && response.data) {
           // Handle nested article structure from API response
-          const fetchedArticle = response.data.article || response.data
+          const fetchedArticle = (response.data as any).article || response.data
           setArticle(fetchedArticle)
           setFormData({
             title: fetchedArticle.title,
@@ -442,7 +442,7 @@ export default function EditArticlePage() {
               <CardContent className="space-y-3">
                 <LoadingButton
                   type="submit"
-                  loading={isLoading}
+                  isLoading={isLoading}
                   className="w-full bg-blue-600 hover:bg-blue-700"
                 >
                   <Save className="w-4 h-4 mr-2" />

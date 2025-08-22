@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter, useParams } from 'next/navigation'
-import { Card, CardContent, CardHeader, CardTitle } from '../../../../../components/ui/card'
+
 import { Button } from '../../../../../components/ui/button'
 import { Input } from '../../../../../components/ui/input'
 import { Badge } from '../../../../../components/ui/badge'
@@ -14,31 +14,34 @@ import {
   Mail,
   Phone,
   Calendar,
-  Users,
   FileText,
-  MoreVertical,
   Filter,
   ChevronLeft,
   ChevronRight,
   Clock,
-  MessageCircle,
   Video,
   Building,
   ChevronDown,
   Plus,
-  Activity as ActivityIcon
+  Activity as ActivityIcon,
+  Edit,
+  Trash2,
+  CheckCircle,
+  Target
 } from 'lucide-react'
 import { crmApi } from '../../../../../lib/api'
+import { ActivityDetailsModal } from '../../../../../components/ui/activity-details-modal'
+import { OverlayDropdown } from '../../../../../components/ui/overlay-dropdown'
 
 interface Activity {
   _id: string
-  type: 'call' | 'email' | 'meeting' | 'note' | 'task' | 'proposal'
+  type: 'call' | 'email' | 'meeting' | 'note' | 'task' | 'deal' | 'quote'
   title: string
   description: string
   scheduledAt?: string
   completedAt?: string
   duration?: number
-  outcome?: string
+  outcome?: 'successful' | 'unsuccessful' | 'rescheduled' | 'no-answer'
   followUp?: {
     required: boolean
     notes?: string
@@ -71,9 +74,13 @@ export default function CustomerActivitiesPage() {
   const [activities, setActivities] = useState<Activity[]>([])
   const [searchTerm, setSearchTerm] = useState('')
   const [filterType, setFilterType] = useState<string>('all')
+  const [filterStatus, setFilterStatus] = useState<string>('all')
+  const [filterOutcome, setFilterOutcome] = useState<string>('all')
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null)
   const [currentPage, setCurrentPage] = useState(1)
   const [itemsPerPage, setItemsPerPage] = useState(10)
+  const [selectedActivity, setSelectedActivity] = useState<(Activity & {customerId: string}) | null>(null)
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -89,8 +96,12 @@ export default function CustomerActivitiesPage() {
           return
         }
 
-        // Fetch activities data
-        const activitiesResponse = await crmApi.getActivities(customerId)
+        // Fetch activities data with filters
+        const params: Record<string, string> = {}
+        if (filterType !== 'all') params.type = filterType
+        if (filterStatus !== 'all') params.status = filterStatus
+        
+        const activitiesResponse = await crmApi.getActivities(customerId, params)
         if (activitiesResponse.success) {
           setActivities((activitiesResponse.data as any)?.activities || [])
         } else {
@@ -107,18 +118,17 @@ export default function CustomerActivitiesPage() {
     if (customerId) {
       fetchData()
     }
-  }, [customerId])
+  }, [customerId, filterType, filterStatus])
 
-  // Filter activities based on search and filters
+  // Filter activities based on search and additional filters (client-side)
   const filteredActivities = activities.filter(activity => {
     const matchesSearch = 
       activity.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      activity.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      activity.createdBy.toLowerCase().includes(searchTerm.toLowerCase())
+      activity.description.toLowerCase().includes(searchTerm.toLowerCase())
     
-    const matchesType = filterType === 'all' || activity.type === filterType
+    const matchesOutcome = filterOutcome === 'all' || activity.outcome === filterOutcome
     
-    return matchesSearch && matchesType
+    return matchesSearch && matchesOutcome
   })
 
   // Pagination logic
@@ -128,7 +138,114 @@ export default function CustomerActivitiesPage() {
   const endIndex = startIndex + itemsPerPage
   const paginatedActivities = filteredActivities.slice(startIndex, endIndex)
 
-  const activityTypes = ['all', 'call', 'email', 'meeting', 'note', 'task', 'proposal']
+  const activityTypes = ['all', 'call', 'email', 'meeting', 'note', 'task', 'deal', 'quote']
+  const statuses = ['all', 'pending', 'completed', 'overdue', 'cancelled']
+  const outcomes = ['all', 'successful', 'unsuccessful', 'rescheduled', 'no-answer']
+
+  // Export functionality
+  const exportActivities = () => {
+    const csvHeaders = ['Type', 'Title', 'Description', 'Outcome', 'Date', 'Duration', 'Created By']
+    const csvData = filteredActivities.map(activity => [
+      activity.type,
+      activity.title,
+      activity.description,
+      activity.outcome || '',
+      formatDate(activity.scheduledAt || activity.completedAt || activity.createdAt || ''),
+      activity.duration ? `${activity.duration} minutes` : '',
+      activity.createdBy?.firstName && activity.createdBy?.lastName 
+        ? `${activity.createdBy.firstName} ${activity.createdBy.lastName}`
+        : 'System'
+    ])
+
+    const csvContent = [csvHeaders, ...csvData]
+      .map(row => row.map(field => `"${field}"`).join(','))
+      .join('\n')
+
+    const blob = new Blob([csvContent], { type: 'text/csv' })
+    const url = window.URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.href = url
+    link.download = `activities-${customer?.displayName || 'customer'}-${new Date().toISOString().split('T')[0]}.csv`
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+    window.URL.revokeObjectURL(url)
+  }
+
+  // Modal functions
+  const openModal = (activity: Activity) => {
+    setSelectedActivity({ ...activity, customerId })
+    setIsModalOpen(true)
+    setActiveDropdown(null)
+  }
+
+  const closeModal = () => {
+    setIsModalOpen(false)
+    setSelectedActivity(null)
+  }
+
+  // Refresh activities
+  const refreshActivities = async () => {
+    try {
+      const params: Record<string, string> = {}
+      if (filterType !== 'all') params.type = filterType
+      if (filterStatus !== 'all') params.status = filterStatus
+      
+      const activitiesResponse = await crmApi.getActivities(customerId, params)
+      if (activitiesResponse.success) {
+        setActivities((activitiesResponse.data as any)?.activities || [])
+      }
+    } catch (err: unknown) {
+      console.error('Failed to refresh activities:', err)
+    }
+  }
+
+  // Mark activity as completed
+  const markAsCompleted = async (activityId: string) => {
+    try {
+      const updateData: any = {
+        status: 'completed',
+        completedAt: new Date().toISOString()
+      }
+      
+      // Also update task status if it's a task type activity
+      const activity = activities.find(a => a._id === activityId)
+      if (activity?.type === 'task') {
+        updateData.task = { status: 'completed' }
+      }
+      
+      const response = await crmApi.updateActivity(activityId, updateData)
+      if (response.success) {
+        await refreshActivities()
+        setActiveDropdown(null)
+      } else {
+        throw new Error((response as any)?.error?.message || 'Update failed')
+      }
+    } catch (error) {
+      console.error('Failed to mark as completed:', error)
+      alert('Failed to mark activity as completed: ' + (error instanceof Error ? error.message : 'Unknown error'))
+    }
+  }
+
+  // Delete activity
+  const deleteActivity = async (activityId: string) => {
+    if (window.confirm('Are you sure you want to delete this activity?')) {
+      try {
+        const response = await crmApi.deleteActivity(activityId)
+        if (response.success) {
+          await refreshActivities()
+          setActiveDropdown(null)
+        } else {
+          throw new Error((response as any)?.error?.message || 'Delete failed')
+        }
+      } catch (error) {
+        console.error('Failed to delete activity:', error)
+        alert('Failed to delete activity: ' + (error instanceof Error ? error.message : 'Unknown error'))
+      }
+    }
+  }
+
+
 
   const getActivityIcon = (type: Activity['type']) => {
     switch (type) {
@@ -137,7 +254,8 @@ export default function CustomerActivitiesPage() {
       case 'meeting': return <Video className="w-4 h-4 text-purple-500" />
       case 'note': return <FileText className="w-4 h-4 text-gray-500" />
       case 'task': return <Clock className="w-4 h-4 text-orange-500" />
-      case 'proposal': return <Building className="w-4 h-4 text-indigo-500" />
+      case 'deal': return <Target className="w-4 h-4 text-red-500" />
+      case 'quote': return <Building className="w-4 h-4 text-indigo-500" />
       default: return <ActivityIcon className="w-4 h-4 text-gray-500" />
     }
   }
@@ -249,11 +367,18 @@ export default function CustomerActivitiesPage() {
             </p>
           </div>
           <div className="flex gap-3">
-            <Button variant="outline" className="bg-white hover:bg-gray-50">
+            <Button 
+              onClick={exportActivities}
+              variant="outline" 
+              className="bg-white hover:bg-gray-50"
+            >
               <Download className="w-4 h-4 mr-2" />
               Export
             </Button>
-            <Button className="bg-blue-600 hover:bg-blue-700">
+            <Button 
+              onClick={() => router.push(`/dashboard/crm/${customerId}/activities/new`)}
+              className="bg-blue-600 hover:bg-blue-700"
+            >
               <Plus className="w-4 h-4 mr-2" />
               Add Activity
             </Button>
@@ -290,6 +415,52 @@ export default function CustomerActivitiesPage() {
                     className="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
                   >
                     {type.charAt(0).toUpperCase() + type.slice(1)}
+                  </option>
+                ))}
+              </select>
+              <ChevronDown className="absolute right-2.5 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-500 dark:text-gray-400 pointer-events-none" />
+            </div>
+            
+            <div className="flex items-center gap-2">
+              <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Status:</span>
+            </div>
+            <div className="relative">
+              <select
+                value={filterStatus}
+                onChange={(e) => setFilterStatus(e.target.value)}
+                className="appearance-none bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2.5 pr-8 text-sm font-medium text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-400 dark:focus:border-blue-400 hover:border-gray-400 dark:hover:border-gray-500 transition-colors cursor-pointer min-w-[120px]"
+              >
+                <option value="all" className="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100">All</option>
+                {statuses.slice(1).map(status => (
+                  <option 
+                    key={status} 
+                    value={status}
+                    className="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+                  >
+                    {status.charAt(0).toUpperCase() + status.slice(1)}
+                  </option>
+                ))}
+              </select>
+              <ChevronDown className="absolute right-2.5 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-500 dark:text-gray-400 pointer-events-none" />
+            </div>
+
+            <div className="flex items-center gap-2">
+              <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Outcome:</span>
+            </div>
+            <div className="relative">
+              <select
+                value={filterOutcome}
+                onChange={(e) => setFilterOutcome(e.target.value)}
+                className="appearance-none bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2.5 pr-8 text-sm font-medium text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-400 dark:focus:border-blue-400 hover:border-gray-400 dark:hover:border-gray-500 transition-colors cursor-pointer min-w-[120px]"
+              >
+                <option value="all" className="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100">All</option>
+                {outcomes.slice(1).map(outcome => (
+                  <option 
+                    key={outcome} 
+                    value={outcome}
+                    className="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+                  >
+                    {outcome.charAt(0).toUpperCase() + outcome.slice(1).replace('-', ' ')}
                   </option>
                 ))}
               </select>
@@ -386,40 +557,52 @@ export default function CustomerActivitiesPage() {
                           : 'System'}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                        <div className="relative">
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={(e) => {
-                              e.stopPropagation()
-                              setActiveDropdown(activeDropdown === activity._id ? null : activity._id)
+                        <OverlayDropdown
+                          isOpen={activeDropdown === activity._id}
+                          onToggle={() => setActiveDropdown(activeDropdown === activity._id ? null : activity._id)}
+                          onClose={() => setActiveDropdown(null)}
+                        >
+                          <button 
+                            onClick={() => {
+                              openModal(activity)
+                              setActiveDropdown(null)
                             }}
-                            className="p-1"
+                            className="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left"
                           >
-                            <MoreVertical className="w-4 h-4" />
-                          </Button>
-                          {activeDropdown === activity._id && (
-                            <div 
-                              className="absolute right-0 mt-1 w-48 bg-white dark:bg-gray-800 rounded-md shadow-lg z-10 border border-gray-200 dark:border-gray-700"
-                              onClick={(e) => e.stopPropagation()}
-                            >
-                              <div className="py-1">
-                                <button className="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left">
-                                  <Eye className="w-4 h-4 mr-2" />
-                                  View Details
-                                </button>
-                                <button className="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left">
-                                  <FileText className="w-4 h-4 mr-2" />
-                                  Edit Activity
-                                </button>
-                                <button className="flex items-center px-4 py-2 text-sm text-blue-600 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left">
-                                  <MessageCircle className="w-4 h-4 mr-2" />
-                                  Add Follow-up
-                                </button>
-                              </div>
-                            </div>
-                          )}
-                        </div>
+                            <Eye className="w-4 h-4 mr-2" />
+                            View Details
+                          </button>
+                          <button 
+                            onClick={() => {
+                              router.push(`/dashboard/crm/${customerId}/activities/${activity._id}/edit`)
+                              setActiveDropdown(null)
+                            }}
+                            className="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left"
+                          >
+                            <Edit className="w-4 h-4 mr-2" />
+                            Edit Activity
+                          </button>
+                          <button 
+                            onClick={() => {
+                              markAsCompleted(activity._id)
+                              setActiveDropdown(null)
+                            }}
+                            className="flex items-center px-4 py-2 text-sm text-green-600 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left"
+                          >
+                            <CheckCircle className="w-4 h-4 mr-2" />
+                            Mark Completed
+                          </button>
+                          <button 
+                            onClick={() => {
+                              deleteActivity(activity._id)
+                              setActiveDropdown(null)
+                            }}
+                            className="flex items-center px-4 py-2 text-sm text-red-600 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left"
+                          >
+                            <Trash2 className="w-4 h-4 mr-2" />
+                            Delete
+                          </button>
+                        </OverlayDropdown>
                       </td>
                     </tr>
                   ))
@@ -482,6 +665,13 @@ export default function CustomerActivitiesPage() {
           )}
         </div>
       </div>
+
+      {/* Activity Details Modal */}
+      <ActivityDetailsModal
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        activity={selectedActivity}
+      />
     </div>
   )
 }

@@ -4,16 +4,17 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Button } from './ui/button'
 import { Card } from './ui/card'
+import { UserAvatar } from './ui/user-avatar'
 import { useStore } from '../store/useStore'
 import { ProfileDropdown } from './ProfileDropdown'
 import { NotificationsPanel } from './NotificationsPanel'
 import { ContactSupport } from './ContactSupport'
 import { notificationsApi } from '../lib/api'
+import { useUserContext } from '../contexts/UserContext'
 import { 
   Home, 
   User, 
   Bell, 
-  Search,
   Menu,
   X,
   LogOut,
@@ -42,6 +43,7 @@ export function DashboardLayout({
   const { theme, toggleTheme } = useStore()
   const pathname = usePathname()
   const router = useRouter()
+  const { user, isLoading: userLoading } = useUserContext()
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [sidebarMinimized, setSidebarMinimized] = useState(false)
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false)
@@ -55,7 +57,7 @@ export function DashboardLayout({
     try {
       const response = await notificationsApi.getStats()
       if (response.success && response.data) {
-        setUnreadNotificationCount(response.data.unread || 0)
+        setUnreadNotificationCount((response.data as any).unread || 0)
       }
     } catch (error) {
       console.error('Failed to fetch notification stats:', error)
@@ -242,12 +244,19 @@ export function DashboardLayout({
             {!sidebarMinimized ? (
               <>
                 <div className="flex items-center mb-3">
-                  <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
-                    <span className="text-white text-sm font-medium">SF</span>
-                  </div>
+                  <UserAvatar
+                    firstName={user?.firstName}
+                    lastName={user?.lastName}
+                    profileImage={user?.profileImage}
+                    size="md"
+                  />
                   <div className="ml-3">
-                    <p className="text-sm font-medium text-gray-900 dark:text-white">Jaziri Ahmed</p>
-                    <p className="text-xs text-gray-500 dark:text-gray-400">ahmedjaziri41@gmail.com</p>
+                    <p className="text-sm font-medium text-gray-900 dark:text-white">
+                      {user ? `${user.firstName || ''} ${user.lastName || ''}`.trim() : 'Loading...'}
+                    </p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400">
+                      {user?.email || 'Loading...'}
+                    </p>
                   </div>
                 </div>
                 <Button
@@ -262,9 +271,12 @@ export function DashboardLayout({
               </>
             ) : (
               <div className="flex flex-col items-center space-y-2">
-                <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
-                  <span className="text-white text-sm font-medium">SF</span>
-                </div>
+                <UserAvatar
+                  firstName={user?.firstName}
+                  lastName={user?.lastName}
+                  profileImage={user?.profileImage}
+                  size="md"
+                />
                 <Button
                   variant="ghost"
                   size="sm"
@@ -295,16 +307,6 @@ export function DashboardLayout({
                 >
                   <Menu className="w-6 h-6" />
                 </button>
-                
-                {/* Search bar */}
-                <div className="relative max-w-md">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-                  <input
-                    type="text"
-                    placeholder="Search..."
-                    className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-800 dark:border-gray-600 dark:text-white"
-                  />
-                </div>
               </div>
 
               <div className="flex items-center gap-4">
@@ -342,14 +344,20 @@ export function DashboardLayout({
                 <div className="relative">
                   <button
                     onClick={toggleProfileDropdown}
-                    className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center cursor-pointer hover:bg-blue-600 transition-colors"
+                    className="cursor-pointer hover:ring-2 hover:ring-blue-300 rounded-full transition-all"
                   >
-                    <span className="text-white text-sm font-medium">SF</span>
+                    <UserAvatar
+                      firstName={user?.firstName}
+                      lastName={user?.lastName}
+                      profileImage={user?.profileImage}
+                      size="md"
+                    />
                   </button>
                   <ProfileDropdown 
                     isOpen={profileDropdownOpen}
                     onClose={() => setProfileDropdownOpen(false)}
                     onLogout={handleLogout}
+                    user={user}
                   />
                 </div>
               </div>

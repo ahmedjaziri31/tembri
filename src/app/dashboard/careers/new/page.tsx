@@ -100,7 +100,7 @@ export default function NewPositionPage() {
       router.push('/dashboard/careers')
         }, 1500)
       } else {
-        setError(response.error?.message || 'Failed to create position')
+        setError((response.error as any)?.message || 'Failed to create position')
       }
     } catch (error: any) {
       console.error('Error creating position:', error)
@@ -526,7 +526,7 @@ export default function NewPositionPage() {
               <CardContent className="space-y-3">
                 <LoadingButton
                   type="submit"
-                  loading={isLoading}
+                  isLoading={isLoading}
                   className="w-full bg-blue-600 hover:bg-blue-700"
                 >
                   <Save className="w-4 h-4 mr-2" />

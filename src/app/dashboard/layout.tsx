@@ -1,4 +1,5 @@
 import { DashboardLayout } from '../../components/DashboardLayout'
+import { UserProvider } from '../../contexts/UserContext'
 
 export default function DashboardLayoutWrapper({
   children,
@@ -6,9 +7,11 @@ export default function DashboardLayoutWrapper({
   children: React.ReactNode
 }) {
   return (
-    <DashboardLayout>
-      {children}
-    </DashboardLayout>
+    <UserProvider>
+      <DashboardLayout>
+        {children}
+      </DashboardLayout>
+    </UserProvider>
   )
 }
  

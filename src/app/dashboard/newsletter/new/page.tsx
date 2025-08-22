@@ -348,9 +348,8 @@ export default function NewNewsletterPage() {
               <CardContent className="space-y-3">
                 <LoadingButton
                   type="button"
-                  loading={isLoading}
+                  isLoading={isLoading}
                   onClick={(e) => handleSubmit(e, 'save')}
-                  variant="outline"
                   className="w-full"
                 >
                   <Save className="w-4 h-4 mr-2" />
@@ -360,7 +359,7 @@ export default function NewNewsletterPage() {
                 {formData.status === 'scheduled' ? (
                   <LoadingButton
                     type="button"
-                    loading={isLoading}
+                    isLoading={isLoading}
                     onClick={(e) => handleSubmit(e, 'schedule')}
                     className="w-full bg-blue-600 hover:bg-blue-700"
                     disabled={!formData.scheduledDate}
@@ -371,7 +370,7 @@ export default function NewNewsletterPage() {
                 ) : (
                   <LoadingButton
                     type="button"
-                    loading={isLoading}
+                    isLoading={isLoading}
                     onClick={(e) => handleSubmit(e, 'send')}
                     className="w-full bg-green-600 hover:bg-green-700"
                   >

@@ -31,6 +31,7 @@ import {
   AlertCircle
 } from 'lucide-react'
 import { careersApi } from '../../../../../lib/api'
+import { OverlayDropdown } from '../../../../../components/ui/overlay-dropdown'
 
 interface Application {
   _id: string
@@ -87,7 +88,7 @@ interface Position {
 export default function ApplicantsPage() {
   const router = useRouter()
   const params = useParams()
-  const positionId = params.id as string
+  const positionId = params?.id as string
   
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState('')
@@ -113,11 +114,11 @@ export default function ApplicantsPage() {
       ])
       
       if (positionResponse.success && applicationsResponse.success) {
-        setPosition(positionResponse.data.career)
-        setAllApplications(applicationsResponse.data.applications || [])
-        setApiTotal(applicationsResponse.pagination?.total || (applicationsResponse.data.applications?.length ?? 0))
+        setPosition((positionResponse.data as any).career)
+        setAllApplications((applicationsResponse.data as any).applications || [])
+        setApiTotal((applicationsResponse as any).pagination?.total || ((applicationsResponse.data as any).applications?.length ?? 0))
       } else {
-        setError(positionResponse.error?.message || applicationsResponse.error?.message || 'Failed to fetch data')
+        setError((positionResponse.error as any)?.message || (applicationsResponse.error as any)?.message || 'Failed to fetch data')
       }
     } catch (error: any) {
       console.error('Error fetching data:', error)
@@ -125,6 +126,62 @@ export default function ApplicantsPage() {
     } finally {
       setIsLoading(false)
     }
+  }
+
+  // Export functionality
+  const exportApplicants = () => {
+    if (!filteredApplications.length) {
+      alert('No applicants to export')
+      return
+    }
+
+    const csvHeaders = [
+      'First Name',
+      'Last Name', 
+      'Email',
+      'Phone',
+      'Location',
+      'Current Title',
+      'Experience (Years)',
+      'Education Degree',
+      'Education School',
+      'Status',
+      'Stage',
+      'Application Date',
+      'Overall Rating',
+      'Notes'
+    ]
+    
+    const csvData = filteredApplications.map(app => [
+      app.applicant.firstName || '',
+      app.applicant.lastName || '',
+      app.applicant.email || '',
+      app.applicant.phone || '',
+      app.applicant.location || '',
+      app.applicant.currentTitle || '',
+      app.applicant.experience?.years?.toString() || '',
+      app.applicant.education?.degree || '',
+      app.applicant.education?.school || '',
+      app.status || '',
+      app.stage || '',
+      app.createdAt ? new Date(app.createdAt).toLocaleDateString() : '',
+      app.evaluation?.overallRating?.toString() || '',
+      app.evaluation?.notes || ''
+    ])
+
+    const csvContent = [csvHeaders, ...csvData]
+      .map(row => row.map(field => `"${field.toString().replace(/"/g, '""')}"`).join(','))
+      .join('\n')
+
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
+    const url = window.URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.href = url
+    link.download = `applicants-${position?.title.replace(/\s+/g, '-').toLowerCase() || 'position'}-${new Date().toISOString().split('T')[0]}.csv`
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+    window.URL.revokeObjectURL(url)
   }
 
   useEffect(() => {
@@ -146,7 +203,7 @@ export default function ApplicantsPage() {
         await fetchData()
         setActiveDropdown(null)
       } else {
-        setError(response.error?.message || 'Failed to update status')
+        setError((response.error as any)?.message || 'Failed to update status')
       }
     } catch (error: any) {
       console.error('Error updating status:', error)
@@ -168,7 +225,7 @@ export default function ApplicantsPage() {
         await fetchData()
         setActiveDropdown(null)
       } else {
-        setError(response.error?.message || 'Failed to delete application')
+        setError((response.error as any)?.message || 'Failed to delete application')
       }
     } catch (error: any) {
       console.error('Error deleting application:', error)
@@ -344,7 +401,10 @@ export default function ApplicantsPage() {
               Review and manage job applications
             </p>
           </div>
-          <Button className="bg-blue-600 hover:bg-blue-700">
+          <Button 
+            onClick={exportApplicants}
+            className="bg-blue-600 hover:bg-blue-700"
+          >
             <Download className="w-4 h-4 mr-2" />
             Export CSV
           </Button>
@@ -492,76 +552,103 @@ export default function ApplicantsPage() {
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                        <div className="relative">
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={(e) => {
-                              e.stopPropagation()
-                              setActiveDropdown(activeDropdown === application._id ? null : application._id)
-                            }}
-                            className="p-1"
-                            disabled={isUpdating === application._id}
-                          >
-                            {isUpdating === application._id ? (
-                              <div className="w-4 h-4 border-2 border-gray-300 border-t-gray-600 rounded-full animate-spin" />
-                            ) : (
-                              <MoreVertical className="w-4 h-4" />
-                            )}
-                          </Button>
-                          {activeDropdown === application._id && (
-                            <div 
-                              className="absolute right-0 mt-1 w-48 bg-white dark:bg-gray-800 rounded-md shadow-lg z-10 border border-gray-200 dark:border-gray-700"
-                              onClick={(e) => e.stopPropagation()}
+                        <OverlayDropdown
+                          isOpen={activeDropdown === application._id}
+                          onToggle={() => setActiveDropdown(activeDropdown === application._id ? null : application._id)}
+                          onClose={() => setActiveDropdown(null)}
+                          disabled={isUpdating === application._id}
+                          trigger={
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className="p-1"
+                              disabled={isUpdating === application._id}
                             >
-                              <div className="py-1">
-                                <button className="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left">
-                                  <Eye className="w-4 h-4 mr-2" />
-                                  View Details
-                                </button>
-                                {application.documents?.resume && (
-                                  <button className="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left">
-                                    <Download className="w-4 h-4 mr-2" />
-                                    Download Resume
-                                  </button>
-                                )}
-                                <button className="flex items-center px-4 py-2 text-sm text-blue-600 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left">
-                                  <Mail className="w-4 h-4 mr-2" />
-                                  Send Email
-                                </button>
-                                <button 
-                                  onClick={() => handleStatusUpdate(application._id, 'shortlisted')}
-                                  className="flex items-center px-4 py-2 text-sm text-indigo-600 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left"
-                                >
-                                  <Star className="w-4 h-4 mr-2" />
-                                  Shortlist
-                                </button>
-                                <button 
-                                  onClick={() => handleStatusUpdate(application._id, 'hired')}
-                                  className="flex items-center px-4 py-2 text-sm text-green-600 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left"
-                                >
-                                  <CheckCircle className="w-4 h-4 mr-2" />
-                                  Mark as Hired
-                                </button>
-                                <button 
-                                  onClick={() => handleStatusUpdate(application._id, 'rejected')}
-                                  className="flex items-center px-4 py-2 text-sm text-red-600 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left"
-                                >
-                                  <X className="w-4 h-4 mr-2" />
-                                  Reject
-                                </button>
-                                <div className="border-t border-gray-100 dark:border-gray-600 my-1"></div>
-                                <button 
-                                  onClick={() => handleDeleteApplication(application._id)}
-                                  className="flex items-center px-4 py-2 text-sm text-red-600 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left"
-                                >
-                                  <X className="w-4 h-4 mr-2" />
-                                  Delete Application
-                                </button>
-                              </div>
-                            </div>
+                              {isUpdating === application._id ? (
+                                <div className="w-4 h-4 border-2 border-gray-300 border-t-gray-600 rounded-full animate-spin" />
+                              ) : (
+                                <MoreVertical className="w-4 h-4" />
+                              )}
+                            </Button>
+                          }
+                        >
+                          <button 
+                            onClick={() => {
+                              router.push(`/dashboard/careers/${positionId}/applicants/${application._id}`)
+                              setActiveDropdown(null)
+                            }}
+                            className="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left"
+                          >
+                            <Eye className="w-4 h-4 mr-2" />
+                            View Profile
+                          </button>
+                          {application.documents?.resume && (
+                            <button 
+                              onClick={() => {
+                                alert('Download functionality will be implemented later')
+                                setActiveDropdown(null)
+                              }}
+                              className="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left"
+                            >
+                              <Download className="w-4 h-4 mr-2" />
+                              Download Resume
+                            </button>
                           )}
-                        </div>
+                          <button 
+                            onClick={() => {
+                              const subject = `Application for ${position?.title}`
+                              const body = `Hi ${application.applicant.firstName},\n\nThank you for your application for the ${position?.title} position.\n\nBest regards,`
+                              const mailtoUrl = `mailto:${application.applicant.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
+                              window.location.href = mailtoUrl
+                              setActiveDropdown(null)
+                            }}
+                            className="flex items-center px-4 py-2 text-sm text-blue-600 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left"
+                          >
+                            <Mail className="w-4 h-4 mr-2" />
+                            Send Email
+                          </button>
+                          <button 
+                            onClick={() => {
+                              handleStatusUpdate(application._id, 'shortlisted')
+                              setActiveDropdown(null)
+                            }}
+                            className="flex items-center px-4 py-2 text-sm text-indigo-600 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left"
+                          >
+                            <Star className="w-4 h-4 mr-2" />
+                            Shortlist
+                          </button>
+                          <button 
+                            onClick={() => {
+                              handleStatusUpdate(application._id, 'hired')
+                              setActiveDropdown(null)
+                            }}
+                            className="flex items-center px-4 py-2 text-sm text-green-600 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left"
+                          >
+                            <CheckCircle className="w-4 h-4 mr-2" />
+                            Mark as Hired
+                          </button>
+                          <button 
+                            onClick={() => {
+                              handleStatusUpdate(application._id, 'rejected')
+                              setActiveDropdown(null)
+                            }}
+                            className="flex items-center px-4 py-2 text-sm text-red-600 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left"
+                          >
+                            <X className="w-4 h-4 mr-2" />
+                            Reject
+                          </button>
+                          <div className="border-t border-gray-100 dark:border-gray-600 my-1"></div>
+                          <button 
+                            onClick={() => {
+                              handleDeleteApplication(application._id)
+                              setActiveDropdown(null)
+                            }}
+                            className="flex items-center px-4 py-2 text-sm text-red-600 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left"
+                          >
+                            <X className="w-4 h-4 mr-2" />
+                            Delete Application
+                          </button>
+                        </OverlayDropdown>
                       </td>
                     </tr>
                   ))

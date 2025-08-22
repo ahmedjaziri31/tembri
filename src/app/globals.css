@@ -507,3 +507,25 @@
 .font-bold {
   font-weight: 700;
 }
+
+/* Custom Hero Font - Using Inter with luxury styling */
+.font-hero {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-weight: 800;
+  font-feature-settings: 'ss01' on, 'ss02' on, 'cv01' on, 'cv11' on;
+  letter-spacing: -0.02em;
+}
+
+/* Sliding text animation */
+@keyframes slide-left {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.animate-slide-left {
+  animation: slide-left var(--duration, 30s) linear infinite;
+}

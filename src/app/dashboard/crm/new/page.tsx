@@ -577,7 +577,7 @@ export default function NewCustomerPage() {
               <CardContent className="space-y-3">
                 <LoadingButton
                   type="submit"
-                  loading={isLoading}
+                  isLoading={isLoading}
                   className="w-full bg-blue-600 hover:bg-blue-700"
                 >
                   <Save className="w-4 h-4 mr-2" />

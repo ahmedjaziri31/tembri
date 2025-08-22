@@ -2,14 +2,14 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter, useParams } from 'next/navigation'
-import { Card, CardContent, CardHeader, CardTitle } from '../../../../../../components/ui/card'
-import { Button } from '../../../../../../components/ui/button'
-import { Input } from '../../../../../../components/ui/input'
-import { Label } from '../../../../../../components/ui/label'
-import { Textarea } from '../../../../../../components/ui/textarea'
-import { LoadingButton } from '../../../../../../components/ui/loading-button'
-import { ArrowLeft, Save, Activity, ChevronDown, Calendar, Clock, Users, Plus, X } from 'lucide-react'
-import { crmApi } from '../../../../../../lib/api'
+import { Card, CardContent, CardHeader, CardTitle } from '../../../../../../../components/ui/card'
+import { Button } from '../../../../../../../components/ui/button'
+import { Input } from '../../../../../../../components/ui/input'
+import { Label } from '../../../../../../../components/ui/label'
+import { Textarea } from '../../../../../../../components/ui/textarea'
+import { LoadingButton } from '../../../../../../../components/ui/loading-button'
+import { ArrowLeft, Save, Activity, ChevronDown, Plus, X } from 'lucide-react'
+import { crmApi } from '../../../../../../../lib/api'
 
 interface Customer {
   _id: string
@@ -20,6 +20,42 @@ interface Customer {
   displayName?: string
   email?: string
   phone?: string
+}
+
+interface ActivityData {
+  _id: string
+  customerId: string
+  type: 'call' | 'email' | 'meeting' | 'note' | 'task' | 'deal' | 'quote'
+  subtype?: string
+  title: string
+  description?: string
+  outcome?: 'successful' | 'unsuccessful' | 'rescheduled' | 'no-answer'
+  scheduledAt?: string
+  completedAt?: string
+  duration?: number
+  communication?: {
+    direction?: 'inbound' | 'outbound'
+    channel?: 'phone' | 'email' | 'sms' | 'video' | 'in-person'
+    subject?: string
+  }
+  task?: {
+    status?: 'pending' | 'completed' | 'overdue' | 'cancelled'
+    priority?: 'low' | 'medium' | 'high' | 'urgent'
+    dueDate?: string
+    category?: string
+  }
+  followUp?: {
+    required?: boolean
+    dueDate?: string
+    notes?: string
+  }
+  participants?: Array<{
+    name: string
+    email: string
+    role: 'organizer' | 'attendee' | 'presenter'
+  }>
+  createdAt?: string
+  updatedAt?: string
 }
 
 interface ActivityFormData {
@@ -53,15 +89,17 @@ interface ActivityFormData {
   }>
 }
 
-export default function NewActivityPage() {
+export default function EditActivityPage() {
   const router = useRouter()
   const params = useParams()
   const customerId = params?.id as string
+  const activityId = params?.activityId as string
 
   const [isLoading, setIsLoading] = useState(false)
   const [isFetching, setIsFetching] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [customer, setCustomer] = useState<Customer | null>(null)
+  const [activity, setActivity] = useState<ActivityData | null>(null)
 
   const [formData, setFormData] = useState<ActivityFormData>({
     type: 'call',
@@ -91,49 +129,79 @@ export default function NewActivityPage() {
   })
 
   useEffect(() => {
-    const fetchCustomer = async () => {
+    const fetchData = async () => {
       setIsFetching(true)
       setError(null)
+      
       try {
-        const response = await crmApi.getById(customerId)
-        if (response.success && response.data) {
-          const foundCustomer = (response.data as {customer: Customer}).customer
+        // Fetch customer data
+        const customerResponse = await crmApi.getById(customerId)
+        if (customerResponse.success && customerResponse.data) {
+          const foundCustomer = (customerResponse.data as {customer: Customer}).customer
           setCustomer(foundCustomer)
         } else {
           setError('Customer not found')
           router.push('/dashboard/crm')
+          return
+        }
+
+        // Fetch activity data
+        const activityResponse = await crmApi.getActivity(activityId)
+        if (activityResponse.success && activityResponse.data) {
+          const foundActivity = (activityResponse.data as any)?.activity
+          
+          if (foundActivity) {
+            setActivity(foundActivity)
+            
+            // Preload form data
+            setFormData({
+              type: foundActivity.type || 'call',
+              subtype: foundActivity.subtype || 'outbound',
+              title: foundActivity.title || '',
+              description: foundActivity.description || '',
+              outcome: foundActivity.outcome || 'successful',
+              scheduledAt: foundActivity.scheduledAt ? new Date(foundActivity.scheduledAt).toISOString().slice(0, 16) : '',
+              duration: foundActivity.duration?.toString() || '',
+              communication: {
+                direction: foundActivity.communication?.direction || 'outbound',
+                channel: foundActivity.communication?.channel || 'phone',
+                subject: foundActivity.communication?.subject || ''
+              },
+              task: {
+                status: foundActivity.task?.status || 'pending',
+                priority: foundActivity.task?.priority || 'medium',
+                dueDate: foundActivity.task?.dueDate ? new Date(foundActivity.task.dueDate).toISOString().split('T')[0] : '',
+                category: foundActivity.task?.category || ''
+              },
+              followUp: {
+                required: foundActivity.followUp?.required || false,
+                dueDate: foundActivity.followUp?.dueDate ? new Date(foundActivity.followUp.dueDate).toISOString().split('T')[0] : '',
+                notes: foundActivity.followUp?.notes || ''
+              },
+              participants: foundActivity.participants || []
+            })
+          } else {
+            setError('Activity not found')
+            router.push(`/dashboard/crm/${customerId}/activities`)
+            return
+          }
+        } else {
+          setError('Failed to load activity')
+          router.push(`/dashboard/crm/${customerId}/activities`)
+          return
         }
       } catch (err: unknown) {
-        setError(err instanceof Error ? err.message : 'Failed to load customer')
-        router.push('/dashboard/crm')
+        setError(err instanceof Error ? err.message : 'Failed to load data')
+        router.push(`/dashboard/crm/${customerId}/activities`)
       } finally {
         setIsFetching(false)
       }
     }
 
-    if (customerId) {
-      fetchCustomer()
+    if (customerId && activityId) {
+      fetchData()
     }
-  }, [customerId, router])
-
-  // Handle query parameters for follow-up activities
-  useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search)
-    const type = urlParams.get('type')
-    const title = urlParams.get('title')
-    const description = urlParams.get('description')
-    const subtype = urlParams.get('subtype')
-
-    if (type || title || description || subtype) {
-      setFormData(prev => ({
-        ...prev,
-        ...(type && { type: type as any }),
-        ...(title && { title }),
-        ...(description && { description }),
-        ...(subtype && { subtype })
-      }))
-    }
-  }, [])
+  }, [customerId, activityId, router])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -173,14 +241,14 @@ export default function NewActivityPage() {
         }))
       }
 
-      const response = await crmApi.createActivity(customerId, activityData)
+      const response = await crmApi.updateActivity(activityId, activityData)
       if (response.success) {
         router.push(`/dashboard/crm/${customerId}/activities`)
       } else {
-        setError((response as {error?: {message: string}})?.error?.message || 'Failed to create activity')
+        setError((response as {error?: {message: string}})?.error?.message || 'Failed to update activity')
       }
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : 'Failed to create activity')
+      setError(err instanceof Error ? err.message : 'Failed to update activity')
     } finally {
       setIsLoading(false)
     }
@@ -243,21 +311,21 @@ export default function NewActivityPage() {
           </Button>
           <div className="flex items-center gap-3">
             <Activity className="w-6 h-6 text-blue-600" />
-            <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">Add Activity</h1>
+            <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">Edit Activity</h1>
           </div>
         </div>
 
         <div className="flex items-center justify-center py-16">
           <div className="flex items-center gap-3">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-            <span className="text-gray-500 dark:text-gray-400">Loading customer data...</span>
+            <span className="text-gray-500 dark:text-gray-400">Loading activity data...</span>
           </div>
         </div>
       </div>
     )
   }
 
-  if (!customer) {
+  if (!customer || !activity) {
     return null
   }
 
@@ -277,7 +345,7 @@ export default function NewActivityPage() {
         <div className="flex items-center gap-3">
           <Activity className="w-6 h-6 text-blue-600" />
           <div>
-            <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">Add Activity</h1>
+            <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">Edit Activity</h1>
             <p className="text-sm text-gray-500 dark:text-gray-400">
               {customer.displayName || `${customer.firstName || ''} ${customer.lastName || ''}`.trim() || 'Unknown'} • {customer.companyName || '—'} • {customer.email || '—'}
             </p>
@@ -671,7 +739,7 @@ export default function NewActivityPage() {
                   className="w-full bg-blue-600 hover:bg-blue-700"
                 >
                   <Save className="w-4 h-4 mr-2" />
-                  {isLoading ? 'Creating...' : 'Create Activity'}
+                  {isLoading ? 'Updating...' : 'Update Activity'}
                 </LoadingButton>
                 
                 <Button
@@ -690,3 +758,5 @@ export default function NewActivityPage() {
     </div>
   )
 }
+
+

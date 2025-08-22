@@ -82,13 +82,26 @@ async function apiRequest<T>(
     }
 
     if (!response.ok) {
-      const errorMessage = data.message || data.error || data.details || `HTTP error! status: ${response.status}`;
+      let errorMessage = `HTTP error! status: ${response.status}`;
+      
+      if (data && typeof data === 'object') {
+        if (data.error && typeof data.error === 'object' && data.error.message) {
+          errorMessage = data.error.message;
+        } else if (typeof data.message === 'string') {
+          errorMessage = data.message;
+        } else if (typeof data.error === 'string') {
+          errorMessage = data.error;
+        } else if (typeof data.details === 'string') {
+          errorMessage = data.details;
+        }
+      }
+      
       throw new Error(errorMessage);
     }
 
     return data;
   } catch (error) {
-    console.error(`API request failed: ${endpoint}`, error);
+    console.error(`API request failed: ${endpoint}`, error instanceof Error ? error.message : String(error));
     // Ensure error message is a string
     const errorMessage = error instanceof Error ? error.message : String(error);
     throw new Error(errorMessage);
@@ -173,8 +186,17 @@ export const authApi = {
 
   // Get current user profile
   async getProfile(): Promise<any> {
-    const response = await apiRequest('/auth/profile');
-    return response.data;
+    const response = await apiRequest('/auth/me');
+    return response;
+  },
+
+  // Update user profile
+  async updateProfile(data: any): Promise<any> {
+    const response = await apiRequest('/auth/profile', {
+      method: 'PUT',
+      body: JSON.stringify(data),
+    });
+    return response;
   },
 
   // Logout
@@ -347,6 +369,10 @@ export const crmApi = {
   async getActivities(id: string, params?: any) {
     const queryString = buildQuery(params);
     return apiRequest(`/crm/${id}/activities${queryString}`);
+  },
+
+  async getActivity(activityId: string) {
+    return apiRequest(`/crm/activities/${activityId}`);
   },
 
   async createActivity(customerId: string, data: any) {

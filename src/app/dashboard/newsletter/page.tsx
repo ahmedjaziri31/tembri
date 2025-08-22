@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../../components/ui/card'
 import { Button } from '../../../components/ui/button'
+import { OverlayDropdown } from '../../../components/ui/overlay-dropdown'
 import { Input } from '../../../components/ui/input'
 import { Badge } from '../../../components/ui/badge'
 import { 
@@ -489,91 +490,87 @@ export default function NewsletterPage() {
                         )}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                        <div className="relative">
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={(e) => {
-                              e.stopPropagation()
-                              setActiveDropdown(activeDropdown === newsletter.id ? null : newsletter.id)
-                            }}
-                            className="p-1"
-                          >
-                            <MoreVertical className="w-4 h-4" />
-                          </Button>
-                          {activeDropdown === newsletter.id && (
-                            <div 
-                              className="absolute right-0 mt-1 w-48 bg-white dark:bg-gray-800 rounded-md shadow-lg z-10 border border-gray-200 dark:border-gray-700"
-                              onClick={(e) => e.stopPropagation()}
-                            >
-                              <div className="py-1">
-                                {newsletter.status === 'draft' && (
-                                  <>
-                                    <button
-                                      onClick={() => handleSendNewsletter(newsletter)}
-                                      disabled={isProcessing === newsletter.id}
-                                      className="flex items-center px-4 py-2 text-sm text-green-600 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left disabled:opacity-50"
-                                    >
-                                      <Send className="w-4 h-4 mr-2" />
-                                      {isProcessing === newsletter.id ? 'Sending...' : 'Send Now'}
-                                    </button>
-                                    <button
-                                      onClick={() => handleScheduleNewsletter(newsletter)}
-                                      disabled={isProcessing === newsletter.id}
-                                      className="flex items-center px-4 py-2 text-sm text-blue-600 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left disabled:opacity-50"
-                                    >
-                                      <Clock className="w-4 h-4 mr-2" />
-                                      {isProcessing === newsletter.id ? 'Scheduling...' : 'Schedule'}
-                                    </button>
-                                  </>
-                                )}
-                                
-                                {newsletter.status === 'scheduled' && (
-                                  <button
-                                    onClick={() => handleSendNewsletter(newsletter)}
-                                    disabled={isProcessing === newsletter.id}
-                                    className="flex items-center px-4 py-2 text-sm text-green-600 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left disabled:opacity-50"
-                                  >
-                                    <Send className="w-4 h-4 mr-2" />
-                                    {isProcessing === newsletter.id ? 'Sending...' : 'Send Now'}
-                                  </button>
-                                )}
-                                
-                                {newsletter.status === 'sent' && (
-                                  <button
-                                    onClick={() => {
-                                      // Navigate to analytics/statistics page
-                                      setActiveDropdown(null)
-                                    }}
-                                    className="flex items-center px-4 py-2 text-sm text-blue-600 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left"
-                                  >
-                                    <BarChart3 className="w-4 h-4 mr-2" />
-                                    View Analytics
-                                  </button>
-                                )}
-                                
-                                <button
-                                  onClick={() => {
-                                    router.push(`/dashboard/newsletter/${newsletter.id}/edit`)
-                                    setActiveDropdown(null)
-                                  }}
-                                  className="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left"
-                                >
-                                  <Edit className="w-4 h-4 mr-2" />
-                                  Edit
-                                </button>
-                                
-                                <button
-                                  onClick={() => openDeleteModal(newsletter)}
-                                  className="flex items-center px-4 py-2 text-sm text-red-600 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left"
-                                >
-                                  <Trash2 className="w-4 h-4 mr-2" />
-                                  Delete
-                                </button>
-                              </div>
-                            </div>
+                        <OverlayDropdown
+                          isOpen={activeDropdown === newsletter.id}
+                          onToggle={() => setActiveDropdown(activeDropdown === newsletter.id ? null : newsletter.id)}
+                          onClose={() => setActiveDropdown(null)}
+                        >
+                          {newsletter.status === 'draft' && (
+                            <>
+                              <button
+                                onClick={() => {
+                                  handleSendNewsletter(newsletter)
+                                  setActiveDropdown(null)
+                                }}
+                                disabled={isProcessing === newsletter.id}
+                                className="flex items-center px-4 py-2 text-sm text-green-600 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left disabled:opacity-50"
+                              >
+                                <Send className="w-4 h-4 mr-2" />
+                                {isProcessing === newsletter.id ? 'Sending...' : 'Send Now'}
+                              </button>
+                              <button
+                                onClick={() => {
+                                  handleScheduleNewsletter(newsletter)
+                                  setActiveDropdown(null)
+                                }}
+                                disabled={isProcessing === newsletter.id}
+                                className="flex items-center px-4 py-2 text-sm text-blue-600 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left disabled:opacity-50"
+                              >
+                                <Clock className="w-4 h-4 mr-2" />
+                                {isProcessing === newsletter.id ? 'Scheduling...' : 'Schedule'}
+                              </button>
+                            </>
                           )}
-                        </div>
+                          
+                          {newsletter.status === 'scheduled' && (
+                            <button
+                              onClick={() => {
+                                handleSendNewsletter(newsletter)
+                                setActiveDropdown(null)
+                              }}
+                              disabled={isProcessing === newsletter.id}
+                              className="flex items-center px-4 py-2 text-sm text-green-600 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left disabled:opacity-50"
+                            >
+                              <Send className="w-4 h-4 mr-2" />
+                              {isProcessing === newsletter.id ? 'Sending...' : 'Send Now'}
+                            </button>
+                          )}
+                          
+                          {newsletter.status === 'sent' && (
+                            <button
+                              onClick={() => {
+                                // Navigate to analytics/statistics page
+                                setActiveDropdown(null)
+                              }}
+                              className="flex items-center px-4 py-2 text-sm text-blue-600 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left"
+                            >
+                              <BarChart3 className="w-4 h-4 mr-2" />
+                              View Analytics
+                            </button>
+                          )}
+                          
+                          <button
+                            onClick={() => {
+                              router.push(`/dashboard/newsletter/${newsletter.id}/edit`)
+                              setActiveDropdown(null)
+                            }}
+                            className="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left"
+                          >
+                            <Edit className="w-4 h-4 mr-2" />
+                            Edit
+                          </button>
+                          
+                          <button
+                            onClick={() => {
+                              openDeleteModal(newsletter)
+                              setActiveDropdown(null)
+                            }}
+                            className="flex items-center px-4 py-2 text-sm text-red-600 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left"
+                          >
+                            <Trash2 className="w-4 h-4 mr-2" />
+                            Delete
+                          </button>
+                        </OverlayDropdown>
                       </td>
                     </tr>
                   ))
