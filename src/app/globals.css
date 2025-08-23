@@ -508,12 +508,34 @@
   font-weight: 700;
 }
 
-/* Custom Hero Font - Using Righteous with luxury styling */
-.font-hero {
-  font-family: 'Righteous', 'Inter', system-ui, -apple-system, sans-serif;
+/* Brand Font Hierarchy */
+
+/* Heading Font - For titles and main headings */
+.font-heading {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+/* Secondary Font - For subtitles and secondary text */
+.font-secondary {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+
+/* Body Font - For body text and paragraphs */
+.font-body {
+  font-family: 'Source Sans Pro', system-ui, -apple-system, sans-serif;
   font-weight: 400;
-  font-feature-settings: 'ss01' on, 'ss02' on, 'cv01' on, 'cv11' on;
-  letter-spacing: -0.01em;
+  letter-spacing: 0.005em;
+}
+
+/* Legacy Hero Font */
+.font-hero {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  letter-spacing: -0.02em;
 }
 
 /* Seamless infinite scroll animation */
@@ -542,4 +564,39 @@
 
 .animate-slide-left {
   animation: slide-left var(--duration, 30s) linear infinite;
+}
+
+/* 3D Card Hover Effects */
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.transform-gpu {
+  transform-style: preserve-3d;
+}
+
+/* 3D Rotation utilities */
+.rotate-x-6 {
+  transform: rotateX(6deg);
+}
+
+.rotate-x-12 {
+  transform: rotateX(12deg);
+}
+
+.rotate-y-12 {
+  transform: rotateY(12deg);
+}
+
+/* Enhanced group hover for 3D cards */
+.group:hover .group-hover\:rotate-x-6 {
+  transform: rotateX(6deg) rotateY(12deg);
+}
+
+.group:hover .group-hover\:rotate-x-12 {
+  transform: rotateX(12deg) rotateY(12deg);
+}
+
+.group:hover .group-hover\:rotate-y-12 {
+  transform: rotateX(6deg) rotateY(12deg);
 }

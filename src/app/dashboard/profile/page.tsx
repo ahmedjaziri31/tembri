@@ -266,7 +266,7 @@ export default function ProfilePage() {
                     }}
                   >
                     <Camera className="w-4 h-4" />
-                  </Button>
+        </Button>
                 </div>
                 <div className="text-center mt-4">
                   <h3 className="font-medium text-gray-900 dark:text-white">
@@ -279,7 +279,7 @@ export default function ProfilePage() {
               </div>
             </CardContent>
           </Card>
-        </div>
+      </div>
 
         {/* Main Profile Form */}
         <div className="lg:col-span-2 space-y-6">
@@ -440,12 +440,12 @@ export default function ProfilePage() {
                       id="linkedin"
                       value={profileData.socialLinks.linkedin}
                       onChange={(e) => handleInputChange('socialLinks.linkedin', e.target.value)}
-                      className="pl-10"
+                  className="pl-10"
                       placeholder="https://linkedin.com/in/username"
-                    />
-                  </div>
-                </div>
+                />
               </div>
+            </div>
+          </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
@@ -461,7 +461,7 @@ export default function ProfilePage() {
                     />
                   </div>
                 </div>
-                <div className="space-y-2">
+          <div className="space-y-2">
                   <Label htmlFor="twitter">Twitter</Label>
                   <div className="relative">
                     <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-sm font-bold">@</span>
