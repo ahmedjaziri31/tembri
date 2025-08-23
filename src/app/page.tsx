@@ -1,14 +1,35 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useMemo, memo } from 'react'
 import { X } from 'lucide-react'
+import Image from 'next/image'
 
-export default function HomePage() {
+const HomePage = memo(function HomePage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen)
   }
+
+  // Memoize the logo elements to prevent unnecessary re-renders
+  const logoElements = useMemo(() => {
+    const logos = []
+    for (let i = 0; i < 8; i++) { // Reduced from 12 to 8 for better performance
+      logos.push(
+        <div key={i} className="flex-shrink-0 mx-8 lg:mx-12">
+          <Image 
+            src="/home/logo2.png" 
+            alt="Maison Elaris" 
+            width={256}
+            height={256}
+            priority={i < 3} // Priority load first 3 images
+            className="h-32 sm:h-40 md:h-48 lg:h-56 xl:h-64 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity duration-500 drop-shadow-[0_0_20px_rgba(255,255,255,0.1)]"
+          />
+        </div>
+      )
+    }
+    return logos
+  }, [])
 
   return (
     <div className="min-h-screen w-full relative overflow-hidden">
@@ -148,37 +169,15 @@ export default function HomePage() {
         <div className="flex-1 flex items-center justify-center">
           <div className="w-full max-w-full mx-auto">
             <div className="w-full overflow-hidden relative py-8">
-              {/* Seamless infinite scroll container */}
+              {/* Optimized infinite scroll container */}
               <div className="flex animate-infinite-scroll">
                 {/* First set of logos */}
                 <div className="flex flex-shrink-0">
-                  {Array.from({ length: 12 }).map((_, index) => (
-                    <div key={`first-${index}`} className="flex-shrink-0 mx-8 lg:mx-12">
-                      <img 
-                        src="/home/logo2.png" 
-                        alt="Maison Elaris" 
-                        className="h-32 sm:h-40 md:h-48 lg:h-56 xl:h-64 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity duration-500"
-                        style={{
-                          filter: 'drop-shadow(0 0 20px rgba(255, 255, 255, 0.1))',
-                        }}
-                      />
-                    </div>
-                  ))}
+                  {logoElements}
                 </div>
                 {/* Duplicate set for seamless loop */}
                 <div className="flex flex-shrink-0">
-                  {Array.from({ length: 12 }).map((_, index) => (
-                    <div key={`second-${index}`} className="flex-shrink-0 mx-8 lg:mx-12">
-                      <img 
-                        src="/home/logo2.png" 
-                        alt="Maison Elaris" 
-                        className="h-32 sm:h-40 md:h-48 lg:h-56 xl:h-64 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity duration-500"
-                        style={{
-                          filter: 'drop-shadow(0 0 20px rgba(255, 255, 255, 0.1))',
-                        }}
-                      />
-                    </div>
-                  ))}
+                  {logoElements}
                 </div>
               </div>
             </div>
@@ -218,4 +217,6 @@ export default function HomePage() {
       </section>
     </div>
   )
-}
+})
+
+export default HomePage

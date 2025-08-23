@@ -1,11 +1,7 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
 
-/* Import Inter font with required weights */
-@import '@fontsource/inter/400.css'; /* Regular */
-@import '@fontsource/inter/500.css'; /* Medium */
-@import '@fontsource/inter/600.css'; /* Semi Bold */
-@import '@fontsource/inter/700.css'; /* Bold */
+/* Fonts are now loaded via Next.js in layout.tsx */
 
 /* Hide scrollbar but keep functionality */
 .scrollbar-hide {
@@ -294,7 +290,7 @@
 
   body {
     @apply bg-background text-foreground;
-    font-family: 'Inter', var(--font-geist-sans), sans-serif;
+    font-family: var(--font-inter), var(--font-geist-sans), sans-serif;
   }
 
   /* Typography Base Styles */
@@ -304,14 +300,14 @@
   h4,
   h5,
   h6 {
-    font-family: 'Inter', var(--font-geist-sans), sans-serif;
+    font-family: var(--font-inter), var(--font-geist-sans), sans-serif;
     font-weight: 600; /* Semi Bold */
     line-height: var(--leading-tight);
     letter-spacing: var(--tracking-tight);
   }
 
   p {
-    font-family: 'Inter', var(--font-geist-sans), sans-serif;
+    font-family: var(--font-inter), var(--font-geist-sans), sans-serif;
     font-weight: 400; /* Regular */
     line-height: var(--leading-normal);
     letter-spacing: var(--tracking-normal);
@@ -512,44 +508,45 @@
 
 /* Heading Font - For titles and main headings */
 .font-heading {
-  font-family: 'Playfair Display', serif;
+  font-family: var(--font-playfair-display), serif;
   font-weight: 700;
   letter-spacing: -0.02em;
 }
 
 /* Secondary Font - For subtitles and secondary text */
 .font-secondary {
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-family: var(--font-inter), system-ui, -apple-system, sans-serif;
   font-weight: 500;
   letter-spacing: 0.01em;
 }
 
 /* Body Font - For body text and paragraphs */
 .font-body {
-  font-family: 'Source Sans Pro', system-ui, -apple-system, sans-serif;
+  font-family: var(--font-source-sans-pro), system-ui, -apple-system, sans-serif;
   font-weight: 400;
   letter-spacing: 0.005em;
 }
 
 /* Legacy Hero Font */
 .font-hero {
-  font-family: 'Playfair Display', serif;
+  font-family: var(--font-playfair-display), serif;
   font-weight: 700;
   letter-spacing: -0.02em;
 }
 
-/* Seamless infinite scroll animation */
+/* Optimized infinite scroll animation using GPU acceleration */
 @keyframes infinite-scroll {
   0% {
-    transform: translateX(0);
+    transform: translate3d(0, 0, 0);
   }
   100% {
-    transform: translateX(-50%);
+    transform: translate3d(-50%, 0, 0);
   }
 }
 
 .animate-infinite-scroll {
-  animation: infinite-scroll 40s linear infinite;
+  animation: infinite-scroll 30s linear infinite;
+  will-change: transform;
 }
 
 /* Legacy sliding text animation */

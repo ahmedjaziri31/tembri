@@ -86,8 +86,11 @@ const config: Config = {
         xl: 'calc(var(--radius) + 4px)',
       },
       fontFamily: {
-        sans: ['Inter', 'var(--font-geist-sans)', 'sans-serif'],
+        sans: ['var(--font-inter)', 'var(--font-geist-sans)', 'sans-serif'],
         mono: ['var(--font-geist-mono)', 'monospace'],
+        heading: ['var(--font-playfair-display)', 'serif'],
+        body: ['var(--font-source-sans-pro)', 'sans-serif'],
+        secondary: ['var(--font-inter)', 'sans-serif'],
       },
       fontWeight: {
         regular: '400',
