@@ -5,7 +5,7 @@ const nextConfig: NextConfig = {
   
   // Enable experimental features for better performance
   experimental: {
-    optimizeCss: true,
+    // optimizeCss: true, // Disabled - requires 'critters' package
     optimizePackageImports: ['lucide-react'],
   },
 
@@ -18,9 +18,6 @@ const nextConfig: NextConfig = {
 
   // Compress responses
   compress: true,
-
-  // Optimize fonts
-  optimizeFonts: true,
 
   // Bundle analyzer (enable in development if needed)
   // bundleAnalyzer: {
