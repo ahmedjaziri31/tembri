@@ -23,6 +23,7 @@ const HomePage = memo(function HomePage() {
             width={256}
             height={256}
             priority={i < 3} // Priority load first 3 images
+            fetchPriority={i === 0 ? "high" : "auto"} // High priority for LCP
             className="h-32 sm:h-40 md:h-48 lg:h-56 xl:h-64 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity duration-500 drop-shadow-[0_0_20px_rgba(255,255,255,0.1)]"
           />
         </div>
