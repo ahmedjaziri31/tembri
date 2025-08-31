@@ -55,7 +55,7 @@ export function DashboardLayout({
     try {
       const response = await notificationsApi.getStats()
       if (response.success && response.data) {
-        setUnreadNotificationCount(response.data.unread || 0)
+        setUnreadNotificationCount((response.data as any).unread || 0)
       }
     } catch (error) {
       console.error('Failed to fetch notification stats:', error)

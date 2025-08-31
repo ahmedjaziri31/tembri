@@ -49,7 +49,7 @@ export default function Header() {
             aria-label="Toggle navigation menu"
           >
             <div className="text-xs text-gray-400 group-hover:text-white transition-colors duration-300 font-body">
-              Menu
+              git 
             </div>
             <div className={`h-0.5 bg-white/60 group-hover:bg-white rounded-full transition-all duration-300 ${isSlideMenuOpen ? 'w-16' : 'w-20'}`}></div>
           </button>

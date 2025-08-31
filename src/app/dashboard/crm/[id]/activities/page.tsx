@@ -35,13 +35,13 @@ import { ActivityDetailsModal } from '../../../../../components/ui/activity-deta
 interface Activity {
   _id: string
   customerId: string
-  type: 'call' | 'email' | 'meeting' | 'note' | 'task' | 'proposal'
+  type: 'call' | 'email' | 'meeting' | 'note' | 'task' | 'proposal' | 'deal' | 'quote'
   title: string
   description: string
   scheduledAt?: string
   completedAt?: string
   duration?: number
-  outcome?: string
+  outcome?: 'successful' | 'unsuccessful' | 'rescheduled' | 'no-answer'
   followUp?: {
     required: boolean
     notes?: string
@@ -255,6 +255,8 @@ export default function CustomerActivitiesPage() {
       case 'note': return <FileText className="w-4 h-4 text-gray-500" />
       case 'task': return <Clock className="w-4 h-4 text-orange-500" />
       case 'proposal': return <Building className="w-4 h-4 text-indigo-500" />
+      case 'deal': return <CheckCircle className="w-4 h-4 text-red-500" />
+      case 'quote': return <FileText className="w-4 h-4 text-purple-500" />
       default: return <ActivityIcon className="w-4 h-4 text-gray-500" />
     }
   }

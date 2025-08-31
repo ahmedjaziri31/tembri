@@ -8,7 +8,7 @@ import { Badge } from './badge'
 interface ActivityData {
   _id: string
   customerId: string
-  type: 'call' | 'email' | 'meeting' | 'note' | 'task' | 'deal' | 'quote'
+  type: 'call' | 'email' | 'meeting' | 'note' | 'task' | 'proposal' | 'deal' | 'quote'
   subtype?: string
   title: string
   description?: string
@@ -81,6 +81,7 @@ export function ActivityDetailsModal({ isOpen, onClose, activity }: ActivityDeta
       case 'meeting': return <Calendar className="w-5 h-5 text-purple-500" />
       case 'note': return <FileText className="w-5 h-5 text-yellow-500" />
       case 'task': return <CheckCircle className="w-5 h-5 text-orange-500" />
+      case 'proposal': return <FileText className="w-5 h-5 text-pink-500" />
       case 'deal': return <Target className="w-5 h-5 text-red-500" />
       case 'quote': return <FileText className="w-5 h-5 text-indigo-500" />
       default: return <FileText className="w-5 h-5 text-gray-500" />
