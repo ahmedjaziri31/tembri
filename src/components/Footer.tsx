@@ -36,7 +36,7 @@ export default function Footer() {
               <Link href="/" className="text-white hover:text-[#ffe9c7] transition-colors duration-300 font-body">Home</Link>
               <Link href="/about" className="text-white hover:text-[#ffe9c7] transition-colors duration-300 font-body">ABOUT US</Link>
               <Link href="/work" className="text-white hover:text-[#ffe9c7] transition-colors duration-300 font-body">OUR WORK</Link>
-              <Link href="/contact" className="text-white hover:text-[#ffe9c7] transition-colors duration-300 font-body">Contact</Link>
+                                   <Link href="/connect" className="text-white hover:text-[#ffe9c7] transition-colors duration-300 font-body">Connect</Link>
             </div>
 
             {/* Global Locations */}

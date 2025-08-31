@@ -2,6 +2,7 @@
 
 import { useMemo, memo } from 'react'
 import Image from 'next/image'
+import Link from 'next/link'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 
@@ -89,7 +90,7 @@ const HomePage = memo(function HomePage() {
         </div>
       </section>
 
-      {/* Contact Us CTA Section */}
+              {/* Connect CTA Section */}
       <section className="relative bg-black py-24 lg:py-32 overflow-hidden">
         {/* Background Decorative Shapes */}
         <div className="absolute inset-0">
@@ -117,10 +118,10 @@ const HomePage = memo(function HomePage() {
             
             {/* Content */}
             <div className="relative z-10">
-              {/* Subtitle */}
-              <p className="text-[#336b62] text-sm lg:text-base font-secondary font-medium tracking-wider mb-6 uppercase">
-                Contact Us
-              </p>
+                               {/* Subtitle */}
+                 <p className="text-[#336b62] text-sm lg:text-base font-secondary font-medium tracking-wider mb-6 uppercase">
+                   Connect With Us
+                 </p>
               
               {/* Main Heading */}
               <h2 className="text-white text-2xl lg:text-3xl xl:text-4xl font-heading font-bold leading-tight mb-8">
@@ -135,12 +136,16 @@ const HomePage = memo(function HomePage() {
               
               {/* CTA Buttons */}
               <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-                <button className="bg-[#336b62] hover:bg-[#9b8075] text-white px-6 py-3 rounded-lg transition-colors duration-300 font-body font-medium">
-                  GET IN CONTACT
-                </button>
-                <button className="bg-transparent border-2 border-[#336b62] hover:bg-[#336b62] text-[#336b62] hover:text-white px-6 py-3 rounded-lg transition-colors duration-300 font-body font-medium">
-                  VIEW CAREERS
-                </button>
+                <Link href="/connect/general-inquiries">
+                  <button className="bg-[#336b62] hover:bg-[#9b8075] text-white px-6 py-3 rounded-lg transition-colors duration-300 font-body font-medium">
+                    GET IN CONTACT
+                  </button>
+                </Link>
+                <Link href="/connect/careers">
+                  <button className="bg-transparent border-2 border-[#336b62] hover:bg-[#336b62] text-[#336b62] hover:text-white px-6 py-3 rounded-lg transition-colors duration-300 font-body font-medium">
+                    VIEW CAREERS
+                  </button>
+                </Link>
               </div>
             </div>
           </div>

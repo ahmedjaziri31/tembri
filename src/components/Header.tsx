@@ -57,15 +57,15 @@ export default function Header() {
 
         {/* Right Navigation */}
         <div className="ml-auto flex items-center space-x-8">
-          {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center space-x-8">
-            <Link href="/about" className="text-white hover:text-[#ffe9c7] transition-colors duration-300 font-body text-sm">
-              About Us
-            </Link>
-            <Link href="/contact" className="text-white hover:text-[#ffe9c7] transition-colors duration-300 font-body text-sm">
-              Contact
-            </Link>
-          </div>
+                           {/* Desktop Navigation */}
+                 <div className="hidden lg:flex items-center space-x-8">
+                   <Link href="/about" className="text-white hover:text-[#ffe9c7] transition-colors duration-300 font-body text-sm">
+                     About Us
+                   </Link>
+                   <Link href="/connect" className="text-white hover:text-[#ffe9c7] transition-colors duration-300 font-body text-sm">
+                     Connect
+                   </Link>
+                 </div>
           
           {/* Mobile Menu Button */}
           <button
@@ -132,11 +132,11 @@ export default function Header() {
               Our Work
             </Link>
             <Link 
-              href="/contact" 
+              href="/connect" 
               className="text-white text-2xl hover:text-[#ffe9c7] transition-colors duration-300 font-body"
               onClick={toggleMenu}
             >
-              Contact
+              Connect
             </Link>
           </nav>
         </div>
@@ -189,11 +189,11 @@ export default function Header() {
                 </Link>
                 
                 <Link 
-                  href="/contact" 
+                  href="/connect" 
                   className="block text-white text-lg lg:text-xl font-heading font-light hover:text-[#ffe9c7] transition-colors duration-300"
                   onClick={toggleSlideMenu}
                 >
-                  Contact
+                  Connect
                 </Link>
               </div>
             </nav>
