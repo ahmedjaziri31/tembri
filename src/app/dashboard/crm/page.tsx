@@ -13,6 +13,7 @@ import {
   Calendar,
   MapPin,
   Users,
+  MoreVertical,
   Filter,
   ChevronLeft,
   ChevronRight,
@@ -28,7 +29,6 @@ import {
 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { crmApi } from '../../../lib/api'
-import { OverlayDropdown } from '../../../components/ui/overlay-dropdown'
 
 interface Customer {
   _id: string
@@ -445,80 +445,84 @@ Sales Team`)
                         )}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                        <OverlayDropdown
-                          isOpen={activeDropdown === customer._id}
-                          onToggle={() => setActiveDropdown(activeDropdown === customer._id ? null : customer._id)}
-                          onClose={() => setActiveDropdown(null)}
-                        >
-                          <button
-                            onClick={() => {
-                              router.push(`/dashboard/crm/${customer._id}/activities`)
-                              setActiveDropdown(null)
+                        <div className="relative">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              setActiveDropdown(activeDropdown === customer._id ? null : customer._id)
                             }}
-                            className="flex items-center px-4 py-2 text-sm text-blue-600 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left"
+                            className="p-1"
                           >
-                            <Activity className="w-4 h-4 mr-2" />
-                            View Activities ({customer.engagement?.totalActivities || 0})
-                          </button>
-                          
-                          <button
-                            onClick={() => {
-                              router.push(`/dashboard/crm/${customer._id}/edit`)
-                              setActiveDropdown(null)
-                            }}
-                            className="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left"
-                          >
-                            <Edit className="w-4 h-4 mr-2" />
-                            Edit
-                          </button>
-                          
-                          <button
-                            onClick={() => {
-                              handleEmailCustomer(customer)
-                              setActiveDropdown(null)
-                            }}
-                            className="flex items-center px-4 py-2 text-sm text-green-600 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left"
-                          >
-                            <Mail className="w-4 h-4 mr-2" />
-                            Send Email
-                          </button>
-                          
-                          <button
-                            onClick={() => {
-                              window.open(`tel:${customer.phone || ''}`, '_self')
-                              setActiveDropdown(null)
-                            }}
-                            className="flex items-center px-4 py-2 text-sm text-purple-600 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left"
-                          >
-                            <Phone className="w-4 h-4 mr-2" />
-                            Call Customer
-                          </button>
-                          
-                          {customer.status !== 'customer' && (
-                            <button
-                              onClick={() => {
-                                handleUpdateStatus(customer, 'qualified')
-                                setActiveDropdown(null)
-                              }}
-                              disabled={isProcessing === customer._id}
-                              className="flex items-center px-4 py-2 text-sm text-yellow-600 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left disabled:opacity-50"
+                            <MoreVertical className="w-4 h-4" />
+                          </Button>
+                          {activeDropdown === customer._id && (
+                            <div 
+                              className="absolute right-0 mt-1 w-48 bg-white dark:bg-gray-800 rounded-md shadow-lg z-10 border border-gray-200 dark:border-gray-700"
+                              onClick={(e) => e.stopPropagation()}
                             >
-                              <Target className="w-4 h-4 mr-2" />
-                              {isProcessing === customer._id ? 'Updating...' : 'Mark Qualified'}
-                            </button>
+                              <div className="py-1">
+                                <button
+                                  onClick={() => {
+                                    router.push(`/dashboard/crm/${customer._id}/activities`)
+                                    setActiveDropdown(null)
+                                  }}
+                                  className="flex items-center px-4 py-2 text-sm text-blue-600 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left"
+                                >
+                                  <Activity className="w-4 h-4 mr-2" />
+                                  View Activities ({customer.engagement?.totalActivities || 0})
+                                </button>
+                                
+                                <button
+                                  onClick={() => {
+                                    router.push(`/dashboard/crm/${customer._id}/edit`)
+                                    setActiveDropdown(null)
+                                  }}
+                                  className="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left"
+                                >
+                                  <Edit className="w-4 h-4 mr-2" />
+                                  Edit
+                                </button>
+                                
+                                <button
+                                  onClick={() => handleEmailCustomer(customer)}
+                                  className="flex items-center px-4 py-2 text-sm text-green-600 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left"
+                                >
+                                  <Mail className="w-4 h-4 mr-2" />
+                                  Send Email
+                                </button>
+                                
+                                <button
+                                  onClick={() => window.open(`tel:${customer.phone || ''}`, '_self')}
+                                  className="flex items-center px-4 py-2 text-sm text-purple-600 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left"
+                                >
+                                  <Phone className="w-4 h-4 mr-2" />
+                                  Call Customer
+                                </button>
+                                
+                                {customer.status !== 'customer' && (
+                                  <button
+                                    onClick={() => handleUpdateStatus(customer, 'qualified')}
+                                    disabled={isProcessing === customer._id}
+                                    className="flex items-center px-4 py-2 text-sm text-yellow-600 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left disabled:opacity-50"
+                                  >
+                                    <Target className="w-4 h-4 mr-2" />
+                                    {isProcessing === customer._id ? 'Updating...' : 'Mark Qualified'}
+                                  </button>
+                                )}
+                                
+                                <button
+                                  onClick={() => openDeleteModal(customer)}
+                                  className="flex items-center px-4 py-2 text-sm text-red-600 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left"
+                                >
+                                  <Trash2 className="w-4 h-4 mr-2" />
+                                  Delete
+                                </button>
+                              </div>
+                            </div>
                           )}
-                          
-                          <button
-                            onClick={() => {
-                              openDeleteModal(customer)
-                              setActiveDropdown(null)
-                            }}
-                            className="flex items-center px-4 py-2 text-sm text-red-600 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left"
-                          >
-                            <Trash2 className="w-4 h-4 mr-2" />
-                            Delete
-                          </button>
-                        </OverlayDropdown>
+                        </div>
                       </td>
                     </tr>
                   ))

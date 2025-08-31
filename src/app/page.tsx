@@ -1,15 +1,11 @@
 'use client'
 
-import { useState, useMemo, memo } from 'react'
-import { X } from 'lucide-react'
+import { useMemo, memo } from 'react'
 import Image from 'next/image'
+import Header from '../components/Header'
+import Footer from '../components/Footer'
 
 const HomePage = memo(function HomePage() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
-
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen)
-  }
 
   // Memoize the logo elements to prevent unnecessary re-renders
   const logoElements = useMemo(() => {
@@ -37,132 +33,8 @@ const HomePage = memo(function HomePage() {
       {/* Black Background */}
       <div className="absolute inset-0 z-0 bg-black" />
 
-      {/* Navigation Header */}
-      <header className="relative z-50 flex items-center justify-between p-6 lg:p-8">
-        {/* Logo */}
-        <div className="text-white">
-          <div className="font-heading text-2xl tracking-wider">
-            <span className="text-sm block mb-1 font-secondary">MAISON</span>
-            <span className="text-xl font-bold">ELARIS</span>
-          </div>
-        </div>
-
-        {/* Desktop Navigation */}
-        <nav className="hidden lg:flex items-center space-x-8">
-          <a href="#home" className="text-white hover:text-[#ffe9c7] transition-colors duration-300 font-body">
-            Home
-          </a>
-          <a href="#about" className="text-white hover:text-[#ffe9c7] transition-colors duration-300 font-body">
-            ABOUT US
-          </a>
-          <a href="#projects" className="text-white hover:text-[#ffe9c7] transition-colors duration-300 font-body">
-            Projects
-          </a>
-          <a href="#contact" className="text-white hover:text-[#ffe9c7] transition-colors duration-300 font-body">
-            Contact
-          </a>
-        </nav>
-
-        {/* Mobile Menu Button */}
-        <button
-          onClick={toggleMenu}
-          className="lg:hidden text-white p-2"
-          aria-label="Toggle menu"
-        >
-          <div className="flex flex-col space-y-1">
-            <div className="w-6 h-0.5 bg-white"></div>
-            <div className="w-6 h-0.5 bg-white"></div>
-            <div className="w-6 h-0.5 bg-white"></div>
-          </div>
-        </button>
-
-        {/* Additional Navigation Items */}
-        <div className="hidden lg:flex items-center space-x-6">
-          <a href="#about-us" className="text-white hover:text-[#ffe9c7] transition-colors duration-300 text-sm font-body">
-            À Propos De Nous
-          </a>
-          <a href="#contact" className="text-white hover:text-[#ffe9c7] transition-colors duration-300 text-sm font-body">
-            Contact
-          </a>
-        </div>
-      </header>
-
-      {/* Mobile Menu Overlay */}
-      <div
-        className={`fixed inset-0 z-[60] lg:hidden transition-all duration-300 bg-black ${
-          isMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
-        }`}
-      >
-        {/* Close Button */}
-        <button
-          onClick={(e) => {
-            e.stopPropagation()
-            toggleMenu()
-          }}
-          className="absolute top-6 right-6 text-white p-2 z-20 bg-black/20 rounded-full hover:bg-white/10 transition-colors"
-          aria-label="Close menu"
-        >
-          <X size={24} />
-        </button>
-
-        {/* Mobile Menu Content */}
-        <div className="flex flex-col items-center justify-center h-full space-y-8 relative z-10">
-          <div className="text-center mb-8">
-            <div className="text-white text-3xl font-heading tracking-wider">
-              <span className="text-lg block mb-2 font-secondary">MAISON</span>
-              <span className="text-2xl font-bold">ELARIS</span>
-            </div>
-          </div>
-          
-          <nav className="flex flex-col items-center space-y-6">
-            <a 
-              href="#home" 
-              className="text-white text-2xl hover:text-[#ffe9c7] transition-colors duration-300 font-body"
-              onClick={toggleMenu}
-            >
-              Home
-            </a>
-            <a 
-              href="#about" 
-              className="text-white text-2xl hover:text-[#ffe9c7] transition-colors duration-300 font-body"
-              onClick={toggleMenu}
-            >
-              ABOUT US
-            </a>
-            <a 
-              href="#projects" 
-              className="text-white text-2xl hover:text-[#ffe9c7] transition-colors duration-300 font-body"
-              onClick={toggleMenu}
-            >
-              Projects
-            </a>
-            <a 
-              href="#contact" 
-              className="text-white text-2xl hover:text-[#ffe9c7] transition-colors duration-300 font-body"
-              onClick={toggleMenu}
-            >
-              Contact
-            </a>
-          </nav>
-
-          <div className="flex flex-col items-center space-y-4 mt-8">
-            <a 
-              href="#about-us" 
-              className="text-white hover:text-[#ffe9c7] transition-colors duration-300 font-body"
-              onClick={toggleMenu}
-            >
-              À Propos De Nous
-            </a>
-            <a 
-              href="#contact" 
-              className="text-white hover:text-[#ffe9c7] transition-colors duration-300 font-body"
-              onClick={toggleMenu}
-            >
-              Contact
-            </a>
-          </div>
-        </div>
-      </div>
+      {/* Header */}
+      <Header />
 
       {/* Hero Section with Infinite Scrolling Logos */}
       <main className="relative z-20 flex flex-col justify-between min-h-[calc(100vh-120px)]">
@@ -204,7 +76,7 @@ const HomePage = memo(function HomePage() {
               <p className="text-[#ffe9c7] text-sm lg:text-base font-secondary font-light tracking-wider mb-2">
                 CREATIONS
               </p>
-              <h2 className="text-white text-4xl lg:text-6xl xl:text-7xl font-heading font-bold leading-tight">
+              <h2 className="text-white text-2xl lg:text-3xl xl:text-4xl font-heading font-bold leading-tight">
                 LATEST<br />PROJECTS
               </h2>
             </div>
@@ -216,6 +88,85 @@ const HomePage = memo(function HomePage() {
 
         </div>
       </section>
+
+      {/* Contact Us CTA Section */}
+      <section className="relative bg-black py-24 lg:py-32 overflow-hidden">
+        {/* Background Decorative Shapes */}
+        <div className="absolute inset-0">
+          <Image
+            src="/shape.png"
+            alt=""
+            width={700}
+            height={700}
+            className="absolute top-1 -right-50 rotate-12 opacity-60 filter brightness-150"
+          />
+          <Image
+            src="/shape.png"
+            alt=""
+            width={600}
+            height={600}
+            className="absolute bottom-0 -left-40 -rotate-12 opacity-50 filter brightness-150"
+          />
+        </div>
+        
+        {/* Content Container with Transparent Card */}
+        <div className="relative z-10 max-w-5xl mx-auto px-6">
+          <div className="relative bg-black/40 backdrop-blur-sm border border-white/10 rounded-3xl p-12 lg:p-16 text-center shadow-2xl">
+            {/* Subtle inner glow */}
+            <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent rounded-3xl"></div>
+            
+            {/* Content */}
+            <div className="relative z-10">
+              {/* Subtitle */}
+              <p className="text-[#336b62] text-sm lg:text-base font-secondary font-medium tracking-wider mb-6 uppercase">
+                Contact Us
+              </p>
+              
+              {/* Main Heading */}
+              <h2 className="text-white text-2xl lg:text-3xl xl:text-4xl font-heading font-bold leading-tight mb-8">
+                CREATE TOMORROW,<br />
+                TOGETHER
+              </h2>
+              
+              {/* Description */}
+              <p className="text-gray-300 text-lg lg:text-xl font-body font-light leading-relaxed mb-12 max-w-3xl mx-auto">
+                Every idea we share and every step we take moves us closer to a future we&apos;re proud to shape.
+              </p>
+              
+              {/* CTA Buttons */}
+              <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
+                <button className="bg-[#336b62] hover:bg-[#9b8075] text-white px-6 py-3 rounded-lg transition-colors duration-300 font-body font-medium">
+                  GET IN CONTACT
+                </button>
+                <button className="bg-transparent border-2 border-[#336b62] hover:bg-[#336b62] text-[#336b62] hover:text-white px-6 py-3 rounded-lg transition-colors duration-300 font-body font-medium">
+                  VIEW CAREERS
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Partners Section */}
+      <section className="bg-black py-16 lg:py-24 relative z-20">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="flex items-center justify-center">
+            <div className="w-full max-w-4xl">
+              <Image
+                src="/partners/partners.png"
+                alt="Our Partners"
+                width={1200}
+                height={400}
+                className="w-full h-auto object-contain opacity-80 hover:opacity-100 transition-opacity duration-300"
+                priority
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <Footer />
     </div>
   )
 })

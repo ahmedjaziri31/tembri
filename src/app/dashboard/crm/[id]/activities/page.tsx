@@ -15,6 +15,7 @@ import {
   Phone,
   Calendar,
   FileText,
+  MoreVertical,
   Filter,
   ChevronLeft,
   ChevronRight,
@@ -26,22 +27,21 @@ import {
   Activity as ActivityIcon,
   Edit,
   Trash2,
-  CheckCircle,
-  Target
+  CheckCircle
 } from 'lucide-react'
 import { crmApi } from '../../../../../lib/api'
 import { ActivityDetailsModal } from '../../../../../components/ui/activity-details-modal'
-import { OverlayDropdown } from '../../../../../components/ui/overlay-dropdown'
 
 interface Activity {
   _id: string
-  type: 'call' | 'email' | 'meeting' | 'note' | 'task' | 'deal' | 'quote'
+  customerId: string
+  type: 'call' | 'email' | 'meeting' | 'note' | 'task' | 'proposal'
   title: string
   description: string
   scheduledAt?: string
   completedAt?: string
   duration?: number
-  outcome?: 'successful' | 'unsuccessful' | 'rescheduled' | 'no-answer'
+  outcome?: string
   followUp?: {
     required: boolean
     notes?: string
@@ -79,7 +79,7 @@ export default function CustomerActivitiesPage() {
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null)
   const [currentPage, setCurrentPage] = useState(1)
   const [itemsPerPage, setItemsPerPage] = useState(10)
-  const [selectedActivity, setSelectedActivity] = useState<(Activity & {customerId: string}) | null>(null)
+  const [selectedActivity, setSelectedActivity] = useState<Activity | null>(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
 
   useEffect(() => {
@@ -174,7 +174,7 @@ export default function CustomerActivitiesPage() {
 
   // Modal functions
   const openModal = (activity: Activity) => {
-    setSelectedActivity({ ...activity, customerId })
+    setSelectedActivity(activity)
     setIsModalOpen(true)
     setActiveDropdown(null)
   }
@@ -254,8 +254,7 @@ export default function CustomerActivitiesPage() {
       case 'meeting': return <Video className="w-4 h-4 text-purple-500" />
       case 'note': return <FileText className="w-4 h-4 text-gray-500" />
       case 'task': return <Clock className="w-4 h-4 text-orange-500" />
-      case 'deal': return <Target className="w-4 h-4 text-red-500" />
-      case 'quote': return <Building className="w-4 h-4 text-indigo-500" />
+      case 'proposal': return <Building className="w-4 h-4 text-indigo-500" />
       default: return <ActivityIcon className="w-4 h-4 text-gray-500" />
     }
   }
@@ -557,52 +556,61 @@ export default function CustomerActivitiesPage() {
                           : 'System'}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                        <OverlayDropdown
-                          isOpen={activeDropdown === activity._id}
-                          onToggle={() => setActiveDropdown(activeDropdown === activity._id ? null : activity._id)}
-                          onClose={() => setActiveDropdown(null)}
-                        >
-                          <button 
-                            onClick={() => {
-                              openModal(activity)
-                              setActiveDropdown(null)
+                        <div className="relative">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              setActiveDropdown(activeDropdown === activity._id ? null : activity._id)
                             }}
-                            className="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left"
+                            className="p-1"
                           >
-                            <Eye className="w-4 h-4 mr-2" />
-                            View Details
-                          </button>
-                          <button 
-                            onClick={() => {
-                              router.push(`/dashboard/crm/${customerId}/activities/${activity._id}/edit`)
-                              setActiveDropdown(null)
-                            }}
-                            className="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left"
-                          >
-                            <Edit className="w-4 h-4 mr-2" />
-                            Edit Activity
-                          </button>
-                          <button 
-                            onClick={() => {
-                              markAsCompleted(activity._id)
-                              setActiveDropdown(null)
-                            }}
-                            className="flex items-center px-4 py-2 text-sm text-green-600 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left"
-                          >
-                            <CheckCircle className="w-4 h-4 mr-2" />
-                            Mark Completed
-                          </button>
-                          <button 
-                            onClick={() => {
-                              deleteActivity(activity._id)
-                              setActiveDropdown(null)
-                            }}
-                            className="flex items-center px-4 py-2 text-sm text-red-600 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left"
-                          >
-                            <Trash2 className="w-4 h-4 mr-2" />
-                            Delete
-                          </button>
-                        </OverlayDropdown>
+                            <MoreVertical className="w-4 h-4" />
+                          </Button>
+                          {activeDropdown === activity._id && (
+                            <div 
+                              className="absolute right-0 mt-1 w-48 bg-white dark:bg-gray-800 rounded-md shadow-lg border border-gray-200 dark:border-gray-700"
+                              style={{ zIndex: 9999 }}
+                              onClick={(e) => e.stopPropagation()}
+                            >
+                              <div className="py-1">
+                                <button 
+                                  onClick={() => openModal(activity)}
+                                  className="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left"
+                                >
+                                  <Eye className="w-4 h-4 mr-2" />
+                                  View Details
+                                </button>
+                                <button 
+                                  onClick={() => {
+                                    router.push(`/dashboard/crm/${customerId}/activities/${activity._id}/edit`)
+                                    setActiveDropdown(null)
+                                  }}
+                                  className="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left"
+                                >
+                                  <Edit className="w-4 h-4 mr-2" />
+                                  Edit Activity
+                                </button>
+                                <button 
+                                  onClick={() => markAsCompleted(activity._id)}
+                                  className="flex items-center px-4 py-2 text-sm text-green-600 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left"
+                                >
+                                  <CheckCircle className="w-4 h-4 mr-2" />
+                                  Mark Completed
+                                </button>
+
+                                <button 
+                                  onClick={() => deleteActivity(activity._id)}
+                                  className="flex items-center px-4 py-2 text-sm text-red-600 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left"
+                                >
+                                  <Trash2 className="w-4 h-4 mr-2" />
+                                  Delete
+                                </button>
+                              </div>
+                            </div>
+                          )}
+                        </div>
                       </td>
                     </tr>
                   ))

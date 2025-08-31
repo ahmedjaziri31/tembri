@@ -4,23 +4,22 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../..
 import { Button } from '../../../components/ui/button'
 import { Input } from '../../../components/ui/input'
 import { Label } from '../../../components/ui/label'
+import { Textarea } from '../../../components/ui/textarea'
 
 import { LoadingButton } from '../../../components/ui/loading-button'
-import { UserAvatar } from '../../../components/ui/user-avatar'
-import { useUserContext } from '../../../contexts/UserContext'
-import { Mail, Phone, MapPin, Save, Camera, Globe, Github, Linkedin } from 'lucide-react'
+import { Mail, Phone, MapPin, Save, User, Camera, Globe, Github, Linkedin } from 'lucide-react'
 import { useState, useEffect } from 'react'
 import { authApi } from '../../../lib/api'
 
 export default function ProfilePage() {
-  const { refreshUser } = useUserContext()
+
   const [isLoading, setIsLoading] = useState(true)
   const [isSaving, setIsSaving] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState<string | null>(null)
-  const [showLoadedIndicator, setShowLoadedIndicator] = useState(false)
   
   const [profileData, setProfileData] = useState({
+
     firstName: '',
     lastName: '',
     email: '',
@@ -45,18 +44,14 @@ export default function ProfilePage() {
     loadProfile()
   }, [])
 
-
-
   const loadProfile = async () => {
     setIsLoading(true)
     setError(null)
     try {
       const response = await authApi.getProfile()
-      
       if (response.success && response.data?.user) {
         const user = response.data.user
-        
-        const newProfileData = {
+        setProfileData({
           firstName: user.firstName || '',
           lastName: user.lastName || '',
           email: user.email || '',
@@ -75,15 +70,7 @@ export default function ProfilePage() {
             linkedin: user.socialLinks?.linkedin || '',
             twitter: user.socialLinks?.twitter || ''
           }
-        }
-        
-        setProfileData(newProfileData)
-        setShowLoadedIndicator(true)
-        
-        // Hide the loaded indicator after 3 seconds
-        setTimeout(() => {
-          setShowLoadedIndicator(false)
-        }, 3000)
+        })
       } else {
         setError('Failed to load profile data')
       }
@@ -103,16 +90,6 @@ export default function ProfilePage() {
       const response = await authApi.updateProfile(profileData)
       if (response.success) {
         setSuccess('Profile updated successfully!')
-        
-        // Update stored user data if response contains updated user
-        if (response.data?.user) {
-          const { setStoredUser } = await import('../../../lib/api')
-          setStoredUser(response.data.user)
-        }
-        
-        // Refresh user data globally to update sidebar/header
-        await refreshUser()
-        
         setTimeout(() => setSuccess(null), 3000)
       } else {
         setError((response as any)?.error?.message || 'Failed to update profile')
@@ -125,6 +102,7 @@ export default function ProfilePage() {
   }
 
   const handleInputChange = (field: string, value: string) => {
+
     if (field.includes('.')) {
       const [parent, child] = field.split('.')
       setProfileData(prev => ({
@@ -136,64 +114,21 @@ export default function ProfilePage() {
       }))
     } else {
     setProfileData(prev => ({ ...prev, [field]: value }))
+
     }
   }
 
-
+  const getInitials = (firstName: string, lastName: string) => {
+    return `${firstName.charAt(0)}${lastName.charAt(0)}`.toUpperCase()
+  }
 
   if (isLoading) {
     return (
       <div className="max-w-4xl mx-auto p-6">
-        <div className="space-y-8">
-          {/* Header Skeleton */}
-          <div className="flex items-center justify-between">
-            <div>
-              <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded-md w-48 animate-pulse"></div>
-              <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded-md w-64 mt-2 animate-pulse"></div>
-            </div>
-            <div className="h-10 bg-gray-200 dark:bg-gray-700 rounded-md w-32 animate-pulse"></div>
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* Profile Photo Skeleton */}
-            <div className="lg:col-span-1">
-              <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
-                <div className="flex flex-col items-center space-y-4">
-                  <div className="w-32 h-32 bg-gray-200 dark:bg-gray-700 rounded-full animate-pulse"></div>
-                  <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded-md w-24 animate-pulse"></div>
-                  <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded-md w-32 animate-pulse"></div>
-                </div>
-              </div>
-            </div>
-
-            {/* Form Skeleton */}
-            <div className="lg:col-span-2 space-y-6">
-              <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
-                <div className="space-y-4">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-20 animate-pulse"></div>
-                      <div className="h-10 bg-gray-200 dark:bg-gray-700 rounded animate-pulse"></div>
-                    </div>
-                    <div className="space-y-2">
-                      <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-20 animate-pulse"></div>
-                      <div className="h-10 bg-gray-200 dark:bg-gray-700 rounded animate-pulse"></div>
-                    </div>
-                  </div>
-                  <div className="space-y-2">
-                    <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-24 animate-pulse"></div>
-                    <div className="h-10 bg-gray-200 dark:bg-gray-700 rounded animate-pulse"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="flex items-center justify-center">
-            <div className="flex items-center gap-3">
-              <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600"></div>
-              <span className="text-gray-600 dark:text-gray-400 font-medium">Loading your profile data...</span>
-            </div>
+        <div className="flex items-center justify-center h-64">
+          <div className="flex items-center gap-3">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+            <span className="text-gray-500 dark:text-gray-400">Loading profile...</span>
           </div>
         </div>
       </div>
@@ -201,30 +136,26 @@ export default function ProfilePage() {
   }
 
   return (
+
     <div className="max-w-4xl mx-auto p-6 space-y-8">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
+
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Profile Settings</h1>
           <p className="text-gray-600 dark:text-gray-400 mt-1">Manage your personal information and preferences</p>
         </div>
+
         <LoadingButton
           onClick={handleSave}
           isLoading={isSaving}
           className="bg-blue-600 hover:bg-blue-700"
         >
           <Save className="w-4 h-4 mr-2" />
+
           {isSaving ? 'Saving...' : 'Save Changes'}
         </LoadingButton>
       </div>
-
-      {/* Profile Data Loaded Indicator */}
-      {showLoadedIndicator && (
-        <div className="bg-blue-50 border border-blue-200 text-blue-700 px-4 py-3 rounded-lg dark:bg-blue-900/50 dark:border-blue-800 dark:text-blue-300 flex items-center gap-2">
-          <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
-          Profile data loaded successfully - You can now edit your information
-        </div>
-      )}
 
       {/* Error/Success Messages */}
       {error && (
@@ -249,13 +180,20 @@ export default function ProfilePage() {
             <CardContent className="space-y-4">
               <div className="flex flex-col items-center">
                 <div className="relative">
-                  <UserAvatar
-                    firstName={profileData.firstName}
-                    lastName={profileData.lastName}
-                    profileImage={profileData.profileImage}
-                    size="xl"
-                    className="border-4 border-white shadow-lg dark:border-gray-800"
-                  />
+                  {profileData.profileImage ? (
+                    <img
+                      src={profileData.profileImage}
+                      alt="Profile"
+                      className="w-32 h-32 rounded-full object-cover border-4 border-white shadow-lg dark:border-gray-800"
+                    />
+                  ) : (
+                    <div className="w-32 h-32 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white text-2xl font-bold shadow-lg">
+                      {profileData.firstName && profileData.lastName 
+                        ? getInitials(profileData.firstName, profileData.lastName)
+                        : <User className="w-12 h-12" />
+                      }
+                    </div>
+                  )}
                   <Button
                     size="sm"
                     variant="outline"
@@ -267,6 +205,7 @@ export default function ProfilePage() {
                   >
                     <Camera className="w-4 h-4" />
         </Button>
+
                 </div>
                 <div className="text-center mt-4">
                   <h3 className="font-medium text-gray-900 dark:text-white">
@@ -281,6 +220,7 @@ export default function ProfilePage() {
           </Card>
       </div>
 
+
         {/* Main Profile Form */}
         <div className="lg:col-span-2 space-y-6">
           {/* Basic Information */}
@@ -292,26 +232,31 @@ export default function ProfilePage() {
         <CardContent className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
+
                   <Label htmlFor="firstName">First Name *</Label>
               <Input
                 id="firstName"
                 value={profileData.firstName}
                 onChange={(e) => handleInputChange('firstName', e.target.value)}
+
                     placeholder="Enter your first name"
               />
             </div>
             <div className="space-y-2">
+
                   <Label htmlFor="lastName">Last Name *</Label>
               <Input
                 id="lastName"
                 value={profileData.lastName}
                 onChange={(e) => handleInputChange('lastName', e.target.value)}
+
                     placeholder="Enter your last name"
               />
             </div>
           </div>
 
           <div className="space-y-2">
+
                 <Label htmlFor="email">Email Address *</Label>
             <div className="relative">
               <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
@@ -321,16 +266,19 @@ export default function ProfilePage() {
                 value={profileData.email}
                 onChange={(e) => handleInputChange('email', e.target.value)}
                 className="pl-10"
+
                     placeholder="your.email@example.com"
                     disabled
               />
             </div>
+
                 <p className="text-xs text-gray-500 dark:text-gray-400">
                   Email cannot be changed here. Contact support if needed.
                 </p>
           </div>
 
             <div className="space-y-2">
+
                 <Label htmlFor="phone">Phone Number</Label>
               <div className="relative">
                 <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
@@ -339,10 +287,12 @@ export default function ProfilePage() {
                   value={profileData.phone}
                   onChange={(e) => handleInputChange('phone', e.target.value)}
                   className="pl-10"
+
                     placeholder="+1 (555) 123-4567"
                 />
               </div>
             </div>
+
             </CardContent>
           </Card>
 
@@ -354,10 +304,12 @@ export default function ProfilePage() {
             </CardHeader>
             <CardContent className="space-y-6">
             <div className="space-y-2">
+
                 <Label htmlFor="street">Street Address</Label>
               <div className="relative">
                 <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
                 <Input
+
                     id="street"
                     value={profileData.address.street}
                     onChange={(e) => handleInputChange('address.street', e.target.value)}
@@ -441,11 +393,13 @@ export default function ProfilePage() {
                       value={profileData.socialLinks.linkedin}
                       onChange={(e) => handleInputChange('socialLinks.linkedin', e.target.value)}
                   className="pl-10"
+
                       placeholder="https://linkedin.com/in/username"
                 />
               </div>
             </div>
           </div>
+
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
@@ -462,6 +416,7 @@ export default function ProfilePage() {
                   </div>
                 </div>
           <div className="space-y-2">
+
                   <Label htmlFor="twitter">Twitter</Label>
                   <div className="relative">
                     <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-sm font-bold">@</span>
@@ -472,11 +427,12 @@ export default function ProfilePage() {
                   className="pl-10"
                       placeholder="https://twitter.com/username"
                 />
-              </div>
-            </div>
+                  </div>
+                </div>
           </div>
         </CardContent>
       </Card>
+
 
           
         </div>
@@ -484,4 +440,5 @@ export default function ProfilePage() {
     </div>
   )
 }
+
  

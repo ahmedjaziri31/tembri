@@ -88,8 +88,8 @@ export function NotificationsPanel({ isOpen, onClose }: NotificationsPanelProps)
       console.log('Notifications API response:', response)
       
       if (response.success && response.data) {
-        setNotifications((response.data as any).notifications || [])
-        setUnreadCount((response.data as any).unreadCount || 0)
+        setNotifications(response.data.notifications || [])
+        setUnreadCount(response.data.unreadCount || 0)
       }
     } catch (err) {
       console.error('Failed to fetch notifications:', err)

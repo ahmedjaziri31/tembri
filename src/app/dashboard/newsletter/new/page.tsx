@@ -350,6 +350,7 @@ export default function NewNewsletterPage() {
                   type="button"
                   isLoading={isLoading}
                   onClick={(e) => handleSubmit(e, 'save')}
+                  variant="outline"
                   className="w-full"
                 >
                   <Save className="w-4 h-4 mr-2" />

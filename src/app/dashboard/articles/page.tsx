@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react'
 import { Button } from '../../../components/ui/button'
-import { OverlayDropdown } from '../../../components/ui/overlay-dropdown'
 import { Input } from '../../../components/ui/input'
 import { Badge } from '../../../components/ui/badge'
 import { 
@@ -502,61 +501,82 @@ export default function ArticlesPage() {
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                        <OverlayDropdown
-                          isOpen={activeDropdown === article._id}
-                          onToggle={() => setActiveDropdown(activeDropdown === article._id ? null : article._id)}
-                          onClose={() => setActiveDropdown(null)}
-                        >
-                          <button
-                            onClick={() => {
-                              router.push(`/dashboard/articles/${article._id}/edit`)
-                              setActiveDropdown(null)
+                        <div className="relative" style={{ zIndex: 1 }}>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              const rect = e.currentTarget.getBoundingClientRect()
+                              const windowHeight = window.innerHeight
+                              const spaceBelow = windowHeight - rect.bottom
+                              const dropdownHeight = 150 // Approximate height of dropdown
+                              
+                              // Position dropdown above if not enough space below
+                              const position = spaceBelow < dropdownHeight ? 'top' : 'bottom'
+                              setDropdownPosition(prev => ({...prev, [article._id]: position}))
+                              setActiveDropdown(activeDropdown === article._id ? null : article._id)
                             }}
-                            className="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left"
+                            className="p-1"
                           >
-                            <Edit className="w-4 h-4 mr-2" />
-                            Edit
-                          </button>
-                          
-                          {article.status === 'draft' && (
-                            <button
-                              onClick={() => {
-                                handlePublishArticle(article)
-                                setActiveDropdown(null)
+                            <MoreVertical className="w-4 h-4" />
+                          </Button>
+                          {activeDropdown === article._id && (
+                            <div 
+                              className={`absolute right-0 w-48 bg-white dark:bg-gray-800 rounded-md shadow-xl border border-gray-200 dark:border-gray-700 ${
+                                dropdownPosition[article._id] === 'top' ? 'bottom-full mb-1' : 'top-full mt-1'
+                              }`}
+                              style={{
+                                zIndex: 9999,
+                                boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)'
                               }}
-                              disabled={isProcessing === article._id}
-                              className="flex items-center px-4 py-2 text-sm text-green-600 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left disabled:opacity-50"
+                              onClick={(e) => e.stopPropagation()}
                             >
-                              <Send className="w-4 h-4 mr-2" />
-                              {isProcessing === article._id ? 'Publishing...' : 'Publish'}
-                            </button>
+                              <div className="py-1">
+                                <button
+                                  onClick={() => {
+                                    router.push(`/dashboard/articles/${article._id}/edit`)
+                                    setActiveDropdown(null)
+                                  }}
+                                  className="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left"
+                                >
+                                  <Edit className="w-4 h-4 mr-2" />
+                                  Edit
+                                </button>
+                                
+                                {article.status === 'draft' && (
+                                  <button
+                                    onClick={() => handlePublishArticle(article)}
+                                    disabled={isProcessing === article._id}
+                                    className="flex items-center px-4 py-2 text-sm text-green-600 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left disabled:opacity-50"
+                                  >
+                                    <Send className="w-4 h-4 mr-2" />
+                                    {isProcessing === article._id ? 'Publishing...' : 'Publish'}
+                                  </button>
+                                )}
+                                
+                                {article.status === 'published' && (
+                                  <button
+                                    onClick={() => handleArchiveArticle(article)}
+                                    disabled={isProcessing === article._id}
+                                    className="flex items-center px-4 py-2 text-sm text-yellow-600 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left disabled:opacity-50"
+                                  >
+                                    <Archive className="w-4 h-4 mr-2" />
+                                    {isProcessing === article._id ? 'Archiving...' : 'Archive'}
+                                  </button>
+                                )}
+                                
+                                <button
+                                  onClick={() => openDeleteModal(article)}
+                                  className="flex items-center px-4 py-2 text-sm text-red-600 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left"
+                                >
+                                  <Trash2 className="w-4 h-4 mr-2" />
+                                  Delete
+                                </button>
+                              </div>
+                            </div>
                           )}
-                          
-                          {article.status === 'published' && (
-                            <button
-                              onClick={() => {
-                                handleArchiveArticle(article)
-                                setActiveDropdown(null)
-                              }}
-                              disabled={isProcessing === article._id}
-                              className="flex items-center px-4 py-2 text-sm text-yellow-600 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left disabled:opacity-50"
-                            >
-                              <Archive className="w-4 h-4 mr-2" />
-                              {isProcessing === article._id ? 'Archiving...' : 'Archive'}
-                            </button>
-                          )}
-                          
-                          <button
-                            onClick={() => {
-                              openDeleteModal(article)
-                              setActiveDropdown(null)
-                            }}
-                            className="flex items-center px-4 py-2 text-sm text-red-600 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left"
-                          >
-                            <Trash2 className="w-4 h-4 mr-2" />
-                            Delete
-                          </button>
-                        </OverlayDropdown>
+                        </div>
                       </td>
                     </tr>
                   ))

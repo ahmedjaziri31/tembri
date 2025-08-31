@@ -5,7 +5,6 @@ import { Button } from '../../../components/ui/button'
 import { Input } from '../../../components/ui/input'
 import { Badge } from '../../../components/ui/badge'
 import { careersApi } from '../../../lib/api'
-import { OverlayDropdown } from '../../../components/ui/overlay-dropdown'
 import { 
   Plus,
   Search,
@@ -15,6 +14,7 @@ import {
   Calendar,
   MapPin,
   Briefcase,
+  MoreVertical,
   Filter,
   ChevronLeft,
   ChevronRight,
@@ -565,86 +565,90 @@ export default function CareersPage() {
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                        <OverlayDropdown
-                          isOpen={activeDropdown === position._id}
-                          onToggle={() => setActiveDropdown(activeDropdown === position._id ? null : position._id)}
-                          onClose={() => setActiveDropdown(null)}
-                        >
-                          <button
-                            onClick={() => {
-                              router.push(`/dashboard/careers/${position._id}/applicants`)
-                              setActiveDropdown(null)
+                        <div className="relative">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              setActiveDropdown(activeDropdown === position._id ? null : position._id)
                             }}
-                            className="flex items-center px-4 py-2 text-sm text-blue-600 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left"
+                            className="p-1"
                           >
-                            <Users className="w-4 h-4 mr-2" />
-                            See Applicants ({position.analytics.applications})
-                          </button>
-                          
-                          <button
-                            onClick={() => {
-                              router.push(`/dashboard/careers/${position._id}/edit`)
-                              setActiveDropdown(null)
-                            }}
-                            className="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left"
-                          >
-                            <Edit className="w-4 h-4 mr-2" />
-                            Edit
-                          </button>
-                          
-                          {position.status === 'published' && (
-                            <button
-                              onClick={() => {
-                                handlePausePosition(position)
-                                setActiveDropdown(null)
-                              }}
-                              disabled={isProcessing === position._id}
-                              className="flex items-center px-4 py-2 text-sm text-yellow-600 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left disabled:opacity-50"
+                            <MoreVertical className="w-4 h-4" />
+                          </Button>
+                          {activeDropdown === position._id && (
+                            <div 
+                              className="absolute right-0 mt-1 w-48 bg-white dark:bg-gray-800 rounded-md shadow-lg z-10 border border-gray-200 dark:border-gray-700"
+                              onClick={(e) => e.stopPropagation()}
                             >
-                              <Clock className="w-4 h-4 mr-2" />
-                              {isProcessing === position._id ? 'Pausing...' : 'Pause'}
-                            </button>
-                          )}
+                              <div className="py-1">
+                                <button
+                                  onClick={() => {
+                                    router.push(`/dashboard/careers/${position._id}/applicants`)
+                                    setActiveDropdown(null)
+                                  }}
+                                  className="flex items-center px-4 py-2 text-sm text-blue-600 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left"
+                                >
+                                  <Users className="w-4 h-4 mr-2" />
+                                  See Applicants ({position.analytics.applications})
+                                </button>
+                                
+                                <button
+                                  onClick={() => {
+                                    router.push(`/dashboard/careers/${position._id}/edit`)
+                                    setActiveDropdown(null)
+                                  }}
+                                  className="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left"
+                                >
+                                  <Edit className="w-4 h-4 mr-2" />
+                                  Edit
+                                </button>
+                                
+                                {(position.status === 'published') && (
+                                  <button
+                                    onClick={() => handlePausePosition(position)}
+                                    disabled={isProcessing === position._id}
+                                    className="flex items-center px-4 py-2 text-sm text-yellow-600 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left disabled:opacity-50"
+                                  >
+                                    <Clock className="w-4 h-4 mr-2" />
+                                    {isProcessing === position._id ? 'Pausing...' : 'Pause'}
+                                  </button>
+                                )}
 
-                          {position.status === 'draft' && (
-                            <button
-                              onClick={() => {
-                                handlePublishPosition(position)
-                                setActiveDropdown(null)
-                              }}
-                              disabled={isProcessing === position._id}
-                              className="flex items-center px-4 py-2 text-sm text-green-600 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left disabled:opacity-50"
-                            >
-                              <CheckCircle className="w-4 h-4 mr-2" />
-                              {isProcessing === position._id ? 'Publishing...' : 'Publish'}
-                            </button>
+                                {position.status === 'draft' && (
+                                  <button
+                                    onClick={() => handlePublishPosition(position)}
+                                    disabled={isProcessing === position._id}
+                                    className="flex items-center px-4 py-2 text-sm text-green-600 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left disabled:opacity-50"
+                                  >
+                                    <CheckCircle className="w-4 h-4 mr-2" />
+                                    {isProcessing === position._id ? 'Publishing...' : 'Publish'}
+                                  </button>
+                                )}
+                                
+                                {(position.status === 'published' || position.status === 'paused') && (
+                                  <button
+                                    onClick={() => handleClosePosition(position)}
+                                    disabled={isProcessing === position._id}
+                                    className="flex items-center px-4 py-2 text-sm text-red-600 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left disabled:opacity-50"
+                                  >
+                                    <AlertCircle className="w-4 h-4 mr-2" />
+                                    {isProcessing === position._id ? 'Closing...' : 'Close Position'}
+                                  </button>
+                                )}
+                                
+                                <button
+                                  onClick={() => openDeleteModal(position)}
+                                  className="flex items-center px-4 py-2 text-sm text-red-600 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left"
+                                >
+                                  <Trash2 className="w-4 h-4 mr-2" />
+                                  Delete
+                                </button>
+                              </div>
+                            </div>
                           )}
-                          
-                          {(position.status === 'published' || position.status === 'paused') && (
-                            <button
-                              onClick={() => {
-                                handleClosePosition(position)
-                                setActiveDropdown(null)
-                              }}
-                              disabled={isProcessing === position._id}
-                              className="flex items-center px-4 py-2 text-sm text-red-600 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left disabled:opacity-50"
-                            >
-                              <AlertCircle className="w-4 h-4 mr-2" />
-                              {isProcessing === position._id ? 'Closing...' : 'Close Position'}
-                            </button>
-                          )}
-                          
-                          <button
-                            onClick={() => {
-                              openDeleteModal(position)
-                              setActiveDropdown(null)
-                            }}
-                            className="flex items-center px-4 py-2 text-sm text-red-600 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left"
-                          >
-                            <Trash2 className="w-4 h-4 mr-2" />
-                            Delete
-                          </button>
-                        </OverlayDropdown>
+                        </div>
                       </td>
                     </tr>
                   ))
