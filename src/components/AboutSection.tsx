@@ -1,0 +1,70 @@
+'use client'
+
+import Image from 'next/image'
+import Link from 'next/link'
+
+export default function AboutSection() {
+  return (
+    <section className="relative bg-black py-20 lg:py-28 overflow-hidden">
+      {/* Background Decorative Shapes */}
+      <div className="absolute inset-0">
+        {/* Left shape - rotated to match design */}
+        <Image
+          src="/home/shape.png"
+          alt=""
+          width={600}
+          height={600}
+          className="absolute top-0 -left-40 opacity-50 filter brightness-150"
+        />
+        {/* Right shape */}
+        <Image
+          src="/shape.png"
+          alt=""
+          width={700}
+          height={700}
+          className="absolute bottom-0 -right-50 rotate-12 opacity-60 filter brightness-150"
+        />
+      </div>
+      
+      {/* Content Container */}
+      <div className="relative z-10 max-w-5xl mx-auto px-6 text-center">
+        <div className="relative bg-black/40 backdrop-blur-sm border border-white/10 rounded-3xl p-12 lg:p-16 shadow-2xl">
+          {/* Subtle inner glow */}
+          <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent rounded-3xl"></div>
+          
+          {/* Content */}
+          <div className="relative z-10">
+            {/* Subtitle */}
+            <p className="text-[#336b62] text-sm lg:text-base font-secondary font-medium tracking-wider mb-6 uppercase">
+              About
+            </p>
+            
+            {/* Main Heading */}
+            <h2 className="text-white text-3xl lg:text-4xl xl:text-5xl font-heading font-bold leading-tight mb-8">
+              MAISON ELARIS
+            </h2>
+            
+            {/* Description */}
+            <div className="text-gray-300 text-lg lg:text-xl font-body font-light leading-relaxed mb-12 max-w-4xl mx-auto space-y-4">
+              <p>
+                We are Maison Elaris, where clarity meets craft, and ideas thrive through collaboration.
+              </p>
+              <p>
+                Our borderless collective spans Europe, the Middle East, and Asia, keeping us close to cultures, talent, and trends that matter. From strategy sprints in Amsterdam to creative reviews across time zones, we work with agility and precision to deliver brilliance without compromise.
+              </p>
+            </div>
+            
+            {/* CTA Button */}
+            <div className="flex justify-center">
+              <Link href="/about">
+                <button className="bg-[#336b62] hover:bg-[#9b8075] text-white px-8 py-4 rounded-lg transition-colors duration-300 font-body font-medium text-lg">
+                  Learn More
+                </button>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}

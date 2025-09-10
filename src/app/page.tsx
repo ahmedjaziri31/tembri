@@ -5,6 +5,9 @@ import Image from 'next/image'
 import Link from 'next/link'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
+import SocialMediaSection from '../components/SocialMediaSection'
+import AboutSection from '../components/AboutSection'
+import CompaniesSection from '../components/CompaniesSection'
 
 const HomePage = memo(function HomePage() {
 
@@ -90,6 +93,15 @@ const HomePage = memo(function HomePage() {
         </div>
       </section>
 
+      {/* Companies Section */}
+      <CompaniesSection />
+
+      {/* About Section */}
+      <AboutSection />
+
+      {/* Social Media Section */}
+      <SocialMediaSection />
+
               {/* Connect CTA Section */}
       <section className="relative bg-black py-24 lg:py-32 overflow-hidden">
         {/* Background Decorative Shapes */}
@@ -136,12 +148,12 @@ const HomePage = memo(function HomePage() {
               
               {/* CTA Buttons */}
               <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-                <Link href="/connect/general-inquiries">
+                <Link href="/contact/general-inquiries">
                   <button className="bg-[#336b62] hover:bg-[#9b8075] text-white px-6 py-3 rounded-lg transition-colors duration-300 font-body font-medium">
                     GET IN CONTACT
                   </button>
                 </Link>
-                <Link href="/connect/careers">
+                <Link href="/contact/careers">
                   <button className="bg-transparent border-2 border-[#336b62] hover:bg-[#336b62] text-[#336b62] hover:text-white px-6 py-3 rounded-lg transition-colors duration-300 font-body font-medium">
                     VIEW CAREERS
                   </button>

@@ -62,8 +62,8 @@ export default function Header() {
                    <Link href="/about" className="text-white hover:text-[#ffe9c7] transition-colors duration-300 font-body text-sm">
                      About Us
                    </Link>
-                   <Link href="/connect" className="text-white hover:text-[#ffe9c7] transition-colors duration-300 font-body text-sm">
-                     Connect
+                   <Link href="/contact" className="text-white hover:text-[#ffe9c7] transition-colors duration-300 font-body text-sm">
+                     Contact
                    </Link>
                  </div>
           
@@ -118,13 +118,6 @@ export default function Header() {
               Home
             </Link>
             <Link 
-              href="/about" 
-              className="text-white text-2xl hover:text-[#ffe9c7] transition-colors duration-300 font-body"
-              onClick={toggleMenu}
-            >
-              ABOUT US
-            </Link>
-            <Link 
               href="/work" 
               className="text-white text-2xl hover:text-[#ffe9c7] transition-colors duration-300 font-body"
               onClick={toggleMenu}
@@ -132,11 +125,32 @@ export default function Header() {
               Our Work
             </Link>
             <Link 
-              href="/connect" 
+              href="/services" 
               className="text-white text-2xl hover:text-[#ffe9c7] transition-colors duration-300 font-body"
               onClick={toggleMenu}
             >
-              Connect
+              Services
+            </Link>
+            <Link 
+              href="/about" 
+              className="text-white text-2xl hover:text-[#ffe9c7] transition-colors duration-300 font-body"
+              onClick={toggleMenu}
+            >
+              About Us
+            </Link>
+            <Link 
+              href="/contact" 
+              className="text-white text-2xl hover:text-[#ffe9c7] transition-colors duration-300 font-body"
+              onClick={toggleMenu}
+            >
+              Contact
+            </Link>
+            <Link 
+              href="/news" 
+              className="text-white text-2xl hover:text-[#ffe9c7] transition-colors duration-300 font-body"
+              onClick={toggleMenu}
+            >
+              News
             </Link>
           </nav>
         </div>
@@ -173,14 +187,6 @@ export default function Header() {
                 </Link>
                 
                 <Link 
-                  href="/about" 
-                  className="block text-white text-lg lg:text-xl font-heading font-light hover:text-[#ffe9c7] transition-colors duration-300"
-                  onClick={toggleSlideMenu}
-                >
-                  About Us
-                </Link>
-                
-                <Link 
                   href="/work" 
                   className="block text-white text-lg lg:text-xl font-heading font-light hover:text-[#ffe9c7] transition-colors duration-300"
                   onClick={toggleSlideMenu}
@@ -189,11 +195,35 @@ export default function Header() {
                 </Link>
                 
                 <Link 
-                  href="/connect" 
+                  href="/services" 
                   className="block text-white text-lg lg:text-xl font-heading font-light hover:text-[#ffe9c7] transition-colors duration-300"
                   onClick={toggleSlideMenu}
                 >
-                  Connect
+                  Services
+                </Link>
+                
+                <Link 
+                  href="/about" 
+                  className="block text-white text-lg lg:text-xl font-heading font-light hover:text-[#ffe9c7] transition-colors duration-300"
+                  onClick={toggleSlideMenu}
+                >
+                  About Us
+                </Link>
+                
+                <Link 
+                  href="/contact" 
+                  className="block text-white text-lg lg:text-xl font-heading font-light hover:text-[#ffe9c7] transition-colors duration-300"
+                  onClick={toggleSlideMenu}
+                >
+                  Contact
+                </Link>
+                
+                <Link 
+                  href="/news" 
+                  className="block text-white text-lg lg:text-xl font-heading font-light hover:text-[#ffe9c7] transition-colors duration-300"
+                  onClick={toggleSlideMenu}
+                >
+                  News
                 </Link>
               </div>
             </nav>
