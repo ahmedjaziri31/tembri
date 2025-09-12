@@ -69,7 +69,7 @@ export default function Header() {
                    <Link href="/about" className="text-white hover:text-[#ffe9c7] transition-colors duration-300 font-body text-sm">
                      About Us
                    </Link>
-                  <Link href="/contact/general-inquiries" className="text-white hover:text-[#ffe9c7] transition-colors duration-300 font-body text-sm">
+                  <Link href="/connect" className="text-white hover:text-[#ffe9c7] transition-colors duration-300 font-body text-sm">
                     Contact
                   </Link>
                  </div>
@@ -149,7 +149,7 @@ export default function Header() {
               About Us
             </Link>
             <Link 
-              href="/contact/general-inquiries" 
+              href="/connect" 
               className="text-white text-2xl hover:text-[#ffe9c7] transition-colors duration-300 font-body"
               onClick={toggleMenu}
             >
@@ -221,7 +221,7 @@ export default function Header() {
                 </Link>
                 
                 <Link 
-                  href="/contact/general-inquiries" 
+                  href="/connect" 
                   className="text-white text-lg lg:text-xl font-heading font-light hover:text-[#ffe9c7] transition-colors duration-300"
                   onClick={toggleSlideMenu}
                 >

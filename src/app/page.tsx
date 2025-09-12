@@ -456,7 +456,7 @@ const HomePage = memo(function HomePage() {
                   visibility: isConnectButtonsVisible ? 'visible' : 'hidden'
                 }}
               >
-                <Link href="/contact/general-inquiries">
+                <Link href="/connect">
                   <button className="bg-[#336b62] hover:bg-[#9b8075] text-white px-6 py-3 rounded-lg transition-colors duration-300 font-body font-medium">
                     GET IN CONTACT
                   </button>
