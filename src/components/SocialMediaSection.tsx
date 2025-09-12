@@ -2,11 +2,29 @@
 
 import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
+import { useScrollAnimation } from '../hooks/useScrollAnimation'
 
 export default function SocialMediaSection() {
   const sectionRef = useRef<HTMLDivElement>(null)
   const [scrollY, setScrollY] = useState(0)
   const [isVisible, setIsVisible] = useState(false)
+
+  // Scroll animation hooks for all text elements
+  const { ref: socialSubtitleRef, animationClass: socialSubtitleAnimation, isVisible: isSocialSubtitleVisible } = useScrollAnimation<HTMLParagraphElement>({
+    fadeInThreshold: 0.3
+  })
+  
+  const { ref: socialTitleRef, animationClass: socialTitleAnimation, isVisible: isSocialTitleVisible } = useScrollAnimation<HTMLHeadingElement>({
+    fadeInThreshold: 0.3  // Trigger when element is 70% down the viewport - later for better visibility
+  })
+  
+  const { ref: socialDescRef, animationClass: socialDescAnimation, isVisible: isSocialDescVisible } = useScrollAnimation<HTMLParagraphElement>({
+    fadeInThreshold: 0.3
+  })
+  
+  const { ref: socialIconsRef, animationClass: socialIconsAnimation, isVisible: isSocialIconsVisible } = useScrollAnimation<HTMLDivElement>({
+    fadeInThreshold: 0.3
+  })
 
   useEffect(() => {
     const handleScroll = () => {
@@ -112,18 +130,46 @@ export default function SocialMediaSection() {
         {/* Center Content - Lower z-index so images can overlay it */}
         <div className="absolute inset-0 flex items-center justify-center z-10">
           <div className="text-center text-white bg-black/70 backdrop-blur-md rounded-3xl p-8 lg:p-12 border border-white/20 shadow-2xl max-w-lg mx-auto">
-            <p className="text-sm lg:text-base font-secondary font-light tracking-wider mb-4 text-[#ffe9c7]">
+            <p 
+              ref={socialSubtitleRef}
+              className={`text-sm lg:text-base font-secondary font-light tracking-wider mb-4 text-[#ffe9c7] ${socialSubtitleAnimation}`}
+              style={{ 
+                opacity: isSocialSubtitleVisible ? 1 : 0,
+                visibility: isSocialSubtitleVisible ? 'visible' : 'hidden'
+              }}
+            >
               FOLLOW ON
             </p>
-            <h2 className="text-2xl lg:text-3xl xl:text-4xl font-heading font-bold mb-8">
+            <h2 
+              ref={socialTitleRef}
+              className={`text-2xl lg:text-3xl xl:text-4xl font-heading font-bold mb-8 ${socialTitleAnimation}`}
+              style={{ 
+                opacity: isSocialTitleVisible ? 1 : 0,
+                visibility: isSocialTitleVisible ? 'visible' : 'hidden'
+              }}
+            >
               SOCIAL MEDIA
             </h2>
-            <p className="text-gray-300 text-base lg:text-lg font-body font-light mb-8">
+            <p 
+              ref={socialDescRef}
+              className={`text-gray-300 text-base lg:text-lg font-body font-light mb-8 ${socialDescAnimation}`}
+              style={{ 
+                opacity: isSocialDescVisible ? 1 : 0,
+                visibility: isSocialDescVisible ? 'visible' : 'hidden'
+              }}
+            >
               Stay connected with our latest creative campaigns, behind-the-scenes content, and industry insights across all our platforms.
             </p>
             
             {/* Social Media Icons */}
-            <div className="flex justify-center space-x-6">
+            <div 
+              ref={socialIconsRef}
+              className={`flex justify-center space-x-6 ${socialIconsAnimation}`}
+              style={{ 
+                opacity: isSocialIconsVisible ? 1 : 0,
+                visibility: isSocialIconsVisible ? 'visible' : 'hidden'
+              }}
+            >
               <a 
                 href="https://www.linkedin.com/company/maisonelaris" 
                 target="_blank" 

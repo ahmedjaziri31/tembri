@@ -8,8 +8,54 @@ import Footer from '../components/Footer'
 import SocialMediaSection from '../components/SocialMediaSection'
 import AboutSection from '../components/AboutSection'
 import CompaniesSection from '../components/CompaniesSection'
+import { useScrollAnimation } from '../hooks/useScrollAnimation'
 
 const HomePage = memo(function HomePage() {
+  // Scroll animation hooks for all text elements
+  const { ref: heroTaglineRef, animationClass: heroTaglineAnimation, isVisible: isHeroTaglineVisible } = useScrollAnimation<HTMLParagraphElement>({
+    fadeInThreshold: 0.1
+  })
+  
+  const { ref: creationsSubtitleRef, animationClass: creationsSubtitleAnimation, isVisible: isCreationsSubtitleVisible } = useScrollAnimation<HTMLParagraphElement>({
+    fadeInThreshold: 0.1
+  })
+  
+  const { ref: latestProjectsRef, animationClass: latestProjectsAnimation, isVisible: isLatestProjectsVisible } = useScrollAnimation<HTMLHeadingElement>({
+    fadeInThreshold: 0.1
+  })
+  
+  const { ref: seeWhatWeDoRef, animationClass: seeWhatWeDoAnimation, isVisible: isSeeWhatWeDoVisible } = useScrollAnimation<HTMLButtonElement>({
+    fadeInThreshold: 0.1
+  })
+  
+  const { ref: connectSubtitleRef, animationClass: connectSubtitleAnimation, isVisible: isConnectSubtitleVisible } = useScrollAnimation<HTMLParagraphElement>({
+    fadeInThreshold: 0.1
+  })
+  
+  const { ref: connectHeadingRef, animationClass: connectHeadingAnimation, isVisible: isConnectHeadingVisible } = useScrollAnimation<HTMLHeadingElement>({
+    fadeInThreshold: 0.1
+  })
+  
+  const { ref: connectDescRef, animationClass: connectDescAnimation, isVisible: isConnectDescVisible } = useScrollAnimation<HTMLParagraphElement>({
+    fadeInThreshold: 0.1
+  })
+  
+  const { ref: connectButtonsRef, animationClass: connectButtonsAnimation, isVisible: isConnectButtonsVisible } = useScrollAnimation<HTMLDivElement>({
+    fadeInThreshold: 0.1
+  })
+
+  // Services section scroll animations
+  const { ref: servicesSubtitleRef, animationClass: servicesSubtitleAnimation, isVisible: isServicesSubtitleVisible } = useScrollAnimation<HTMLParagraphElement>({
+    fadeInThreshold: 0.1
+  })
+  
+  const { ref: servicesTitleRef, animationClass: servicesTitleAnimation, isVisible: isServicesTitleVisible } = useScrollAnimation<HTMLHeadingElement>({
+    fadeInThreshold: 0.1
+  })
+  
+  const { ref: servicesCardsRef, animationClass: servicesCardsAnimation, isVisible: isServicesCardsVisible } = useScrollAnimation<HTMLDivElement>({
+    fadeInThreshold: 0.1
+  })
 
   // Memoize the logo elements to prevent unnecessary re-renders
   const logoElements = useMemo(() => {
@@ -61,10 +107,31 @@ const HomePage = memo(function HomePage() {
           </div>
         </div>
 
+        {/* Centered Overlay Image */}
+        <div className="absolute inset-0 flex items-start justify-center pt-16 lg:pt-20 z-30 pointer-events-none">
+          <div className="relative">
+            <Image
+              src="/Flot.png"
+              alt="Flot Overlay"
+              width={500}
+              height={500}
+              className="w-80 h-80 sm:w-96 sm:h-96 md:w-[500px] md:h-[500px] lg:w-[400px] lg:h-[400px] xl:w-[500px] xl:h-[500px] object-contain opacity-90 drop-shadow-2xl animate-float"
+              priority
+            />
+          </div>
+        </div>
+
         {/* Tagline - Bottom */}
         <div className="pb-8 lg:pb-12">
           <div className="max-w-6xl mx-auto px-6 text-center">
-            <p className="text-white text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-body font-light tracking-wider whitespace-nowrap overflow-hidden">
+            <p 
+              ref={heroTaglineRef}
+              className={`text-white text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-body font-light tracking-wider whitespace-nowrap overflow-hidden ${heroTaglineAnimation}`}
+              style={{ 
+                opacity: isHeroTaglineVisible ? 1 : 0,
+                visibility: isHeroTaglineVisible ? 'visible' : 'hidden'
+              }}
+            >
               WHERE STRATEGY MEETS STORY. POWERED BY DATA. DRIVEN BY VISION.
             </p>
           </div>
@@ -75,18 +142,96 @@ const HomePage = memo(function HomePage() {
       <section className="relative z-20 py-16 lg:py-24">
         <div className="max-w-7xl mx-auto px-6">
           {/* Section Header */}
-          <div className="flex justify-between items-start mb-16">
+          <div className="flex justify-between items-start mb-2">
             <div>
-              <p className="text-[#ffe9c7] text-sm lg:text-base font-secondary font-light tracking-wider mb-2">
+              <p 
+                ref={creationsSubtitleRef}
+                className={`text-[#ffe9c7] text-sm lg:text-base font-secondary font-light tracking-wider mb-2 ${creationsSubtitleAnimation}`}
+                style={{ 
+                  opacity: isCreationsSubtitleVisible ? 1 : 0,
+                  visibility: isCreationsSubtitleVisible ? 'visible' : 'hidden'
+                }}
+              >
                 CREATIONS
               </p>
-              <h2 className="text-white text-2xl lg:text-3xl xl:text-4xl font-heading font-bold leading-tight">
+              <h2 
+                ref={latestProjectsRef}
+                className={`text-white text-2xl lg:text-3xl xl:text-4xl font-heading font-bold leading-tight ${latestProjectsAnimation}`}
+                style={{ 
+                  opacity: isLatestProjectsVisible ? 1 : 0,
+                  visibility: isLatestProjectsVisible ? 'visible' : 'hidden'
+                }}
+              >
                 LATEST<br />PROJECTS
               </h2>
             </div>
-            <button className="bg-[#336b62] hover:bg-[#9b8075] text-white px-6 py-3 rounded-lg transition-colors duration-300 font-body font-medium">
+            <button 
+              ref={seeWhatWeDoRef}
+              className={`bg-[#336b62] hover:bg-[#9b8075] text-white px-6 py-3 rounded-lg transition-colors duration-300 font-body font-medium ${seeWhatWeDoAnimation}`}
+              style={{ 
+                opacity: isSeeWhatWeDoVisible ? 1 : 0,
+                visibility: isSeeWhatWeDoVisible ? 'visible' : 'hidden'
+              }}
+            >
               See What We Do
             </button>
+          </div>
+
+          {/* Overlaying Projects Images */}
+          <div className="relative flex justify-center items-start pt-4 h-96 lg:h-[500px] xl:h-[600px]">
+            {/* Background container for the stacked effect */}
+            <div className="relative w-full max-w-md lg:max-w-lg xl:max-w-xl">
+              
+              {/* Project 1 - Back layer (top position) */}
+              <div className="absolute top-0 left-0 right-0 z-10">
+                <div className="relative w-full h-80 lg:h-96 xl:h-[450px] rounded-3xl overflow-hidden shadow-2xl border border-white/10">
+                  <Image
+                    src="/work/project1.png"
+                    alt="Project 1"
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  />
+                  <div className="absolute inset-0 bg-black/20"></div>
+                </div>
+              </div>
+
+              {/* Project 2 - Middle layer (slightly down) */}
+              <div className="absolute top-15 left-0 right-0 z-20">
+                <div className="relative w-full h-80 lg:h-96 xl:h-[450px] rounded-3xl overflow-hidden shadow-2xl border border-white/20">
+                  <Image
+                    src="/work/project2.png"
+                    alt="Project 2"
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  />
+                  <div className="absolute inset-0 bg-black/10"></div>
+                </div>
+              </div>
+
+              {/* Project 3 - Front layer (further down) */}
+              <div className="absolute top-30 left-0 right-0 z-30">
+                <div className="relative w-full h-80 lg:h-96 xl:h-[450px] rounded-3xl overflow-hidden shadow-2xl border border-white/30">
+                  <Image
+                    src="/work/project3.png"
+                    alt="Project 3"
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  />
+                </div>
+              </div>
+
+              {/* Hover effect overlay */}
+              <div className="absolute inset-0 z-40 opacity-0 hover:opacity-100 transition-opacity duration-300 cursor-pointer">
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/30 rounded-3xl"></div>
+                <div className="absolute bottom-4 left-4 right-4 text-white">
+                  <p className="text-sm font-secondary tracking-wider mb-1">FEATURED WORK</p>
+                  <h3 className="text-lg font-heading font-bold">Latest Projects</h3>
+                </div>
+              </div>
+            </div>
           </div>
 
 
@@ -98,6 +243,141 @@ const HomePage = memo(function HomePage() {
 
       {/* About Section */}
       <AboutSection />
+
+      {/* Services Section */}
+      <section className="relative bg-black py-16 lg:py-24 overflow-hidden">
+        <div className="max-w-7xl mx-auto px-6">
+          {/* Section Header */}
+          <div className="text-center mb-12 lg:mb-16">
+            <p 
+              ref={servicesSubtitleRef}
+              className={`text-[#336b62] text-sm lg:text-base font-secondary font-light tracking-wider mb-4 ${servicesSubtitleAnimation}`}
+              style={{ 
+                opacity: isServicesSubtitleVisible ? 1 : 0,
+                visibility: isServicesSubtitleVisible ? 'visible' : 'hidden'
+              }}
+            >
+              Services
+            </p>
+            <h2 
+              ref={servicesTitleRef}
+              className={`text-white text-2xl lg:text-3xl xl:text-4xl font-heading font-bold leading-tight ${servicesTitleAnimation}`}
+              style={{ 
+                opacity: isServicesTitleVisible ? 1 : 0,
+                visibility: isServicesTitleVisible ? 'visible' : 'hidden'
+              }}
+            >
+              The Elaris Edge
+            </h2>
+          </div>
+
+          {/* Services Cards */}
+          <div 
+            ref={servicesCardsRef}
+            className={`grid md:grid-cols-3 gap-6 lg:gap-8 ${servicesCardsAnimation}`}
+            style={{ 
+              opacity: isServicesCardsVisible ? 1 : 0,
+              visibility: isServicesCardsVisible ? 'visible' : 'hidden'
+            }}
+          >
+            {/* Card 1 - Integrated Media Strategy & Buying */}
+            <div className="relative bg-[#336b62] rounded-3xl p-6 lg:p-8 overflow-hidden">
+              {/* Background Shape */}
+              <div className="absolute inset-0 opacity-20">
+                <Image
+                  src="/shape.png"
+                  alt=""
+                  fill
+                  className="object-cover"
+                />
+              </div>
+              
+              {/* Card Content */}
+              <div className="relative z-10">
+                <h3 className="text-white text-lg lg:text-xl font-heading font-bold mb-4">
+                  Integrated Media<br />Strategy & Buying
+                </h3>
+                
+                <ul className="text-white/90 text-sm lg:text-base font-body space-y-2 mb-6">
+                  <li>Media planning & buying (Search, Social, Programmatic, Display, Video, DOOH, Retail Media, TV, Radio, Print)</li>
+                  <li>Audience insights & targeting</li>
+                  <li>Data analytics & measurement</li>
+                  <li>Cross-channel performance optimization</li>
+                </ul>
+                
+                <div className="text-white/60 text-6xl lg:text-7xl font-heading font-bold">
+                  01
+                </div>
+              </div>
+            </div>
+
+            {/* Card 2 - Creative Development & Storytelling */}
+            <div className="relative bg-[#336b62] rounded-3xl p-6 lg:p-8 overflow-hidden">
+              {/* Background Shape */}
+              <div className="absolute inset-0 opacity-20">
+                <Image
+                  src="/shape.png"
+                  alt=""
+                  fill
+                  className="object-cover"
+                />
+              </div>
+              
+              {/* Card Content */}
+              <div className="relative z-10">
+                <h3 className="text-white text-lg lg:text-xl font-heading font-bold mb-4">
+                  Creative<br />Development &<br />Storytelling
+                </h3>
+                
+                <ul className="text-white/90 text-sm lg:text-base font-body space-y-2 mb-6">
+                  <li>Content creation</li>
+                  <li>Brand storytelling</li>
+                  <li>Video production</li>
+                  <li>E-commerce strategy</li>
+                  <li>Engagement-led design</li>
+                </ul>
+                
+                <div className="text-white/60 text-6xl lg:text-7xl font-heading font-bold">
+                  02
+                </div>
+              </div>
+            </div>
+
+            {/* Card 3 - Digital Transformation & Consulting */}
+            <div className="relative bg-[#336b62] rounded-3xl p-6 lg:p-8 overflow-hidden">
+              {/* Background Shape */}
+              <div className="absolute inset-0 opacity-20">
+                <Image
+                  src="/shape.png"
+                  alt=""
+                  fill
+                  className="object-cover"
+                />
+              </div>
+              
+              {/* Card Content */}
+              <div className="relative z-10">
+                <h3 className="text-white text-lg lg:text-xl font-heading font-bold mb-4">
+                  Digital<br />Transformation<br />& Consulting
+                </h3>
+                
+                <ul className="text-white/90 text-sm lg:text-base font-body space-y-2 mb-6">
+                  <li>Digital transformation</li>
+                  <li>Martech solution</li>
+                  <li>AI integration</li>
+                  <li>Tech stack alignment</li>
+                  <li>Automation tools</li>
+                  <li>Data-driven innovation</li>
+                </ul>
+                
+                <div className="text-white/60 text-6xl lg:text-7xl font-heading font-bold">
+                  03
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* Social Media Section */}
       <SocialMediaSection />
@@ -131,23 +411,51 @@ const HomePage = memo(function HomePage() {
             {/* Content */}
             <div className="relative z-10">
                                {/* Subtitle */}
-                 <p className="text-[#336b62] text-sm lg:text-base font-secondary font-medium tracking-wider mb-6 uppercase">
+                 <p 
+                   ref={connectSubtitleRef}
+                   className={`text-[#336b62] text-sm lg:text-base font-secondary font-medium tracking-wider mb-6 uppercase ${connectSubtitleAnimation}`}
+                   style={{ 
+                     opacity: isConnectSubtitleVisible ? 1 : 0,
+                     visibility: isConnectSubtitleVisible ? 'visible' : 'hidden'
+                   }}
+                 >
                    Connect With Us
                  </p>
               
               {/* Main Heading */}
-              <h2 className="text-white text-2xl lg:text-3xl xl:text-4xl font-heading font-bold leading-tight mb-8">
+              <h2 
+                ref={connectHeadingRef}
+                className={`text-white text-2xl lg:text-3xl xl:text-4xl font-heading font-bold leading-tight mb-8 ${connectHeadingAnimation}`}
+                style={{ 
+                  opacity: isConnectHeadingVisible ? 1 : 0,
+                  visibility: isConnectHeadingVisible ? 'visible' : 'hidden'
+                }}
+              >
                 CREATE TOMORROW,<br />
                 TOGETHER
               </h2>
               
               {/* Description */}
-              <p className="text-gray-300 text-lg lg:text-xl font-body font-light leading-relaxed mb-12 max-w-3xl mx-auto">
+              <p 
+                ref={connectDescRef}
+                className={`text-gray-300 text-lg lg:text-xl font-body font-light leading-relaxed mb-12 max-w-3xl mx-auto ${connectDescAnimation}`}
+                style={{ 
+                  opacity: isConnectDescVisible ? 1 : 0,
+                  visibility: isConnectDescVisible ? 'visible' : 'hidden'
+                }}
+              >
                 Every idea we share and every step we take moves us closer to a future we&apos;re proud to shape.
               </p>
               
               {/* CTA Buttons */}
-              <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
+              <div 
+                ref={connectButtonsRef}
+                className={`flex flex-col sm:flex-row gap-6 justify-center items-center ${connectButtonsAnimation}`}
+                style={{ 
+                  opacity: isConnectButtonsVisible ? 1 : 0,
+                  visibility: isConnectButtonsVisible ? 'visible' : 'hidden'
+                }}
+              >
                 <Link href="/contact/general-inquiries">
                   <button className="bg-[#336b62] hover:bg-[#9b8075] text-white px-6 py-3 rounded-lg transition-colors duration-300 font-body font-medium">
                     GET IN CONTACT

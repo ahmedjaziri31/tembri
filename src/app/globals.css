@@ -1,5 +1,6 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
+@import 'animate.css';
 
 /* Fonts are now loaded via Next.js in layout.tsx */
 

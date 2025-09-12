@@ -2,8 +2,26 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
+import { useScrollAnimation } from '../hooks/useScrollAnimation'
 
 export default function AboutSection() {
+  // Scroll animation hooks for all text elements
+  const { ref: aboutSubtitleRef, animationClass: aboutSubtitleAnimation, isVisible: isAboutSubtitleVisible } = useScrollAnimation<HTMLParagraphElement>({
+    fadeInThreshold: 0.3
+  })
+  
+  const { ref: aboutTitleRef, animationClass: aboutTitleAnimation, isVisible: isAboutTitleVisible } = useScrollAnimation<HTMLHeadingElement>({
+    fadeInThreshold: 0.3  // Trigger when element is 70% down the viewport - later for better visibility
+  })
+  
+  const { ref: aboutDescRef, animationClass: aboutDescAnimation, isVisible: isAboutDescVisible } = useScrollAnimation<HTMLDivElement>({
+    fadeInThreshold: 0.3
+  })
+  
+  const { ref: aboutButtonRef, animationClass: aboutButtonAnimation, isVisible: isAboutButtonVisible } = useScrollAnimation<HTMLDivElement>({
+    fadeInThreshold: 0.3
+  })
+
   return (
     <section className="relative bg-black py-20 lg:py-28 overflow-hidden">
       {/* Background Decorative Shapes */}
@@ -35,17 +53,38 @@ export default function AboutSection() {
           {/* Content */}
           <div className="relative z-10">
             {/* Subtitle */}
-            <p className="text-[#336b62] text-sm lg:text-base font-secondary font-medium tracking-wider mb-6 uppercase">
+            <p 
+              ref={aboutSubtitleRef}
+              className={`text-[#336b62] text-sm lg:text-base font-secondary font-medium tracking-wider mb-6 uppercase ${aboutSubtitleAnimation}`}
+              style={{ 
+                opacity: isAboutSubtitleVisible ? 1 : 0,
+                visibility: isAboutSubtitleVisible ? 'visible' : 'hidden'
+              }}
+            >
               About
             </p>
             
             {/* Main Heading */}
-            <h2 className="text-white text-3xl lg:text-4xl xl:text-5xl font-heading font-bold leading-tight mb-8">
+            <h2 
+              ref={aboutTitleRef}
+              className={`text-white text-3xl lg:text-4xl xl:text-5xl font-heading font-bold leading-tight mb-8 ${aboutTitleAnimation}`}
+              style={{ 
+                opacity: isAboutTitleVisible ? 1 : 0,
+                visibility: isAboutTitleVisible ? 'visible' : 'hidden'
+              }}
+            >
               MAISON ELARIS
             </h2>
             
             {/* Description */}
-            <div className="text-gray-300 text-lg lg:text-xl font-body font-light leading-relaxed mb-12 max-w-4xl mx-auto space-y-4">
+            <div 
+              ref={aboutDescRef}
+              className={`text-gray-300 text-lg lg:text-xl font-body font-light leading-relaxed mb-12 max-w-4xl mx-auto space-y-4 ${aboutDescAnimation}`}
+              style={{ 
+                opacity: isAboutDescVisible ? 1 : 0,
+                visibility: isAboutDescVisible ? 'visible' : 'hidden'
+              }}
+            >
               <p>
                 We are Maison Elaris, where clarity meets craft, and ideas thrive through collaboration.
               </p>
@@ -55,7 +94,14 @@ export default function AboutSection() {
             </div>
             
             {/* CTA Button */}
-            <div className="flex justify-center">
+            <div 
+              ref={aboutButtonRef}
+              className={`flex justify-center ${aboutButtonAnimation}`}
+              style={{ 
+                opacity: isAboutButtonVisible ? 1 : 0,
+                visibility: isAboutButtonVisible ? 'visible' : 'hidden'
+              }}
+            >
               <Link href="/about">
                 <button className="bg-[#336b62] hover:bg-[#9b8075] text-white px-8 py-4 rounded-lg transition-colors duration-300 font-body font-medium text-lg">
                   Learn More

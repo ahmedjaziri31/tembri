@@ -11,21 +11,28 @@ export default function Footer() {
           {/* Left Side - Brand and Contact */}
           <div className="mb-12 lg:mb-0">
             <div className="mb-8">
-              <h2 className="text-3xl lg:text-4xl font-heading font-bold mb-2 text-white">MAISON</h2>
-              <h2 className="text-3xl lg:text-4xl font-heading font-bold text-white">ELARIS</h2>
+              <Link href="/">
+                <Image
+                  src="/logo.png"
+                  alt="Maison Elaris"
+                  width={240}
+                  height={120}
+                  className="h-24 lg:h-28 w-auto object-contain"
+                />
+              </Link>
             </div>
             
             {/* Main Contact */}
             <div className="space-y-3 text-base text-gray-300 mb-6">
-              <p className="hover:text-white transition-colors">📩 hello@maisonelaris.com</p>
-              <p className="hover:text-white transition-colors">📞 +33 1 86 76 00 10 (Paris HQ)</p>
+              <p className="hover:text-white transition-colors">hello@maisonelaris.com</p>
+              <p className="hover:text-white transition-colors">+33 1 86 76 00 10 (Paris HQ)</p>
               <p className="hover:text-white transition-colors text-sm">Mon–Fri | 9:00 – 18:00 CET</p>
             </div>
 
             {/* PR & Partnerships */}
             <div className="space-y-2 text-sm text-gray-400">
               <p className="font-medium text-gray-300">PR & Partnerships</p>
-              <p className="hover:text-white transition-colors">📩 partnerships@maisonelaris.com</p>
+              <p className="hover:text-white transition-colors">partnerships@maisonelaris.com</p>
             </div>
           </div>
 

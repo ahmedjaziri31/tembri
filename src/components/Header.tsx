@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { X } from 'lucide-react'
 import Link from 'next/link'
+import Image from 'next/image'
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -35,14 +36,20 @@ export default function Header() {
       <header className="relative z-50 flex items-center p-6 lg:p-8">
         {/* Logo */}
         <div className="text-white">
-          <Link href="/" className="font-heading text-2xl tracking-wider">
-            <span className="text-sm block mb-1 font-secondary">MAISON</span>
-            <span className="text-xl font-bold">ELARIS</span>
+          <Link href="/" className="block">
+            <Image
+              src="/logo.png"
+              alt="Maison Elaris"
+              width={180}
+              height={90}
+              className="h-16 lg:h-20 w-auto object-contain"
+              priority
+            />
           </Link>
         </div>
 
-        {/* Absolutely Centered Menu Button */}
-        <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
+        {/* Desktop Menu Button */}
+        <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 hidden lg:block">
           <button
             onClick={toggleSlideMenu}
             className="group flex flex-col items-center space-y-2 py-2 px-4 rounded-full hover:bg-white/10 transition-all duration-300"
@@ -62,9 +69,9 @@ export default function Header() {
                    <Link href="/about" className="text-white hover:text-[#ffe9c7] transition-colors duration-300 font-body text-sm">
                      About Us
                    </Link>
-                   <Link href="/contact" className="text-white hover:text-[#ffe9c7] transition-colors duration-300 font-body text-sm">
-                     Contact
-                   </Link>
+                  <Link href="/contact/general-inquiries" className="text-white hover:text-[#ffe9c7] transition-colors duration-300 font-body text-sm">
+                    Contact
+                  </Link>
                  </div>
           
           {/* Mobile Menu Button */}
@@ -103,10 +110,13 @@ export default function Header() {
         {/* Mobile Menu Content */}
         <div className="flex flex-col items-center justify-center h-full space-y-8 relative z-10">
           <div className="text-center mb-8">
-            <div className="text-white text-3xl font-heading tracking-wider">
-              <span className="text-lg block mb-2 font-secondary">MAISON</span>
-              <span className="text-2xl font-bold">ELARIS</span>
-            </div>
+            <Image
+              src="/logo.png"
+              alt="Maison Elaris"
+              width={200}
+              height={100}
+              className="h-20 w-auto object-contain"
+            />
           </div>
           
           <nav className="flex flex-col items-center space-y-6">
@@ -139,7 +149,7 @@ export default function Header() {
               About Us
             </Link>
             <Link 
-              href="/contact" 
+              href="/contact/general-inquiries" 
               className="text-white text-2xl hover:text-[#ffe9c7] transition-colors duration-300 font-body"
               onClick={toggleMenu}
             >
@@ -156,9 +166,9 @@ export default function Header() {
         </div>
       </div>
 
-      {/* Slide-Up Navigation Menu */}
+      {/* Slide-Up Navigation Menu - Desktop Only */}
       <div
-        className={`fixed inset-0 z-[70] transition-all duration-500 ease-out ${
+        className={`fixed inset-0 z-[70] transition-all duration-500 ease-out hidden lg:block ${
           isSlideMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
         }`}
       >
@@ -176,11 +186,11 @@ export default function Header() {
         >
           {/* Navigation Menu */}
           <div className="px-6 pt-24 pb-8">
-            <nav className="max-w-2xl mx-auto text-center">
-              <div className="space-y-4">
+            <nav className="max-w-5xl mx-auto text-center">
+              <div className="flex flex-wrap justify-center items-center gap-8 lg:gap-12">
                 <Link 
                   href="/" 
-                  className="block text-white text-lg lg:text-xl font-heading font-light hover:text-[#ffe9c7] transition-colors duration-300"
+                  className="text-white text-lg lg:text-xl font-heading font-light hover:text-[#ffe9c7] transition-colors duration-300"
                   onClick={toggleSlideMenu}
                 >
                   Home
@@ -188,7 +198,7 @@ export default function Header() {
                 
                 <Link 
                   href="/work" 
-                  className="block text-white text-lg lg:text-xl font-heading font-light hover:text-[#ffe9c7] transition-colors duration-300"
+                  className="text-white text-lg lg:text-xl font-heading font-light hover:text-[#ffe9c7] transition-colors duration-300"
                   onClick={toggleSlideMenu}
                 >
                   Our Work
@@ -196,7 +206,7 @@ export default function Header() {
                 
                 <Link 
                   href="/services" 
-                  className="block text-white text-lg lg:text-xl font-heading font-light hover:text-[#ffe9c7] transition-colors duration-300"
+                  className="text-white text-lg lg:text-xl font-heading font-light hover:text-[#ffe9c7] transition-colors duration-300"
                   onClick={toggleSlideMenu}
                 >
                   Services
@@ -204,15 +214,15 @@ export default function Header() {
                 
                 <Link 
                   href="/about" 
-                  className="block text-white text-lg lg:text-xl font-heading font-light hover:text-[#ffe9c7] transition-colors duration-300"
+                  className="text-white text-lg lg:text-xl font-heading font-light hover:text-[#ffe9c7] transition-colors duration-300"
                   onClick={toggleSlideMenu}
                 >
                   About Us
                 </Link>
                 
                 <Link 
-                  href="/contact" 
-                  className="block text-white text-lg lg:text-xl font-heading font-light hover:text-[#ffe9c7] transition-colors duration-300"
+                  href="/contact/general-inquiries" 
+                  className="text-white text-lg lg:text-xl font-heading font-light hover:text-[#ffe9c7] transition-colors duration-300"
                   onClick={toggleSlideMenu}
                 >
                   Contact
@@ -220,7 +230,7 @@ export default function Header() {
                 
                 <Link 
                   href="/news" 
-                  className="block text-white text-lg lg:text-xl font-heading font-light hover:text-[#ffe9c7] transition-colors duration-300"
+                  className="text-white text-lg lg:text-xl font-heading font-light hover:text-[#ffe9c7] transition-colors duration-300"
                   onClick={toggleSlideMenu}
                 >
                   News
