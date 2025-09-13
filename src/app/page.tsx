@@ -1,6 +1,6 @@
 'use client'
 
-import { useMemo, memo, useRef, useEffect } from 'react'
+import { useMemo, memo, useRef } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import Header from '../components/Header'
@@ -8,7 +8,7 @@ import Footer from '../components/Footer'
 import SocialMediaSection from '../components/SocialMediaSection'
 import AboutSection from '../components/AboutSection'
 import CompaniesSection from '../components/CompaniesSection'
-import { useGSAP, useStaggerAnimation, useMagneticEffect, useParallax, useTextAnimation } from '../hooks/useGSAP'
+import { useGSAP, useStaggerAnimation, useMagneticEffect, useTextAnimation } from '../hooks/useGSAP'
 import { gsap } from '../lib/gsap'
 
 const HomePage = memo(function HomePage() {

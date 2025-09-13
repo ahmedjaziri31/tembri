@@ -4,7 +4,7 @@ import { useEffect, useRef, RefObject } from 'react'
 import { gsap, ScrollTrigger, gsapUtils, animations } from '../lib/gsap'
 
 interface UseGSAPOptions {
-  dependencies?: any[]
+  dependencies?: React.DependencyList
   revert?: boolean
 }
 
@@ -26,10 +26,11 @@ export function useGSAP(
         cleanup()
       }
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, dependencies)
 }
 
-export function useGSAPTimeline(dependencies: any[] = []) {
+export function useGSAPTimeline(dependencies: React.DependencyList = []) {
   const timelineRef = useRef<GSAPTimeline | null>(null)
 
   useEffect(() => {
@@ -42,6 +43,7 @@ export function useGSAPTimeline(dependencies: any[] = []) {
         timelineRef.current.kill()
       }
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, dependencies)
 
   return timelineRef.current
@@ -124,7 +126,9 @@ export function useParallax(element: RefObject<HTMLElement | null>, options: {
       }
     })
 
-    return () => animation.kill()
+    return () => {
+      animation.kill()
+    }
   }, [element, options])
 }
 
