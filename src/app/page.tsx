@@ -42,8 +42,7 @@ const HomePage = memo(function HomePage() {
   useMagneticEffect(seeWhatWeDoRef, 0.4)
   useMagneticEffect(connectButtonsRef, 0.3)
 
-  // Text animations
-  useTextAnimation(heroTaglineRef, 'chars')
+  // Text animations (only for scroll-triggered sections)
   useTextAnimation(latestProjectsRef, 'words')
   useTextAnimation(connectHeadingRef, 'words')
 
@@ -66,27 +65,33 @@ const HomePage = memo(function HomePage() {
 
   // Main GSAP Animations
   useGSAP(() => {
-    // Hero section entrance timeline
-    const heroTl = gsap.timeline({ delay: 0.5 })
+    // Hero section entrance timeline - start immediately
+    const heroTl = gsap.timeline()
     
+    // Set initial states for hero elements
+    gsap.set([heroTaglineRef.current, flotImageRef.current, ".logo-item"], {
+      opacity: 0
+    })
+
     // Logo container animation - enhanced infinite scroll
     if (logoContainerRef.current) {
       gsap.set(".logo-item", { 
-        opacity: 0.6,
+        opacity: 0,
         scale: 0.9,
         filter: "blur(2px)"
       })
       
-      gsap.to(".logo-item", {
+      // Start logo animation immediately
+      heroTl.to(".logo-item", {
         opacity: 1,
         scale: 1,
         filter: "blur(0px)",
-        duration: 1.5,
-        stagger: 0.1,
+        duration: 1.2,
+        stagger: 0.08,
         ease: "expo.out"
-      })
+      }, 0)
 
-      // Enhanced floating animation for logos
+      // Enhanced floating animation for logos (delayed start)
       gsap.to(".logo-item", {
         y: "random(-20, 20)",
         rotation: "random(-5, 5)",
@@ -94,11 +99,12 @@ const HomePage = memo(function HomePage() {
         repeat: -1,
         yoyo: true,
         ease: "sine.inOut",
-        stagger: 0.2
+        stagger: 0.2,
+        delay: 1.5
       })
     }
     
-    // Flot image advanced animation
+    // Flot image advanced animation - start immediately
     if (flotImageRef.current) {
       gsap.set(flotImageRef.current, {
         scale: 0.8,
@@ -111,18 +117,36 @@ const HomePage = memo(function HomePage() {
         scale: 1,
         opacity: 0.9,
         rotationY: 0,
-        duration: 2,
+        duration: 1.8,
         ease: "expo.out"
+      }, 0.3)
+    }
+
+    // Hero tagline immediate animation
+    if (heroTaglineRef.current) {
+      gsap.set(heroTaglineRef.current, {
+        opacity: 0,
+        y: 30
       })
       
-      // Continuous floating with parallax
+      heroTl.to(heroTaglineRef.current, {
+        opacity: 1,
+        y: 0,
+        duration: 1.5,
+        ease: "expo.out"
+      }, 0.6)
+    }
+      
+    // Continuous floating animation for Flot image (delayed start)
+    if (flotImageRef.current) {
       gsap.to(flotImageRef.current, {
         y: -20,
         rotation: 3,
         duration: 4,
         repeat: -1,
         yoyo: true,
-        ease: "sine.inOut"
+        ease: "sine.inOut",
+        delay: 2
       })
 
       // Mouse parallax effect
@@ -141,7 +165,7 @@ const HomePage = memo(function HomePage() {
       }
     }
 
-    // Scroll-triggered animations for sections
+    // Scroll-triggered animations for sections (faster triggers)
     gsap.fromTo(creationsSubtitleRef.current, 
       { opacity: 0, x: -50 },
       {
@@ -151,7 +175,7 @@ const HomePage = memo(function HomePage() {
         ease: "expo.out",
         scrollTrigger: {
           trigger: creationsSubtitleRef.current,
-          start: "top 85%",
+          start: "top 95%",
           toggleActions: "play none none reverse"
         }
       }
@@ -167,7 +191,7 @@ const HomePage = memo(function HomePage() {
         ease: "back.out(1.7)",
         scrollTrigger: {
           trigger: servicesSubtitleRef.current,
-          start: "top 85%",
+          start: "top 95%",
           toggleActions: "play none none reverse"
         }
       }
@@ -183,7 +207,7 @@ const HomePage = memo(function HomePage() {
         ease: "expo.out",
         scrollTrigger: {
           trigger: servicesTitleRef.current,
-          start: "top 85%",
+          start: "top 95%",
           toggleActions: "play none none reverse"
         }
       }

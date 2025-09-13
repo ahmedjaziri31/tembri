@@ -171,7 +171,7 @@ export function useStaggerAnimation<T extends HTMLElement>(
 
     const scrollTrigger = ScrollTrigger.create({
       trigger: triggerElement,
-      start: "top 85%",
+      start: "top 95%",
       onEnter: () => {
         gsap.to(items, {
           ...animation.to,
@@ -199,7 +199,7 @@ export function useTextAnimation<T extends HTMLElement>(element: RefObject<T | n
 
     const scrollTrigger = ScrollTrigger.create({
       trigger: element.current,
-      start: "top 85%",
+      start: "top 95%",
       onEnter: () => {
         gsap.to(chars, {
           opacity: 1,
