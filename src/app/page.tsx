@@ -95,10 +95,10 @@ const HomePage = memo(function HomePage() {
         duration: 0.6,
         stagger: 0.12,
         ease: "back.out(1.4)"
-      }, 1.2)
+      }, 0.2)
       
-        // Step 4: Hero tagline character reveal animation (1.5s)
-        .to({}, { duration: 0 }, 2.2) // Timeline position
+      // Step 4: Hero tagline character reveal animation (1.5s)
+      .to({}, { duration: 0 }, 0) // Timeline position - much faster
         .call(() => {
           // Split text into characters for animation
           if (heroTaglineRef.current) {
@@ -138,9 +138,9 @@ const HomePage = memo(function HomePage() {
                 y: 0,
                 rotationX: 0,
                 scale: 1,
-                duration: 0.8,
+                duration: 0.5,
                 stagger: {
-                  amount: 1.2,
+                  amount: 0.8,
                   ease: "power2.out"
                 },
                 ease: "back.out(1.7)"
@@ -228,9 +228,9 @@ const HomePage = memo(function HomePage() {
     // Continuous floating animation for Flot image - gentle and engaging
     if (flotImageRef.current) {
       gsap.to(flotImageRef.current, {
-        y: -25,
+        y: -20,
         rotation: 2,
-        scale: 1.05,
+        scale: 1.03,
         duration: 5,
         repeat: -1,
         yoyo: true,
@@ -362,7 +362,7 @@ const HomePage = memo(function HomePage() {
             height={256}
             priority={i < 3} // Priority load first 3 images
             fetchPriority={i === 0 ? "high" : "auto"} // High priority for LCP
-            className="h-32 sm:h-40 md:h-48 lg:h-56 xl:h-64 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity duration-500 drop-shadow-[0_0_20px_rgba(255,255,255,0.1)]"
+            className="h-24 sm:h-28 md:h-32 lg:h-36 xl:h-40 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity duration-500 drop-shadow-[0_0_20px_rgba(255,255,255,0.1)]"
           />
         </div>
       )
@@ -409,13 +409,13 @@ const HomePage = memo(function HomePage() {
         </div>
 
         {/* Centered Overlay Image */}
-        <div className="absolute inset-0 flex items-start justify-center pt-8 lg:pt-12 z-30 pointer-events-none">
+        <div className="absolute inset-0 flex items-start justify-center pt-4 lg:pt-6 z-30 pointer-events-none">
           <div ref={flotImageRef} className="relative">
             <Image
               src="/Flot.png"
               alt="Flot Overlay"
-              width={500}
-              height={500}
+              width={350}
+              height={350}
               className="w-80 h-80 sm:w-96 sm:h-96 md:w-[500px] md:h-[500px] lg:w-[400px] lg:h-[400px] xl:w-[500px] xl:h-[500px] object-contain opacity-90 drop-shadow-2xl"
               priority
             />
