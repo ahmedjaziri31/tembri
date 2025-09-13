@@ -53,9 +53,12 @@ const HomePage = memo(function HomePage() {
     if (mainContentRef.current) {
       gsap.set(mainContentRef.current, { opacity: 1 })
       
-      // Hide everything initially
-      gsap.set([heroTaglineRef.current, ".logo-item", "header", "footer"], { opacity: 0 })
-      gsap.set(".section:not(.hero-section)", { opacity: 0 })
+      // Hide everything initially with casual starting positions
+      gsap.set("header", { opacity: 0, y: -30 })
+      gsap.set(".logo-item", { opacity: 0, scale: 0.8, y: 30 })
+      gsap.set(heroTaglineRef.current, { opacity: 0, y: 40, scale: 0.9 })
+      gsap.set(".section:not(.hero-section)", { opacity: 0, y: 50 })
+      gsap.set("footer", { opacity: 0, y: 30 })
       
       // Show only the floating card first
       gsap.set(flotImageRef.current, {
@@ -67,48 +70,102 @@ const HomePage = memo(function HomePage() {
       // Timeline for revealing content step by step
       const revealTl = gsap.timeline()
       
-      // Step 1: Show and animate the floating card (1s)
+      // Step 1: Show and animate the floating card with bounce (1.5s)
       revealTl.to(flotImageRef.current, {
         opacity: 1,
         scale: 1,
         rotationY: 0,
-        duration: 1,
-        ease: "expo.out"
+        duration: 1.5,
+        ease: "back.out(1.7)"
       })
       
-      // Step 2: Show header and logos (0.8s)
+      // Step 2: Gentle header fade-in (0.8s)  
       .to("header", {
         opacity: 1,
-        duration: 0.6,
+        y: 0,
+        duration: 0.8,
         ease: "power2.out"
-      }, 0.5)
+      }, 0.8)
+      
+      // Step 3: Playful logo cascade (1.2s)
       .to(".logo-item", {
         opacity: 1,
-        duration: 0.8,
-        stagger: 0.08,
-        ease: "expo.out"
-      }, 0.7)
-      
-      // Step 3: Show tagline (0.6s)
-      .to(heroTaglineRef.current, {
-        opacity: 1,
+        scale: 1,
         y: 0,
         duration: 0.6,
-        ease: "power2.out"
+        stagger: 0.12,
+        ease: "back.out(1.4)"
       }, 1.2)
       
-      // Step 4: Show rest of page sections (0.8s)
+        // Step 4: Hero tagline character reveal animation (1.5s)
+        .to({}, { duration: 0 }, 2.2) // Timeline position
+        .call(() => {
+          // Split text into characters for animation
+          if (heroTaglineRef.current) {
+            const text = heroTaglineRef.current.textContent || ''
+            
+            // Make parent element visible first
+            gsap.set(heroTaglineRef.current, {
+              opacity: 1,
+              y: 0,
+              scale: 1
+            })
+            
+            heroTaglineRef.current.innerHTML = ''
+            
+            // Create spans for each character
+            text.split('').forEach((char) => {
+              const span = document.createElement('span')
+              span.textContent = char === ' ' ? '\u00A0' : char
+              span.style.display = 'inline-block'
+              span.style.opacity = '0'
+              span.style.transform = 'translateY(50px) rotateX(-90deg)'
+              span.style.transformOrigin = 'center bottom'
+              span.classList.add('hero-char')
+              heroTaglineRef.current?.appendChild(span)
+            })
+            
+            // Animate characters with stagger effect
+            gsap.fromTo('.hero-char', 
+              {
+                opacity: 0,
+                y: 50,
+                rotationX: -90,
+                scale: 0.8
+              },
+              {
+                opacity: 1,
+                y: 0,
+                rotationX: 0,
+                scale: 1,
+                duration: 0.8,
+                stagger: {
+                  amount: 1.2,
+                  ease: "power2.out"
+                },
+                ease: "back.out(1.7)"
+              }
+            )
+          }
+        })
+      
+      // Step 5: Give hero section time to breathe (2s pause)
+      .to({}, { duration: 2 })
+      
+      // Step 6: Gentle reveal of other sections (1.2s)
       .to(".section:not(.hero-section)", {
         opacity: 1,
-        duration: 0.8,
-        stagger: 0.15,
+        y: 0,
+        duration: 1.2,
+        stagger: 0.2,
         ease: "power2.out"
-      }, 1.5)
+      }, 5.4)
       .to("footer", {
         opacity: 1,
-        duration: 0.6,
+        y: 0,
+        duration: 0.8,
         ease: "power2.out"
-      }, 2)
+      }, 6.2)
     }
   }
 
@@ -147,27 +204,37 @@ const HomePage = memo(function HomePage() {
 
       // Enhanced floating animation for logos (delayed start)
       gsap.to(".logo-item", {
-        y: "random(-20, 20)",
-        rotation: "random(-5, 5)",
-        duration: "random(3, 5)",
+        y: "random(-15, 15)",
+        rotation: "random(-3, 3)",
+        duration: "random(4, 6)",
         repeat: -1,
         yoyo: true,
         ease: "sine.inOut",
-        stagger: 0.2,
-        delay: 1.5
+        stagger: 0.3
       })
     }
+
+    // Add subtle breathing animation to hero characters
+    gsap.to('.hero-char', {
+      y: "random(-2, 2)",
+      scale: "random(0.98, 1.02)",
+      duration: "random(3, 5)",
+      repeat: -1,
+      yoyo: true,
+      ease: "power1.inOut",
+      stagger: 0.1
+    })
       
-    // Continuous floating animation for Flot image (delayed start)
+    // Continuous floating animation for Flot image - gentle and engaging
     if (flotImageRef.current) {
       gsap.to(flotImageRef.current, {
-        y: -20,
-        rotation: 3,
-        duration: 4,
+        y: -25,
+        rotation: 2,
+        scale: 1.05,
+        duration: 5,
         repeat: -1,
         yoyo: true,
-        ease: "sine.inOut",
-        delay: 2
+        ease: "power1.inOut"
       })
 
       // Mouse parallax effect
@@ -278,7 +345,7 @@ const HomePage = memo(function HomePage() {
       button.addEventListener('mouseleave', handleMouseLeave)
     })
 
-    }, 2800) // Wait for faster reveal to complete
+    }, 7000) // Wait for character animation reveal to complete
 
   }, { dependencies: [showContent] })
 
