@@ -86,17 +86,20 @@ const config: Config = {
         xl: 'calc(var(--radius) + 4px)',
       },
       fontFamily: {
-        sans: ['var(--font-inter)', 'var(--font-geist-sans)', 'sans-serif'],
-        mono: ['var(--font-geist-mono)', 'monospace'],
-        heading: ['var(--font-playfair-display)', 'serif'],
-        body: ['var(--font-source-sans-pro)', 'sans-serif'],
-        secondary: ['var(--font-inter)', 'sans-serif'],
+        sans: ['var(--font-poppins-body)', 'sans-serif'],
+        mono: ['ui-monospace', 'SFMono-Regular', 'monospace'],
+        heading: ['var(--font-poppins-heading)', 'sans-serif'],
+        body: ['var(--font-poppins-body)', 'sans-serif'],
+        secondary: ['var(--font-poppins-secondary)', 'sans-serif'],
       },
       fontWeight: {
-        regular: '400',
-        medium: '500',
-        semibold: '600',
-        bold: '700',
+        light: '300',     // Poppins Light
+        regular: '400',   // Poppins Regular
+        medium: '500',    // Poppins Medium
+        semibold: '600',  // Poppins Semi Bold
+        bold: '700',      // Poppins Bold
+        extrabold: '800', // Poppins Extra Bold
+        black: '900',     // Poppins Black
       },
       fontSize: {
         xs: ['0.75rem', { lineHeight: '1rem' }],         // 12px

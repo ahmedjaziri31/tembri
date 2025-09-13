@@ -1,37 +1,30 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Playfair_Display, Inter, Source_Sans_3 } from "next/font/google";
+import { Poppins } from "next/font/google";
 import { AuthProvider } from "../contexts/AuthContext";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+// Poppins for headings and titles - Bold and Extra Bold weights
+const poppinsHeading = Poppins({
+  variable: "--font-poppins-heading",
   subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
-const playfairDisplay = Playfair_Display({
-  variable: "--font-playfair-display",
-  subsets: ["latin"],
-  weight: ["400", "700"], // Only load weights actually used
+  weight: ["600", "700", "800", "900"], // Semi-bold, Bold, Extra-bold, Black for titles
   display: "swap",
   preload: true,
 });
 
-const inter = Inter({
-  variable: "--font-inter",
+// Poppins for body text - Regular and Medium weights
+const poppinsBody = Poppins({
+  variable: "--font-poppins-body",
   subsets: ["latin"],
-  weight: ["400", "500", "600"], // Only load common weights
+  weight: ["300", "400", "500"], // Light, Regular, Medium for body text
   display: "swap",
 });
 
-const sourceSans3 = Source_Sans_3({
-  variable: "--font-source-sans-pro",
+// Poppins for secondary/subtitle text - Medium weight
+const poppinsSecondary = Poppins({
+  variable: "--font-poppins-secondary",
   subsets: ["latin"],
-  weight: ["300", "400", "600"], // Only load used weights
+  weight: ["400", "500", "600"], // Regular, Medium, Semi-bold for secondary text
   display: "swap",
 });
 
@@ -59,7 +52,7 @@ export default function RootLayout({
         <meta httpEquiv="Content-Security-Policy" content="img-src 'self' data: https:; connect-src 'self' https:;" />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${playfairDisplay.variable} ${inter.variable} ${sourceSans3.variable} antialiased`}
+        className={`${poppinsHeading.variable} ${poppinsBody.variable} ${poppinsSecondary.variable} antialiased`}
         suppressHydrationWarning
       >
         <AuthProvider>
