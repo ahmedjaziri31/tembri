@@ -47,20 +47,25 @@ export function useGSAPTimeline(dependencies: any[] = []) {
   return timelineRef.current
 }
 
-export function useGSAPSelector<T extends HTMLElement = HTMLElement>(): [RefObject<T>, (selector: string) => HTMLElement | null] {
-  const ref = useRef<T>(null)
+export function useGSAPSelector<T extends HTMLElement = HTMLElement>(): [RefObject<T | null>, (selector: string) => HTMLElement | null] {
+  const ref = useRef<T | null>(null)
 
   const getElement = (selector: string) => {
     if (!ref.current) return null
-    return ref.current.querySelector(selector)
+    return ref.current.querySelector(selector) as HTMLElement | null
   }
 
   return [ref, getElement]
 }
 
 export function useScrollTrigger(
-  element: RefObject<HTMLElement>,
-  animation: any,
+  element: RefObject<HTMLElement | null>,
+  animation: {
+    enter?: gsap.TweenVars;
+    leave?: gsap.TweenVars;
+    enterBack?: gsap.TweenVars;
+    leaveBack?: gsap.TweenVars;
+  },
   options: ScrollTrigger.Vars = {}
 ) {
   useEffect(() => {
@@ -97,7 +102,11 @@ export function useScrollTrigger(
   }, [element, animation, options])
 }
 
-export function useParallax(element: RefObject<HTMLElement>, options: any = {}) {
+export function useParallax(element: RefObject<HTMLElement | null>, options: {
+  speed?: number;
+  direction?: 'vertical' | 'horizontal';
+  scrollTrigger?: ScrollTrigger.Vars;
+} = {}) {
   useEffect(() => {
     if (!element.current || typeof window === 'undefined') return
 
@@ -119,7 +128,7 @@ export function useParallax(element: RefObject<HTMLElement>, options: any = {}) 
   }, [element, options])
 }
 
-export function useMagneticEffect<T extends HTMLElement>(element: RefObject<T>, intensity: number = 0.3) {
+export function useMagneticEffect<T extends HTMLElement>(element: RefObject<T | null>, intensity: number = 0.3) {
   useEffect(() => {
     if (!element.current) return
 
@@ -135,10 +144,16 @@ export function useMagneticEffect<T extends HTMLElement>(element: RefObject<T>, 
 }
 
 export function useStaggerAnimation<T extends HTMLElement>(
-  elements: RefObject<T>,
+  elements: RefObject<T | null>,
   selector: string,
-  animation: any,
-  trigger: RefObject<HTMLElement> | null = null
+  animation: {
+    from?: gsap.TweenVars;
+    to: gsap.TweenVars;
+    stagger?: number;
+    duration?: number;
+    ease?: string;
+  },
+  trigger: RefObject<HTMLElement | null> | null = null
 ) {
   useEffect(() => {
     if (!elements.current || typeof window === 'undefined') return
@@ -168,7 +183,7 @@ export function useStaggerAnimation<T extends HTMLElement>(
 }
 
 // Hook for text animations
-export function useTextAnimation<T extends HTMLElement>(element: RefObject<T>, type: 'chars' | 'words' = 'chars') {
+export function useTextAnimation<T extends HTMLElement>(element: RefObject<T | null>, type: 'chars' | 'words' = 'chars') {
   useEffect(() => {
     if (!element.current || typeof window === 'undefined') return
 

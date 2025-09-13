@@ -39,16 +39,16 @@ const HomePage = memo(function HomePage() {
   const connectButtonsRef = useRef<HTMLDivElement>(null)
 
   // Apply magnetic effect to buttons
-  useMagneticEffect(seeWhatWeDoRef as React.RefObject<HTMLElement>, 0.4)
-  useMagneticEffect(connectButtonsRef as React.RefObject<HTMLElement>, 0.3)
+  useMagneticEffect(seeWhatWeDoRef, 0.4)
+  useMagneticEffect(connectButtonsRef, 0.3)
 
   // Text animations
-  useTextAnimation(heroTaglineRef as React.RefObject<HTMLElement>, 'chars')
-  useTextAnimation(latestProjectsRef as React.RefObject<HTMLElement>, 'words')
-  useTextAnimation(connectHeadingRef as React.RefObject<HTMLElement>, 'words')
+  useTextAnimation(heroTaglineRef, 'chars')
+  useTextAnimation(latestProjectsRef, 'words')
+  useTextAnimation(connectHeadingRef, 'words')
 
   // Stagger animations
-  useStaggerAnimation(servicesCardsRef as React.RefObject<HTMLElement>, '.service-card', {
+  useStaggerAnimation(servicesCardsRef, '.service-card', {
     from: { opacity: 0, y: 100, rotationX: -30 },
     to: { opacity: 1, y: 0, rotationX: 0 },
     stagger: 0.2,
@@ -56,7 +56,7 @@ const HomePage = memo(function HomePage() {
     ease: "back.out(1.7)"
   })
 
-  useStaggerAnimation(projectsContainerRef as React.RefObject<HTMLElement>, '.project-card', {
+  useStaggerAnimation(projectsContainerRef, '.project-card', {
     from: { opacity: 0, scale: 0.8, rotationY: 45 },
     to: { opacity: 1, scale: 1, rotationY: 0 },
     stagger: 0.15,
