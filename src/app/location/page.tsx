@@ -22,7 +22,7 @@ export default function LocationPage() {
       id: 'doha',
       name: 'Doha', 
       address: '17th Floor, Office 16, Tornado Tower, West Bay, Doha, Qatar',
-      image: 'https://images.unsplash.com/photo-1580676616842-c8b8e2b5a2b2?w=800&h=1200&fit=crop'
+      image: 'https://images.pexels.com/photos/3069345/pexels-photo-3069345.jpeg'
     },
     {
       id: 'singapore',
