@@ -79,7 +79,7 @@ export default function SocialMediaSection() {
   ]
 
   return (
-    <section ref={sectionRef} className="relative bg-black py-16 lg:py-24 overflow-hidden">
+    <section id="social-media" ref={sectionRef} className="relative bg-black py-16 lg:py-24 overflow-hidden">
       <div className="relative h-[800px] lg:h-[900px] w-full">
         {/* Left Side Images */}
         <div className="absolute left-0 top-0 w-5/12 h-full flex flex-col justify-center -space-y-12 px-6">

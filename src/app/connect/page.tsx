@@ -15,11 +15,11 @@ export default function ConnectPage() {
         <section className="w-full max-w-6xl mx-auto px-6 lg:px-8 py-20">
           <div className="text-center mb-20">
             <h1 className="text-5xl lg:text-6xl xl:text-7xl font-heading font-bold text-white mb-8 tracking-tight">
-              LET'S CONNECT
+              LET&apos;S CONNECT
             </h1>
             <p className="text-lg lg:text-xl text-gray-300 font-body leading-relaxed max-w-3xl mx-auto">
-              We're here to discuss your brand ambitions, partnership ideas, or media inquiries. 
-              Whether you're looking to launch a campaign, explore collaboration, or simply say hello — we'd love to hear from you.
+              We&apos;re here to discuss your brand ambitions, partnership ideas, or media inquiries. 
+              Whether you&apos;re looking to launch a campaign, explore collaboration, or simply say hello — we&apos;d love to hear from you.
             </p>
           </div>
 
@@ -81,7 +81,7 @@ export default function ConnectPage() {
 
             {/* Follow Us */}
             <div className="border-b border-white/10 last:border-b-0">
-              <Link href="/connect/follow-us" className="block">
+              <Link href="/#social-media" className="block">
                 <div className="w-full text-left px-8 py-8 lg:py-10 text-white hover:bg-white/5 transition-all duration-300 group">
                   <div className="flex items-center justify-between">
                     <h2 className="text-2xl lg:text-3xl xl:text-4xl font-heading font-bold group-hover:text-[#ffe9c7] transition-colors duration-300">
