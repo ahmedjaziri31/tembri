@@ -1,6 +1,6 @@
 'use client'
 
-import { useMemo, memo, useRef } from 'react'
+import { useMemo, memo, useRef, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import Header from '../components/Header'
@@ -8,15 +8,21 @@ import Footer from '../components/Footer'
 import SocialMediaSection from '../components/SocialMediaSection'
 import AboutSection from '../components/AboutSection'
 import CompaniesSection from '../components/CompaniesSection'
+import Preloader from '../components/Preloader'
 import { useGSAP, useStaggerAnimation, useMagneticEffect, useTextAnimation } from '../hooks/useGSAP'
 import { gsap } from '../lib/gsap'
 
 const HomePage = memo(function HomePage() {
+  // Preloader state
+  const [isLoading, setIsLoading] = useState(true)
+  const [showContent, setShowContent] = useState(false)
+  
   // GSAP Refs for animations
   const heroSectionRef = useRef<HTMLElement>(null)
   const heroTaglineRef = useRef<HTMLParagraphElement>(null)
   const logoContainerRef = useRef<HTMLDivElement>(null)
   const flotImageRef = useRef<HTMLDivElement>(null)
+  const mainContentRef = useRef<HTMLDivElement>(null)
   
   // Projects section refs
   const projectsSectionRef = useRef<HTMLElement>(null)
@@ -38,7 +44,75 @@ const HomePage = memo(function HomePage() {
   const connectDescRef = useRef<HTMLParagraphElement>(null)
   const connectButtonsRef = useRef<HTMLDivElement>(null)
 
-  // Apply magnetic effect to buttons
+  // Handle preloader completion
+  const handlePreloaderComplete = () => {
+    setIsLoading(false)
+    setShowContent(true)
+    
+    // Show main content immediately but invisible
+    if (mainContentRef.current) {
+      gsap.set(mainContentRef.current, { opacity: 1 })
+      
+      // Hide everything initially
+      gsap.set([heroTaglineRef.current, ".logo-item", "header", "footer"], { opacity: 0 })
+      gsap.set(".section:not(.hero-section)", { opacity: 0 })
+      
+      // Show only the floating card first
+      gsap.set(flotImageRef.current, {
+        opacity: 0,
+        scale: 0.5,
+        rotationY: 180
+      })
+      
+      // Timeline for revealing content step by step
+      const revealTl = gsap.timeline()
+      
+      // Step 1: Show and animate the floating card (1s)
+      revealTl.to(flotImageRef.current, {
+        opacity: 1,
+        scale: 1,
+        rotationY: 0,
+        duration: 1,
+        ease: "expo.out"
+      })
+      
+      // Step 2: Show header and logos (0.8s)
+      .to("header", {
+        opacity: 1,
+        duration: 0.6,
+        ease: "power2.out"
+      }, 0.5)
+      .to(".logo-item", {
+        opacity: 1,
+        duration: 0.8,
+        stagger: 0.08,
+        ease: "expo.out"
+      }, 0.7)
+      
+      // Step 3: Show tagline (0.6s)
+      .to(heroTaglineRef.current, {
+        opacity: 1,
+        y: 0,
+        duration: 0.6,
+        ease: "power2.out"
+      }, 1.2)
+      
+      // Step 4: Show rest of page sections (0.8s)
+      .to(".section:not(.hero-section)", {
+        opacity: 1,
+        duration: 0.8,
+        stagger: 0.15,
+        ease: "power2.out"
+      }, 1.5)
+      .to("footer", {
+        opacity: 1,
+        duration: 0.6,
+        ease: "power2.out"
+      }, 2)
+    }
+  }
+
+  // Apply magnetic effect to buttons (only when content is shown)
   useMagneticEffect(seeWhatWeDoRef, 0.4)
   useMagneticEffect(connectButtonsRef, 0.3)
 
@@ -63,33 +137,13 @@ const HomePage = memo(function HomePage() {
     ease: "expo.out"
   })
 
-  // Main GSAP Animations
+  // Main GSAP Animations (only run when content is shown and after reveal)
   useGSAP(() => {
-    // Hero section entrance timeline - start immediately
-    const heroTl = gsap.timeline()
-    
-    // Set initial states for hero elements
-    gsap.set([heroTaglineRef.current, flotImageRef.current, ".logo-item"], {
-      opacity: 0
-    })
+    if (!showContent) return
 
-    // Logo container animation - enhanced infinite scroll
+    // Start continuous floating animations after reveal sequence completes
+    setTimeout(() => {
     if (logoContainerRef.current) {
-      gsap.set(".logo-item", { 
-        opacity: 0,
-        scale: 0.9,
-        filter: "blur(2px)"
-      })
-      
-      // Start logo animation immediately
-      heroTl.to(".logo-item", {
-        opacity: 1,
-        scale: 1,
-        filter: "blur(0px)",
-        duration: 1.2,
-        stagger: 0.08,
-        ease: "expo.out"
-      }, 0)
 
       // Enhanced floating animation for logos (delayed start)
       gsap.to(".logo-item", {
@@ -102,39 +156,6 @@ const HomePage = memo(function HomePage() {
         stagger: 0.2,
         delay: 1.5
       })
-    }
-    
-    // Flot image advanced animation - start immediately
-    if (flotImageRef.current) {
-      gsap.set(flotImageRef.current, {
-        scale: 0.8,
-        opacity: 0,
-        rotationY: 180,
-        filter: "drop-shadow(0 0 50px rgba(255,255,255,0.3))"
-      })
-      
-      heroTl.to(flotImageRef.current, {
-        scale: 1,
-        opacity: 0.9,
-        rotationY: 0,
-        duration: 1.8,
-        ease: "expo.out"
-      }, 0.3)
-    }
-
-    // Hero tagline immediate animation
-    if (heroTaglineRef.current) {
-      gsap.set(heroTaglineRef.current, {
-        opacity: 0,
-        y: 30
-      })
-      
-      heroTl.to(heroTaglineRef.current, {
-        opacity: 1,
-        y: 0,
-        duration: 1.5,
-        ease: "expo.out"
-      }, 0.6)
     }
       
     // Continuous floating animation for Flot image (delayed start)
@@ -257,7 +278,9 @@ const HomePage = memo(function HomePage() {
       button.addEventListener('mouseleave', handleMouseLeave)
     })
 
-  })
+    }, 2800) // Wait for faster reveal to complete
+
+  }, { dependencies: [showContent] })
 
   // Memoize the logo elements to prevent unnecessary re-renders
   const logoElements = useMemo(() => {
@@ -281,7 +304,16 @@ const HomePage = memo(function HomePage() {
   }, [])
 
   return (
-    <div className="min-h-screen w-full relative overflow-hidden">
+    <>
+      {/* Preloader */}
+      {isLoading && <Preloader onComplete={handlePreloaderComplete} />}
+      
+      {/* Main Content */}
+      <div 
+        ref={mainContentRef}
+        className={`min-h-screen w-full relative overflow-hidden bg-black ${showContent ? 'block' : 'hidden'}`}
+        style={{ opacity: 0 }}
+      >
       {/* Black Background */}
       <div className="absolute inset-0 z-0 bg-black" />
 
@@ -289,7 +321,7 @@ const HomePage = memo(function HomePage() {
       <Header />
 
       {/* Hero Section with Infinite Scrolling Logos */}
-      <main ref={heroSectionRef} className="relative z-20 flex flex-col justify-between min-h-[calc(100vh-120px)]">
+      <main ref={heroSectionRef} className="hero-section relative z-20 flex flex-col justify-between min-h-[calc(100vh-120px)]">
         {/* Infinite Scrolling Logos - Centered */}
         <div className="flex-1 flex items-center justify-center">
           <div className="w-full max-w-full mx-auto">
@@ -310,7 +342,7 @@ const HomePage = memo(function HomePage() {
         </div>
 
         {/* Centered Overlay Image */}
-        <div className="absolute inset-0 flex items-start justify-center pt-16 lg:pt-20 z-30 pointer-events-none">
+        <div className="absolute inset-0 flex items-start justify-center pt-8 lg:pt-12 z-30 pointer-events-none">
           <div ref={flotImageRef} className="relative">
             <Image
               src="/Flot.png"
@@ -337,7 +369,7 @@ const HomePage = memo(function HomePage() {
       </main>
 
       {/* Latest Projects Section */}
-      <section ref={projectsSectionRef} className="relative z-20 py-16 lg:py-24">
+      <section ref={projectsSectionRef} className="section relative z-20 py-16 lg:py-24">
         <div className="max-w-7xl mx-auto px-6">
           {/* Section Header */}
           <div className="flex justify-between items-start mb-2">
@@ -430,7 +462,7 @@ const HomePage = memo(function HomePage() {
       <AboutSection />
 
       {/* Services Section */}
-      <section ref={servicesSectionRef} className="relative bg-black py-16 lg:py-24 overflow-hidden">
+      <section ref={servicesSectionRef} className="section relative bg-black py-16 lg:py-24 overflow-hidden">
         <div className="max-w-7xl mx-auto px-6">
           {/* Section Header */}
           <div className="text-center mb-12 lg:mb-16">
@@ -556,7 +588,7 @@ const HomePage = memo(function HomePage() {
       <SocialMediaSection />
 
               {/* Connect CTA Section */}
-      <section ref={connectSectionRef} className="relative bg-black py-24 lg:py-32 overflow-hidden">
+      <section ref={connectSectionRef} className="section relative bg-black py-24 lg:py-32 overflow-hidden">
         {/* Background Decorative Shapes */}
         <div className="absolute inset-0">
           <Image
@@ -630,7 +662,7 @@ const HomePage = memo(function HomePage() {
       </section>
 
       {/* Partners Section */}
-      <section className="bg-black py-16 lg:py-24 relative z-20">
+      <section className="section bg-black py-16 lg:py-24 relative z-20">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="flex items-center justify-center">
             <div className="w-full max-w-4xl">
@@ -650,6 +682,7 @@ const HomePage = memo(function HomePage() {
       {/* Footer */}
       <Footer />
     </div>
+    </>
   )
 })
 
