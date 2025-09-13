@@ -293,7 +293,6 @@ export default function ProductDetailsPage() {
               <div className="space-y-8">
                 <div className="mb-12">
                   <h2 className="text-3xl lg:text-4xl font-heading font-bold text-white mb-8 flex items-center">
-                    <span className="mr-4">📋</span>
                     Project Details
                   </h2>
                 </div>
