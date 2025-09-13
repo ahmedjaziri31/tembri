@@ -121,13 +121,6 @@ export default function Header() {
           
           <nav className="flex flex-col items-center space-y-6">
             <Link 
-              href="/" 
-              className="text-white text-2xl hover:text-[#ffe9c7] transition-colors duration-300 font-body"
-              onClick={toggleMenu}
-            >
-              Home
-            </Link>
-            <Link 
               href="/work" 
               className="text-white text-2xl hover:text-[#ffe9c7] transition-colors duration-300 font-body"
               onClick={toggleMenu}
@@ -147,6 +140,13 @@ export default function Header() {
               onClick={toggleMenu}
             >
               About Us
+            </Link>
+            <Link 
+              href="/location" 
+              className="text-white text-2xl hover:text-[#ffe9c7] transition-colors duration-300 font-body"
+              onClick={toggleMenu}
+            >
+              Location
             </Link>
             <Link 
               href="/connect" 
@@ -189,14 +189,6 @@ export default function Header() {
             <nav className="max-w-5xl mx-auto text-center">
               <div className="flex flex-wrap justify-center items-center gap-8 lg:gap-12">
                 <Link 
-                  href="/" 
-                  className="text-white text-lg lg:text-xl font-heading font-light hover:text-[#ffe9c7] transition-colors duration-300"
-                  onClick={toggleSlideMenu}
-                >
-                  Home
-                </Link>
-                
-                <Link 
                   href="/work" 
                   className="text-white text-lg lg:text-xl font-heading font-light hover:text-[#ffe9c7] transition-colors duration-300"
                   onClick={toggleSlideMenu}
@@ -218,6 +210,14 @@ export default function Header() {
                   onClick={toggleSlideMenu}
                 >
                   About Us
+                </Link>
+                
+                <Link 
+                  href="/location" 
+                  className="text-white text-lg lg:text-xl font-heading font-light hover:text-[#ffe9c7] transition-colors duration-300"
+                  onClick={toggleSlideMenu}
+                >
+                  Location
                 </Link>
                 
                 <Link 
