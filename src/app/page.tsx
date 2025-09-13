@@ -1,6 +1,6 @@
 'use client'
 
-import { useMemo, memo } from 'react'
+import { useMemo, memo, useRef, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import Header from '../components/Header'
@@ -8,53 +8,231 @@ import Footer from '../components/Footer'
 import SocialMediaSection from '../components/SocialMediaSection'
 import AboutSection from '../components/AboutSection'
 import CompaniesSection from '../components/CompaniesSection'
-import { useScrollAnimation } from '../hooks/useScrollAnimation'
+import { useGSAP, useStaggerAnimation, useMagneticEffect, useParallax, useTextAnimation } from '../hooks/useGSAP'
+import { gsap } from '../lib/gsap'
 
 const HomePage = memo(function HomePage() {
-  // Scroll animation hooks for all text elements
-  const { ref: heroTaglineRef, animationClass: heroTaglineAnimation, isVisible: isHeroTaglineVisible } = useScrollAnimation<HTMLParagraphElement>({
-    fadeInThreshold: 0.1
-  })
+  // GSAP Refs for animations
+  const heroSectionRef = useRef<HTMLElement>(null)
+  const heroTaglineRef = useRef<HTMLParagraphElement>(null)
+  const logoContainerRef = useRef<HTMLDivElement>(null)
+  const flotImageRef = useRef<HTMLDivElement>(null)
   
-  const { ref: creationsSubtitleRef, animationClass: creationsSubtitleAnimation, isVisible: isCreationsSubtitleVisible } = useScrollAnimation<HTMLParagraphElement>({
-    fadeInThreshold: 0.1
-  })
+  // Projects section refs
+  const projectsSectionRef = useRef<HTMLElement>(null)
+  const creationsSubtitleRef = useRef<HTMLParagraphElement>(null)
+  const latestProjectsRef = useRef<HTMLHeadingElement>(null)
+  const seeWhatWeDoRef = useRef<HTMLButtonElement>(null)
+  const projectsContainerRef = useRef<HTMLDivElement>(null)
   
-  const { ref: latestProjectsRef, animationClass: latestProjectsAnimation, isVisible: isLatestProjectsVisible } = useScrollAnimation<HTMLHeadingElement>({
-    fadeInThreshold: 0.1
-  })
+  // Services section refs
+  const servicesSectionRef = useRef<HTMLElement>(null)
+  const servicesSubtitleRef = useRef<HTMLParagraphElement>(null)
+  const servicesTitleRef = useRef<HTMLHeadingElement>(null)
+  const servicesCardsRef = useRef<HTMLDivElement>(null)
   
-  const { ref: seeWhatWeDoRef, animationClass: seeWhatWeDoAnimation, isVisible: isSeeWhatWeDoVisible } = useScrollAnimation<HTMLButtonElement>({
-    fadeInThreshold: 0.1
-  })
-  
-  const { ref: connectSubtitleRef, animationClass: connectSubtitleAnimation, isVisible: isConnectSubtitleVisible } = useScrollAnimation<HTMLParagraphElement>({
-    fadeInThreshold: 0.1
-  })
-  
-  const { ref: connectHeadingRef, animationClass: connectHeadingAnimation, isVisible: isConnectHeadingVisible } = useScrollAnimation<HTMLHeadingElement>({
-    fadeInThreshold: 0.1
-  })
-  
-  const { ref: connectDescRef, animationClass: connectDescAnimation, isVisible: isConnectDescVisible } = useScrollAnimation<HTMLParagraphElement>({
-    fadeInThreshold: 0.1
-  })
-  
-  const { ref: connectButtonsRef, animationClass: connectButtonsAnimation, isVisible: isConnectButtonsVisible } = useScrollAnimation<HTMLDivElement>({
-    fadeInThreshold: 0.1
+  // Connect section refs
+  const connectSectionRef = useRef<HTMLElement>(null)
+  const connectSubtitleRef = useRef<HTMLParagraphElement>(null)
+  const connectHeadingRef = useRef<HTMLHeadingElement>(null)
+  const connectDescRef = useRef<HTMLParagraphElement>(null)
+  const connectButtonsRef = useRef<HTMLDivElement>(null)
+
+  // Apply magnetic effect to buttons
+  useMagneticEffect(seeWhatWeDoRef as React.RefObject<HTMLElement>, 0.4)
+  useMagneticEffect(connectButtonsRef as React.RefObject<HTMLElement>, 0.3)
+
+  // Text animations
+  useTextAnimation(heroTaglineRef as React.RefObject<HTMLElement>, 'chars')
+  useTextAnimation(latestProjectsRef as React.RefObject<HTMLElement>, 'words')
+  useTextAnimation(connectHeadingRef as React.RefObject<HTMLElement>, 'words')
+
+  // Stagger animations
+  useStaggerAnimation(servicesCardsRef as React.RefObject<HTMLElement>, '.service-card', {
+    from: { opacity: 0, y: 100, rotationX: -30 },
+    to: { opacity: 1, y: 0, rotationX: 0 },
+    stagger: 0.2,
+    duration: 1.2,
+    ease: "back.out(1.7)"
   })
 
-  // Services section scroll animations
-  const { ref: servicesSubtitleRef, animationClass: servicesSubtitleAnimation, isVisible: isServicesSubtitleVisible } = useScrollAnimation<HTMLParagraphElement>({
-    fadeInThreshold: 0.1
+  useStaggerAnimation(projectsContainerRef as React.RefObject<HTMLElement>, '.project-card', {
+    from: { opacity: 0, scale: 0.8, rotationY: 45 },
+    to: { opacity: 1, scale: 1, rotationY: 0 },
+    stagger: 0.15,
+    duration: 1,
+    ease: "expo.out"
   })
-  
-  const { ref: servicesTitleRef, animationClass: servicesTitleAnimation, isVisible: isServicesTitleVisible } = useScrollAnimation<HTMLHeadingElement>({
-    fadeInThreshold: 0.1
-  })
-  
-  const { ref: servicesCardsRef, animationClass: servicesCardsAnimation, isVisible: isServicesCardsVisible } = useScrollAnimation<HTMLDivElement>({
-    fadeInThreshold: 0.1
+
+  // Main GSAP Animations
+  useGSAP(() => {
+    // Hero section entrance timeline
+    const heroTl = gsap.timeline({ delay: 0.5 })
+    
+    // Logo container animation - enhanced infinite scroll
+    if (logoContainerRef.current) {
+      gsap.set(".logo-item", { 
+        opacity: 0.6,
+        scale: 0.9,
+        filter: "blur(2px)"
+      })
+      
+      gsap.to(".logo-item", {
+        opacity: 1,
+        scale: 1,
+        filter: "blur(0px)",
+        duration: 1.5,
+        stagger: 0.1,
+        ease: "expo.out"
+      })
+
+      // Enhanced floating animation for logos
+      gsap.to(".logo-item", {
+        y: "random(-20, 20)",
+        rotation: "random(-5, 5)",
+        duration: "random(3, 5)",
+        repeat: -1,
+        yoyo: true,
+        ease: "sine.inOut",
+        stagger: 0.2
+      })
+    }
+    
+    // Flot image advanced animation
+    if (flotImageRef.current) {
+      gsap.set(flotImageRef.current, {
+        scale: 0.8,
+        opacity: 0,
+        rotationY: 180,
+        filter: "drop-shadow(0 0 50px rgba(255,255,255,0.3))"
+      })
+      
+      heroTl.to(flotImageRef.current, {
+        scale: 1,
+        opacity: 0.9,
+        rotationY: 0,
+        duration: 2,
+        ease: "expo.out"
+      })
+      
+      // Continuous floating with parallax
+      gsap.to(flotImageRef.current, {
+        y: -20,
+        rotation: 3,
+        duration: 4,
+        repeat: -1,
+        yoyo: true,
+        ease: "sine.inOut"
+      })
+
+      // Mouse parallax effect
+      if (typeof window !== 'undefined') {
+        window.addEventListener('mousemove', (e) => {
+          const x = (e.clientX - window.innerWidth / 2) * 0.02
+          const y = (e.clientY - window.innerHeight / 2) * 0.02
+          
+          gsap.to(flotImageRef.current, {
+            x,
+            y,
+            duration: 1,
+            ease: "power2.out"
+          })
+        })
+      }
+    }
+
+    // Scroll-triggered animations for sections
+    gsap.fromTo(creationsSubtitleRef.current, 
+      { opacity: 0, x: -50 },
+      {
+        opacity: 1,
+        x: 0,
+        duration: 1,
+        ease: "expo.out",
+        scrollTrigger: {
+          trigger: creationsSubtitleRef.current,
+          start: "top 85%",
+          toggleActions: "play none none reverse"
+        }
+      }
+    )
+
+    gsap.fromTo(servicesSubtitleRef.current,
+      { opacity: 0, y: 30, rotationX: -30 },
+      {
+        opacity: 1,
+        y: 0,
+        rotationX: 0,
+        duration: 1.2,
+        ease: "back.out(1.7)",
+        scrollTrigger: {
+          trigger: servicesSubtitleRef.current,
+          start: "top 85%",
+          toggleActions: "play none none reverse"
+        }
+      }
+    )
+
+    gsap.fromTo(servicesTitleRef.current,
+      { opacity: 0, y: 50, scale: 0.9 },
+      {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        duration: 1.5,
+        ease: "expo.out",
+        scrollTrigger: {
+          trigger: servicesTitleRef.current,
+          start: "top 85%",
+          toggleActions: "play none none reverse"
+        }
+      }
+    )
+
+    // Connect section parallax background
+    if (connectSectionRef.current) {
+      gsap.to(connectSectionRef.current.querySelector('.bg-shape-1'), {
+        rotation: 360,
+        duration: 30,
+        repeat: -1,
+        ease: "none"
+      })
+      
+      gsap.to(connectSectionRef.current.querySelector('.bg-shape-2'), {
+        rotation: -360,
+        duration: 40,
+        repeat: -1,
+        ease: "none"
+      })
+    }
+
+    // Advanced button hover animations
+    const buttons = document.querySelectorAll('.gsap-button')
+    buttons.forEach(button => {
+      const handleMouseEnter = () => {
+        gsap.to(button, {
+          scale: 1.05,
+          y: -5,
+          boxShadow: "0 20px 40px rgba(0,0,0,0.3)",
+          duration: 0.3,
+          ease: "back.out(1.7)"
+        })
+      }
+      
+      const handleMouseLeave = () => {
+        gsap.to(button, {
+          scale: 1,
+          y: 0,
+          boxShadow: "0 10px 20px rgba(0,0,0,0.1)",
+          duration: 0.3,
+          ease: "power2.out"
+        })
+      }
+      
+      button.addEventListener('mouseenter', handleMouseEnter)
+      button.addEventListener('mouseleave', handleMouseLeave)
+    })
+
   })
 
   // Memoize the logo elements to prevent unnecessary re-renders
@@ -62,7 +240,7 @@ const HomePage = memo(function HomePage() {
     const logos = []
     for (let i = 0; i < 8; i++) { // Reduced from 12 to 8 for better performance
       logos.push(
-        <div key={i} className="flex-shrink-0 mx-8 lg:mx-12">
+        <div key={i} className="logo-item flex-shrink-0 mx-8 lg:mx-12">
           <Image 
             src="/home/logo2.png" 
             alt="Maison Elaris" 
@@ -87,11 +265,11 @@ const HomePage = memo(function HomePage() {
       <Header />
 
       {/* Hero Section with Infinite Scrolling Logos */}
-      <main className="relative z-20 flex flex-col justify-between min-h-[calc(100vh-120px)]">
+      <main ref={heroSectionRef} className="relative z-20 flex flex-col justify-between min-h-[calc(100vh-120px)]">
         {/* Infinite Scrolling Logos - Centered */}
         <div className="flex-1 flex items-center justify-center">
           <div className="w-full max-w-full mx-auto">
-            <div className="w-full overflow-hidden relative py-8">
+            <div ref={logoContainerRef} className="w-full overflow-hidden relative py-8">
               {/* Optimized infinite scroll container */}
               <div className="flex animate-infinite-scroll">
                 {/* First set of logos */}
@@ -109,13 +287,13 @@ const HomePage = memo(function HomePage() {
 
         {/* Centered Overlay Image */}
         <div className="absolute inset-0 flex items-start justify-center pt-16 lg:pt-20 z-30 pointer-events-none">
-          <div className="relative">
+          <div ref={flotImageRef} className="relative">
             <Image
               src="/Flot.png"
               alt="Flot Overlay"
               width={500}
               height={500}
-              className="w-80 h-80 sm:w-96 sm:h-96 md:w-[500px] md:h-[500px] lg:w-[400px] lg:h-[400px] xl:w-[500px] xl:h-[500px] object-contain opacity-90 drop-shadow-2xl animate-float"
+              className="w-80 h-80 sm:w-96 sm:h-96 md:w-[500px] md:h-[500px] lg:w-[400px] lg:h-[400px] xl:w-[500px] xl:h-[500px] object-contain opacity-90 drop-shadow-2xl"
               priority
             />
           </div>
@@ -126,11 +304,7 @@ const HomePage = memo(function HomePage() {
           <div className="max-w-6xl mx-auto px-6 text-center">
             <p 
               ref={heroTaglineRef}
-              className={`text-white text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-body font-light tracking-wider whitespace-nowrap overflow-hidden ${heroTaglineAnimation}`}
-              style={{ 
-                opacity: isHeroTaglineVisible ? 1 : 0,
-                visibility: isHeroTaglineVisible ? 'visible' : 'hidden'
-              }}
+              className="text-white text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-body font-light tracking-wider"
             >
               WHERE STRATEGY MEETS STORY. POWERED BY DATA. DRIVEN BY VISION.
             </p>
@@ -139,52 +313,40 @@ const HomePage = memo(function HomePage() {
       </main>
 
       {/* Latest Projects Section */}
-      <section className="relative z-20 py-16 lg:py-24">
+      <section ref={projectsSectionRef} className="relative z-20 py-16 lg:py-24">
         <div className="max-w-7xl mx-auto px-6">
           {/* Section Header */}
           <div className="flex justify-between items-start mb-2">
             <div>
               <p 
                 ref={creationsSubtitleRef}
-                className={`text-[#ffe9c7] text-sm lg:text-base font-secondary font-light tracking-wider mb-2 ${creationsSubtitleAnimation}`}
-                style={{ 
-                  opacity: isCreationsSubtitleVisible ? 1 : 0,
-                  visibility: isCreationsSubtitleVisible ? 'visible' : 'hidden'
-                }}
+                className="text-[#ffe9c7] text-sm lg:text-base font-secondary font-light tracking-wider mb-2"
               >
                 CREATIONS
               </p>
               <h2 
                 ref={latestProjectsRef}
-                className={`text-white text-2xl lg:text-3xl xl:text-4xl font-heading font-bold leading-tight ${latestProjectsAnimation}`}
-                style={{ 
-                  opacity: isLatestProjectsVisible ? 1 : 0,
-                  visibility: isLatestProjectsVisible ? 'visible' : 'hidden'
-                }}
+                className="text-white text-2xl lg:text-3xl xl:text-4xl font-heading font-bold leading-tight"
               >
                 LATEST<br />PROJECTS
               </h2>
             </div>
             <button 
               ref={seeWhatWeDoRef}
-              className={`bg-[#336b62] hover:bg-[#9b8075] text-white px-6 py-3 rounded-lg transition-colors duration-300 font-body font-medium ${seeWhatWeDoAnimation}`}
-              style={{ 
-                opacity: isSeeWhatWeDoVisible ? 1 : 0,
-                visibility: isSeeWhatWeDoVisible ? 'visible' : 'hidden'
-              }}
+              className="gsap-button bg-[#336b62] hover:bg-[#9b8075] text-white px-6 py-3 rounded-lg transition-colors duration-300 font-body font-medium"
             >
               See What We Do
             </button>
           </div>
 
           {/* Overlaying Projects Images */}
-          <div className="relative flex justify-center items-start pt-4 h-96 lg:h-[500px] xl:h-[600px]">
+          <div ref={projectsContainerRef} className="relative flex justify-center items-start pt-4 h-96 lg:h-[500px] xl:h-[600px]">
             {/* Background container for the stacked effect */}
             <div className="relative w-full max-w-md lg:max-w-lg xl:max-w-xl">
               
               {/* Project 1 - Back layer (top position) */}
-              <div className="absolute top-0 left-0 right-0 z-10">
-                <div className="relative w-full h-80 lg:h-96 xl:h-[450px] rounded-3xl overflow-hidden shadow-2xl border border-white/10">
+              <div className="project-card absolute top-0 left-0 right-0 z-10">
+                <div className="relative w-full h-80 lg:h-96 xl:h-[450px] rounded-3xl overflow-hidden shadow-2xl border border-white/10 transform-gpu perspective-1000">
                   <Image
                     src="/work/project1.png"
                     alt="Project 1"
@@ -197,8 +359,8 @@ const HomePage = memo(function HomePage() {
               </div>
 
               {/* Project 2 - Middle layer (slightly down) */}
-              <div className="absolute top-15 left-0 right-0 z-20">
-                <div className="relative w-full h-80 lg:h-96 xl:h-[450px] rounded-3xl overflow-hidden shadow-2xl border border-white/20">
+              <div className="project-card absolute top-15 left-0 right-0 z-20">
+                <div className="relative w-full h-80 lg:h-96 xl:h-[450px] rounded-3xl overflow-hidden shadow-2xl border border-white/20 transform-gpu perspective-1000">
                   <Image
                     src="/work/project2.png"
                     alt="Project 2"
@@ -211,8 +373,8 @@ const HomePage = memo(function HomePage() {
               </div>
 
               {/* Project 3 - Front layer (further down) */}
-              <div className="absolute top-30 left-0 right-0 z-30">
-                <div className="relative w-full h-80 lg:h-96 xl:h-[450px] rounded-3xl overflow-hidden shadow-2xl border border-white/30">
+              <div className="project-card absolute top-30 left-0 right-0 z-30">
+                <div className="relative w-full h-80 lg:h-96 xl:h-[450px] rounded-3xl overflow-hidden shadow-2xl border border-white/30 transform-gpu perspective-1000">
                   <Image
                     src="/work/project3.png"
                     alt="Project 3"
@@ -234,7 +396,6 @@ const HomePage = memo(function HomePage() {
             </div>
           </div>
 
-
         </div>
       </section>
 
@@ -245,27 +406,19 @@ const HomePage = memo(function HomePage() {
       <AboutSection />
 
       {/* Services Section */}
-      <section className="relative bg-black py-16 lg:py-24 overflow-hidden">
+      <section ref={servicesSectionRef} className="relative bg-black py-16 lg:py-24 overflow-hidden">
         <div className="max-w-7xl mx-auto px-6">
           {/* Section Header */}
           <div className="text-center mb-12 lg:mb-16">
             <p 
               ref={servicesSubtitleRef}
-              className={`text-[#336b62] text-sm lg:text-base font-secondary font-light tracking-wider mb-4 ${servicesSubtitleAnimation}`}
-              style={{ 
-                opacity: isServicesSubtitleVisible ? 1 : 0,
-                visibility: isServicesSubtitleVisible ? 'visible' : 'hidden'
-              }}
+              className="text-[#336b62] text-sm lg:text-base font-secondary font-light tracking-wider mb-4"
             >
               Services
             </p>
             <h2 
               ref={servicesTitleRef}
-              className={`text-white text-2xl lg:text-3xl xl:text-4xl font-heading font-bold leading-tight ${servicesTitleAnimation}`}
-              style={{ 
-                opacity: isServicesTitleVisible ? 1 : 0,
-                visibility: isServicesTitleVisible ? 'visible' : 'hidden'
-              }}
+              className="text-white text-2xl lg:text-3xl xl:text-4xl font-heading font-bold leading-tight"
             >
               The Elaris Edge
             </h2>
@@ -274,14 +427,10 @@ const HomePage = memo(function HomePage() {
           {/* Services Cards */}
           <div 
             ref={servicesCardsRef}
-            className={`grid md:grid-cols-3 gap-6 lg:gap-8 ${servicesCardsAnimation}`}
-            style={{ 
-              opacity: isServicesCardsVisible ? 1 : 0,
-              visibility: isServicesCardsVisible ? 'visible' : 'hidden'
-            }}
+            className="grid md:grid-cols-3 gap-6 lg:gap-8"
           >
             {/* Card 1 - Integrated Media Strategy & Buying */}
-            <div className="relative bg-[#336b62] rounded-3xl p-6 lg:p-8 overflow-hidden">
+            <div className="service-card relative bg-[#336b62] rounded-3xl p-6 lg:p-8 overflow-hidden transform-gpu perspective-1000 hover:scale-105 transition-transform duration-300">
               {/* Background Shape */}
               <div className="absolute inset-0 opacity-20">
                 <Image
@@ -312,7 +461,7 @@ const HomePage = memo(function HomePage() {
             </div>
 
             {/* Card 2 - Creative Development & Storytelling */}
-            <div className="relative bg-[#336b62] rounded-3xl p-6 lg:p-8 overflow-hidden">
+            <div className="service-card relative bg-[#336b62] rounded-3xl p-6 lg:p-8 overflow-hidden transform-gpu perspective-1000 hover:scale-105 transition-transform duration-300">
               {/* Background Shape */}
               <div className="absolute inset-0 opacity-20">
                 <Image
@@ -344,7 +493,7 @@ const HomePage = memo(function HomePage() {
             </div>
 
             {/* Card 3 - Digital Transformation & Consulting */}
-            <div className="relative bg-[#336b62] rounded-3xl p-6 lg:p-8 overflow-hidden">
+            <div className="service-card relative bg-[#336b62] rounded-3xl p-6 lg:p-8 overflow-hidden transform-gpu perspective-1000 hover:scale-105 transition-transform duration-300">
               {/* Background Shape */}
               <div className="absolute inset-0 opacity-20">
                 <Image
@@ -383,7 +532,7 @@ const HomePage = memo(function HomePage() {
       <SocialMediaSection />
 
               {/* Connect CTA Section */}
-      <section className="relative bg-black py-24 lg:py-32 overflow-hidden">
+      <section ref={connectSectionRef} className="relative bg-black py-24 lg:py-32 overflow-hidden">
         {/* Background Decorative Shapes */}
         <div className="absolute inset-0">
           <Image
@@ -391,14 +540,14 @@ const HomePage = memo(function HomePage() {
             alt=""
             width={700}
             height={700}
-            className="absolute top-1 -right-50 rotate-12 opacity-60 filter brightness-150"
+            className="bg-shape-1 absolute top-1 -right-50 rotate-12 opacity-60 filter brightness-150"
           />
           <Image
             src="/shape.png"
             alt=""
             width={600}
             height={600}
-            className="absolute bottom-0 -left-40 -rotate-12 opacity-50 filter brightness-150"
+            className="bg-shape-2 absolute bottom-0 -left-40 -rotate-12 opacity-50 filter brightness-150"
           />
         </div>
         
@@ -413,11 +562,7 @@ const HomePage = memo(function HomePage() {
                                {/* Subtitle */}
                  <p 
                    ref={connectSubtitleRef}
-                   className={`text-[#336b62] text-sm lg:text-base font-secondary font-medium tracking-wider mb-6 uppercase ${connectSubtitleAnimation}`}
-                   style={{ 
-                     opacity: isConnectSubtitleVisible ? 1 : 0,
-                     visibility: isConnectSubtitleVisible ? 'visible' : 'hidden'
-                   }}
+                   className="text-[#336b62] text-sm lg:text-base font-secondary font-medium tracking-wider mb-6 uppercase"
                  >
                    Connect With Us
                  </p>
@@ -425,11 +570,7 @@ const HomePage = memo(function HomePage() {
               {/* Main Heading */}
               <h2 
                 ref={connectHeadingRef}
-                className={`text-white text-2xl lg:text-3xl xl:text-4xl font-heading font-bold leading-tight mb-8 ${connectHeadingAnimation}`}
-                style={{ 
-                  opacity: isConnectHeadingVisible ? 1 : 0,
-                  visibility: isConnectHeadingVisible ? 'visible' : 'hidden'
-                }}
+                className="text-white text-2xl lg:text-3xl xl:text-4xl font-heading font-bold leading-tight mb-8"
               >
                 CREATE TOMORROW,<br />
                 TOGETHER
@@ -438,11 +579,7 @@ const HomePage = memo(function HomePage() {
               {/* Description */}
               <p 
                 ref={connectDescRef}
-                className={`text-gray-300 text-lg lg:text-xl font-body font-light leading-relaxed mb-12 max-w-3xl mx-auto ${connectDescAnimation}`}
-                style={{ 
-                  opacity: isConnectDescVisible ? 1 : 0,
-                  visibility: isConnectDescVisible ? 'visible' : 'hidden'
-                }}
+                className="text-gray-300 text-lg lg:text-xl font-body font-light leading-relaxed mb-12 max-w-3xl mx-auto"
               >
                 Every idea we share and every step we take moves us closer to a future we&apos;re proud to shape.
               </p>
@@ -450,19 +587,15 @@ const HomePage = memo(function HomePage() {
               {/* CTA Buttons */}
               <div 
                 ref={connectButtonsRef}
-                className={`flex flex-col sm:flex-row gap-6 justify-center items-center ${connectButtonsAnimation}`}
-                style={{ 
-                  opacity: isConnectButtonsVisible ? 1 : 0,
-                  visibility: isConnectButtonsVisible ? 'visible' : 'hidden'
-                }}
+                className="flex flex-col sm:flex-row gap-6 justify-center items-center"
               >
                 <Link href="/connect">
-                  <button className="bg-[#336b62] hover:bg-[#9b8075] text-white px-6 py-3 rounded-lg transition-colors duration-300 font-body font-medium">
+                  <button className="gsap-button bg-[#336b62] hover:bg-[#9b8075] text-white px-6 py-3 rounded-lg transition-colors duration-300 font-body font-medium">
                     GET IN CONTACT
                   </button>
                 </Link>
                 <Link href="/contact/careers">
-                  <button className="bg-transparent border-2 border-[#336b62] hover:bg-[#336b62] text-[#336b62] hover:text-white px-6 py-3 rounded-lg transition-colors duration-300 font-body font-medium">
+                  <button className="gsap-button bg-transparent border-2 border-[#336b62] hover:bg-[#336b62] text-[#336b62] hover:text-white px-6 py-3 rounded-lg transition-colors duration-300 font-body font-medium">
                     VIEW CAREERS
                   </button>
                 </Link>

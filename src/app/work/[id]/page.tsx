@@ -293,7 +293,7 @@ export default function ProductDetailsPage() {
               <div className="space-y-8">
                 <div className="mb-12">
                   <h2 className="text-3xl lg:text-4xl font-heading font-bold text-white mb-8 flex items-center">
-                    Project Details
+                     Project Details
                   </h2>
                 </div>
 
@@ -402,22 +402,31 @@ export default function ProductDetailsPage() {
                   <>
                     {/* Metric 1 - ROAS */}
                     <div className="space-y-2">
+                      <div className="text-lg lg:text-xl font-secondary font-medium text-[#336b62] mb-2">
+                        ROAS:
+                      </div>
                       <h3 className="text-3xl lg:text-4xl xl:text-5xl font-heading font-bold text-white leading-tight">
-                        <span className="text-[#336b62]">{project.details.results.roas}</span>
+                        {project.details.results.roas}
                       </h3>
                     </div>
 
                     {/* Metric 2 - Conversion */}
                     <div className="space-y-2">
+                      <div className="text-lg lg:text-xl font-secondary font-medium text-[#336b62] mb-2">
+                        Conversion Rate:
+                      </div>
                       <h3 className="text-3xl lg:text-4xl xl:text-5xl font-heading font-bold text-white leading-tight">
-                        <span className="text-[#336b62]">{project.details.results.conversion}</span>
+                        {project.details.results.conversion}
                       </h3>
                     </div>
 
                     {/* Metric 3 - Reach/Impact */}
                     <div className="space-y-2">
+                      <div className="text-lg lg:text-xl font-secondary font-medium text-[#336b62] mb-2">
+                        Reach/Impact:
+                      </div>
                       <h3 className="text-3xl lg:text-4xl xl:text-5xl font-heading font-bold text-white leading-tight">
-                        <span className="text-[#336b62]">{project.details.results.reach}</span>
+                        {project.details.results.reach}
                       </h3>
                     </div>
                   </>
