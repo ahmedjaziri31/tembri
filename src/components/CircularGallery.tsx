@@ -327,27 +327,27 @@ interface GalleryItem {
 }
 
 class App {
-  container: HTMLElement;
-  scrollSpeed: number;
-  scroll: { ease: number; current: number; target: number; last: number };
-  onCheckDebounce: (...args: any[]) => void;
-  renderer: any;
-  gl: any;
-  camera: any;
-  scene: any;
-  screen: any;
-  viewport: any;
-  planeGeometry: any;
+  container!: HTMLElement;
+  scrollSpeed!: number;
+  scroll!: { ease: number; current: number; target: number; last: number; position: number };
+  onCheckDebounce!: (...args: any[]) => void;
+  renderer!: any;
+  gl!: any;
+  camera!: any;
+  scene!: any;
+  screen!: any;
+  viewport!: any;
+  planeGeometry!: any;
   mediasImages: GalleryItem[] = [];
   medias: Media[] = [];
   isDown: boolean = false;
   start: number = 0;
   raf: number = 0;
-  boundOnResize: () => void;
-  boundOnWheel: (e: WheelEvent) => void;
-  boundOnTouchDown: (e: MouseEvent | TouchEvent) => void;
-  boundOnTouchMove: (e: MouseEvent | TouchEvent) => void;
-  boundOnTouchUp: () => void;
+  boundOnResize!: () => void;
+  boundOnWheel!: (e: WheelEvent) => void;
+  boundOnTouchDown!: (e: MouseEvent | TouchEvent) => void;
+  boundOnTouchMove!: (e: MouseEvent | TouchEvent) => void;
+  boundOnTouchUp!: () => void;
 
   constructor(
     container: HTMLElement,
@@ -364,7 +364,7 @@ class App {
     document.documentElement.classList.remove('no-js');
     this.container = container;
     this.scrollSpeed = scrollSpeed;
-    this.scroll = { ease: scrollEase, current: 0, target: 0, last: 0 };
+    this.scroll = { ease: scrollEase, current: 0, target: 0, last: 0, position: 0 };
     this.onCheckDebounce = debounce(this.onCheck, 200);
     this.createRenderer();
     this.createCamera();
