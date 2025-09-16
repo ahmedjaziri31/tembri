@@ -168,7 +168,9 @@ class Media {
   
   createShader() {
     const texture = new Texture(this.gl, {
-      generateMipmaps: true
+      generateMipmaps: true,
+      minFilter: this.gl.LINEAR_MIPMAP_LINEAR,
+      magFilter: this.gl.LINEAR
     });
     this.program = new Program(this.gl, {
       depthTest: false,
@@ -234,10 +236,14 @@ class Media {
     });
     const img = new Image();
     img.crossOrigin = 'anonymous';
+    img.loading = 'eager'; // Load immediately for better performance
     img.src = this.image;
     img.onload = () => {
       texture.image = img;
       this.program.uniforms.uImageSizes.value = [img.naturalWidth, img.naturalHeight];
+    };
+    img.onerror = () => {
+      console.warn(`Failed to load image: ${this.image}`);
     };
   }
   
@@ -310,11 +316,28 @@ class Media {
         this.plane.program.uniforms.uViewportSizes.value = [this.viewport.width, this.viewport.height];
       }
     }
-    this.scale = this.screen.height / 1500;
-    this.plane.scale.y = (this.viewport.height * (900 * this.scale)) / this.screen.height;
-    this.plane.scale.x = (this.viewport.width * (700 * this.scale)) / this.screen.width;
+    
+    // Responsive scaling based on screen size
+    const isMobile = this.screen.width < 768;
+    const isTablet = this.screen.width >= 768 && this.screen.width < 1024;
+    
+    // Adjust scale based on device type
+    if (isMobile) {
+      this.scale = this.screen.height / 1200; // Smaller scale for mobile
+    } else if (isTablet) {
+      this.scale = this.screen.height / 1400; // Medium scale for tablet
+    } else {
+      this.scale = this.screen.height / 1500; // Full scale for desktop
+    }
+    
+    // Responsive dimensions
+    const baseHeight = isMobile ? 600 : isTablet ? 750 : 900;
+    const baseWidth = isMobile ? 400 : isTablet ? 550 : 700;
+    
+    this.plane.scale.y = (this.viewport.height * (baseHeight * this.scale)) / this.screen.height;
+    this.plane.scale.x = (this.viewport.width * (baseWidth * this.scale)) / this.screen.width;
     this.plane.program.uniforms.uPlaneSizes.value = [this.plane.scale.x, this.plane.scale.y];
-    this.padding = 2;
+    this.padding = isMobile ? 1.5 : 2;
     this.width = this.plane.scale.x + this.padding;
     this.widthTotal = this.width * this.length;
     this.x = this.width * this.index;

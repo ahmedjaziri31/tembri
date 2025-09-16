@@ -16,32 +16,45 @@ export default function Page1() {
   const [animationsComplete, setAnimationsComplete] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [scrollEnabled, setScrollEnabled] = useState(false)
+  const [imagesLoaded, setImagesLoaded] = useState(false)
 
-  // Project items for circular gallery - Using tablet portrait images
+  // Project items for circular gallery - Using tablet portrait images with optimized paths
   const projectItems = [
     { 
       image: "/elaris banners/DIMENSION TABLETTE/768×1024 px (en mode portrait)/under armour   portrait.png", 
-      text: "Under Armour" 
+      text: "Under Armour",
+      width: 768,
+      height: 1024
     },
     { 
       image: "/elaris banners/DIMENSION TABLETTE/768×1024 px (en mode portrait)/samsung.png", 
-      text: "Samsung" 
+      text: "Samsung",
+      width: 768,
+      height: 1024
     },
     { 
       image: "/elaris banners/DIMENSION TABLETTE/768×1024 px (en mode portrait)/Swiss Arabian  portrait.png", 
-      text: "Swiss Arabian" 
+      text: "Swiss Arabian",
+      width: 768,
+      height: 1024
     },
     { 
       image: "/elaris banners/DIMENSION TABLETTE/768×1024 px (en mode portrait)/mcdo.png", 
-      text: "McDonald's" 
+      text: "McDonald's",
+      width: 768,
+      height: 1024
     },
     { 
       image: "/elaris banners/DIMENSION TABLETTE/768×1024 px (en mode portrait)/Eucerin portrait.png", 
-      text: "Eucerin" 
+      text: "Eucerin",
+      width: 768,
+      height: 1024
     },
     { 
       image: "/elaris banners/DIMENSION TABLETTE/768×1024 px (en mode portrait)/nivea portrait.png", 
-      text: "Nivea" 
+      text: "Nivea",
+      width: 768,
+      height: 1024
     }
   ]
 
@@ -85,6 +98,29 @@ export default function Page1() {
   // Social media section refs
   const socialSectionRef = useRef<HTMLElement>(null)
 
+  // Preload images for better performance
+  useEffect(() => {
+    const preloadImages = async () => {
+      const imagePromises = projectItems.map((item) => {
+        return new Promise((resolve, reject) => {
+          const img = new window.Image()
+          img.onload = resolve
+          img.onerror = reject
+          img.src = item.image
+        })
+      })
+
+      try {
+        await Promise.all(imagePromises)
+        setImagesLoaded(true)
+      } catch (error) {
+        console.warn('Some images failed to load:', error)
+        setImagesLoaded(true) // Continue anyway
+      }
+    }
+
+    preloadImages()
+  }, [projectItems])
 
   // Main GSAP animation sequence
   useGSAP(() => {
@@ -775,15 +811,24 @@ export default function Page1() {
 
         {/* Circular Gallery - Full Width */}
         <div className="relative h-[600px] w-full overflow-hidden">
-          <CircularGallery 
-            items={projectItems}
-            bend={2.5}
-            textColor="#ffffff"
-            borderRadius={0.08}
-            font="bold 28px Inter"
-            scrollSpeed={1.0}
-            scrollEase={0.05}
-          />
+          {!imagesLoaded ? (
+            <div className="flex items-center justify-center h-full">
+              <div className="text-center">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#336b62] mx-auto mb-4"></div>
+                <p className="text-white text-lg">Loading projects...</p>
+              </div>
+            </div>
+          ) : (
+            <CircularGallery 
+              items={projectItems}
+              bend={2.5}
+              textColor="#ffffff"
+              borderRadius={0.08}
+              font="bold 28px Inter"
+              scrollSpeed={1.0}
+              scrollEase={0.05}
+            />
+          )}
         </div>
       </section>
 
