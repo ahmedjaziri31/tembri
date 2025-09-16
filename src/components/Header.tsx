@@ -172,17 +172,27 @@ export default function Header() {
           isSlideMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
         }`}
       >
-        {/* Backdrop */}
+        {/* Backdrop with Progressive Blur */}
         <div 
-          className="absolute inset-0 bg-black/30 backdrop-blur-sm"
+          className={`absolute inset-0 bg-black/30 transition-all duration-500 ease-out ${
+            isSlideMenuOpen ? 'backdrop-blur-sm' : 'backdrop-blur-none'
+          }`}
           onClick={toggleSlideMenu}
+          style={{
+            backdropFilter: isSlideMenuOpen ? 'blur(4px)' : 'blur(0px)',
+            transition: 'backdrop-filter 500ms ease-out, background-color 500ms ease-out'
+          }}
         ></div>
         
-        {/* Slide Menu Content */}
+        {/* Slide Menu Content with Progressive Blur */}
         <div 
-          className={`absolute top-0 left-0 right-0 bg-black/20 backdrop-blur-sm border-b border-white/10 transition-transform duration-500 ease-out ${
-            isSlideMenuOpen ? 'translate-y-0' : '-translate-y-full'
+          className={`absolute top-0 left-0 right-0 bg-black/20 border-b border-white/10 transition-all duration-500 ease-out ${
+            isSlideMenuOpen ? 'translate-y-0 backdrop-blur-sm' : '-translate-y-full backdrop-blur-none'
           }`}
+          style={{
+            backdropFilter: isSlideMenuOpen ? 'blur(4px)' : 'blur(0px)',
+            transition: 'transform 500ms ease-out, backdrop-filter 500ms ease-out, background-color 500ms ease-out'
+          }}
         >
           {/* Navigation Menu */}
           <div className="px-6 pt-24 pb-8">
