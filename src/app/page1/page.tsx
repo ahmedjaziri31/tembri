@@ -102,6 +102,9 @@ export default function Page1() {
   const aboutDescRef = useRef<HTMLDivElement>(null)
   const aboutButtonRef = useRef<HTMLButtonElement>(null)
 
+  // Case study button ref
+  const caseStudyButtonRef = useRef<HTMLButtonElement>(null)
+
   // Services section refs
   const servicesSectionRef = useRef<HTMLElement>(null)
   const servicesSubtitleRef = useRef<HTMLParagraphElement>(null)
@@ -202,6 +205,12 @@ export default function Page1() {
         opacity: 0
       })
 
+      gsap.set(caseStudyButtonRef.current, {
+        opacity: 0,
+        y: 30,
+        scale: 0.8
+      })
+
       gsap.set(cardRef.current, {
         scale: 0.6,
         rotation: 180
@@ -265,6 +274,15 @@ export default function Page1() {
           duration: 1,
           ease: "power2.out"
         }, "-=0.7")
+        
+        // Case Study Button - appears after tagline with bounce effect
+        .to(caseStudyButtonRef.current, {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 0.8,
+          ease: "back.out(1.7)"
+        }, "-=0.3")
 
         // Phase 4: Bottom text appears
         .to("#bottomText", {
@@ -663,6 +681,23 @@ export default function Page1() {
     }
   }, [animationsComplete])
 
+  // Floating animation for case study button
+  useEffect(() => {
+    if (animationsComplete && caseStudyButtonRef.current) {
+      const buttonFloatingAnimation = gsap.to(caseStudyButtonRef.current, {
+        y: "+=5",
+        duration: 2.5,
+        repeat: -1,
+        yoyo: true,
+        ease: "sine.inOut"
+      })
+
+      return () => {
+        buttonFloatingAnimation.kill()
+      }
+    }
+  }, [animationsComplete])
+
   return (
     <div ref={containerRef} className="min-h-screen w-full relative overflow-hidden bg-black">
 
@@ -725,6 +760,29 @@ export default function Page1() {
               WHERE STRATEGY<br />
               MEETS STORY.
             </h1>
+            
+            {/* Case Study Button */}
+            <div className="mt-8 lg:mt-12">
+              <Link href="/work">
+                <button 
+                  ref={caseStudyButtonRef}
+                  className="group bg-[#336b62] hover:bg-[#9b8075] text-white px-6 py-3 lg:px-8 lg:py-4 rounded-lg transition-all duration-300 font-body font-medium text-sm lg:text-base transform hover:scale-105 hover:shadow-2xl"
+                  style={{ opacity: 0 }}
+                >
+                  <span className="flex items-center gap-2">
+                    View Case Study
+                    <svg 
+                      className="w-4 h-4 lg:w-5 lg:h-5 transition-transform duration-300 group-hover:translate-x-1" 
+                      fill="none" 
+                      stroke="currentColor" 
+                      viewBox="0 0 24 24"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </span>
+                </button>
+              </Link>
+            </div>
           </div>
         </div>
 
