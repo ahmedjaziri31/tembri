@@ -9,6 +9,18 @@ import CircularGallery from '../../components/CircularGallery'
 import LogoLoop from '../../components/LogoLoop'
 import { useGSAP } from '../../hooks/useGSAP'
 import { gsap, ScrollTrigger } from '../../lib/gsap'
+import { articlesApi } from '../../lib/api'
+
+interface Article {
+  id: number
+  title: string
+  category: string
+  image?: string
+  type?: string
+  slug?: string
+  excerpt?: string
+  published_at?: string
+}
 
 export default function Page1() {
   // State for controlling animation phases
@@ -17,6 +29,10 @@ export default function Page1() {
   const [isLoading, setIsLoading] = useState(true)
   const [scrollEnabled, setScrollEnabled] = useState(false)
   const [imagesLoaded, setImagesLoaded] = useState(false)
+  
+  // Articles state
+  const [articles, setArticles] = useState<Article[]>([])
+  const [articlesLoading, setArticlesLoading] = useState(true)
 
   // Project items for circular gallery - Using tablet portrait images with optimized paths
   const projectItems = [
@@ -122,6 +138,55 @@ export default function Page1() {
     preloadImages()
   }, [projectItems])
 
+  // Fetch articles for news section
+  useEffect(() => {
+    const fetchArticles = async () => {
+      try {
+        setArticlesLoading(true)
+        const response = await articlesApi.getAll()
+        
+        if (response.success && response.data) {
+          // Handle nested articles structure from API response
+          const articlesData = (response.data as any).articles || response.data
+          setArticles(Array.isArray(articlesData) ? articlesData.slice(0, 3) : []) // Limit to 3 articles
+        } else {
+          throw new Error('API response not successful')
+        }
+      } catch (err) {
+        console.error('Error fetching articles:', err)
+        // Fallback to placeholder data in case of error (same as ArticlesSection.tsx)
+        const placeholderArticles = [
+          {
+            id: 1,
+            title: "THE AWESOME PRODUCT ADVENTURE",
+            category: "Product",
+            image: "/news/image.png",
+            type: "article"
+          },
+          {
+            id: 2,
+            title: "Reduces irritation in just 1 hour",
+            category: "Beauty", 
+            image: "/news/image.png",
+            type: "article"
+          },
+          {
+            id: 3,
+            title: "NIVEA SUN",
+            category: "Campaign",
+            image: "/news/image.png",
+            type: "article"
+          }
+        ]
+        setArticles(placeholderArticles)
+      } finally {
+        setArticlesLoading(false)
+      }
+    }
+
+    fetchArticles()
+  }, [])
+
   // Main GSAP animation sequence
   useGSAP(() => {
     // Ensure all required elements exist before proceeding
@@ -133,7 +198,7 @@ export default function Page1() {
       if (!cardRef.current || !taglineRef.current) return
 
       // Set initial states - everything hidden
-      gsap.set([cardRef.current, taglineRef.current, "#bottomText"], {
+      gsap.set([cardRef.current, taglineRef.current, "#bottomText", "#firstSectionGradient"], {
         opacity: 0
       })
 
@@ -150,41 +215,6 @@ export default function Page1() {
         y: 50
       })
 
-      // Set shapes initial states with responsive positioning
-      const setResponsiveShapePosition = () => {
-        const screenWidth = window.innerWidth
-        let topPercent, sidePercent
-        
-        if (screenWidth >= 1024) {
-          // PC screen: -45% -35%
-          topPercent = '-45%'
-          sidePercent = '-35%'
-        } else if (screenWidth >= 768) {
-          // Tablet: -55% -45%
-          topPercent = '-55%'
-          sidePercent = '-45%'
-        } else {
-          // Mobile: -70% -60%
-          topPercent = '-70%'
-          sidePercent = '-60%'
-        }
-        
-        gsap.set("#leftShape", {
-          opacity: 1,
-          y: 0,
-          top: topPercent,
-          left: sidePercent
-        })
-        
-        gsap.set("#rightShape", {
-          opacity: 1,
-          y: 0,
-          top: topPercent,
-          right: sidePercent
-        })
-      }
-      
-      setResponsiveShapePosition()
 
        // Create the master timeline
        const masterTimeline = gsap.timeline({
@@ -204,7 +234,7 @@ export default function Page1() {
           }
         })
 
-        // Phase 2: Card entrance animation + shapes appear
+        // Phase 2: Card entrance animation + gradient fade in
         .to(cardRef.current, {
           opacity: 1,
           scale: 1,
@@ -213,13 +243,13 @@ export default function Page1() {
           ease: "back.out(1.7)"
         }, "+=0.2")
         
-        .to(["#leftShape", "#rightShape"], {
-          opacity: 1,
-          duration: 0.8,
+        .to("#firstSectionGradient", {
+          opacity: 0.8,
+          duration: 1.5,
           ease: "power2.out"
-        }, "-=0.6")
+        }, "-=1.0")
         
-        // Phase 3: Card moves to right side + shapes disappear upward + first text appears
+        // Phase 3: Card moves to right side + first text appears
         .to(cardRef.current, {
           x: window.innerWidth >= 768 ? 350 : window.innerWidth >= 480 ? 120 : 80,
           y: window.innerWidth >= 768 ? -80 : -40,
@@ -228,13 +258,6 @@ export default function Page1() {
           duration: 1.2,
           ease: "power2.inOut"
         }, "+=0.3")
-        
-        .to(["#leftShape", "#rightShape"], {
-          y: -300,
-          opacity: 0,
-          duration: 1.2,
-          ease: "power2.inOut"
-        }, "-=1.2")
         
         .to(taglineRef.current, {
           opacity: 1,
@@ -621,49 +644,6 @@ export default function Page1() {
     }
   }, [])
 
-  // Separate effect for handling window resize
-  useEffect(() => {
-    const setResponsiveShapePosition = () => {
-      const screenWidth = window.innerWidth
-      let topPercent, sidePercent
-      
-      if (screenWidth >= 1024) {
-        // PC screen: -45% -35%
-        topPercent = '-45%'
-        sidePercent = '-35%'
-      } else if (screenWidth >= 768) {
-        // Tablet: -55% -45%
-        topPercent = '-55%'
-        sidePercent = '-45%'
-      } else {
-        // Mobile: -70% -60%
-        topPercent = '-70%'
-        sidePercent = '-60%'
-      }
-      
-      gsap.set("#leftShape", {
-        top: topPercent,
-        left: sidePercent
-      })
-      
-      gsap.set("#rightShape", {
-        top: topPercent,
-        right: sidePercent
-      })
-    }
-
-    const handleResize = () => {
-      setResponsiveShapePosition()
-    }
-    
-    if (typeof window !== 'undefined') {
-      window.addEventListener('resize', handleResize)
-      
-      return () => {
-        window.removeEventListener('resize', handleResize)
-      }
-    }
-  }, [])
 
   // Separate effect for continuous floating animation
   useEffect(() => {
@@ -685,13 +665,6 @@ export default function Page1() {
 
   return (
     <div ref={containerRef} className="min-h-screen w-full relative overflow-hidden bg-black">
-      {/* Arctic Lights Background with Top Glow */}
-      <div
-        className="absolute inset-0 z-0"
-        style={{
-          background: "radial-gradient(ellipse 100% 80% at 50% 0%, rgba(51, 107, 98, 0.4), rgba(51, 107, 98, 0.1) 50%, transparent 80%), #000000",
-        }}
-      />
 
       {/* Dark Loading Overlay */}
       {isLoading && (
@@ -714,40 +687,19 @@ export default function Page1() {
         <Header />
       </div>
 
-      {/* Shape Images - Top Corners */}
-      <div className="fixed top-0 left-0 w-full h-full overflow-hidden pointer-events-none" style={{ zIndex: 15 }}>
-        {/* Left Top Shape */}
-        <div 
-          className="absolute w-[640px] h-[640px] md:w-[768px] md:h-[768px] lg:w-[1000px] lg:h-[1000px]"
-          id="leftShape"
-        >
-          <Image
-            src="/shape.png"
-            alt=""
-            fill
-            className="object-contain"
-            style={{ opacity: 0.7 }}
-          />
-        </div>
-        
-        {/* Right Top Shape */}
-        <div 
-          className="absolute w-[640px] h-[640px] md:w-[768px] md:h-[768px] lg:w-[1000px] lg:h-[1000px]"
-          id="rightShape"
-        >
-          <Image
-            src="/shape.png"
-            alt=""
-            fill
-            className="object-contain"
-            style={{ opacity: 0.7 }}
-          />
-        </div>
-      </div>
 
 
       {/* Main Content Area */}
       <main className="relative z-20 flex items-center justify-center min-h-screen pt-20">
+        {/* Light Gradient Background Effect - Only in First Section */}
+        <div 
+          id="firstSectionGradient"
+          className="absolute inset-0 z-0 bg-gradient-to-b from-transparent via-[#336b62] to-transparent opacity-0"
+          style={{
+            top: '20%',
+            height: '60%'
+          }}
+        ></div>
         {/* Animated Card */}
         <div
           ref={cardRef}
@@ -1202,6 +1154,81 @@ export default function Page1() {
                         </Link>
                       </div>
                     </div>
+                  </div>
+                </div>
+              </section>
+
+              {/* News Section */}
+              <section className="section relative py-20 lg:py-32 overflow-hidden">
+                {/* Gradient Background Effect - Same as first section */}
+                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#336b62] to-transparent opacity-80"></div>
+                
+                {/* Content Container */}
+                <div className="relative z-10 max-w-7xl mx-auto px-6">
+                  {/* Section Title */}
+                  <div className="text-center mb-16">
+                    <h2 className="text-white text-4xl lg:text-5xl xl:text-6xl font-heading font-bold leading-tight">
+                      NEWS
+                    </h2>
+                  </div>
+
+                  {/* News Cards Grid */}
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
+                    {articlesLoading ? (
+                      // Loading state - show 3 skeleton cards
+                      Array.from({ length: 3 }).map((_, index) => (
+                        <div key={index} className="relative bg-black/20 backdrop-blur-sm border border-white/10 rounded-2xl overflow-hidden shadow-2xl">
+                          <div className="relative h-48 lg:h-56 bg-gray-800 animate-pulse">
+                            <div className="absolute bottom-4 left-4 right-4">
+                              <div className="h-5 bg-gray-700 rounded mb-2 animate-pulse"></div>
+                              <div className="h-4 bg-gray-700 rounded animate-pulse"></div>
+                            </div>
+                          </div>
+                        </div>
+                      ))
+                    ) : (
+                      // Render articles dynamically
+                      articles.map((article) => (
+                        <div key={article.id} className="relative bg-black/20 backdrop-blur-sm border border-white/10 rounded-2xl overflow-hidden shadow-2xl hover:scale-105 transition-transform duration-300">
+                          <div className="relative h-48 lg:h-56">
+                            <Image
+                              src={article.image || "/news/image.png"}
+                              alt={article.title}
+                              fill
+                              className="object-cover"
+                              onError={(e) => {
+                                // Fallback to placeholder on image error
+                                const target = e.target as HTMLImageElement
+                                target.src = "/news/image.png"
+                              }}
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                            <div className="absolute bottom-4 left-4 right-4">
+                              <h3 className="text-white text-lg font-heading font-bold mb-2 line-clamp-2">
+                                {article.title}
+                              </h3>
+                              <p className="text-gray-300 text-sm font-body line-clamp-2">
+                                {article.excerpt || `Latest updates in ${article.category} - Stay informed with our latest developments.`}
+                              </p>
+                              {article.category && (
+                                <span className="inline-block bg-[#336b62] text-white text-xs px-2 py-1 rounded mt-2">
+                                  {article.category}
+                                </span>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      ))
+                    )}
+                  </div>
+
+                  {/* View All News Button */}
+                  <div className="text-center mt-12">
+                    <Link href="/news">
+                      <button className="bg-[#336b62] hover:bg-[#9b8075] text-white px-8 py-4 rounded-lg transition-colors duration-300 font-body font-medium text-lg">
+                        View All News
+                      </button>
+                    </Link>
                   </div>
                 </div>
               </section>
