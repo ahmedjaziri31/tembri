@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import Header from '../../components/Header'
@@ -9,12 +9,22 @@ import { useGSAP } from '../../hooks/useGSAP'
 import { gsap, ScrollTrigger } from '../../lib/gsap'
 
 export default function ServicesPage() {
+  // State for expanded services
+  const [expandedService, setExpandedService] = useState<number | null>(null)
+
   // Refs for animations
   const heroSectionRef = useRef<HTMLElement>(null)
   const topTextRef = useRef<HTMLHeadingElement>(null)
   const bottomTextRef = useRef<HTMLHeadingElement>(null)
   const contactButtonRef = useRef<HTMLButtonElement>(null)
   const backgroundShapeRef = useRef<HTMLDivElement>(null)
+  
+  // Service expansion refs
+  const service1ContentRef = useRef<HTMLDivElement>(null)
+  const service2ContentRef = useRef<HTMLDivElement>(null)
+  const service3ContentRef = useRef<HTMLDivElement>(null)
+  const service4ContentRef = useRef<HTMLDivElement>(null)
+  const service5ContentRef = useRef<HTMLDivElement>(null)
 
   // Why Choose section refs
   const whyChooseSectionRef = useRef<HTMLElement>(null)
@@ -34,6 +44,51 @@ export default function ServicesPage() {
     { top: "DATA-LED", bottom: "PERFORMANCE" },
     { top: "CREATIVE", bottom: "IMPACT" }
   ]
+
+  // Handle service click with animation
+  const handleServiceClick = (serviceNumber: number) => {
+    const isExpanding = expandedService !== serviceNumber
+    const contentRef = serviceNumber === 1 ? service1ContentRef : 
+                      serviceNumber === 2 ? service2ContentRef : 
+                      serviceNumber === 3 ? service3ContentRef : 
+                      serviceNumber === 4 ? service4ContentRef :
+                      serviceNumber === 5 ? service5ContentRef : null
+    
+    if (contentRef?.current) {
+      if (isExpanding) {
+        // Expand animation
+        setExpandedService(serviceNumber)
+        gsap.fromTo(contentRef.current, 
+          { opacity: 0, height: 0, y: -20 },
+          { 
+            opacity: 1, 
+            height: 'auto', 
+            y: 0,
+            duration: 0.6, 
+            ease: "power2.out",
+            onComplete: () => {
+              gsap.set(contentRef.current, { height: 'auto' })
+            }
+          }
+        )
+      } else {
+        // Collapse animation
+        gsap.to(contentRef.current, {
+          opacity: 0,
+          height: 0,
+          y: -20,
+          duration: 0.4,
+          ease: "power2.in",
+          onComplete: () => {
+            setExpandedService(null)
+          }
+        })
+      }
+    } else {
+      // Fallback without animation
+      setExpandedService(expandedService === serviceNumber ? null : serviceNumber)
+    }
+  }
 
   // GSAP Animation
   useGSAP(() => {
@@ -120,6 +175,42 @@ export default function ServicesPage() {
       ease: "sine.inOut"
     })
 
+    // Initialize service content animation states
+    if (service1ContentRef.current) {
+      gsap.set(service1ContentRef.current, { 
+        height: expandedService === 1 ? 'auto' : 0,
+        opacity: expandedService === 1 ? 1 : 0 
+      })
+    }
+    
+    if (service2ContentRef.current) {
+      gsap.set(service2ContentRef.current, { 
+        height: expandedService === 2 ? 'auto' : 0,
+        opacity: expandedService === 2 ? 1 : 0 
+      })
+    }
+    
+    if (service3ContentRef.current) {
+      gsap.set(service3ContentRef.current, { 
+        height: expandedService === 3 ? 'auto' : 0,
+        opacity: expandedService === 3 ? 1 : 0 
+      })
+    }
+    
+    if (service4ContentRef.current) {
+      gsap.set(service4ContentRef.current, { 
+        height: expandedService === 4 ? 'auto' : 0,
+        opacity: expandedService === 4 ? 1 : 0 
+      })
+    }
+    
+    if (service5ContentRef.current) {
+      gsap.set(service5ContentRef.current, { 
+        height: expandedService === 5 ? 'auto' : 0,
+        opacity: expandedService === 5 ? 1 : 0 
+      })
+    }
+
     // Why Choose section animations
     if (whyChooseSectionRef.current && chooseImageRef.current) {
       // Register ScrollTrigger plugin
@@ -201,7 +292,7 @@ export default function ServicesPage() {
       })
     }
 
-  }, { dependencies: [] })
+  }, { dependencies: [expandedService] })
 
   return (
     <div className="min-h-screen bg-black text-white">
@@ -233,14 +324,14 @@ export default function ServicesPage() {
             <div className="mb-12">
               <h1 
                 ref={topTextRef}
-                className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-heading font-bold leading-tight mb-4"
+                className="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl 2xl:text-9xl font-heading font-bold leading-tight mb-4"
                 style={{ color: '#336b62' }}
               >
                 INTEGRATED
               </h1>
               <h2 
                 ref={bottomTextRef}
-                className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-heading font-bold leading-tight text-white"
+                className="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl 2xl:text-9xl font-heading font-bold leading-tight text-white"
               >
                 SOLUTIONS
               </h2>
@@ -339,73 +430,475 @@ export default function ServicesPage() {
           <div className="space-y-0">
             
             {/* Service 01 */}
-            <div className="border-t border-white/20 py-6 lg:py-8">
-              <div className="max-w-6xl mx-auto px-6">
-                <div className="flex items-center gap-8">
-                  <span className="text-[#336b62] text-2xl lg:text-3xl font-heading font-bold min-w-[60px]">
-                    01
-                  </span>
-                  <h3 className="text-white text-2xl lg:text-3xl xl:text-4xl font-heading font-bold">
-                    STRATEGIC MEDIA PLANNING & BUYING
-                  </h3>
+            <div className="border-t border-white/20">
+              <div 
+                className="py-6 lg:py-8 cursor-pointer hover:bg-white/5 transition-all duration-300"
+                onClick={() => handleServiceClick(1)}
+              >
+                <div className="max-w-6xl mx-auto px-6">
+                  <div className="flex items-center gap-8">
+                    <span className="text-[#336b62] text-2xl lg:text-3xl font-heading font-bold min-w-[60px]">
+                      01
+                    </span>
+                    <h3 className="text-white text-2xl lg:text-3xl xl:text-4xl font-heading font-bold flex-1">
+                      STRATEGIC MEDIA PLANNING & BUYING
+                    </h3>
+                    <div className="text-white text-2xl">
+                      {expandedService === 1 ? '−' : '+'}
+                    </div>
+                  </div>
                 </div>
               </div>
+              
+              {/* Expandable Content for Service 01 */}
+              {expandedService === 1 && (
+                <div ref={service1ContentRef} className="bg-white/5 border-t border-white/10 overflow-hidden">
+                  <div className="max-w-6xl mx-auto px-6 py-8 lg:py-12">
+                    <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+                      
+                      {/* Side Card Image */}
+                      <div className="flex justify-center lg:justify-start order-2 lg:order-1">
+                        <div className="relative w-full max-w-md">
+                          <Image
+                            src="/card.png"
+                            alt="Strategic Media Planning"
+                            width={400}
+                            height={500}
+                            className="w-full h-auto object-contain rounded-2xl"
+                          />
+                        </div>
+                      </div>
+                      
+                      {/* Content */}
+                      <div className="order-1 lg:order-2">
+                        <h4 className="text-[#336b62] text-xl lg:text-2xl font-heading font-bold mb-6">
+                          Maximize Your Investments Across Every Touchpoint
+                        </h4>
+                        
+                        <p className="text-gray-300 text-base lg:text-lg font-body leading-relaxed mb-6">
+                          We design data-driven media strategies rooted in deep audience understanding and modern platform fluency. Our approach combines human insight and machine intelligence to architect full-funnel plans — from awareness to performance.
+                        </p>
+                        
+                        <div className="mb-6">
+                          <h5 className="text-white text-lg font-heading font-bold mb-4">Includes:</h5>
+                          <ul className="space-y-2 text-gray-300">
+                            <li className="flex items-start gap-3">
+                              <span className="text-[#336b62] mt-1">•</span>
+                              <span>Omnichannel media planning (Digital, Offline, CTV, OOH)</span>
+                            </li>
+                            <li className="flex items-start gap-3">
+                              <span className="text-[#336b62] mt-1">•</span>
+                              <span>Programmatic & platform-specific execution (Google, Meta, TikTok, Amazon, etc.)</span>
+                            </li>
+                            <li className="flex items-start gap-3">
+                              <span className="text-[#336b62] mt-1">•</span>
+                              <span>Budget optimization & pacing intelligence</span>
+                            </li>
+                            <li className="flex items-start gap-3">
+                              <span className="text-[#336b62] mt-1">•</span>
+                              <span>Brand lift, attention, and outcome measurement</span>
+                            </li>
+                          </ul>
+                        </div>
+                        
+                        <div className="mb-8">
+                          <h5 className="text-white text-lg font-heading font-bold mb-4">Perfect for:</h5>
+                          <p className="text-gray-300">
+                            Global campaigns, performance-driven growth, and high-velocity launches.
+                          </p>
+                        </div>
+                        
+                        <Link href="/connect">
+                          <button className="bg-[#336b62] hover:bg-[#9b8075] text-white px-6 py-3 rounded-lg transition-all duration-300 font-body font-medium">
+                            CONTACT US
+                          </button>
+                        </Link>
+                      </div>
+                      
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Service 02 */}
-            <div className="border-t border-white/20 py-6 lg:py-8">
-              <div className="max-w-6xl mx-auto px-6">
-                <div className="flex items-center gap-8">
-                  <span className="text-[#336b62] text-2xl lg:text-3xl font-heading font-bold min-w-[60px]">
-                    02
-                  </span>
-                  <h3 className="text-white text-2xl lg:text-3xl xl:text-4xl font-heading font-bold">
-                    CREATIVE CONTENT DEVELOPMENT<br />& STORYTELLING
-                  </h3>
+            <div className="border-t border-white/20">
+              <div 
+                className="py-6 lg:py-8 cursor-pointer hover:bg-white/5 transition-all duration-300"
+                onClick={() => handleServiceClick(2)}
+              >
+                <div className="max-w-6xl mx-auto px-6">
+                  <div className="flex items-center gap-8">
+                    <span className="text-[#336b62] text-2xl lg:text-3xl font-heading font-bold min-w-[60px]">
+                      02
+                    </span>
+                    <h3 className="text-white text-2xl lg:text-3xl xl:text-4xl font-heading font-bold flex-1">
+                      CREATIVE CONTENT DEVELOPMENT<br />& STORYTELLING
+                    </h3>
+                    <div className="text-white text-2xl">
+                      {expandedService === 2 ? '−' : '+'}
+                    </div>
+                  </div>
                 </div>
               </div>
+              
+              {/* Expandable Content for Service 02 */}
+              {expandedService === 2 && (
+                <div ref={service2ContentRef} className="bg-white/5 border-t border-white/10 overflow-hidden">
+                  <div className="max-w-6xl mx-auto px-6 py-8 lg:py-12">
+                    <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+                      
+                      {/* Side Card Image */}
+                      <div className="flex justify-center lg:justify-start order-2 lg:order-1">
+                        <div className="relative w-full max-w-md">
+                          <Image
+                            src="/card.png"
+                            alt="Creative Content Development"
+                            width={400}
+                            height={500}
+                            className="w-full h-auto object-contain rounded-2xl"
+                          />
+                        </div>
+                      </div>
+                      
+                      {/* Content */}
+                      <div className="order-1 lg:order-2">
+                        <h4 className="text-[#336b62] text-xl lg:text-2xl font-heading font-bold mb-6">
+                          Craft Narratives That Convert & Content That Travels
+                        </h4>
+                        
+                        <p className="text-gray-300 text-base lg:text-lg font-body leading-relaxed mb-6">
+                          We blend brand identity with audience intent to produce emotionally resonant and platform-native content. From high-concept campaigns to always-on assets, our creative is designed to stop thumbs and start conversations.
+                        </p>
+                        
+                        <div className="mb-6">
+                          <h5 className="text-white text-lg font-heading font-bold mb-4">Includes:</h5>
+                          <ul className="space-y-2 text-gray-300">
+                            <li className="flex items-start gap-3">
+                              <span className="text-[#336b62] mt-1">•</span>
+                              <span>Video, image, and animation production</span>
+                            </li>
+                            <li className="flex items-start gap-3">
+                              <span className="text-[#336b62] mt-1">•</span>
+                              <span>Platform-first content for Meta, TikTok, YouTube, DOOH</span>
+                            </li>
+                            <li className="flex items-start gap-3">
+                              <span className="text-[#336b62] mt-1">•</span>
+                              <span>UGC + branded storytelling</span>
+                            </li>
+                            <li className="flex items-start gap-3">
+                              <span className="text-[#336b62] mt-1">•</span>
+                              <span>Creator strategy and influencer integration</span>
+                            </li>
+                            <li className="flex items-start gap-3">
+                              <span className="text-[#336b62] mt-1">•</span>
+                              <span>Visual systems for global campaign consistency</span>
+                            </li>
+                          </ul>
+                        </div>
+                        
+                        <div className="mb-8">
+                          <h5 className="text-white text-lg font-heading font-bold mb-4">Perfect for:</h5>
+                          <p className="text-gray-300">
+                            Beauty, fashion, FMCG, and consumer tech brands seeking creative consistency across regions.
+                          </p>
+                        </div>
+                        
+                        <Link href="/connect">
+                          <button className="bg-[#336b62] hover:bg-[#9b8075] text-white px-6 py-3 rounded-lg transition-all duration-300 font-body font-medium">
+                            CONTACT US
+                          </button>
+                        </Link>
+                      </div>
+                      
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Service 03 */}
-            <div className="border-t border-white/20 py-6 lg:py-8">
-              <div className="max-w-6xl mx-auto px-6">
-                <div className="flex items-center gap-8">
-                  <span className="text-[#336b62] text-2xl lg:text-3xl font-heading font-bold min-w-[60px]">
-                    03
-                  </span>
-                  <h3 className="text-white text-2xl lg:text-3xl xl:text-4xl font-heading font-bold">
-                    DATA-DRIVEN MARKETING & AUDIENCE<br />INTELLIGENCE
-                  </h3>
+            <div className="border-t border-white/20">
+              <div 
+                className="py-6 lg:py-8 cursor-pointer hover:bg-white/5 transition-all duration-300"
+                onClick={() => handleServiceClick(3)}
+              >
+                <div className="max-w-6xl mx-auto px-6">
+                  <div className="flex items-center gap-8">
+                    <span className="text-[#336b62] text-2xl lg:text-3xl font-heading font-bold min-w-[60px]">
+                      03
+                    </span>
+                    <h3 className="text-white text-2xl lg:text-3xl xl:text-4xl font-heading font-bold flex-1">
+                      DATA-DRIVEN MARKETING & AUDIENCE<br />INTELLIGENCE
+                    </h3>
+                    <div className="text-white text-2xl">
+                      {expandedService === 3 ? '−' : '+'}
+                    </div>
+                  </div>
                 </div>
               </div>
+              
+              {/* Expandable Content for Service 03 */}
+              {expandedService === 3 && (
+                <div ref={service3ContentRef} className="bg-white/5 border-t border-white/10 overflow-hidden">
+                  <div className="max-w-6xl mx-auto px-6 py-8 lg:py-12">
+                    <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+                      
+                      {/* Side Card Image */}
+                      <div className="flex justify-center lg:justify-start order-2 lg:order-1">
+                        <div className="relative w-full max-w-md">
+                          <Image
+                            src="/card.png"
+                            alt="Data-driven Marketing"
+                            width={400}
+                            height={500}
+                            className="w-full h-auto object-contain rounded-2xl"
+                          />
+                        </div>
+                      </div>
+                      
+                      {/* Content */}
+                      <div className="order-1 lg:order-2">
+                        <h4 className="text-[#336b62] text-xl lg:text-2xl font-heading font-bold mb-6">
+                          Your Brand's Sharpest Tool Is Knowing Who, When, And Why.
+                        </h4>
+                        
+                        <p className="text-gray-300 text-base lg:text-lg font-body leading-relaxed mb-6">
+                          From first-party enrichment to lookalike modeling, we transform data into decisions. Our analytics team integrates platform insights with custom dashboards and machine learning signals to find and activate the audiences that matter most.
+                        </p>
+                        
+                        <div className="mb-6">
+                          <h5 className="text-white text-lg font-heading font-bold mb-4">Includes:</h5>
+                          <ul className="space-y-2 text-gray-300">
+                            <li className="flex items-start gap-3">
+                              <span className="text-[#336b62] mt-1">•</span>
+                              <span>Audience segmentation & persona development</span>
+                            </li>
+                            <li className="flex items-start gap-3">
+                              <span className="text-[#336b62] mt-1">•</span>
+                              <span>Cross-platform performance analytics</span>
+                            </li>
+                            <li className="flex items-start gap-3">
+                              <span className="text-[#336b62] mt-1">•</span>
+                              <span>Custom dashboards and business intelligence (GA4, Looker, Power BI)</span>
+                            </li>
+                            <li className="flex items-start gap-3">
+                              <span className="text-[#336b62] mt-1">•</span>
+                              <span>Marketing mix modeling & budget reallocation</span>
+                            </li>
+                          </ul>
+                        </div>
+                        
+                        <div className="mb-8">
+                          <h5 className="text-white text-lg font-heading font-bold mb-4">Perfect for:</h5>
+                          <p className="text-gray-300">
+                            Brands aiming to scale sustainably or decode campaign ROI.
+                          </p>
+                        </div>
+                        
+                        <Link href="/connect">
+                          <button className="bg-[#336b62] hover:bg-[#9b8075] text-white px-6 py-3 rounded-lg transition-all duration-300 font-body font-medium">
+                            CONTACT US
+                          </button>
+                        </Link>
+                      </div>
+                      
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Service 04 */}
-            <div className="border-t border-white/20 py-6 lg:py-8">
-              <div className="max-w-6xl mx-auto px-6">
-                <div className="flex items-center gap-8">
-                  <span className="text-[#336b62] text-2xl lg:text-3xl font-heading font-bold min-w-[60px]">
-                    04
-                  </span>
-                  <h3 className="text-white text-2xl lg:text-3xl xl:text-4xl font-heading font-bold">
-                    DIGITAL TRANSFORMATION &<br />CONSULTANCY
-                  </h3>
+            <div className="border-t border-white/20">
+              <div 
+                className="py-6 lg:py-8 cursor-pointer hover:bg-white/5 transition-all duration-300"
+                onClick={() => handleServiceClick(4)}
+              >
+                <div className="max-w-6xl mx-auto px-6">
+                  <div className="flex items-center gap-8">
+                    <span className="text-[#336b62] text-2xl lg:text-3xl font-heading font-bold min-w-[60px]">
+                      04
+                    </span>
+                    <h3 className="text-white text-2xl lg:text-3xl xl:text-4xl font-heading font-bold flex-1">
+                      DIGITAL TRANSFORMATION &<br />CONSULTANCY
+                    </h3>
+                    <div className="text-white text-2xl">
+                      {expandedService === 4 ? '−' : '+'}
+                    </div>
+                  </div>
                 </div>
               </div>
+              
+              {/* Expandable Content for Service 04 */}
+              {expandedService === 4 && (
+                <div ref={service4ContentRef} className="bg-white/5 border-t border-white/10 overflow-hidden">
+                  <div className="max-w-6xl mx-auto px-6 py-8 lg:py-12">
+                    <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+                      
+                      {/* Side Card Image */}
+                      <div className="flex justify-center lg:justify-start order-2 lg:order-1">
+                        <div className="relative w-full max-w-md">
+                          <Image
+                            src="/card.png"
+                            alt="Digital Transformation"
+                            width={400}
+                            height={500}
+                            className="w-full h-auto object-contain rounded-2xl"
+                          />
+                        </div>
+                      </div>
+                      
+                      {/* Content */}
+                      <div className="order-1 lg:order-2">
+                        <h4 className="text-[#336b62] text-xl lg:text-2xl font-heading font-bold mb-6">
+                          Bridge Brand Vision With Technology-Driven Marketing Execution
+                        </h4>
+                        
+                        <p className="text-gray-300 text-base lg:text-lg font-body leading-relaxed mb-6">
+                          Maison Elaris guides businesses through transformation integrating modern media, martech, and measurement. From tech stack audits to innovation sprints, we partner with clients on the journey toward scalable, future-facing ecosystems.
+                        </p>
+                        
+                        <div className="mb-6">
+                          <h5 className="text-white text-lg font-heading font-bold mb-4">Includes:</h5>
+                          <ul className="space-y-2 text-gray-300">
+                            <li className="flex items-start gap-3">
+                              <span className="text-[#336b62] mt-1">•</span>
+                              <span>Martech & data architecture consulting</span>
+                            </li>
+                            <li className="flex items-start gap-3">
+                              <span className="text-[#336b62] mt-1">•</span>
+                              <span>Performance media transformation</span>
+                            </li>
+                            <li className="flex items-start gap-3">
+                              <span className="text-[#336b62] mt-1">•</span>
+                              <span>CRM strategy & implementation</span>
+                            </li>
+                            <li className="flex items-start gap-3">
+                              <span className="text-[#336b62] mt-1">•</span>
+                              <span>AI + automation frameworks for campaign management</span>
+                            </li>
+                            <li className="flex items-start gap-3">
+                              <span className="text-[#336b62] mt-1">•</span>
+                              <span>Retail, CRM, CDP, and analytics stack alignment</span>
+                            </li>
+                          </ul>
+                        </div>
+                        
+                        <div className="mb-8">
+                          <h5 className="text-white text-lg font-heading font-bold mb-4">Perfect for:</h5>
+                          <p className="text-gray-300">
+                            Organizations scaling internal teams or replatforming tech capabilities.
+                          </p>
+                        </div>
+                        
+                        <Link href="/connect">
+                          <button className="bg-[#336b62] hover:bg-[#9b8075] text-white px-6 py-3 rounded-lg transition-all duration-300 font-body font-medium">
+                            CONTACT US
+                          </button>
+                        </Link>
+                      </div>
+                      
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Service 05 */}
-            <div className="border-t border-white/20 py-6 lg:py-8">
-              <div className="max-w-6xl mx-auto px-6">
-                <div className="flex items-center gap-8">
-                  <span className="text-[#336b62] text-2xl lg:text-3xl font-heading font-bold min-w-[60px]">
-                    05
-                  </span>
-                  <h3 className="text-white text-2xl lg:text-3xl xl:text-4xl font-heading font-bold">
-                    RETAIL MEDIA & COMMERCE STRATEGY
-                  </h3>
+            <div className="border-t border-white/20">
+              <div 
+                className="py-6 lg:py-8 cursor-pointer hover:bg-white/5 transition-all duration-300"
+                onClick={() => handleServiceClick(5)}
+              >
+                <div className="max-w-6xl mx-auto px-6">
+                  <div className="flex items-center gap-8">
+                    <span className="text-[#336b62] text-2xl lg:text-3xl font-heading font-bold min-w-[60px]">
+                      05
+                    </span>
+                    <h3 className="text-white text-2xl lg:text-3xl xl:text-4xl font-heading font-bold flex-1">
+                      RETAIL MEDIA & COMMERCE STRATEGY
+                    </h3>
+                    <div className="text-white text-2xl">
+                      {expandedService === 5 ? '−' : '+'}
+                    </div>
+                  </div>
                 </div>
               </div>
+              
+              {/* Expandable Content for Service 05 */}
+              {expandedService === 5 && (
+                <div ref={service5ContentRef} className="bg-white/5 border-t border-white/10 overflow-hidden">
+                  <div className="max-w-6xl mx-auto px-6 py-8 lg:py-12">
+                    <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+                      
+                      {/* Side Card Image */}
+                      <div className="flex justify-center lg:justify-start order-2 lg:order-1">
+                        <div className="relative w-full max-w-md">
+                          <Image
+                            src="/card.png"
+                            alt="Retail Media & Commerce"
+                            width={400}
+                            height={500}
+                            className="w-full h-auto object-contain rounded-2xl"
+                          />
+                        </div>
+                      </div>
+                      
+                      {/* Content */}
+                      <div className="order-1 lg:order-2">
+                        <h4 className="text-[#336b62] text-xl lg:text-2xl font-heading font-bold mb-6">
+                          Turn Shelf Space Into Screen Space.
+                        </h4>
+                        
+                        <p className="text-gray-300 text-base lg:text-lg font-body leading-relaxed mb-6">
+                          In a world where every touchpoint is shoppable, we help brands navigate and master retail media networks — from Amazon to Carrefour. We build performance-driven commerce strategies integrated across media, shelf, and content.
+                        </p>
+                        
+                        <div className="mb-6">
+                          <h5 className="text-white text-lg font-heading font-bold mb-4">Includes:</h5>
+                          <ul className="space-y-2 text-gray-300">
+                            <li className="flex items-start gap-3">
+                              <span className="text-[#336b62] mt-1">•</span>
+                              <span>Amazon Ads, Walmart Connect, Carrefour, TikTok Shop, Lazada, Shopee</span>
+                            </li>
+                            <li className="flex items-start gap-3">
+                              <span className="text-[#336b62] mt-1">•</span>
+                              <span>Content-to-cart pathways across social + e-commerce</span>
+                            </li>
+                            <li className="flex items-start gap-3">
+                              <span className="text-[#336b62] mt-1">•</span>
+                              <span>DSP management, feed optimization</span>
+                            </li>
+                            <li className="flex items-start gap-3">
+                              <span className="text-[#336b62] mt-1">•</span>
+                              <span>Offline & retail attribution integrations</span>
+                            </li>
+                            <li className="flex items-start gap-3">
+                              <span className="text-[#336b62] mt-1">•</span>
+                              <span>Promotion calendar alignment</span>
+                            </li>
+                          </ul>
+                        </div>
+                        
+                        <div className="mb-8">
+                          <h5 className="text-white text-lg font-heading font-bold mb-4">Perfect for:</h5>
+                          <p className="text-gray-300">
+                            FMCG, beauty, electronics, and DTC brands leveraging retailer ecosystems.
+                          </p>
+                        </div>
+                        
+                        <Link href="/connect">
+                          <button className="bg-[#336b62] hover:bg-[#9b8075] text-white px-6 py-3 rounded-lg transition-all duration-300 font-body font-medium">
+                            CONTACT US
+                          </button>
+                        </Link>
+                      </div>
+                      
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Bottom border */}
