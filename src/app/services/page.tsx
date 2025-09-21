@@ -29,14 +29,42 @@ export default function ServicesPage() {
   // Why Choose section refs
   const whyChooseSectionRef = useRef<HTMLElement>(null)
   const chooseImageRef = useRef<HTMLDivElement>(null)
-  const uLineLeftRef = useRef<HTMLDivElement>(null)
-  const uLineBottomRef = useRef<HTMLDivElement>(null)
-  const uLineRightRef = useRef<HTMLDivElement>(null)
-  const point1Ref = useRef<HTMLDivElement>(null)
-  const point2Ref = useRef<HTMLDivElement>(null)
-  const point3Ref = useRef<HTMLDivElement>(null)
-  const point4Ref = useRef<HTMLDivElement>(null)
-  const point5Ref = useRef<HTMLDivElement>(null)
+  const stickyContainerRef = useRef<HTMLDivElement>(null)
+  const cardRefs = useRef<(HTMLDivElement | null)[]>([])
+
+  // Card data for sticky animation
+  const cardData = [
+    {
+      id: 1,
+      number: "01",
+      title: "Integrated by Design",
+      description: "Our model eliminates silos. We blend strategy, creative, and media from the start, delivering better outcomes and faster speed-to-market."
+    },
+    {
+      id: 2,
+      number: "02", 
+      title: "Tech-Forward Thinking",
+      description: "We don't just use media platforms—we build on them. Our internal tools, AI copilots, and predictive dashboards give clients an unfair advantage in a crowded marketplace."
+    },
+    {
+      id: 3,
+      number: "03",
+      title: "Strategy Meets Craft", 
+      description: "We're a consultancy, a content studio, a performance lab driven by the belief that good strategy deserves great execution."
+    },
+    {
+      id: 4,
+      number: "04",
+      title: "Proven Across Verticals",
+      description: "From global launches for tech giants to wellness growth campaigns, our work spans industries and consistently drives measurable results."
+    },
+    {
+      id: 5,
+      number: "05",
+      title: "Built for a Borderless World",
+      description: "We work across markets and languages, with culturally aware teams fluent in localization and platform-native nuances."
+    }
+  ]
 
   // Text cycling data
   const textCycles = [
@@ -211,85 +239,80 @@ export default function ServicesPage() {
       })
     }
 
-    // Why Choose section animations
-    if (whyChooseSectionRef.current && chooseImageRef.current) {
+    // Why Choose section - Sticky Card Animation
+    if (whyChooseSectionRef.current && stickyContainerRef.current) {
       // Register ScrollTrigger plugin
       gsap.registerPlugin(ScrollTrigger)
-      // Set initial states for path line parts (hidden)
-      gsap.set(uLineLeftRef.current, { scaleX: 0, transformOrigin: "left center" }) // Top horizontal grows left to right
-      gsap.set(uLineBottomRef.current, { scaleY: 0, transformOrigin: "top center" }) // Vertical grows down
-      gsap.set(uLineRightRef.current, { scaleX: 0, transformOrigin: "right center" }) // Bottom horizontal grows right to left
+      
+      const cardElements = cardRefs.current.filter(Boolean)
+      const totalCards = cardElements.length
 
-      // Set initial states for points (hidden)
-      gsap.set([point1Ref.current, point2Ref.current, point3Ref.current, point4Ref.current, point5Ref.current], {
-        opacity: 0,
-        y: 30
-      })
+      if (cardElements[0]) {
+        // Set initial positions - first card visible, others stacked below
+        gsap.set(cardElements[0], { y: "0%", scale: 1, rotation: 0 })
 
-      // Choose image floating animation
-      gsap.to(chooseImageRef.current, {
-        y: -10,
-        duration: 3,
-        repeat: -1,
-        yoyo: true,
-        ease: "sine.inOut"
-      })
-
-      // U-shaped line animation on scroll - FASTER Progressive U drawing
-      ScrollTrigger.create({
-        trigger: whyChooseSectionRef.current,
-        start: "top 85%",
-        end: "bottom 20%",
-        scrub: 0.1, // Much faster and more responsive
-        onUpdate: (self) => {
-          const progress = self.progress
-          
-          // Points 1 & 2 appear first (top row) (0-0.1) - FASTER
-          if (progress >= 0) {
-            gsap.set([point1Ref.current, point2Ref.current], { 
-              opacity: Math.min(progress * 10, 1), 
-              y: 30 - (Math.min(progress * 10, 1) * 30)
-            })
-          }
-          
-          // Path Part 1: Top horizontal line appears (0.1-0.3) - FASTER
-          if (progress >= 0.1) {
-            gsap.set(uLineLeftRef.current, { 
-              scaleX: Math.min((progress - 0.1) * 5, 1)
-            })
-          }
-          
-          // Path Part 2: Right vertical line appears (0.3-0.5) - FASTER
-          if (progress >= 0.3) {
-            gsap.set(uLineBottomRef.current, { 
-              scaleY: Math.min((progress - 0.3) * 5, 1)
-            })
-          }
-          
-          // Point 3 appears when vertical line starts (0.35-0.5) - FASTER
-          if (progress >= 0.35) {
-            gsap.set(point3Ref.current, { 
-              opacity: Math.min((progress - 0.35) * 6.67, 1), 
-              y: 30 - (Math.min((progress - 0.35) * 6.67, 1) * 30)
-            })
-          }
-          
-          // Path Part 3: Bottom horizontal line appears (0.5-0.7) - FASTER
-          if (progress >= 0.5) {
-            gsap.set(uLineRightRef.current, { 
-              scaleX: Math.min((progress - 0.5) * 5, 1)
-            })
-          }
-          
-          // Points 4 & 5 appear last (bottom row) (0.6-0.8) - FASTER
-          if (progress >= 0.6) {
-            gsap.set([point4Ref.current, point5Ref.current], { 
-              opacity: Math.min((progress - 0.6) * 5, 1), 
-              y: 30 - (Math.min((progress - 0.6) * 5, 1) * 30)
-            })
+        for (let i = 1; i < totalCards; i++) {
+          if (cardElements[i]) {
+            gsap.set(cardElements[i], { y: "100%", scale: 1, rotation: 0 })
           }
         }
-      })
+
+        // Create scroll timeline for sticky cards
+        const scrollTimeline = gsap.timeline({
+          scrollTrigger: {
+            trigger: stickyContainerRef.current,
+            start: "top top",
+            end: `+=${window.innerHeight * (totalCards - 1)}`,
+            pin: true,
+            scrub: 0.5,
+            pinSpacing: true,
+          },
+        })
+
+        // Animate each card transition
+        for (let i = 0; i < totalCards - 1; i++) {
+          const currentCard = cardElements[i]
+          const nextCard = cardElements[i + 1]
+          const position = i
+
+          if (currentCard && nextCard) {
+            // Current card scales down and rotates
+            scrollTimeline.to(
+              currentCard,
+              {
+                scale: 0.7,
+                rotation: 5,
+                duration: 1,
+                ease: "none",
+              },
+              position,
+            )
+
+            // Next card slides up
+            scrollTimeline.to(
+              nextCard,
+              {
+                y: "0%",
+                duration: 1,
+                ease: "none",
+              },
+              position,
+            )
+          }
+        }
+      }
+
+      // Choose image floating animation
+      if (chooseImageRef.current) {
+        gsap.to(chooseImageRef.current, {
+          y: -15,
+          rotation: 2,
+          duration: 4,
+          repeat: -1,
+          yoyo: true,
+          ease: "sine.inOut"
+        })
+      }
     }
 
   }, { dependencies: [expandedService] })
@@ -435,14 +458,14 @@ export default function ServicesPage() {
                 className="py-6 lg:py-8 cursor-pointer hover:bg-white/5 transition-all duration-300"
                 onClick={() => handleServiceClick(1)}
               >
-                <div className="max-w-6xl mx-auto px-6">
-                  <div className="flex items-center gap-8">
-                    <span className="text-[#336b62] text-2xl lg:text-3xl font-heading font-bold min-w-[60px]">
-                      01
-                    </span>
+              <div className="max-w-6xl mx-auto px-6">
+                <div className="flex items-center gap-8">
+                  <span className="text-[#336b62] text-2xl lg:text-3xl font-heading font-bold min-w-[60px]">
+                    01
+                  </span>
                     <h3 className="text-white text-2xl lg:text-3xl xl:text-4xl font-heading font-bold flex-1">
-                      STRATEGIC MEDIA PLANNING & BUYING
-                    </h3>
+                    STRATEGIC MEDIA PLANNING & BUYING
+                  </h3>
                     <div className="text-white text-2xl">
                       {expandedService === 1 ? '−' : '+'}
                     </div>
@@ -527,14 +550,14 @@ export default function ServicesPage() {
                 className="py-6 lg:py-8 cursor-pointer hover:bg-white/5 transition-all duration-300"
                 onClick={() => handleServiceClick(2)}
               >
-                <div className="max-w-6xl mx-auto px-6">
-                  <div className="flex items-center gap-8">
-                    <span className="text-[#336b62] text-2xl lg:text-3xl font-heading font-bold min-w-[60px]">
-                      02
-                    </span>
+              <div className="max-w-6xl mx-auto px-6">
+                <div className="flex items-center gap-8">
+                  <span className="text-[#336b62] text-2xl lg:text-3xl font-heading font-bold min-w-[60px]">
+                    02
+                  </span>
                     <h3 className="text-white text-2xl lg:text-3xl xl:text-4xl font-heading font-bold flex-1">
-                      CREATIVE CONTENT DEVELOPMENT<br />& STORYTELLING
-                    </h3>
+                    CREATIVE CONTENT DEVELOPMENT<br />& STORYTELLING
+                  </h3>
                     <div className="text-white text-2xl">
                       {expandedService === 2 ? '−' : '+'}
                     </div>
@@ -623,14 +646,14 @@ export default function ServicesPage() {
                 className="py-6 lg:py-8 cursor-pointer hover:bg-white/5 transition-all duration-300"
                 onClick={() => handleServiceClick(3)}
               >
-                <div className="max-w-6xl mx-auto px-6">
-                  <div className="flex items-center gap-8">
-                    <span className="text-[#336b62] text-2xl lg:text-3xl font-heading font-bold min-w-[60px]">
-                      03
-                    </span>
+              <div className="max-w-6xl mx-auto px-6">
+                <div className="flex items-center gap-8">
+                  <span className="text-[#336b62] text-2xl lg:text-3xl font-heading font-bold min-w-[60px]">
+                    03
+                  </span>
                     <h3 className="text-white text-2xl lg:text-3xl xl:text-4xl font-heading font-bold flex-1">
-                      DATA-DRIVEN MARKETING & AUDIENCE<br />INTELLIGENCE
-                    </h3>
+                    DATA-DRIVEN MARKETING & AUDIENCE<br />INTELLIGENCE
+                  </h3>
                     <div className="text-white text-2xl">
                       {expandedService === 3 ? '−' : '+'}
                     </div>
@@ -715,14 +738,14 @@ export default function ServicesPage() {
                 className="py-6 lg:py-8 cursor-pointer hover:bg-white/5 transition-all duration-300"
                 onClick={() => handleServiceClick(4)}
               >
-                <div className="max-w-6xl mx-auto px-6">
-                  <div className="flex items-center gap-8">
-                    <span className="text-[#336b62] text-2xl lg:text-3xl font-heading font-bold min-w-[60px]">
-                      04
-                    </span>
+              <div className="max-w-6xl mx-auto px-6">
+                <div className="flex items-center gap-8">
+                  <span className="text-[#336b62] text-2xl lg:text-3xl font-heading font-bold min-w-[60px]">
+                    04
+                  </span>
                     <h3 className="text-white text-2xl lg:text-3xl xl:text-4xl font-heading font-bold flex-1">
-                      DIGITAL TRANSFORMATION &<br />CONSULTANCY
-                    </h3>
+                    DIGITAL TRANSFORMATION &<br />CONSULTANCY
+                  </h3>
                     <div className="text-white text-2xl">
                       {expandedService === 4 ? '−' : '+'}
                     </div>
@@ -811,14 +834,14 @@ export default function ServicesPage() {
                 className="py-6 lg:py-8 cursor-pointer hover:bg-white/5 transition-all duration-300"
                 onClick={() => handleServiceClick(5)}
               >
-                <div className="max-w-6xl mx-auto px-6">
-                  <div className="flex items-center gap-8">
-                    <span className="text-[#336b62] text-2xl lg:text-3xl font-heading font-bold min-w-[60px]">
-                      05
-                    </span>
+              <div className="max-w-6xl mx-auto px-6">
+                <div className="flex items-center gap-8">
+                  <span className="text-[#336b62] text-2xl lg:text-3xl font-heading font-bold min-w-[60px]">
+                    05
+                  </span>
                     <h3 className="text-white text-2xl lg:text-3xl xl:text-4xl font-heading font-bold flex-1">
-                      RETAIL MEDIA & COMMERCE STRATEGY
-                    </h3>
+                    RETAIL MEDIA & COMMERCE STRATEGY
+                  </h3>
                     <div className="text-white text-2xl">
                       {expandedService === 5 ? '−' : '+'}
                     </div>
@@ -907,11 +930,10 @@ export default function ServicesPage() {
         </section>
 
         {/* Why Clients Choose Section */}
-        <section ref={whyChooseSectionRef} className="relative py-20 lg:py-32 bg-black">
-          <div className="max-w-7xl mx-auto px-6">
-            
-            {/* Section Title */}
-            <div className="text-center mb-20">
+        <section ref={whyChooseSectionRef} className="relative bg-black">
+          {/* Section Title */}
+          <div className="text-center py-20">
+            <div className="max-w-7xl mx-auto px-6">
               <h2 className="text-4xl lg:text-5xl xl:text-6xl font-heading font-bold leading-tight">
                 <span className="text-white">WHY CLIENTS </span>
                 <div 
@@ -930,94 +952,55 @@ export default function ServicesPage() {
                 <span className="text-white">MAISON ELARIS</span>
               </h2>
             </div>
+          </div>
 
-            {/* Content Grid with U-Shaped Connecting Line */}
-            <div className="relative max-w-5xl mx-auto">
-              
-              {/* Rotated U-Shaped Path Line */}
-              <div className="absolute inset-0 pointer-events-none hidden lg:block">
-                {/* Top horizontal line: from left content to right edge */}
-                <div ref={uLineLeftRef} className="absolute left-1/4 top-32 w-1/2 h-px bg-[#336b62]"></div>
-                
-                {/* Right vertical line: going down from top horizontal */}
-                <div ref={uLineBottomRef} className="absolute right-1/4 top-32 w-px h-40 bg-[#336b62]"></div>
-                
-                {/* Bottom horizontal line: going back left from bottom of vertical */}
-                <div ref={uLineRightRef} className="absolute left-1/4 top-72 w-1/2 h-px bg-[#336b62]"></div>
-              </div>
+          {/* Sticky Cards Container */}
+          <div ref={stickyContainerRef} className="sticky-cards relative flex h-screen w-full items-center justify-center overflow-hidden p-4 lg:p-8">
+            <div className="relative h-[80%] w-full max-w-2xl overflow-hidden rounded-3xl">
+              {cardData.map((card, index) => (
+                <div
+                  key={card.id}
+                  ref={(el) => {
+                    cardRefs.current[index] = el
+                  }}
+                  className="absolute inset-0 bg-gradient-to-br from-white/15 to-white/5 backdrop-blur-sm border border-white/20 rounded-3xl p-8 lg:p-12 flex flex-col justify-center"
+                >
+                  {/* Card Number Badge */}
+                  <div className="mb-8">
+                    <div className="w-16 h-16 bg-[#336b62] rounded-2xl flex items-center justify-center mb-6">
+                      <span className="text-white text-2xl font-bold">{card.number}</span>
+                    </div>
+                  </div>
 
-              {/* Content Points Layout */}
-              <div className="space-y-0">
-                
-                {/* Top Row */}
-                <div className="grid lg:grid-cols-2 gap-16 mb-16">
-                  {/* Point 1 - Integrated by Design (Top Left) */}
-                  <div ref={point1Ref} className="text-left">
-                    <h3 className="text-white text-xl lg:text-2xl font-heading font-bold mb-4">
-                      Integrated by Design
+                  {/* Card Content */}
+                  <div className="flex-1 flex flex-col justify-center">
+                    <h3 className="text-white text-3xl lg:text-4xl font-heading font-bold mb-8 leading-tight">
+                      {card.title}
                     </h3>
-                    <p className="text-gray-300 text-base font-body leading-relaxed">
-                      Our model eliminates silos. We blend strategy, creative, and media from the start, delivering better outcomes and faster speed-to-market.
+                    <p className="text-gray-300 text-lg lg:text-xl font-body leading-relaxed max-w-xl">
+                      {card.description}
                     </p>
                   </div>
 
-                  {/* Point 2 - Tech-Forward Thinking (Top Right) */}
-                  <div ref={point2Ref} className="text-left">
-                    <h3 className="text-white text-xl lg:text-2xl font-heading font-bold mb-4">
-                      Tech-Forward Thinking
-                    </h3>
-                    <div className="border border-white/20 p-4 rounded-lg">
-                      <p className="text-gray-300 text-base font-body leading-relaxed">
-                        We don&apos;t just use media platforms we build on them. Our internal tools, AI copilots, and predictive dashboards give clients an unfair advantage in a crowded marketplace.
-                      </p>
-                    </div>
+                  {/* Progress Indicator */}
+                  <div className="flex items-center justify-center mt-8 gap-2">
+                    {cardData.map((_, i) => (
+                      <div 
+                        key={i}
+                        className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                          i === index ? 'bg-[#336b62] w-8' : 'bg-white/30'
+                        }`}
+                      />
+                    ))}
                   </div>
                 </div>
-
-                {/* Center Point */}
-                <div className="text-center mb-16">
-                  <div ref={point3Ref} className="max-w-md mx-auto">
-                    <h3 className="text-white text-xl lg:text-2xl font-heading font-bold mb-4">
-                      Strategy Meets Craft
-                    </h3>
-                    <div className="border border-white/20 p-6 rounded-lg">
-                      <p className="text-gray-300 text-base font-body leading-relaxed">
-                        We&apos;re a consultancy, a content studio, a performance lab driven by the belief that good strategy deserves great execution.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Bottom Row */}
-                <div className="grid lg:grid-cols-2 gap-16">
-                  {/* Point 4 - Proven Across Verticals (Bottom Left) */}
-                  <div ref={point4Ref} className="text-left">
-                    <h3 className="text-white text-xl lg:text-2xl font-heading font-bold mb-4">
-                      Proven Across Verticals
-                    </h3>
-                    <p className="text-gray-300 text-base font-body leading-relaxed">
-                      From global launches for tech giants to wellness growth campaigns, our work spans industries and consistently drives measurable results.
-                    </p>
-                  </div>
-
-                  {/* Point 5 - Built for a Borderless World (Bottom Right) */}
-                  <div ref={point5Ref} className="text-left">
-                    <h3 className="text-white text-xl lg:text-2xl font-heading font-bold mb-4">
-                      Built for a Borderless World
-                    </h3>
-                    <div className="border border-white/20 p-4 rounded-lg">
-                      <p className="text-gray-300 text-base font-body leading-relaxed">
-                        We work across markets and languages, with culturally aware teams fluent in localization and platform-native nuances.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-              </div>
+              ))}
             </div>
+          </div>
 
-            {/* Book IOI Now Button */}
-            <div className="text-center mt-20">
+          {/* Book IOI Now Button */}
+          <div className="text-center py-20">
+            <div className="max-w-7xl mx-auto px-6">
               <Link href="/connect">
                 <button className="bg-[#336b62] hover:bg-[#9b8075] text-white px-12 py-4 rounded-full transition-all duration-300 font-body font-medium text-lg transform hover:scale-105 hover:shadow-2xl">
                   BOOK IOI NOW
