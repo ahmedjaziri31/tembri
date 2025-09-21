@@ -483,19 +483,19 @@ export default function AboutPage() {
                     GROWTH
                     {/* Circle Image Behind GROWTH */}
                     <div ref={growthCircleRef} className="absolute -inset-4 lg:-inset-6">
-                      <Image
+                  <Image
                         src="/about/circel.png"
                         alt="Growth circle"
                         width={300}
                         height={150}
                         className="w-full h-auto object-contain"
-                      />
-                    </div>
+                  />
+                </div>
                   </span>
                 </h2>
               </div>
-            </div>
-            
+              </div>
+
             {/* Description Text */}
             <div ref={unlockingDescRef} className="max-w-4xl mx-auto">
               <p className="text-gray-300 text-lg lg:text-xl xl:text-2xl font-body leading-relaxed">
@@ -515,9 +515,9 @@ export default function AboutPage() {
               <div ref={storyLeftTextRef} className="lg:pr-8">
                 <p className="text-white text-lg lg:text-xl xl:text-2xl font-body leading-relaxed">
                   We were born from this very frustration. We saw brands pushing harder, spending more, yet struggling to truly connect with the people who matter most: their audience. So, we set out to build something different.
-                </p>
-              </div>
-              
+        </p>
+      </div>
+
               {/* Right Image - Centered with left text */}
               <div ref={storyImage1Ref} className="flex justify-center lg:justify-end">
                 <Image
@@ -543,8 +543,8 @@ export default function AboutPage() {
                   className="w-full max-w-md h-auto object-contain rounded-lg shadow-xl"
                   priority
                 />
-              </div>
-              
+            </div>
+
               {/* Right Text */}
               <div ref={storyRightTextRef} className="lg:pl-8 order-1 lg:order-2">
                 <p className="text-white text-lg lg:text-xl xl:text-2xl font-body leading-relaxed">
@@ -559,7 +559,7 @@ export default function AboutPage() {
 
             {/* Curved Arrow - Flesh Image - Between the two rows */}
             <div ref={fleshArrowRef} className="absolute top-1/2 left-1/2 transform -translate-x-1/2 translate-y-12 z-10 pointer-events-none">
-              <Image
+                <Image
                 src="/about/flesh.png"
                 alt="Connection arrow"
                 width={200}
@@ -578,7 +578,7 @@ export default function AboutPage() {
               <div ref={designingTextRef} className="whitespace-nowrap w-full">
                 <span className="text-8xl lg:text-9xl xl:text-[12rem] font-heading font-bold text-white block w-full text-center">
                   DESIGNING
-                </span>
+                    </span>
               </div>
             </div>
 
@@ -588,7 +588,7 @@ export default function AboutPage() {
                 <span className="text-8xl lg:text-9xl xl:text-[12rem] font-heading font-bold text-transparent stroke-2 stroke-[#336b62] block w-full text-center"
                       style={{ WebkitTextStroke: '3px #336b62', color: 'transparent' }}>
                   IMPACT
-                </span>
+                    </span>
               </div>
             </div>
 
@@ -596,8 +596,8 @@ export default function AboutPage() {
             <div ref={designingImpactDescRef} className="max-w-4xl mx-auto px-6 text-center">
               <p className="text-gray-300 text-lg lg:text-xl xl:text-2xl font-body leading-relaxed">
                 We don&apos;t just market, we craft narratives. We don&apos;t just design, we create impact. And we don&apos;t just chase growth, we help our clients grow in ways that are meaningful, sustainable, and unforgettable.
-              </p>
-            </div>
+                </p>
+              </div>
           </div>
         </section>
 
@@ -606,15 +606,15 @@ export default function AboutPage() {
           <div className="relative max-w-7xl mx-auto text-center">
             {/* Where Minds Unite Image - Bigger on larger screens */}
             <div ref={mindsUniteImageRef} className="mb-8 lg:mb-12">
-              <Image
+                <Image
                 src="/about/wheremindsunite.png"
                 alt="Where Minds Unite - Maison Elaris"
                 width={900}
                 height={450}
                 className="w-full max-w-3xl lg:max-w-5xl xl:max-w-6xl h-auto object-contain mx-auto opacity-95"
                 priority
-              />
-            </div>
+                />
+              </div>
             
             {/* Where Minds Unite Text - Animated on scroll */}
             <div ref={mindsUniteTextRef} className="max-w-4xl mx-auto">
@@ -638,8 +638,8 @@ export default function AboutPage() {
                 className="w-full max-w-2xl h-auto object-contain mx-auto opacity-95"
                 priority
               />
-            </div>
-            
+              </div>
+
             {/* Vision Text - Animated on scroll */}
             <div ref={visionTextRef} className="max-w-3xl mx-auto">
               <p className="text-gray-300 text-lg lg:text-xl xl:text-2xl font-body leading-relaxed">
@@ -658,8 +658,8 @@ export default function AboutPage() {
               <div ref={europeTextRef} className="whitespace-nowrap w-full">
                 <span className="text-8xl lg:text-9xl xl:text-[12rem] font-heading font-bold text-transparent stroke-2 stroke-[#336b62] block w-full text-center" 
                       style={{ WebkitTextStroke: '3px #336b62', color: 'transparent' }}>
-                  FROM EUROPE
-                </span>
+                      FROM EUROPE
+                    </span>
               </div>
             </div>
 
@@ -667,8 +667,8 @@ export default function AboutPage() {
             <div className="relative mb-6 overflow-hidden w-full">
               <div ref={middleEastTextRef} className="whitespace-nowrap w-full">
                 <span className="text-8xl lg:text-9xl xl:text-[12rem] font-heading font-bold text-white block w-full text-center">
-                  MIDDLE EAST
-                </span>
+                      MIDDLE EAST
+                    </span>
               </div>
             </div>
 
@@ -677,10 +677,10 @@ export default function AboutPage() {
               <div ref={asiaTextRef} className="whitespace-nowrap w-full">
                 <span className="text-8xl lg:text-9xl xl:text-[12rem] font-heading font-bold text-transparent stroke-2 stroke-[#336b62] block w-full text-center"
                       style={{ WebkitTextStroke: '3px #336b62', color: 'transparent' }}>
-                  TO ASIA
-                </span>
+                      TO ASIA
+                    </span>
+                </div>
               </div>
-            </div>
           </div>
         </section>
 
@@ -698,15 +698,15 @@ export default function AboutPage() {
                 priority
               />
             </div>
-            
+
             {/* Planet Text - Animated on scroll */}
             <div ref={planetTextRef} className="max-w-4xl mx-auto">
               <p className="text-gray-300 text-lg lg:text-xl font-body leading-relaxed">
                 Our presence keeps us close to culture, talent, and consumers. 
                 Some day&apos;s it&apos;s a strategy sprint in Amsterdam, other days a creative review across 
                 time zones, but always with the same spirit: agile, collaborative, and precise.
-              </p>
-            </div>
+        </p>
+      </div>
           </div>
         </section>
 

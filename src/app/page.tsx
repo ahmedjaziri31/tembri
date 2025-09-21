@@ -104,7 +104,7 @@ export default function HomePage() {
 
   // Case study button ref
   const caseStudyButtonRef = useRef<HTMLButtonElement>(null)
-
+  
   // Services section refs
   const servicesSectionRef = useRef<HTMLElement>(null)
   const servicesSubtitleRef = useRef<HTMLParagraphElement>(null)
@@ -245,8 +245,8 @@ export default function HomePage() {
 
         // Phase 2: Card entrance animation + gradient fade in
         .to(cardRef.current, {
-          opacity: 1,
-          scale: 1,
+        opacity: 1,
+        scale: 1,
           rotation: 0,
           duration: 1.2,
           ease: "back.out(1.7)"
@@ -254,7 +254,7 @@ export default function HomePage() {
         
         .to("#firstSectionGradient", {
           opacity: 0.8,
-          duration: 1.5,
+        duration: 1.5,
           ease: "power2.out"
         }, "-=1.0")
         
@@ -281,20 +281,20 @@ export default function HomePage() {
           y: 0,
           scale: 1,
           duration: 0.8,
-          ease: "back.out(1.7)"
+        ease: "back.out(1.7)"
         }, "-=0.3")
-
+      
         // Phase 4: Bottom text appears
         .to("#bottomText", {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          ease: "power2.out"
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: "power2.out"
         }, "-=0.3")
-
+      
         // Phase 5: Simple header fade in (faster)
         .to("#stickyHeader", {
-          opacity: 1,
+        opacity: 1,
           duration: 0.8,
           ease: "power2.out"
         }, "+=0.3") // Reduced delay from 0.5s to 0.3s
@@ -317,7 +317,7 @@ export default function HomePage() {
           setShowHeaderFooter(true)
         }, [], "+=0.2")
         .to("footer", {
-          opacity: 1,
+              opacity: 1,
           duration: 1,
           ease: "power2.out"
         }, "-=0.5") // Start footer animation 0.5s earlier
@@ -354,8 +354,8 @@ export default function HomePage() {
 
         // About subtitle - smooth fade in
         gsap.to(aboutSubtitleRef.current, {
-          opacity: 1,
-          y: 0,
+                opacity: 1,
+                y: 0,
           duration: 1,
           ease: "power2.out",
           scrollTrigger: {
@@ -367,9 +367,9 @@ export default function HomePage() {
 
         // About title - smooth fade in with slight delay
         gsap.to(aboutTitleRef.current, {
-          opacity: 1,
-          y: 0,
-          duration: 1.2,
+        opacity: 1,
+        y: 0,
+        duration: 1.2,
           ease: "power2.out",
           delay: 0.2,
           scrollTrigger: {
@@ -382,8 +382,8 @@ export default function HomePage() {
         // Description paragraphs - staggered animation
         if (descParagraphs) {
           gsap.to(descParagraphs, {
-            opacity: 1,
-            y: 0,
+        opacity: 1,
+        y: 0,
             duration: 1,
             stagger: 0.2,
             ease: "power2.out",
@@ -400,7 +400,7 @@ export default function HomePage() {
         gsap.to(aboutButtonRef.current, {
           opacity: 1,
           y: 0,
-          duration: 1,
+    duration: 1,
           ease: "back.out(1.7)",
           delay: 0.8,
           scrollTrigger: {
@@ -444,29 +444,29 @@ export default function HomePage() {
 
         // Services subtitle - smooth fade in
         gsap.to(servicesSubtitleRef.current, {
-          opacity: 1,
+        opacity: 1,
           y: 0,
-          duration: 1,
+        duration: 1,
           ease: "power2.out",
-          scrollTrigger: {
+        scrollTrigger: {
             trigger: servicesSectionRef.current,
             start: "top 80%",
-            toggleActions: "play none none reverse"
-          }
+          toggleActions: "play none none reverse"
+        }
         })
 
         // Services title - smooth fade in with slight delay
         gsap.to(servicesTitleRef.current, {
-          opacity: 1,
-          y: 0,
-          duration: 1.2,
+        opacity: 1,
+        y: 0,
+        duration: 1.2,
           ease: "power2.out",
           delay: 0.2,
-          scrollTrigger: {
+        scrollTrigger: {
             trigger: servicesSectionRef.current,
             start: "top 80%",
-            toggleActions: "play none none reverse"
-          }
+          toggleActions: "play none none reverse"
+        }
         })
 
         // Services card flip animation sequence
@@ -491,9 +491,9 @@ export default function HomePage() {
 
           // Step 2: Reveal the three service cards with stagger
           .to([card1Ref.current, card2Ref.current, card3Ref.current], {
-            opacity: 1,
-            y: 0,
-            scale: 1,
+        opacity: 1,
+        y: 0,
+        scale: 1,
             rotationY: 0,
             duration: 1.2,
             stagger: 0.2,
@@ -548,13 +548,13 @@ export default function HomePage() {
             opacity: 1,
             duration: 0.8,
             delay: index * 0.1,
-            scrollTrigger: {
+        scrollTrigger: {
               trigger: socialSectionRef.current,
               start: "top 70%",
               end: "top 30%",
               scrub: false,
-              toggleActions: "play none none reverse"
-            }
+          toggleActions: "play none none reverse"
+        }
           })
         })
 
@@ -719,8 +719,8 @@ export default function HomePage() {
         style={{ opacity: 0 }}
         id="stickyHeader"
       >
-        <Header />
-      </div>
+      <Header />
+        </div>
 
 
 
@@ -740,14 +740,14 @@ export default function HomePage() {
           ref={cardRef}
           className="relative"
         >
-          <Image
-            src="/Flot.png"
+            <Image
+              src="/Flot.png"
             alt="Maison Elaris Card"
-            width={350}
+              width={350}
             height={450}
             className="w-48 sm:w-56 md:w-72 lg:w-80 xl:w-88 h-auto object-contain drop-shadow-2xl"
-            priority
-          />
+              priority
+            />
         </div>
 
         {/* First Text - Left Side */}
@@ -803,7 +803,7 @@ export default function HomePage() {
 
       {/* Latest Projects Section with Circular Gallery */}
       <section className="relative z-20 py-16 lg:py-24">
-        {/* Section Header */}
+          {/* Section Header */}
         <div className="max-w-7xl mx-auto px-6 mb-8">
           <div className="flex justify-between items-start">
             <div>
@@ -813,11 +813,11 @@ export default function HomePage() {
             </div>
             <Link href="/projects">
               <button className="bg-[#336b62] hover:bg-[#9b8075] text-white px-6 py-3 rounded-lg transition-colors duration-300 font-body font-medium">
-                See What We Do
-              </button>
+              See What We Do
+            </button>
             </Link>
           </div>
-        </div>
+          </div>
 
         {/* Circular Gallery - Full Width */}
         <div className="relative h-[600px] w-full overflow-hidden">
@@ -874,26 +874,26 @@ export default function HomePage() {
         <div className="absolute inset-0 pointer-events-none">
           {/* Left Center Shape */}
           <div className="absolute top-1/2 -translate-y-1/2 -left-60 w-[700px] h-[700px] rotate-12 opacity-40">
-            <Image
+                  <Image
               src="/shape.png"
               alt=""
-              fill
+                    fill
               className="object-contain"
               style={{ filter: 'brightness(0.8) contrast(1.2)' }}
-            />
-          </div>
-          
+                  />
+              </div>
+
           {/* Right Center Shape */}
           <div className="absolute top-1/2 -translate-y-1/2 -right-60 w-[700px] h-[700px] -rotate-12 opacity-40">
-            <Image
+                  <Image
               src="/shape.png"
               alt=""
-              fill
+                    fill
               className="object-contain"
               style={{ filter: 'brightness(0.8) contrast(1.2)' }}
-            />
-          </div>
-        </div>
+                  />
+                </div>
+              </div>
 
         {/* Content Container with Card Design */}
         <div className="relative z-10 max-w-6xl mx-auto px-6">
@@ -909,7 +909,7 @@ export default function HomePage() {
                 <div className="flex justify-center lg:justify-start">
                   <div className="relative">
                     <div className="w-80 md:w-96 lg:w-[420px] h-auto">
-                      <Image
+                  <Image
                         src="/about.png"
                         alt="Campaign Ideas - Maison Elaris Creative Process"
                         width={420}
@@ -918,8 +918,8 @@ export default function HomePage() {
                         priority
                       />
                     </div>
-                  </div>
                 </div>
+              </div>
 
                 {/* Right Side - Content */}
                 <div className="text-center lg:text-left">
@@ -928,7 +928,7 @@ export default function HomePage() {
                     <span ref={aboutSubtitleRef} className="text-[#336b62] text-lg lg:text-xl font-heading font-medium tracking-wider uppercase">
                       ABOUT
                     </span>
-                  </div>
+                </div>
 
                   {/* Main Title */}
                   <h2 ref={aboutTitleRef} className="text-white text-3xl lg:text-4xl xl:text-5xl font-heading font-bold leading-tight mb-8">
@@ -948,7 +948,7 @@ export default function HomePage() {
                     <p className="text-gray-300 text-lg lg:text-xl font-body leading-relaxed">
                       From strategy sprints in Amsterdam to creative reviews across time zones, we work with agility and precision to deliver brilliance without compromise.
                     </p>
-                  </div>
+              </div>
 
                   {/* Learn More Button */}
                   <div className="flex justify-center lg:justify-start">
@@ -957,8 +957,8 @@ export default function HomePage() {
                         Learn More
                       </button>
                     </Link>
-                  </div>
-                </div>
+            </div>
+          </div>
 
               </div>
             </div>
@@ -983,16 +983,16 @@ export default function HomePage() {
           <div className="relative flex justify-center min-h-[500px] lg:min-h-[600px]">
             {/* Main Card (initially visible) */}
             <div ref={servicesCardRef} className="absolute top-0 left-1/2 transform -translate-x-1/2 w-full max-w-sm lg:max-w-md">
-              <Image
+                <Image
                 src="/card.png"
                 alt="Maison Elaris Services Card"
                 width={400}
                 height={600}
                 className="w-full h-auto object-contain drop-shadow-2xl"
                 priority
-              />
-            </div>
-
+                />
+              </div>
+              
             {/* Service Cards Container */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12 w-full max-w-6xl">
               {/* Card 1 */}
@@ -1020,21 +1020,21 @@ export default function HomePage() {
                     className="w-full h-auto object-contain drop-shadow-2xl"
                     sizes="(max-width: 768px) 100vw, 33vw"
                   />
-                </div>
               </div>
+            </div>
 
               {/* Card 3 */}
               <div ref={card3Ref} className="flex justify-center">
                 <div className="relative w-full max-w-sm">
-                  <Image
+                <Image
                     src="/card3.png"
                     alt="Service Card 3"
                     width={400}
                     height={600}
                     className="w-full h-auto object-contain drop-shadow-2xl"
                     sizes="(max-width: 768px) 100vw, 33vw"
-                  />
-                </div>
+                />
+              </div>
               </div>
             </div>
           </div>
@@ -1089,8 +1089,8 @@ export default function HomePage() {
                         <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
                       </svg>
                     </a>
-                  </div>
                 </div>
+              </div>
 
                  {/* Overlay Brand Images - Hidden on mobile, visible on larger screens */}
                  {/* Samsung - Top Left */}
@@ -1101,18 +1101,18 @@ export default function HomePage() {
                      fill
                      className="object-contain rounded-lg shadow-2xl"
                    />
-                 </div>
+            </div>
 
                  {/* Nivea - Left Side */}
                  <div className="hidden md:block absolute top-1/2 -translate-y-1/2 left-2 lg:left-12 w-16 md:w-20 lg:w-88 h-12 md:h-16 lg:h-72 z-30 opacity-30 lg:opacity-90" id="socialNivea">
-                   <Image
+                <Image
                      src="/elaris banners/DIMENSION PC 640x512/MAISON ELARIS NIVEA.png"
                      alt="Nivea"
-                     fill
+                  fill
                      className="object-contain rounded-lg shadow-2xl"
-                   />
-                 </div>
-
+                />
+              </div>
+              
                  {/* Under Armour - Bottom Left */}
                  <div className="hidden md:block absolute bottom-6 lg:bottom-10 left-4 lg:left-16 w-20 md:w-24 lg:w-96 h-16 md:h-20 lg:h-80 z-30 opacity-30 lg:opacity-90" id="socialUnderArmour">
                    <Image
@@ -1141,7 +1141,7 @@ export default function HomePage() {
                      fill
                      className="object-contain rounded-lg shadow-2xl"
                    />
-                 </div>
+                </div>
 
                  {/* Swiss Arabian - Right Side */}
                  <div className="hidden md:block absolute top-1/2 -translate-y-1/2 right-2 lg:right-12 w-16 md:w-20 lg:w-88 h-12 md:h-16 lg:h-72 z-30 opacity-30 lg:opacity-90" id="socialSwissArabian">
@@ -1151,70 +1151,70 @@ export default function HomePage() {
                      fill
                      className="object-contain rounded-lg shadow-2xl"
                    />
-                 </div>
-              </section>
+        </div>
+      </section>
 
               {/* Connect CTA Section */}
               <section className="section relative bg-black py-24 lg:py-32 overflow-hidden">
-                {/* Background Decorative Shapes */}
-                <div className="absolute inset-0">
-                  <Image
-                    src="/shape.png"
-                    alt=""
-                    width={700}
-                    height={700}
-                    className="bg-shape-1 absolute top-1 -right-50 rotate-12 opacity-60 filter brightness-150"
-                  />
-                  <Image
-                    src="/shape.png"
-                    alt=""
-                    width={600}
-                    height={600}
-                    className="bg-shape-2 absolute bottom-0 -left-40 -rotate-12 opacity-50 filter brightness-150"
-                  />
-                </div>
-                
-                {/* Content Container with Transparent Card */}
-                <div className="relative z-10 max-w-5xl mx-auto px-6">
-                  <div className="relative bg-black/40 backdrop-blur-sm border border-white/10 rounded-3xl p-12 lg:p-16 text-center shadow-2xl">
-                    {/* Subtle inner glow */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent rounded-3xl"></div>
-                    
-                    {/* Content */}
-                    <div className="relative z-10">
-                      {/* Subtitle */}
+        {/* Background Decorative Shapes */}
+        <div className="absolute inset-0">
+          <Image
+            src="/shape.png"
+            alt=""
+            width={700}
+            height={700}
+            className="bg-shape-1 absolute top-1 -right-50 rotate-12 opacity-60 filter brightness-150"
+          />
+          <Image
+            src="/shape.png"
+            alt=""
+            width={600}
+            height={600}
+            className="bg-shape-2 absolute bottom-0 -left-40 -rotate-12 opacity-50 filter brightness-150"
+          />
+        </div>
+        
+        {/* Content Container with Transparent Card */}
+        <div className="relative z-10 max-w-5xl mx-auto px-6">
+          <div className="relative bg-black/40 backdrop-blur-sm border border-white/10 rounded-3xl p-12 lg:p-16 text-center shadow-2xl">
+            {/* Subtle inner glow */}
+            <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent rounded-3xl"></div>
+            
+            {/* Content */}
+            <div className="relative z-10">
+                               {/* Subtitle */}
                       <p className="text-[#336b62] text-sm lg:text-base font-secondary font-medium tracking-wider mb-6 uppercase">
-                        Connect With Us
-                      </p>
-                      
-                      {/* Main Heading */}
+                   Connect With Us
+                 </p>
+              
+              {/* Main Heading */}
                       <h2 className="text-white text-2xl lg:text-3xl xl:text-4xl font-heading font-bold leading-tight mb-8">
-                        CREATE TOMORROW,<br />
-                        TOGETHER
-                      </h2>
-                      
-                      {/* Description */}
+                CREATE TOMORROW,<br />
+                TOGETHER
+              </h2>
+              
+              {/* Description */}
                       <p className="text-gray-300 text-lg lg:text-xl font-body font-light leading-relaxed mb-12 max-w-3xl mx-auto">
-                        Every idea we share and every step we take moves us closer to a future we&apos;re proud to shape.
-                      </p>
-                      
-                      {/* CTA Buttons */}
+                Every idea we share and every step we take moves us closer to a future we&apos;re proud to shape.
+              </p>
+              
+              {/* CTA Buttons */}
                       <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-                        <Link href="/connect">
+                <Link href="/connect">
                           <button className="bg-[#336b62] hover:bg-[#9b8075] text-white px-6 py-3 rounded-lg transition-colors duration-300 font-body font-medium">
-                            GET IN CONTACT
-                          </button>
-                        </Link>
-                        <Link href="/contact/careers">
+                    GET IN CONTACT
+                  </button>
+                </Link>
+                <Link href="/contact/careers">
                           <button className="bg-transparent border-2 border-[#336b62] hover:bg-[#336b62] text-[#336b62] hover:text-white px-6 py-3 rounded-lg transition-colors duration-300 font-body font-medium">
-                            VIEW CAREERS
-                          </button>
-                        </Link>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </section>
+                    VIEW CAREERS
+                  </button>
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
               {/* News Section */}
               <section className="section relative py-20 lg:py-32 overflow-hidden">
@@ -1287,27 +1287,27 @@ export default function HomePage() {
                         View All News
                       </button>
                     </Link>
-                  </div>
-                </div>
-              </section>
+          </div>
+        </div>
+      </section>
 
-              {/* Partners Section */}
-              <section className="section bg-black py-16 lg:py-24 relative z-20">
-                <div className="max-w-7xl mx-auto px-6 lg:px-8">
-                  <div className="flex items-center justify-center">
-                    <div className="w-full max-w-4xl">
-                      <Image
-                        src="/partners/partners.png"
-                        alt="Our Partners"
-                        width={1200}
-                        height={400}
-                        className="w-full h-auto object-contain opacity-80 hover:opacity-100 transition-opacity duration-300"
-                        priority
-                      />
-                    </div>
-                  </div>
-                </div>
-              </section>
+      {/* Partners Section */}
+      <section className="section bg-black py-16 lg:py-24 relative z-20">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="flex items-center justify-center">
+            <div className="w-full max-w-4xl">
+              <Image
+                src="/partners/partners.png"
+                alt="Our Partners"
+                width={1200}
+                height={400}
+                className="w-full h-auto object-contain opacity-80 hover:opacity-100 transition-opacity duration-300"
+                priority
+              />
+            </div>
+          </div>
+        </div>
+      </section>
 
 
       {/* Footer - Initially hidden */}
