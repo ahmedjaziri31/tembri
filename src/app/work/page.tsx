@@ -29,7 +29,7 @@ export default function WorkPage() {
               <Link href="/work/1">
                 <div className="group relative overflow-hidden rounded-3xl aspect-[4/3] cursor-pointer transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl">
                   <Image
-                    src="/work/project1.png"
+                    src="/elaris banners/DIMENSION TABLETTE/1024×768 px (en mode paysage)/MAISON ELARIS under armourtablette paysage.png"
                     alt="Athlete Engine - Under Armour Campaign"
                     fill
                     className="object-contain"
@@ -44,7 +44,7 @@ export default function WorkPage() {
               <Link href="/work/2">
                 <div className="group relative overflow-hidden rounded-3xl aspect-[4/3] cursor-pointer transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl">
                   <Image
-                    src="/work/project2.png"
+                    src="/elaris banners/DIMENSION TABLETTE/1024×768 px (en mode paysage)/mcdo.png"
                     alt="Moments that Matter - McDonald's Campaign"
                     fill
                     className="object-contain"
@@ -58,7 +58,7 @@ export default function WorkPage() {
               <Link href="/work/3">
                 <div className="group relative overflow-hidden rounded-3xl aspect-[4/3] cursor-pointer transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl">
                   <Image
-                    src="/work/project3.png"
+                    src="/elaris banners/DIMENSION TABLETTE/1024×768 px (en mode paysage)/MAISON ELARIS Swiss Arabian tablette paysage.png"
                     alt="Digital Bloom - Swiss Arabian Campaign"
                     fill
                     className="object-contain"
@@ -72,7 +72,7 @@ export default function WorkPage() {
               <Link href="/work/4">
                 <div className="group relative overflow-hidden rounded-3xl aspect-[4/3] cursor-pointer transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl">
                   <Image
-                    src="/work/project4.png"
+                    src="/elaris banners/DIMENSION TABLETTE/1024×768 px (en mode paysage)/MAISON ELARIS Eucerin tablette paysage.png"
                     alt="Performance Meets Prestige - Estée Lauder Campaign"
                     fill
                     className="object-contain"
@@ -86,7 +86,7 @@ export default function WorkPage() {
               <Link href="/work/5">
                 <div className="group relative overflow-hidden rounded-3xl aspect-[4/3] cursor-pointer transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl">
                   <Image
-                    src="/work/project5.png"
+                    src="/elaris banners/DIMENSION TABLETTE/1024×768 px (en mode paysage)/MAISON ELARIS nivea tablette paysage.png"
                     alt="Wellness in Motion - NIVEA + Eucerin Campaign"
                     fill
                     className="object-contain"
@@ -100,7 +100,7 @@ export default function WorkPage() {
               <Link href="/work/6">
                 <div className="group relative overflow-hidden rounded-3xl aspect-[4/3] cursor-pointer transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl">
                   <Image
-                    src="/work/project6.png"
+                    src="/elaris banners/DIMENSION TABLETTE/1024×768 px (en mode paysage)/samsung tablette.png"
                     alt="Scaling with Signal - Samsung Campaign"
                     fill
                     className="object-contain"

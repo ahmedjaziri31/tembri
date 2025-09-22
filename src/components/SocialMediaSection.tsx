@@ -70,12 +70,12 @@ export default function SocialMediaSection() {
 
   // Project images data
   const projectImages = [
-    { src: '/work/project1.png', alt: 'Under Armour Campaign' },
-    { src: '/work/project2.png', alt: 'McDonald\'s Campaign' },
-    { src: '/work/project3.png', alt: 'Swiss Arabian Campaign' },
-    { src: '/work/project4.png', alt: 'Estée Lauder Campaign' },
-    { src: '/work/project5.png', alt: 'NIVEA + Eucerin Campaign' },
-    { src: '/work/project6.png', alt: 'Samsung Campaign' }
+    { src: '/elaris banners/DIMENSION TABLETTE/1024×768 px (en mode paysage)/MAISON ELARIS under armourtablette paysage.png', alt: 'Under Armour Campaign' },
+    { src: '/elaris banners/DIMENSION TABLETTE/1024×768 px (en mode paysage)/mcdo.png', alt: 'McDonald\'s Campaign' },
+    { src: '/elaris banners/DIMENSION TABLETTE/1024×768 px (en mode paysage)/MAISON ELARIS Swiss Arabian tablette paysage.png', alt: 'Swiss Arabian Campaign' },
+    { src: '/elaris banners/DIMENSION TABLETTE/1024×768 px (en mode paysage)/MAISON ELARIS Eucerin tablette paysage.png', alt: 'Estée Lauder Campaign' },
+    { src: '/elaris banners/DIMENSION TABLETTE/1024×768 px (en mode paysage)/MAISON ELARIS nivea tablette paysage.png', alt: 'NIVEA + Eucerin Campaign' },
+    { src: '/elaris banners/DIMENSION TABLETTE/1024×768 px (en mode paysage)/samsung tablette.png', alt: 'Samsung Campaign' }
   ]
 
   return (

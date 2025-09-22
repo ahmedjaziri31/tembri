@@ -1,7 +1,7 @@
 'use client'
 
 import { useParams } from 'next/navigation'
-import { useState, useEffect } from 'react'
+import React from 'react'
 import Header from '../../../components/Header'
 import Footer from '../../../components/Footer'
 import Image from 'next/image'
@@ -160,28 +160,39 @@ const projectsData = {
   }
 }
 
+// Mapping project IDs to their corresponding banner images
+const projectBannerImages = {
+  '1': {
+    landscape: '/elaris banners/DIMENSION TABLETTE/1024×768 px (en mode paysage)/MAISON ELARIS under armourtablette paysage.png',
+    portrait: '/elaris banners/DIMENSION TABLETTE/768×1024 px (en mode portrait)/under armour   portrait.png'
+  },
+  '2': {
+    landscape: '/elaris banners/DIMENSION TABLETTE/1024×768 px (en mode paysage)/mcdo.png',
+    portrait: '/elaris banners/DIMENSION TABLETTE/768×1024 px (en mode portrait)/mcdo.png'
+  },
+  '3': {
+    landscape: '/elaris banners/DIMENSION TABLETTE/1024×768 px (en mode paysage)/MAISON ELARIS Swiss Arabian tablette paysage.png',
+    portrait: '/elaris banners/DIMENSION TABLETTE/768×1024 px (en mode portrait)/Swiss Arabian  portrait.png'
+  },
+  '4': {
+    landscape: '/elaris banners/DIMENSION TABLETTE/1024×768 px (en mode paysage)/MAISON ELARIS Eucerin tablette paysage.png',
+    portrait: '/elaris banners/DIMENSION TABLETTE/768×1024 px (en mode portrait)/Eucerin portrait.png'
+  },
+  '5': {
+    landscape: '/elaris banners/DIMENSION TABLETTE/1024×768 px (en mode paysage)/MAISON ELARIS nivea tablette paysage.png',
+    portrait: '/elaris banners/DIMENSION TABLETTE/768×1024 px (en mode portrait)/nivea portrait.png'
+  },
+  '6': {
+    landscape: '/elaris banners/DIMENSION TABLETTE/1024×768 px (en mode paysage)/samsung tablette.png',
+    portrait: '/elaris banners/DIMENSION TABLETTE/768×1024 px (en mode portrait)/samsung.png'
+  }
+}
+
 export default function ProductDetailsPage() {
   const params = useParams()
   const projectId = params?.id as string
-  const [backgroundImageExists, setBackgroundImageExists] = useState(false)
   
   const project = projectsData[projectId as keyof typeof projectsData]
-
-  // Check if background image exists
-  useEffect(() => {
-    const checkBackgroundImage = async () => {
-      try {
-        const response = await fetch(`/work/project%20${projectId}/background.png`)
-        setBackgroundImageExists(response.ok)
-      } catch {
-        setBackgroundImageExists(false)
-      }
-    }
-    
-    if (projectId) {
-      checkBackgroundImage()
-    }
-  }, [projectId])
 
   // Fallback if project not found
   if (!project) {
@@ -203,9 +214,10 @@ export default function ProductDetailsPage() {
     )
   }
 
-  const backgroundImage = backgroundImageExists 
-    ? `/work/project%20${projectId}/background.png`
-    : `/work/project${projectId}.png`
+  // Get responsive background images
+  const bannerImages = projectBannerImages[projectId as keyof typeof projectBannerImages]
+  const landscapeImage = bannerImages?.landscape || `/work/project${projectId}.png`
+  const portraitImage = bannerImages?.portrait || `/work/project${projectId}.png`
 
   return (
     <div className="min-h-screen bg-black text-white relative">
@@ -218,17 +230,31 @@ export default function ProductDetailsPage() {
       <main className="relative">
         {/* Hero Section with Background */}
         <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-          {/* Background Image */}
+          {/* Background Images - Responsive */}
           <div className="absolute inset-0 z-0">
-            <Image
-              src={backgroundImage}
-              alt={project.title}
-              fill
-              className="object-cover"
-              priority
-            />
-            {/* Gradient Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-r from-purple-900/80 via-purple-800/60 to-transparent"></div>
+            {/* Desktop/Tablet Landscape Image */}
+            <div className="hidden md:block absolute inset-0">
+              <Image
+                src={landscapeImage}
+                alt={project.title}
+                fill
+                className="object-cover"
+                priority
+              />
+            </div>
+            
+            {/* Mobile Portrait Image */}
+            <div className="block md:hidden absolute inset-0">
+              <Image
+                src={portraitImage}
+                alt={project.title}
+                fill
+                className="object-cover"
+                priority
+              />
+            </div>
+            
+            {/* Dark Overlay for text readability */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
           </div>
 
@@ -266,15 +292,6 @@ export default function ProductDetailsPage() {
             </div>
           </div>
 
-          {/* Bottom Scroll Indicator */}
-          <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-10">
-            <div className="flex flex-col items-center space-y-2 text-white/70">
-              <div className="w-px h-16 bg-white/30"></div>
-              <div className="text-xs font-body tracking-wider rotate-90 origin-center">
-                SCROLL
-              </div>
-            </div>
-          </div>
         </section>
 
         {/* Project Details Section */}
