@@ -171,7 +171,7 @@ export default function SocialMediaSection() {
               }}
             >
               <a 
-                href="https://www.linkedin.com/company/maisonelaris" 
+                href="https://linkedin.com/company/maison-elaris" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="w-12 h-12 bg-[#336b62] hover:bg-[#9b8075] rounded-full flex items-center justify-center transition-colors duration-300"
@@ -181,7 +181,7 @@ export default function SocialMediaSection() {
                 </svg>
               </a>
               <a 
-                href="https://www.instagram.com/maisonelaris" 
+                href="https://www.instagram.com/maiisonelaris/" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="w-12 h-12 bg-[#336b62] hover:bg-[#9b8075] rounded-full flex items-center justify-center transition-colors duration-300"

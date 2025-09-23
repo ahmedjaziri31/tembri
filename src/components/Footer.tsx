@@ -66,8 +66,8 @@ export default function Footer() {
 
           {/* Social Links */}
           <div className="flex space-x-6 sm:space-x-8 text-xs sm:text-sm">
-            <a href="https://www.linkedin.com/company/maisonelaris" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors duration-300">LinkedIn</a>
-            <a href="https://www.instagram.com/maisonelaris" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors duration-300">Instagram</a>
+            <a href="https://linkedin.com/company/maison-elaris" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors duration-300">LinkedIn</a>
+            <a href="https://www.instagram.com/maiisonelaris/" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors duration-300">Instagram</a>
             <a href="https://x.com/maisonelaris" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors duration-300">X / Twitter</a>
           </div>
         </div>

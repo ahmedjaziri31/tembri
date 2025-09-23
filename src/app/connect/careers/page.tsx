@@ -202,7 +202,7 @@ export default function CareersPage() {
 
                 <div className="pt-6">
                   <a 
-                    href="https://www.linkedin.com/company/maisonelaris" 
+                    href="https://linkedin.com/company/maison-elaris" 
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="inline-block bg-[#336b62] hover:bg-[#2a5751] text-white px-8 py-3 rounded-full transition-colors duration-300 font-body font-medium"

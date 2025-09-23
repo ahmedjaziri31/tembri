@@ -27,7 +27,7 @@ export default function FollowUsPage() {
               {/* Social Media Icons */}
               <div className="flex justify-center space-x-8 mb-8">
                 <a 
-                  href="https://www.linkedin.com/company/maisonelaris" 
+                  href="https://linkedin.com/company/maison-elaris" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="w-16 h-16 bg-[#336b62] hover:bg-[#9b8075] rounded-full flex items-center justify-center transition-colors duration-300 group"
@@ -37,7 +37,7 @@ export default function FollowUsPage() {
                   </svg>
                 </a>
                 <a 
-                  href="https://www.instagram.com/maisonelaris" 
+                  href="https://www.instagram.com/maiisonelaris/" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="w-16 h-16 bg-[#336b62] hover:bg-[#9b8075] rounded-full flex items-center justify-center transition-colors duration-300 group"

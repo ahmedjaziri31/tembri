@@ -1070,7 +1070,7 @@ export default function HomePage() {
                       </svg>
                     </a>
                     <a 
-                      href="https://www.instagram.com/maisonelaris" 
+                      href="https://www.instagram.com/maiisonelaris/" 
                       target="_blank" 
                       rel="noopener noreferrer"
                       className="w-10 h-10 sm:w-12 sm:h-12 bg-[#336b62] rounded-full flex items-center justify-center hover:bg-[#9b8075] transition-colors duration-300"
@@ -1080,7 +1080,7 @@ export default function HomePage() {
                       </svg>
                     </a>
                     <a 
-                      href="https://www.linkedin.com/company/maisonelaris" 
+                      href="https://linkedin.com/company/maison-elaris" 
                       target="_blank" 
                       rel="noopener noreferrer"
                       className="w-10 h-10 sm:w-12 sm:h-12 bg-[#336b62] rounded-full flex items-center justify-center hover:bg-[#9b8075] transition-colors duration-300"
