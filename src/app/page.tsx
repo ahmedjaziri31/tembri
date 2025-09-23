@@ -714,19 +714,19 @@ export default function HomePage() {
         </div>
       )}
 
-      {/* Header - Sticky/Fixed positioned */}
+      {/* Header - Absolute overlay at top of page */}
       <div 
-        className="fixed top-0 left-0 right-0 z-50"
+        className="absolute top-0 left-0 right-0 z-50 w-full"
         style={{ opacity: 0 }}
         id="stickyHeader"
       >
-      <Header />
-        </div>
+        <Header />
+      </div>
 
 
 
       {/* Main Content Area */}
-      <main className="relative z-20 flex items-center justify-center min-h-screen pt-20">
+      <main className="relative z-20 flex items-center justify-center min-h-screen">
         {/* Light Gradient Background Effect - Only in First Section */}
         <div 
           id="firstSectionGradient"

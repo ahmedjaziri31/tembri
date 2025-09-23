@@ -61,7 +61,7 @@ export default function Footer() {
         <div className="flex flex-col lg:flex-row justify-between items-center pt-8 sm:pt-12 border-t border-gray-700">
           {/* Copyright */}
           <div className="mb-4 sm:mb-6 lg:mb-0">
-            <p className="text-xs sm:text-sm text-gray-400">Maison Elaris@2025</p>
+            <p className="text-xs sm:text-sm text-gray-400">Tembri rights / 2025</p>
           </div>
 
           {/* Social Links */}
@@ -76,7 +76,7 @@ export default function Footer() {
       {/* Infinite Scroll Footer Image */}
       <div className="relative h-32 overflow-hidden bg-black">
         <div className="absolute inset-0 flex items-center">
-          <div className="flex animate-infinite-scroll gap-16">
+          <div className="flex animate-infinite-scroll">
             <Image
               src="/footer/footer.png"
               alt="Maison Elaris"

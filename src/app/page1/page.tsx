@@ -295,7 +295,7 @@ export default function Page1() {
 
         // Phase 5: Simple header fade in (faster)
         .to("#stickyHeader", {
-          opacity: 1,
+        opacity: 1,
           duration: 0.8,
           ease: "power2.out"
         }, "+=0.3") // Reduced delay from 0.5s to 0.3s
@@ -714,9 +714,9 @@ export default function Page1() {
         </div>
       )}
 
-      {/* Header - Sticky/Fixed positioned */}
+      {/* Header - Absolute overlay at top of page */}
       <div 
-        className="fixed top-0 left-0 right-0 z-50"
+        className="absolute top-0 left-0 right-0 z-50 w-full"
         style={{ opacity: 0 }}
         id="stickyHeader"
       >
@@ -726,7 +726,7 @@ export default function Page1() {
 
 
       {/* Main Content Area */}
-      <main className="relative z-20 flex items-center justify-center min-h-screen pt-20">
+      <main className="relative z-20 flex items-center justify-center min-h-screen">
         {/* Light Gradient Background Effect - Only in First Section */}
         <div 
           id="firstSectionGradient"
