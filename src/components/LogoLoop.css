@@ -10,7 +10,7 @@
 .logo-loop__track {
   display: flex;
   align-items: center;
-  gap: 6rem;
+  gap: 10rem;
   width: fit-content;
   animation: var(--scroll-direction, scroll-left) var(--scroll-speed, 50s) linear infinite;
   padding: 0 2rem;
@@ -67,7 +67,7 @@
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .logo-loop__track {
-    gap: 3rem;
+    gap: 5rem;
     padding: 0 1rem;
   }
   

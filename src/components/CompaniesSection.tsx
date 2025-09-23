@@ -22,7 +22,7 @@ const CompaniesSection = memo(function CompaniesSection() {
   // Memoize the logo elements to prevent unnecessary re-renders
   const logoElements = useMemo(() => {
     return companyLogos.map((logo, index) => (
-      <div key={index} className="flex-shrink-0 mx-8 lg:mx-12">
+      <div key={index} className="flex-shrink-0 mx-12 lg:mx-16">
         <Image 
           src={logo.src} 
           alt={logo.alt} 
