@@ -761,16 +761,16 @@ export default function Page1() {
               MEETS STORY.
             </h1>
             
-            {/* Case Study Button */}
+            {/* CTA Button */}
             <div className="mt-8 lg:mt-12">
-              <Link href="/work">
+              <Link href="/services">
                 <button 
                   ref={caseStudyButtonRef}
                   className="group bg-[#336b62] hover:bg-[#9b8075] text-white px-6 py-3 lg:px-8 lg:py-4 rounded-lg transition-all duration-300 font-body font-medium text-sm lg:text-base transform hover:scale-105 hover:shadow-2xl"
                   style={{ opacity: 0 }}
                 >
                   <span className="flex items-center gap-2">
-                    View Case Study
+                    Explore Our Services
                     <svg 
                       className="w-4 h-4 lg:w-5 lg:h-5 transition-transform duration-300 group-hover:translate-x-1" 
                       fill="none" 

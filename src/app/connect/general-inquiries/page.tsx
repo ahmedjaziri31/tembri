@@ -57,7 +57,7 @@ export default function GeneralInquiriesPage() {
             </p>
             
             {/* Back Button */}
-            <Link href="/contact">
+            <Link href="/connect">
               <button className="bg-[#336b62] hover:bg-[#2a5751] text-white px-8 py-3 rounded-full transition-colors duration-300 font-body font-medium mb-8">
                 Back To Contact
               </button>
