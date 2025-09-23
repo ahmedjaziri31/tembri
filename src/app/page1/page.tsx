@@ -16,6 +16,7 @@ interface Article {
   title: string
   category: string
   image?: string
+  featuredImage?: string
   type?: string
   slug?: string
   excerpt?: string
@@ -1250,7 +1251,7 @@ export default function Page1() {
                         <div key={article.id} className="relative bg-black/20 backdrop-blur-sm border border-white/10 rounded-2xl overflow-hidden shadow-2xl hover:scale-105 transition-transform duration-300">
                           <div className="relative h-48 lg:h-56">
                             <Image
-                              src={article.image || "/news/image.png"}
+                              src={article.image || article.featuredImage || "/news/image.png"}
                               alt={article.title}
                               fill
                               className="object-cover"

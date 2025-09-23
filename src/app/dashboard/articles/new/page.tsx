@@ -8,8 +8,9 @@ import { Input } from '../../../../components/ui/input'
 import { Label } from '../../../../components/ui/label'
 import { Textarea } from '../../../../components/ui/textarea'
 import { LoadingButton } from '../../../../components/ui/loading-button'
-import { ArrowLeft, Save, FileText, ChevronDown, AlertCircle, X } from 'lucide-react'
+import { ArrowLeft, Save, FileText, ChevronDown, AlertCircle, X, Upload, Image as ImageIcon } from 'lucide-react'
 import { articlesApi } from '../../../../lib/api'
+import Image from 'next/image'
 
 export default function NewArticlePage() {
   const router = useRouter()
@@ -25,11 +26,32 @@ export default function NewArticlePage() {
     status: 'draft' as 'draft' | 'published' | 'archived',
     visibility: 'public' as 'public' | 'private' | 'unlisted'
   })
+  const [imageFile, setImageFile] = useState<File | null>(null)
+  const [imagePreview, setImagePreview] = useState<string | null>(null)
 
   const calculateReadTime = (content: string) => {
     const wordsPerMinute = 200
     const words = content.trim().split(/\s+/).length
     return Math.max(1, Math.ceil(words / wordsPerMinute))
+  }
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (file) {
+      setImageFile(file)
+      
+      // Create preview URL
+      const reader = new FileReader()
+      reader.onload = (e) => {
+        setImagePreview(e.target?.result as string)
+      }
+      reader.readAsDataURL(file)
+    }
+  }
+
+  const removeImage = () => {
+    setImageFile(null)
+    setImagePreview(null)
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -38,6 +60,9 @@ export default function NewArticlePage() {
     setError(null)
 
     try {
+      // Handle image upload - use uploaded file as base64
+      const featuredImageUrl = imagePreview || null
+
       // Prepare article data
       const articleData = {
         title: formData.title,
@@ -46,6 +71,7 @@ export default function NewArticlePage() {
         shortDescription: formData.shortDescription,
         category: formData.category,
         tags: formData.tags.split(',').map(tag => tag.trim()).filter(tag => tag.length > 0),
+        featuredImage: featuredImageUrl,
         status: formData.status,
         visibility: formData.visibility,
         analytics: {
@@ -235,6 +261,56 @@ export default function NewArticlePage() {
                   <p className="text-sm text-gray-500 mt-1">
                     Separate tags with commas
                   </p>
+                </div>
+
+                {/* Featured Image Upload */}
+                <div>
+                  <Label htmlFor="featuredImage">Featured Image</Label>
+                  
+                  {/* File Upload */}
+                  <div className="mt-2">
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageChange}
+                      className="hidden"
+                      id="image-upload"
+                    />
+                    <label
+                      htmlFor="image-upload"
+                      className="flex items-center justify-center w-full h-32 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg cursor-pointer hover:border-gray-400 dark:hover:border-gray-500 transition-colors"
+                    >
+                      <div className="text-center">
+                        <Upload className="mx-auto h-8 w-8 text-gray-400 mb-2" />
+                        <p className="text-sm text-gray-500">Click to upload image</p>
+                        <p className="text-xs text-gray-400">PNG, JPG, GIF up to 10MB</p>
+                      </div>
+                    </label>
+                  </div>
+                  
+                  {/* Image Preview */}
+                  {imagePreview && (
+                    <div className="mt-3 relative">
+                      <div className="relative w-full h-40 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700">
+                        <Image
+                          src={imagePreview}
+                          alt="Featured image preview"
+                          fill
+                          className="object-cover"
+                        />
+                        <button
+                          type="button"
+                          onClick={removeImage}
+                          className="absolute top-2 right-2 bg-red-500 hover:bg-red-600 text-white p-1 rounded-full transition-colors"
+                        >
+                          <X className="w-4 h-4" />
+                        </button>
+                      </div>
+                      <p className="text-xs text-gray-500 mt-1">
+                        File: {imageFile?.name}
+                      </p>
+                    </div>
+                  )}
                 </div>
 
                 <div>
