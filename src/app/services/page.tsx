@@ -68,7 +68,7 @@ export default function ServicesPage() {
 
   // Text cycling data
   const textCycles = [
-    { top: "INTEGRATED", bottom: "SOLUTIONS" },
+    { top: "INTEGRATED", bottom: "MEDIA SOLUTIONS" },
     { top: "DATA-LED", bottom: "PERFORMANCE" },
     { top: "CREATIVE", bottom: "IMPACT" }
   ]
@@ -247,7 +247,14 @@ export default function ServicesPage() {
       const cardElements = cardRefs.current.filter(Boolean)
       const totalCards = cardElements.length
 
-      if (cardElements[0]) {
+      if (cardElements.length > 0 && totalCards > 1) {
+        // Kill any existing ScrollTriggers to prevent conflicts
+        ScrollTrigger.getAll().forEach(trigger => {
+          if (trigger.trigger === stickyContainerRef.current) {
+            trigger.kill()
+          }
+        })
+
         // Set initial positions - first card visible, others stacked below
         gsap.set(cardElements[0], { y: "0%", scale: 1, rotation: 0 })
 
@@ -257,23 +264,41 @@ export default function ServicesPage() {
           }
         }
 
-        // Create scroll timeline for sticky cards
+        // Calculate end value with more generous scroll distance
+        const endValue = Math.max(window.innerHeight * (totalCards - 1) * 1.2, window.innerHeight * 2)
+
+        // Create scroll timeline for sticky cards with improved settings
         const scrollTimeline = gsap.timeline({
           scrollTrigger: {
             trigger: stickyContainerRef.current,
             start: "top top",
-            end: `+=${window.innerHeight * (totalCards - 1)}`,
+            end: `+=${endValue}`,
             pin: true,
-            scrub: 0.5,
+            scrub: 1, // Slower scrub for better control
             pinSpacing: true,
+            anticipatePin: 1,
+            invalidateOnRefresh: true,
+            refreshPriority: -1,
+            onToggle: (self) => {
+              // Ensure animation works properly
+              if (self.isActive) {
+                console.log('Sticky animation activated')
+              }
+            },
+            onUpdate: (self) => {
+              // Ensure final state when animation completes
+              if (self.progress === 1) {
+                gsap.set(cardElements[totalCards - 1], { y: "0%", scale: 1, rotation: 0 })
+              }
+            }
           },
         })
 
-        // Animate each card transition
+        // Animate each card transition with improved timing
         for (let i = 0; i < totalCards - 1; i++) {
           const currentCard = cardElements[i]
           const nextCard = cardElements[i + 1]
-          const position = i
+          const position = i / (totalCards - 1) // Normalized position
 
           if (currentCard && nextCard) {
             // Current card scales down and rotates
@@ -282,8 +307,8 @@ export default function ServicesPage() {
               {
                 scale: 0.7,
                 rotation: 5,
-                duration: 1,
-                ease: "none",
+                duration: 1 / (totalCards - 1), // Proportional duration
+                ease: "power2.inOut",
               },
               position,
             )
@@ -293,13 +318,18 @@ export default function ServicesPage() {
               nextCard,
               {
                 y: "0%",
-                duration: 1,
-                ease: "none",
+                duration: 1 / (totalCards - 1), // Proportional duration
+                ease: "power2.inOut",
               },
               position,
             )
           }
         }
+
+        // Force a refresh after setup
+        setTimeout(() => {
+          ScrollTrigger.refresh()
+        }, 100)
       }
 
       // Choose image floating animation
@@ -313,6 +343,30 @@ export default function ServicesPage() {
           ease: "sine.inOut"
         })
       }
+    }
+
+    // Add window resize handler to refresh ScrollTrigger
+    const handleResize = () => {
+      ScrollTrigger.refresh()
+    }
+
+    window.addEventListener('resize', handleResize)
+
+    // Cleanup function
+    return () => {
+      // Remove resize listener
+      window.removeEventListener('resize', handleResize)
+      
+      // Kill all ScrollTriggers related to this component
+      ScrollTrigger.getAll().forEach(trigger => {
+        if (trigger.trigger === stickyContainerRef.current || 
+            trigger.trigger === whyChooseSectionRef.current) {
+          trigger.kill()
+        }
+      })
+      
+      // Kill any timeline animations
+      gsap.killTweensOf([chooseImageRef.current])
     }
 
   }, { dependencies: [expandedService] })
@@ -347,16 +401,16 @@ export default function ServicesPage() {
             <div className="mb-12">
               <h1 
                 ref={topTextRef}
-                className="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl 2xl:text-9xl font-heading font-bold leading-tight mb-4"
+                className="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl 2xl:text-9xl font-heading font-bold leading-none mb-0"
                 style={{ color: '#336b62' }}
               >
                 INTEGRATED
               </h1>
               <h2 
                 ref={bottomTextRef}
-                className="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl 2xl:text-9xl font-heading font-bold leading-tight text-white"
+                className="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl 2xl:text-9xl font-heading font-bold leading-none text-white"
               >
-                SOLUTIONS
+                MEDIA SOLUTIONS
               </h2>
             </div>
 
@@ -405,7 +459,7 @@ export default function ServicesPage() {
                   {/* Text Content */}
                   <div className="text-center lg:text-left">
                     <p className="text-gray-300 text-lg lg:text-xl font-body leading-relaxed">
-                      At Maison Elaris, we believe modern marketing requires more than just campaigns, it demands convergence. We operate at the intersection of media, creativity, and data, helping brands connect with audiences in meaningful, measurable, and intelligently orchestrated ways.
+                      At Maison Elaris, marketing is a connected system. We unite media, creative, and data to design work that meets people where they are—across markets—delivering ideas that are distinctive, measurable, and built for compounding growth at scale with rigor, accountability.
                     </p>
                   </div>
                 </div>
@@ -683,7 +737,7 @@ export default function ServicesPage() {
                       {/* Content */}
                       <div className="order-1 lg:order-2">
                         <h4 className="text-[#336b62] text-xl lg:text-2xl font-heading font-bold mb-6">
-                          Your Brand's Sharpest Tool Is Knowing Who, When, And Why.
+                           Your Brand&apos;s Sharpest Tool Is Knowing Who, When, And Why.
                         </h4>
                         
                         <p className="text-gray-300 text-base lg:text-lg font-body leading-relaxed mb-6">
@@ -930,7 +984,7 @@ export default function ServicesPage() {
         </section>
 
         {/* Why Clients Choose Section */}
-        <section ref={whyChooseSectionRef} className="relative bg-black">
+        <section ref={whyChooseSectionRef} className="relative bg-black min-h-screen">
           {/* Section Title */}
           <div className="text-center py-20">
             <div className="max-w-7xl mx-auto px-6">
@@ -999,7 +1053,7 @@ export default function ServicesPage() {
           </div>
 
           {/* Book IOI Now Button */}
-          <div className="text-center py-20">
+          <div className="text-center py-8 -mt-14">
             <div className="max-w-7xl mx-auto px-6">
               <Link href="/connect">
                 <button className="bg-[#336b62] hover:bg-[#9b8075] text-white px-12 py-4 rounded-full transition-all duration-300 font-body font-medium text-lg transform hover:scale-105 hover:shadow-2xl">

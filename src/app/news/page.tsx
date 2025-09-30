@@ -28,7 +28,7 @@ export default function NewsPage() {
             </div>
 
             {/* Featured Article Section */}
-            <div className="max-w-5xl mx-auto">
+            <div className="w-[90%] mx-auto">
               <div className="relative w-full h-[500px] lg:h-[600px] overflow-hidden rounded-3xl">
                 {/* Full Width Background Image */}
                 <Image

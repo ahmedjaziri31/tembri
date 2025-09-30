@@ -76,34 +76,48 @@ export default function Footer() {
       {/* Infinite Scroll Footer Image */}
       <div className="relative h-32 overflow-hidden bg-black">
         <div className="absolute inset-0 flex items-center">
-          <div className="flex animate-infinite-scroll">
+          <div className="flex animate-infinite-scroll gap-12 lg:gap-16">
             <Image
               src="/footer/footer.png"
               alt="Maison Elaris"
               width={800}
               height={128}
-              className="h-full object-contain"
+              className="h-full object-contain flex-shrink-0"
             />
             <Image
               src="/footer/footer.png"
               alt="Maison Elaris"
               width={800}
               height={128}
-              className="h-full object-contain"
+              className="h-full object-contain flex-shrink-0"
             />
             <Image
               src="/footer/footer.png"
               alt="Maison Elaris"
               width={800}
               height={128}
-              className="h-full object-contain"
+              className="h-full object-contain flex-shrink-0"
             />
             <Image
               src="/footer/footer.png"
               alt="Maison Elaris"
               width={800}
               height={128}
-              className="h-full object-contain"
+              className="h-full object-contain flex-shrink-0"
+            />
+            <Image
+              src="/footer/footer.png"
+              alt="Maison Elaris"
+              width={800}
+              height={128}
+              className="h-full object-contain flex-shrink-0"
+            />
+            <Image
+              src="/footer/footer.png"
+              alt="Maison Elaris"
+              width={800}
+              height={128}
+              className="h-full object-contain flex-shrink-0"
             />
           </div>
         </div>

@@ -1306,16 +1306,78 @@ export default function Page1() {
               {/* Partners Section */}
               <section className="section bg-black py-16 lg:py-24 relative z-20">
                 <div className="max-w-7xl mx-auto px-6 lg:px-8">
-                  <div className="flex items-center justify-center">
-                    <div className="w-full max-w-4xl">
-                      <Image
-                        src="/partners/partners.png"
-                        alt="Our Partners"
-                        width={1200}
-                        height={400}
-                        className="w-full h-auto object-contain opacity-80 hover:opacity-100 transition-opacity duration-300"
-                        priority
-                      />
+                  {/* Section Header */}
+                  <div className="text-center mb-12">
+                    <h2 className="text-[#f5e6d3] text-3xl lg:text-4xl xl:text-5xl font-heading font-bold leading-tight mb-6">
+                      OUR VERIFIED PARTNERS
+                    </h2>
+                    <p className="text-gray-300 text-lg lg:text-xl font-body font-light max-w-4xl mx-auto leading-relaxed">
+                      Trusted partnerships with industry leaders to deliver exceptional results
+                    </p>
+                  </div>
+
+                  {/* Partner Logos - Flowing Layout */}
+                  <div className="flex flex-wrap items-center justify-center gap-6 lg:gap-12 max-w-6xl mx-auto">
+                    {/* Top Row */}
+                    <div className="flex flex-wrap items-center justify-center gap-6 lg:gap-8 w-full">
+                      <div className="flex items-center justify-center">
+                        <Image
+                          src="/Partner Logos/Meta Business Partner Logo.png"
+                          alt="Meta Business Partner"
+                          width={280}
+                          height={90}
+                          className="w-auto h-16 lg:h-20 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
+                        />
+                      </div>
+                      <div className="flex items-center justify-center">
+                        <Image
+                          src="/Partner Logos/Tiktok for business logo.png"
+                          alt="TikTok Marketing Partner"
+                          width={280}
+                          height={90}
+                          className="w-auto h-16 lg:h-20 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
+                        />
+                      </div>
+                      <div className="flex items-center justify-center">
+                        <Image
+                          src="/Partner Logos/Tiktok Creative Partner logo.webp"
+                          alt="TikTok Creative Partner"
+                          width={280}
+                          height={90}
+                          className="w-auto h-16 lg:h-20 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
+                        />
+                      </div>
+                      <div className="flex items-center justify-center">
+                        <Image
+                          src="/Partner Logos/Amazon - Verified partner badge.png"
+                          alt="Amazon Ads Verified Partner"
+                          width={200}
+                          height={80}
+                          className="w-auto h-14 lg:h-16 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
+                        />
+                      </div>
+                    </div>
+                    
+                    {/* Bottom Row */}
+                    <div className="flex flex-wrap items-center justify-center gap-6 lg:gap-8 w-full mt-4">
+                      <div className="flex items-center justify-center">
+                        <Image
+                          src="/Partner Logos/Google Marketing Platfrom logo.png"
+                          alt="Google Marketing Platform Certified"
+                          width={280}
+                          height={70}
+                          className="w-auto h-14 lg:h-16 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
+                        />
+                      </div>
+                      <div className="flex items-center justify-center">
+                        <Image
+                          src="/Partner Logos/Google Cloud.png"
+                          alt="Google Partner"
+                          width={220}
+                          height={70}
+                          className="w-auto h-14 lg:h-16 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>

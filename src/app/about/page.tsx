@@ -28,18 +28,29 @@ export default function AboutPage() {
   const mindsUniteImageRef = useRef<HTMLDivElement>(null)
   const mindsUniteTextRef = useRef<HTMLDivElement>(null)
   
-  // Refs for designing impact section
+  // Refs for three-column impact section
+  const threeColumnSectionRef = useRef<HTMLDivElement>(null)
+  
+  // Refs for designing impact column
   const designingTextRef = useRef<HTMLDivElement>(null)
   const impactTextRef = useRef<HTMLDivElement>(null)
-  const designingImpactSectionRef = useRef<HTMLElement>(null)
   const designingImpactDescRef = useRef<HTMLDivElement>(null)
+  
+  // Refs for powered by creativity column
+  const poweredTextRef = useRef<HTMLDivElement>(null)
+  const creativityTextRef = useRef<HTMLDivElement>(null)
+  const creativityDescRef = useRef<HTMLDivElement>(null)
+  
+  // Refs for craft at every level column
+  const craftTextRef = useRef<HTMLDivElement>(null)
+  const levelTextRef = useRef<HTMLDivElement>(null)
+  const craftDescRef = useRef<HTMLDivElement>(null)
   
   // Refs for story section
   const storyLeftTextRef = useRef<HTMLDivElement>(null)
   const storyRightTextRef = useRef<HTMLDivElement>(null)
   const storyImage1Ref = useRef<HTMLDivElement>(null)
   const storyImage2Ref = useRef<HTMLDivElement>(null)
-  const fleshArrowRef = useRef<HTMLDivElement>(null)
   
   // Refs for unlocking growth section
   const unlockingTitleRef = useRef<HTMLDivElement>(null)
@@ -276,62 +287,166 @@ export default function AboutPage() {
     }
   }, { dependencies: [] })
 
-  // Horizontal scroll animation for designing impact text
+  // GSAP scroll animations for full-screen impact sections
   useGSAP(() => {
-    if (designingTextRef.current && impactTextRef.current && designingImpactSectionRef.current) {
+    if (designingTextRef.current && impactTextRef.current && threeColumnSectionRef.current) {
       gsap.registerPlugin(ScrollTrigger)
 
-      // Set initial positions
-      gsap.set(designingTextRef.current, { x: -300 })
-      gsap.set(impactTextRef.current, { x: 300 })
+      // Full-width animation distance (matching "FROM EUROPE/MIDDLE EAST/TO ASIA" section)
+      const isMobile = window.innerWidth < 768
+      const isTablet = window.innerWidth >= 768 && window.innerWidth < 1024
+      const isDesktop = window.innerWidth >= 1024 && window.innerWidth < 1440
+      const distance = isMobile ? 300 : isTablet ? 350 : isDesktop ? 400 : 500
 
-      // DESIGNING - Left to Right
-      gsap.to(designingTextRef.current, {
-        x: 300,
-        ease: "none",
-        scrollTrigger: {
-          trigger: designingImpactSectionRef.current,
-          start: "top bottom",
-          end: "bottom top",
-          scrub: 1
+      // Get all sections within the container
+      const sections = threeColumnSectionRef.current.querySelectorAll('section')
+      
+      // Section 1: DESIGNING IMPACT
+      if (sections[0] && designingTextRef.current && impactTextRef.current) {
+        // Set initial positions
+        gsap.set(designingTextRef.current, { x: -distance })
+        gsap.set(impactTextRef.current, { x: distance })
+
+        // DESIGNING - Left to Right
+        gsap.to(designingTextRef.current, {
+          x: distance,
+          ease: "none",
+          scrollTrigger: {
+            trigger: sections[0],
+            start: "top bottom",
+            end: "bottom top",
+            scrub: 1
+          }
+        })
+
+        // IMPACT - Right to Left
+        gsap.to(impactTextRef.current, {
+          x: -distance,
+          ease: "none",
+          scrollTrigger: {
+            trigger: sections[0],
+            start: "top bottom",
+            end: "bottom top",
+            scrub: 1
+          }
+        })
+
+        // Animate description
+        if (designingImpactDescRef.current) {
+          gsap.set(designingImpactDescRef.current, { opacity: 0, y: 50 })
+          gsap.to(designingImpactDescRef.current, {
+            opacity: 1,
+            y: 0,
+            duration: 1,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: sections[0],
+              start: "top 80%",
+              toggleActions: "play none none reverse"
+            }
+          })
         }
-      })
+      }
 
-      // IMPACT - Right to Left
-      gsap.to(impactTextRef.current, {
-        x: -300,
-        ease: "none",
-        scrollTrigger: {
-          trigger: designingImpactSectionRef.current,
-          start: "top bottom",
-          end: "bottom top",
-          scrub: 1
+      // Section 2: POWERED BY CREATIVITY
+      if (sections[1] && poweredTextRef.current && creativityTextRef.current) {
+        // Set initial positions
+        gsap.set(poweredTextRef.current, { x: -distance })
+        gsap.set(creativityTextRef.current, { x: distance })
+
+        // POWERED BY - Left to Right
+        gsap.to(poweredTextRef.current, {
+          x: distance,
+          ease: "none",
+          scrollTrigger: {
+            trigger: sections[1],
+            start: "top bottom",
+            end: "bottom top",
+            scrub: 1
+          }
+        })
+
+        // CREATIVITY - Right to Left
+        gsap.to(creativityTextRef.current, {
+          x: -distance,
+          ease: "none",
+          scrollTrigger: {
+            trigger: sections[1],
+            start: "top bottom",
+            end: "bottom top",
+            scrub: 1
+          }
+        })
+
+        // Animate description
+        if (creativityDescRef.current) {
+          gsap.set(creativityDescRef.current, { opacity: 0, y: 50 })
+          gsap.to(creativityDescRef.current, {
+            opacity: 1,
+            y: 0,
+            duration: 1,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: sections[1],
+              start: "top 80%",
+              toggleActions: "play none none reverse"
+            }
+          })
         }
-      })
+      }
 
-      // Animate description text when scrolling into view
-      gsap.set(designingImpactDescRef.current, {
-        opacity: 0,
-        y: 30
-      })
+      // Section 3: CRAFT AT EVERY LEVEL
+      if (sections[2] && craftTextRef.current && levelTextRef.current) {
+        // Set initial positions
+        gsap.set(craftTextRef.current, { x: -distance })
+        gsap.set(levelTextRef.current, { x: distance })
 
-      gsap.to(designingImpactDescRef.current, {
-        opacity: 1,
-        y: 0,
-        duration: 1,
-        ease: "power2.out",
-        scrollTrigger: {
-          trigger: designingImpactDescRef.current,
-          start: "top 80%",
-          toggleActions: "play none none reverse"
+        // CRAFT AT - Left to Right
+        gsap.to(craftTextRef.current, {
+          x: distance,
+          ease: "none",
+          scrollTrigger: {
+            trigger: sections[2],
+            start: "top bottom",
+            end: "bottom top",
+            scrub: 1
+          }
+        })
+
+        // EVERY LEVEL - Right to Left
+        gsap.to(levelTextRef.current, {
+          x: -distance,
+          ease: "none",
+          scrollTrigger: {
+            trigger: sections[2],
+            start: "top bottom",
+            end: "bottom top",
+            scrub: 1
+          }
+        })
+
+        // Animate description
+        if (craftDescRef.current) {
+          gsap.set(craftDescRef.current, { opacity: 0, y: 50 })
+          gsap.to(craftDescRef.current, {
+            opacity: 1,
+            y: 0,
+            duration: 1,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: sections[2],
+              start: "top 80%",
+              toggleActions: "play none none reverse"
+            }
+          })
         }
-      })
+      }
     }
   }, { dependencies: [] })
 
   // Animation for Story section
   useGSAP(() => {
-    if (storyLeftTextRef.current && storyRightTextRef.current && storyImage1Ref.current && storyImage2Ref.current && fleshArrowRef.current) {
+    if (storyLeftTextRef.current && storyRightTextRef.current && storyImage1Ref.current && storyImage2Ref.current) {
       gsap.registerPlugin(ScrollTrigger)
 
       // Set initial states
@@ -346,10 +461,6 @@ export default function AboutPage() {
         y: 20
       })
 
-      gsap.set(fleshArrowRef.current, {
-        opacity: 0,
-        scale: 0.8
-      })
 
       // Animate elements when scrolling into view
       const tl = gsap.timeline({
@@ -373,12 +484,6 @@ export default function AboutPage() {
         duration: 1,
         ease: "back.out(1.7)"
       }, "-=0.5")
-      .to(fleshArrowRef.current, {
-        opacity: 1,
-        scale: 1,
-        duration: 0.8,
-        ease: "power2.out"
-      }, "-=0.3")
       .to(storyImage2Ref.current, {
         opacity: 1,
         scale: 1,
@@ -499,7 +604,7 @@ export default function AboutPage() {
             {/* Description Text */}
             <div ref={unlockingDescRef} className="max-w-4xl mx-auto">
               <p className="text-gray-300 text-lg lg:text-xl xl:text-2xl font-body leading-relaxed">
-                In today&apos;s world, clients are desperate for growth. But the old levers of generating growth — endless ads, generic campaigns, and one-size-fits-all strategies, aren&apos;t working anymore.
+                Business Growth is under pressure. Signal loss, walled-off gardens and clutter make attention scarce; spray-and-pray no longer works. Brands need precision, speed and ideas that travel globally.
               </p>
             </div>
           </div>
@@ -514,7 +619,7 @@ export default function AboutPage() {
               {/* Left Text */}
               <div ref={storyLeftTextRef} className="lg:pr-8">
                 <p className="text-white text-lg lg:text-xl xl:text-2xl font-body leading-relaxed">
-                  We were born from this very frustration. We saw brands pushing harder, spending more, yet struggling to truly connect with the people who matter most: their audience. So, we set out to build something different.
+                  Maison Elaris was created to answer that reality. We unite strategy, creativity, and data to close gaps between spend and impact. With multi-disciplinary talent, we design work to reach people and move business.
         </p>
       </div>
 
@@ -548,58 +653,113 @@ export default function AboutPage() {
               {/* Right Text */}
               <div ref={storyRightTextRef} className="lg:pl-8 order-1 lg:order-2">
                 <p className="text-white text-lg lg:text-xl xl:text-2xl font-body leading-relaxed">
-                  At our core, we believe{' '}
-                  <span className="text-[#336b62] font-bold text-2xl lg:text-3xl xl:text-4xl">GROWTH</span>{' '}
-                  is no longer about shouting louder, but about telling{' '}
-                  <span className="text-[#336b62] font-bold text-2xl lg:text-3xl xl:text-4xl">STORIES</span>{' '}
-                  that resonate, creating experiences that matter, and building strategies that inspire action.
+                  Growth is earned, not shouted. We fuse stories with product truth, service design and media that scale. Craft moves fast, but human taste ensures real relevance and results and fairness.
                 </p>
               </div>
             </div>
 
-            {/* Curved Arrow - Flesh Image - Between the two rows */}
-            <div ref={fleshArrowRef} className="absolute top-1/2 left-1/2 transform -translate-x-1/2 translate-y-12 z-10 pointer-events-none">
-                <Image
-                src="/about/flesh.png"
-                alt="Connection arrow"
-                width={200}
-                height={150}
-                className="w-32 lg:w-48 h-auto object-contain opacity-80"
-              />
-            </div>
           </div>
         </section>
 
-        {/* Designing Impact Section */}
-        <section ref={designingImpactSectionRef} className="relative py-20 bg-black overflow-hidden w-full">
-          <div className="w-full">
-            {/* DESIGNING - Left to Right */}
-            <div className="relative mb-6 overflow-hidden w-full">
-              <div ref={designingTextRef} className="whitespace-nowrap w-full">
-                <span className="text-8xl lg:text-9xl xl:text-[12rem] font-heading font-bold text-white block w-full text-center">
-                  DESIGNING
-                    </span>
+        {/* Full Screen Impact Sections */}
+        <div ref={threeColumnSectionRef} className="relative">
+          {/* Section 1: DESIGNING IMPACT */}
+          <section className="relative min-h-screen bg-black overflow-hidden w-full flex items-center justify-center py-16 sm:py-20">
+            <div className="w-full">
+              {/* DESIGNING - Left to Right */}
+              <div className="relative mb-6 overflow-hidden w-full">
+                <div ref={designingTextRef} className="whitespace-nowrap w-full">
+                  <span className="text-8xl lg:text-9xl xl:text-[12rem] font-heading font-bold text-white block w-full text-center">
+                    DESIGNING
+                  </span>
+                </div>
               </div>
-            </div>
-
-            {/* IMPACT - Right to Left */}
-            <div className="relative mb-12 overflow-hidden w-full">
-              <div ref={impactTextRef} className="whitespace-nowrap w-full">
-                <span className="text-8xl lg:text-9xl xl:text-[12rem] font-heading font-bold text-transparent stroke-2 stroke-[#336b62] block w-full text-center"
-                      style={{ WebkitTextStroke: '3px #336b62', color: 'transparent' }}>
-                  IMPACT
-                    </span>
+              
+              {/* IMPACT - Right to Left */}
+              <div className="relative mb-12 overflow-hidden w-full">
+                <div ref={impactTextRef} className="whitespace-nowrap w-full">
+                  <span className="text-8xl lg:text-9xl xl:text-[12rem] font-heading font-bold text-transparent stroke-2 stroke-[#336b62] block w-full text-center"
+                        style={{ WebkitTextStroke: '3px #336b62', color: 'transparent' }}>
+                    IMPACT
+                  </span>
+                </div>
               </div>
-            </div>
-
-            {/* Description Text */}
-            <div ref={designingImpactDescRef} className="max-w-4xl mx-auto px-6 text-center">
-              <p className="text-gray-300 text-lg lg:text-xl xl:text-2xl font-body leading-relaxed">
-                We don&apos;t just market, we craft narratives. We don&apos;t just design, we create impact. And we don&apos;t just chase growth, we help our clients grow in ways that are meaningful, sustainable, and unforgettable.
+              
+              {/* Description Text */}
+              <div ref={designingImpactDescRef} className="text-center max-w-4xl mx-auto mt-8 sm:mt-12 px-4 sm:px-6 lg:px-8">
+                <p className="text-gray-300 text-base sm:text-lg md:text-xl lg:text-2xl font-body leading-relaxed">
+                  We don&apos;t just market; we engineer demand. We don&apos;t design; we build systems where ideas data and media compound. Tools assist; humans own judgment—so growth is brand-safe, measurable and built to last.
                 </p>
               </div>
-          </div>
-        </section>
+            </div>
+          </section>
+
+          {/* Section 2: POWERED BY CREATIVITY */}
+          <section className="relative min-h-screen bg-black overflow-hidden w-full flex items-center justify-center py-16 sm:py-20">
+            <div className="w-full">
+              {/* POWERED BY - Left to Right */}
+              <div className="relative mb-6 overflow-hidden w-full">
+                <div ref={poweredTextRef} className="whitespace-nowrap w-full">
+                  <span className="text-8xl lg:text-9xl xl:text-[12rem] font-heading font-bold text-white block w-full text-center">
+                    POWERED BY
+                  </span>
+                </div>
+              </div>
+              
+              {/* CREATIVITY - Right to Left */}
+              <div className="relative mb-12 overflow-hidden w-full">
+                <div ref={creativityTextRef} className="whitespace-nowrap w-full">
+                  <span className="text-8xl lg:text-9xl xl:text-[12rem] font-heading font-bold text-transparent stroke-2 stroke-[#336b62] block w-full text-center"
+                        style={{ WebkitTextStroke: '3px #336b62', color: 'transparent' }}>
+                    CREATIVITY
+                  </span>
+                </div>
+              </div>
+              
+              {/* Description Text */}
+              <div ref={creativityDescRef} className="text-center max-w-4xl mx-auto mt-8 sm:mt-12 px-4 sm:px-6 lg:px-8">
+                <p className="text-gray-300 text-base sm:text-lg md:text-xl lg:text-2xl font-body leading-relaxed">
+                  A team of creators, strategists, and visionaries who believe 
+                  the future of growth lies in authenticity, creativity, 
+                  and connection.
+                </p>
+              </div>
+            </div>
+          </section>
+
+          {/* Section 3: CRAFT AT EVERY LEVEL */}
+          <section className="relative min-h-screen bg-black overflow-hidden w-full flex items-center justify-center py-16 sm:py-20">
+            <div className="w-full">
+              {/* CRAFT AT - Left to Right */}
+              <div className="relative mb-6 overflow-hidden w-full">
+                <div ref={craftTextRef} className="whitespace-nowrap w-full">
+                  <span className="text-8xl lg:text-9xl xl:text-[12rem] font-heading font-bold text-white block w-full text-center">
+                    CRAFT AT
+                  </span>
+                </div>
+              </div>
+              
+              {/* EVERY LEVEL - Right to Left */}
+              <div className="relative mb-12 overflow-hidden w-full">
+                <div ref={levelTextRef} className="whitespace-nowrap w-full">
+                  <span className="text-8xl lg:text-9xl xl:text-[12rem] font-heading font-bold text-transparent stroke-2 stroke-[#336b62] block w-full text-center"
+                        style={{ WebkitTextStroke: '3px #336b62', color: 'transparent' }}>
+                    EVERY LEVEL
+                  </span>
+                </div>
+              </div>
+              
+              {/* Description Text */}
+              <div ref={craftDescRef} className="text-center max-w-4xl mx-auto mt-8 sm:mt-12 px-4 sm:px-6 lg:px-8">
+                <p className="text-gray-300 text-base sm:text-lg md:text-xl lg:text-2xl font-body leading-relaxed">
+                  We build with our clients, not just for them, sharing knowledge, 
+                  staying transparent, and holding ourselves accountable every 
+                  step of the way.
+                </p>
+              </div>
+            </div>
+          </section>
+        </div>
 
         {/* Where Minds Unite Section */}
         <section className="relative px-6 lg:px-8 overflow-hidden py-16 lg:py-20">
@@ -619,7 +779,7 @@ export default function AboutPage() {
             {/* Where Minds Unite Text - Animated on scroll */}
             <div ref={mindsUniteTextRef} className="max-w-4xl mx-auto">
               <p className="text-gray-300 text-lg lg:text-xl xl:text-2xl font-body leading-relaxed">
-                At Maison Elaris, we believe brilliant work happens when diverse minds unite around a shared purpose. That&apos;s why we&apos;ve built a borderless collective, a team without boundaries,
+                At Maison Elaris, the best ideas win. A borderless collective—strategy, creative, tech &amp; analytics as one team. Diverse minds, purpose, and standards; no boundaries, only outcomes.
               </p>
             </div>
           </div>
@@ -702,9 +862,7 @@ export default function AboutPage() {
             {/* Planet Text - Animated on scroll */}
             <div ref={planetTextRef} className="max-w-4xl mx-auto">
               <p className="text-gray-300 text-lg lg:text-xl font-body leading-relaxed">
-                Our presence keeps us close to culture, talent, and consumers. 
-                Some day&apos;s it&apos;s a strategy sprint in Amsterdam, other days a creative review across 
-                time zones, but always with the same spirit: agile, collaborative, and precise.
+                Presence matters. We work where culture moves—Paris, London, Dubai, Singapore, and beyond—so insight, and execution stay close to people. One day a strategy sprint; the next, a cross-timezone review. Agile, collaborative, precise.
         </p>
       </div>
           </div>
@@ -728,18 +886,80 @@ export default function AboutPage() {
         </section>
 
         {/* Partners Section */}
-        <section className="bg-black py-8 lg:py-12 relative z-10">
+        <section className="bg-black py-12 lg:py-16 relative z-10">
           <div className="max-w-7xl mx-auto px-6 lg:px-8">
-            <div className="flex items-center justify-center">
-              <div className="w-full max-w-4xl">
-                <Image
-                  src="/partners/partners.png"
-                  alt="Our Partners"
-                  width={1200}
-                  height={400}
-                  className="w-full h-auto object-contain opacity-80 hover:opacity-100 transition-opacity duration-300"
-                  priority
-                />
+            {/* Section Header */}
+            <div className="text-center mb-12">
+              <h2 className="text-[#f5e6d3] text-3xl lg:text-4xl xl:text-5xl font-heading font-bold leading-tight mb-6">
+                OUR VERIFIED PARTNERS
+              </h2>
+              <p className="text-gray-300 text-lg lg:text-xl font-body font-light max-w-4xl mx-auto leading-relaxed">
+                Trusted partnerships with industry leaders to deliver exceptional results
+              </p>
+            </div>
+
+            {/* Partner Logos - Flowing Layout */}
+            <div className="flex flex-wrap items-center justify-center gap-6 lg:gap-12 max-w-6xl mx-auto">
+              {/* Top Row */}
+              <div className="flex flex-wrap items-center justify-center gap-6 lg:gap-8 w-full">
+                <div className="flex items-center justify-center">
+                  <Image
+                    src="/Partner Logos/Meta Business Partner Logo.png"
+                    alt="Meta Business Partner"
+                    width={280}
+                    height={90}
+                    className="w-auto h-16 lg:h-20 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
+                  />
+                </div>
+                <div className="flex items-center justify-center">
+                  <Image
+                    src="/Partner Logos/Tiktok for business logo.png"
+                    alt="TikTok Marketing Partner"
+                    width={280}
+                    height={90}
+                    className="w-auto h-16 lg:h-20 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
+                  />
+                </div>
+                <div className="flex items-center justify-center">
+                  <Image
+                    src="/Partner Logos/Tiktok Creative Partner logo.webp"
+                    alt="TikTok Creative Partner"
+                    width={280}
+                    height={90}
+                    className="w-auto h-16 lg:h-20 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
+                  />
+                </div>
+                <div className="flex items-center justify-center">
+                  <Image
+                    src="/Partner Logos/Amazon - Verified partner badge.png"
+                    alt="Amazon Ads Verified Partner"
+                    width={200}
+                    height={80}
+                    className="w-auto h-14 lg:h-16 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
+                  />
+                </div>
+              </div>
+              
+              {/* Bottom Row */}
+              <div className="flex flex-wrap items-center justify-center gap-6 lg:gap-8 w-full mt-4">
+                <div className="flex items-center justify-center">
+                  <Image
+                    src="/Partner Logos/Google Marketing Platfrom logo.png"
+                    alt="Google Marketing Platform Certified"
+                    width={280}
+                    height={70}
+                    className="w-auto h-14 lg:h-16 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
+                  />
+                </div>
+                <div className="flex items-center justify-center">
+                  <Image
+                    src="/Partner Logos/Google Cloud.png"
+                    alt="Google Partner"
+                    width={220}
+                    height={70}
+                    className="w-auto h-14 lg:h-16 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
+                  />
+                </div>
               </div>
             </div>
           </div>
