@@ -533,8 +533,8 @@ export default function ServicesPage() {
                   <div className="max-w-6xl mx-auto px-6 py-8 lg:py-12">
                     <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
                       
-                      {/* Side Card Image */}
-                      <div className="flex justify-center lg:justify-start order-2 lg:order-1">
+                      {/* Side Card Image - Hidden on mobile */}
+                      <div className="hidden lg:flex justify-center lg:justify-start order-2 lg:order-1">
                         <div className="relative w-full max-w-xs">
                           <Image
                             src="/card.png"
@@ -625,8 +625,8 @@ export default function ServicesPage() {
                   <div className="max-w-6xl mx-auto px-6 py-8 lg:py-12">
                     <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
                       
-                      {/* Side Card Image */}
-                      <div className="flex justify-center lg:justify-start order-2 lg:order-1">
+                      {/* Side Card Image - Hidden on mobile */}
+                      <div className="hidden lg:flex justify-center lg:justify-start order-2 lg:order-1">
                         <div className="relative w-full max-w-xs">
                           <Image
                             src="/card.png"
@@ -721,8 +721,8 @@ export default function ServicesPage() {
                   <div className="max-w-6xl mx-auto px-6 py-8 lg:py-12">
                     <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
                       
-                      {/* Side Card Image */}
-                      <div className="flex justify-center lg:justify-start order-2 lg:order-1">
+                      {/* Side Card Image - Hidden on mobile */}
+                      <div className="hidden lg:flex justify-center lg:justify-start order-2 lg:order-1">
                         <div className="relative w-full max-w-xs">
                           <Image
                             src="/card.png"
@@ -813,8 +813,8 @@ export default function ServicesPage() {
                   <div className="max-w-6xl mx-auto px-6 py-8 lg:py-12">
                     <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
                       
-                      {/* Side Card Image */}
-                      <div className="flex justify-center lg:justify-start order-2 lg:order-1">
+                      {/* Side Card Image - Hidden on mobile */}
+                      <div className="hidden lg:flex justify-center lg:justify-start order-2 lg:order-1">
                         <div className="relative w-full max-w-xs">
                           <Image
                             src="/card.png"
@@ -909,8 +909,8 @@ export default function ServicesPage() {
                   <div className="max-w-6xl mx-auto px-6 py-8 lg:py-12">
                     <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
                       
-                      {/* Side Card Image */}
-                      <div className="flex justify-center lg:justify-start order-2 lg:order-1">
+                      {/* Side Card Image - Hidden on mobile */}
+                      <div className="hidden lg:flex justify-center lg:justify-start order-2 lg:order-1">
                         <div className="relative w-full max-w-xs">
                           <Image
                             src="/card.png"

@@ -1051,10 +1051,10 @@ export default function HomePage() {
       </section>
 
       {/* Services Section */}
-      <section ref={servicesSectionRef} className="relative z-20 py-20 lg:py-32 bg-black">
+      <section ref={servicesSectionRef} className="relative z-20 py-12 md:py-16 lg:py-32 bg-black">
         <div className="max-w-7xl mx-auto px-6 text-center">
           {/* Section Header */}
-          <div className="mb-16 lg:mb-20">
+          <div className="mb-10 md:mb-14 lg:mb-20">
             <p ref={servicesSubtitleRef} className="text-[#336b62] text-lg lg:text-xl font-heading font-medium tracking-wider mb-6 uppercase">
               Services
             </p>
@@ -1126,17 +1126,17 @@ export default function HomePage() {
       </section>
 
               {/* Social Media Section */}
-              <section ref={socialSectionRef} className="relative z-20 min-h-screen bg-black overflow-hidden flex items-center justify-center px-4 sm:px-6">
+              <section ref={socialSectionRef} className="relative z-20 py-16 md:py-20 lg:min-h-screen bg-black overflow-hidden flex items-center justify-center px-4 sm:px-6">
                 {/* Central Content */}
                 <div className="relative z-10 text-center max-w-4xl mx-auto">
                   <div className="mb-6 sm:mb-8">
-                    <p className="text-[#336b62] text-sm sm:text-base lg:text-xl font-heading font-medium tracking-wider mb-3 sm:mb-4 uppercase">
+                    <p className="text-[#336b62] text-base sm:text-lg lg:text-xl font-heading font-medium tracking-wider mb-3 sm:mb-4 uppercase">
                       FOLLOW ON
                     </p>
-                    <h2 className="text-white text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-heading font-bold leading-tight mb-6 sm:mb-8">
+                    <h2 className="text-white text-3xl sm:text-4xl md:text-5xl lg:text-5xl xl:text-6xl font-heading font-bold leading-tight mb-6 sm:mb-8">
                       SOCIAL MEDIA
                     </h2>
-                    <p className="text-gray-300 text-sm sm:text-base lg:text-lg xl:text-xl font-body leading-relaxed max-w-2xl mx-auto mb-8 sm:mb-12 px-4">
+                    <p className="text-gray-300 text-base sm:text-lg lg:text-xl font-body leading-relaxed max-w-2xl mx-auto mb-6 sm:mb-8 px-4">
                       Stay connected with Maison Elaris and discover how our borderless creative collective brings clarity and craft to life through innovative storytelling and precision execution.
                     </p>
                   </div>
@@ -1239,7 +1239,7 @@ export default function HomePage() {
               </section>
 
               {/* Connect CTA Section */}
-              <section className="section relative bg-black py-24 lg:py-32 overflow-hidden">
+              <section className="section relative bg-black py-16 md:py-20 lg:py-32 overflow-hidden">
         {/* Background Decorative Shapes */}
         <div className="absolute inset-0">
           <Image
