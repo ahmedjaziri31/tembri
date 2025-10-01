@@ -535,12 +535,12 @@ export default function ServicesPage() {
                       
                       {/* Side Card Image */}
                       <div className="flex justify-center lg:justify-start order-2 lg:order-1">
-                        <div className="relative w-full max-w-md">
+                        <div className="relative w-full max-w-xs">
                           <Image
                             src="/card.png"
                             alt="Strategic Media Planning"
-                            width={400}
-                            height={500}
+                            width={280}
+                            height={350}
                             className="w-full h-auto object-contain rounded-2xl"
                           />
                         </div>
@@ -627,12 +627,12 @@ export default function ServicesPage() {
                       
                       {/* Side Card Image */}
                       <div className="flex justify-center lg:justify-start order-2 lg:order-1">
-                        <div className="relative w-full max-w-md">
+                        <div className="relative w-full max-w-xs">
                           <Image
                             src="/card.png"
                             alt="Creative Content Development"
-                            width={400}
-                            height={500}
+                            width={280}
+                            height={350}
                             className="w-full h-auto object-contain rounded-2xl"
                           />
                         </div>
@@ -723,12 +723,12 @@ export default function ServicesPage() {
                       
                       {/* Side Card Image */}
                       <div className="flex justify-center lg:justify-start order-2 lg:order-1">
-                        <div className="relative w-full max-w-md">
+                        <div className="relative w-full max-w-xs">
                           <Image
                             src="/card.png"
                             alt="Data-driven Marketing"
-                            width={400}
-                            height={500}
+                            width={280}
+                            height={350}
                             className="w-full h-auto object-contain rounded-2xl"
                           />
                         </div>
@@ -815,12 +815,12 @@ export default function ServicesPage() {
                       
                       {/* Side Card Image */}
                       <div className="flex justify-center lg:justify-start order-2 lg:order-1">
-                        <div className="relative w-full max-w-md">
+                        <div className="relative w-full max-w-xs">
                           <Image
                             src="/card.png"
                             alt="Digital Transformation"
-                            width={400}
-                            height={500}
+                            width={280}
+                            height={350}
                             className="w-full h-auto object-contain rounded-2xl"
                           />
                         </div>
@@ -911,12 +911,12 @@ export default function ServicesPage() {
                       
                       {/* Side Card Image */}
                       <div className="flex justify-center lg:justify-start order-2 lg:order-1">
-                        <div className="relative w-full max-w-md">
+                        <div className="relative w-full max-w-xs">
                           <Image
                             src="/card.png"
                             alt="Retail Media & Commerce"
-                            width={400}
-                            height={500}
+                            width={280}
+                            height={350}
                             className="w-full h-auto object-contain rounded-2xl"
                           />
                         </div>

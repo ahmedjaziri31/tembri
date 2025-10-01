@@ -736,7 +736,7 @@ export default function HomePage() {
 
 
       {/* Main Content Area */}
-      <main className="relative z-20 flex items-center justify-center min-h-screen px-2 sm:px-4">
+      <main className="relative z-20 min-h-screen px-2 sm:px-4">
         {/* Light Gradient Background Effect - Only in First Section */}
         <div 
           id="firstSectionGradient"
@@ -746,69 +746,141 @@ export default function HomePage() {
             height: '60%'
           }}
         ></div>
-        {/* Animated Card */}
-        <div
-          ref={cardRef}
-          className="relative"
-        >
+
+        {/* Mobile Layout - Vertical Stack */}
+        <div className="md:hidden flex flex-col items-center justify-center min-h-screen py-20 space-y-8">
+          {/* First Text - Top */}
+          <div
+            ref={taglineRef}
+            className="text-center px-4"
+          >
+            <div className="max-w-xs">
+              <h1 className="text-white text-2xl sm:text-3xl font-heading font-bold leading-tight tracking-wide">
+                WHERE STRATEGY<br />
+                MEETS STORY.
+              </h1>
+            </div>
+          </div>
+
+          {/* Animated Card - Center */}
+          <div
+            ref={cardRef}
+            className="relative flex-shrink-0"
+          >
             <Image
               src="/Flot.png"
-            alt="Maison Elaris Card"
+              alt="Maison Elaris Card"
               width={350}
-            height={450}
-            className="w-40 xs:w-44 sm:w-52 md:w-64 lg:w-72 xl:w-80 h-auto object-contain drop-shadow-2xl"
+              height={450}
+              className="w-40 xs:w-44 sm:w-52 h-auto object-contain drop-shadow-2xl"
               priority
             />
-        </div>
+          </div>
 
-        {/* First Text - Left Side */}
-        <div
-          ref={taglineRef}
-          className="absolute left-4 sm:left-6 md:left-8 lg:left-12 top-1/2 transform -translate-y-1/2"
-          style={{ top: 'clamp(35%, 45%, 55%)' }}
-        >
-          <div className="max-w-xs sm:max-w-sm md:max-w-md">
-            <h1 className="text-white text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-heading font-bold leading-tight tracking-wide">
-              WHERE STRATEGY<br />
-              MEETS STORY.
-            </h1>
-            
-            {/* CTA Button */}
-            <div className="mt-4 sm:mt-6 lg:mt-8">
-              <Link href="/services">
-                <button 
-                  ref={caseStudyButtonRef}
-                  className="group bg-[#336b62] hover:bg-[#9b8075] text-white px-5 py-3 sm:px-6 sm:py-3 lg:px-8 lg:py-4 rounded-lg transition-all duration-300 font-body font-medium text-sm sm:text-base lg:text-lg transform hover:scale-105 hover:shadow-2xl"
-                  style={{ opacity: 0 }}
-                >
-                  <span className="flex items-center gap-1 sm:gap-2">
-                    Explore Our Services
-                    <svg 
-                      className="w-3 h-3 sm:w-4 sm:h-4 lg:w-5 lg:h-5 transition-transform duration-300 group-hover:translate-x-1" 
-                      fill="none" 
-                      stroke="currentColor" 
-                      viewBox="0 0 24 24"
-                    >
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                    </svg>
-                  </span>
-                </button>
-              </Link>
+          {/* Second Text - Bottom */}
+          <div
+            className="text-center px-4"
+            style={{ opacity: 0 }}
+            id="bottomText"
+          >
+            <div className="max-w-xs">
+              <h2 className="text-white text-xl sm:text-2xl font-heading font-bold leading-tight tracking-wide">
+                POWERED BY DATA.<br />
+                DRIVEN BY VISION.
+              </h2>
             </div>
+          </div>
+
+          {/* CTA Button - Below text */}
+          <div className="mt-2">
+            <Link href="/services">
+              <button 
+                ref={caseStudyButtonRef}
+                className="group bg-[#336b62] hover:bg-[#9b8075] text-white px-5 py-3 sm:px-6 sm:py-3 rounded-lg transition-all duration-300 font-body font-medium text-sm sm:text-base transform hover:scale-105 hover:shadow-2xl"
+                style={{ opacity: 0 }}
+              >
+                <span className="flex items-center gap-1 sm:gap-2">
+                  Explore Our Services
+                  <svg 
+                    className="w-3 h-3 sm:w-4 sm:h-4 transition-transform duration-300 group-hover:translate-x-1" 
+                    fill="none" 
+                    stroke="currentColor" 
+                    viewBox="0 0 24 24"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </span>
+              </button>
+            </Link>
           </div>
         </div>
 
-        {/* Second Text - Bottom Right */}
-        <div
-          className="absolute bottom-8 sm:bottom-10 md:bottom-12 lg:bottom-16 right-4 sm:right-6 md:right-8 lg:right-12 text-right"
-          style={{ opacity: 0, bottom: 'clamp(2.5rem, 12vh, 4rem)' }}
-          id="bottomText"
-        >
-          <div className="max-w-xs sm:max-w-sm md:max-w-lg">
-            <h2 className="text-white text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-heading font-bold leading-tight tracking-wide">
-              POWERED BY DATA.<br />
-              DRIVEN BY VISION.
-            </h2>
+        {/* Desktop Layout - Original Absolute Positioning */}
+        <div className="hidden md:flex items-center justify-center min-h-screen">
+          {/* Animated Card */}
+          <div
+            ref={cardRef}
+            className="relative"
+          >
+            <Image
+              src="/Flot.png"
+              alt="Maison Elaris Card"
+              width={350}
+              height={450}
+              className="w-64 lg:w-72 xl:w-80 h-auto object-contain drop-shadow-2xl"
+              priority
+            />
+          </div>
+
+          {/* First Text - Left Side */}
+          <div
+            ref={taglineRef}
+            className="absolute left-8 lg:left-12 top-1/2 transform -translate-y-1/2"
+            style={{ top: 'clamp(35%, 45%, 55%)' }}
+          >
+            <div className="max-w-md">
+              <h1 className="text-white text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-heading font-bold leading-tight tracking-wide">
+                WHERE STRATEGY<br />
+                MEETS STORY.
+              </h1>
+              
+              {/* CTA Button */}
+              <div className="mt-6 lg:mt-8">
+                <Link href="/services">
+                  <button 
+                    ref={caseStudyButtonRef}
+                    className="group bg-[#336b62] hover:bg-[#9b8075] text-white px-6 py-3 lg:px-8 lg:py-4 rounded-lg transition-all duration-300 font-body font-medium text-base lg:text-lg transform hover:scale-105 hover:shadow-2xl"
+                    style={{ opacity: 0 }}
+                  >
+                    <span className="flex items-center gap-2">
+                      Explore Our Services
+                      <svg 
+                        className="w-4 h-4 lg:w-5 lg:h-5 transition-transform duration-300 group-hover:translate-x-1" 
+                        fill="none" 
+                        stroke="currentColor" 
+                        viewBox="0 0 24 24"
+                      >
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </span>
+                  </button>
+                </Link>
+              </div>
+            </div>
+          </div>
+
+          {/* Second Text - Bottom Right */}
+          <div
+            className="absolute bottom-12 lg:bottom-16 right-8 lg:right-12 text-right"
+            style={{ opacity: 0, bottom: 'clamp(2.5rem, 12vh, 4rem)' }}
+            id="bottomText"
+          >
+            <div className="max-w-lg">
+              <h2 className="text-white text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-heading font-bold leading-tight tracking-wide">
+                POWERED BY DATA.<br />
+                DRIVEN BY VISION.
+              </h2>
+            </div>
           </div>
         </div>
       </main>
@@ -1373,9 +1445,9 @@ export default function HomePage() {
                 <Image
                   src="/Partner Logos/google cloud.png"
                   alt="Google Partner"
-                  width={220}
-                  height={70}
-                  className="w-auto h-20 lg:h-24 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
+                  width={160}
+                  height={60}
+                  className="w-auto h-16 lg:h-20 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
                 />
               </div>
             </div>
