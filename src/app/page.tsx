@@ -1443,7 +1443,7 @@ export default function HomePage() {
               </div>
               <div className="flex items-center justify-center">
                 <Image
-                  src="/Partner%20Logos/google%20cloud.png"
+                  src="/Partner%20Logos/google-cloud.png"
                   alt="Google Partner"
                   width={280}
                   height={70}

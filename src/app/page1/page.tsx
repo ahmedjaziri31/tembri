@@ -1443,7 +1443,7 @@ export default function Page1() {
                       </div>
                       <div className="flex items-center justify-center">
                         <Image
-                          src="/Partner%20Logos/google%20cloud.png"
+                          src="/Partner%20Logos/google-cloud.png"
                           alt="Google Partner"
                           width={160}
                           height={60}

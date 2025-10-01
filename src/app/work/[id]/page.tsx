@@ -245,13 +245,13 @@ export default function ProductDetailsPage() {
             
             {/* Mobile Portrait Image */}
             <div className="block md:hidden absolute inset-0">
-              <Image
+            <Image
                 src={portraitImage}
-                alt={project.title}
-                fill
-                className="object-cover"
-                priority
-              />
+              alt={project.title}
+              fill
+              className="object-cover"
+              priority
+            />
             </div>
             
             {/* Dark Overlay for text readability */}
@@ -302,7 +302,7 @@ export default function ProductDetailsPage() {
               <div className="bg-gradient-to-br from-gray-900/80 to-gray-800/60 backdrop-blur-sm rounded-3xl p-8 lg:p-10 border border-white/10">
                 <div className="mb-8">
                   <h2 className="text-3xl lg:text-4xl font-heading font-bold text-white">
-                    Project Details
+                     Project Details
                   </h2>
                 </div>
 
@@ -516,7 +516,7 @@ export default function ProductDetailsPage() {
                         <br className="hidden sm:block" />
                         <span className="text-gray-300">(UK & Malaysia)</span>
                       </p>
-                    </div>
+                </div>
                     <div className="text-center">
                       <h3 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-heading font-bold text-white mb-4">
                         16.7M
@@ -525,7 +525,7 @@ export default function ProductDetailsPage() {
                         <span style={{ color: '#5a9f98' }} className="font-bold">views </span>
                         <span className="text-gray-300">in 2.5 months</span>
                       </p>
-                    </div>
+              </div>
                   </>
                 ) : projectId === '6' ? (
                   // Samsung specific layout
@@ -538,7 +538,7 @@ export default function ProductDetailsPage() {
                         <span className="text-gray-300">increase in </span>
                         <span style={{ color: '#5a9f98' }} className="font-bold">ROAS</span>
                       </p>
-                    </div>
+                      </div>
                     <div className="text-center">
                       <h3 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-heading font-bold text-white mb-4">
                         -18%
@@ -558,7 +558,7 @@ export default function ProductDetailsPage() {
                         <br className="hidden sm:block" />
                         <span style={{ color: '#5a9f98' }} className="font-bold">across 3 weeks</span>
                       </p>
-                    </div>
+                      </div>
                   </>
                 ) : (
                   // Default layout for other projects
@@ -578,7 +578,7 @@ export default function ProductDetailsPage() {
                       <p className="text-base sm:text-lg lg:text-xl font-body text-gray-300">
                         {project.details.results.conversion.split(' ').slice(1).join(' ')}
                       </p>
-                    </div>
+                      </div>
                     <div className="text-center">
                       <h3 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-heading font-bold text-white mb-4">
                         {project.details.results.reach.split(' ')[0]}
@@ -589,7 +589,7 @@ export default function ProductDetailsPage() {
                     </div>
                   </>
                 )}
-              </div>
+                </div>
             )}
 
             {/* Campaign Images */}
