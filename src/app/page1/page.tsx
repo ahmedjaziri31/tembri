@@ -212,17 +212,22 @@ export default function Page1() {
         scale: 0.8
       })
 
+      // Different initial states for mobile vs desktop
+      const isMobile = window.innerWidth < 768
+      
       gsap.set(cardRef.current, {
         scale: 0.6,
-        rotation: 180
+        rotation: isMobile ? 0 : 180,
+        y: isMobile ? 30 : 0
       })
 
       gsap.set(taglineRef.current, {
-        x: -50
+        x: isMobile ? 0 : -50,
+        y: isMobile ? -30 : 0
       })
 
       gsap.set("#bottomText", {
-        y: 50
+        y: isMobile ? 30 : 50
       })
 
 
@@ -249,6 +254,7 @@ export default function Page1() {
           opacity: 1,
           scale: 1,
           rotation: 0,
+          y: 0,
           duration: 1.2,
           ease: "back.out(1.7)"
         }, "+=0.2")
@@ -259,29 +265,23 @@ export default function Page1() {
           ease: "power2.out"
         }, "-=1.0")
         
-        // Phase 3: Card moves to right side + first text appears (mobile-balanced)
+        // Phase 3: For desktop - card moves to right side, for mobile - stays centered
         .to(cardRef.current, {
-          x: window.innerWidth >= 1024 ? 350 : 
-             window.innerWidth >= 768 ? 280 : 
-             window.innerWidth >= 640 ? 140 : 
-             window.innerWidth >= 480 ? 110 : 80,
-          y: window.innerWidth >= 1024 ? -80 : 
-             window.innerWidth >= 768 ? -60 : 
-             window.innerWidth >= 640 ? -30 : 
-             window.innerWidth >= 480 ? -20 : -10,
-          scale: window.innerWidth >= 1024 ? 0.75 : 
-                 window.innerWidth >= 768 ? 0.8 : 
-                 window.innerWidth >= 640 ? 0.85 : 
-                 window.innerWidth >= 480 ? 0.95 : 1.0,
-          rotation: window.innerWidth >= 768 ? -8 : 
-                   window.innerWidth >= 480 ? -5 : -3,
-          duration: 1.4,
+          x: window.innerWidth >= 768 ? 
+             (window.innerWidth >= 1024 ? 350 : 280) : 0,
+          y: window.innerWidth >= 768 ? 
+             (window.innerWidth >= 1024 ? -80 : -60) : 0,
+          scale: window.innerWidth >= 768 ? 
+                 (window.innerWidth >= 1024 ? 0.75 : 0.8) : 1,
+          rotation: window.innerWidth >= 768 ? -8 : 0,
+          duration: window.innerWidth >= 768 ? 1.4 : 0.8,
           ease: "power2.inOut"
         }, "+=0.3")
         
         .to(taglineRef.current, {
           opacity: 1,
           x: 0,
+          y: 0,
           duration: 1,
           ease: "power2.out"
         }, "-=0.7")
@@ -748,14 +748,14 @@ export default function Page1() {
         ></div>
 
         {/* Mobile Layout - Vertical Stack */}
-        <div className="md:hidden flex flex-col items-center justify-center min-h-screen py-20 space-y-8">
+        <div className="md:hidden flex flex-col items-center justify-center min-h-screen py-16 space-y-6">
           {/* First Text - Top */}
           <div
             ref={taglineRef}
-            className="text-center px-4"
+            className="text-center px-6"
           >
-            <div className="max-w-xs">
-              <h1 className="text-white text-2xl sm:text-3xl font-heading font-bold leading-tight tracking-wide">
+            <div className="max-w-sm">
+              <h1 className="text-white text-3xl sm:text-4xl font-heading font-bold leading-tight tracking-wide">
                 WHERE STRATEGY<br />
                 MEETS STORY.
               </h1>
@@ -772,19 +772,19 @@ export default function Page1() {
               alt="Maison Elaris Card"
               width={350}
               height={450}
-              className="w-40 xs:w-44 sm:w-52 h-auto object-contain drop-shadow-2xl"
+              className="w-56 sm:w-64 h-auto object-contain drop-shadow-2xl"
               priority
             />
           </div>
 
           {/* Second Text - Bottom */}
           <div
-            className="text-center px-4"
+            className="text-center px-6"
             style={{ opacity: 0 }}
             id="bottomText"
           >
-            <div className="max-w-xs">
-              <h2 className="text-white text-xl sm:text-2xl font-heading font-bold leading-tight tracking-wide">
+            <div className="max-w-sm">
+              <h2 className="text-white text-2xl sm:text-3xl font-heading font-bold leading-tight tracking-wide">
                 POWERED BY DATA.<br />
                 DRIVEN BY VISION.
               </h2>
@@ -792,17 +792,17 @@ export default function Page1() {
           </div>
 
           {/* CTA Button - Below text */}
-          <div className="mt-2">
+          <div className="mt-4">
             <Link href="/services">
               <button 
                 ref={caseStudyButtonRef}
-                className="group bg-[#336b62] hover:bg-[#9b8075] text-white px-5 py-3 sm:px-6 sm:py-3 rounded-lg transition-all duration-300 font-body font-medium text-sm sm:text-base transform hover:scale-105 hover:shadow-2xl"
+                className="group bg-[#336b62] hover:bg-[#9b8075] text-white px-6 py-3 sm:px-8 sm:py-4 rounded-lg transition-all duration-300 font-body font-medium text-base sm:text-lg transform hover:scale-105 hover:shadow-2xl"
                 style={{ opacity: 0 }}
               >
-                <span className="flex items-center gap-1 sm:gap-2">
+                <span className="flex items-center gap-2">
                   Explore Our Services
                   <svg 
-                    className="w-3 h-3 sm:w-4 sm:h-4 transition-transform duration-300 group-hover:translate-x-1" 
+                    className="w-4 h-4 sm:w-5 sm:h-5 transition-transform duration-300 group-hover:translate-x-1" 
                     fill="none" 
                     stroke="currentColor" 
                     viewBox="0 0 24 24"
