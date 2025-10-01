@@ -1394,7 +1394,7 @@ export default function Page1() {
                     <div className="flex flex-wrap items-center justify-center gap-6 lg:gap-8 w-full">
                       <div className="flex items-center justify-center">
                         <Image
-                          src="/Partner Logos/meta.png"
+                          src="/Partner%20Logos/meta.png"
                           alt="Meta Business Partner"
                           width={280}
                           height={90}
@@ -1403,7 +1403,7 @@ export default function Page1() {
                       </div>
                       <div className="flex items-center justify-center">
                         <Image
-                          src="/Partner Logos/tiktok for business.png"
+                          src="/Partner%20Logos/tiktok%20for%20business.png"
                           alt="TikTok Marketing Partner"
                           width={280}
                           height={90}
@@ -1412,7 +1412,7 @@ export default function Page1() {
                       </div>
                       <div className="flex items-center justify-center">
                         <Image
-                          src="/Partner Logos/tiktok partner.png"
+                          src="/Partner%20Logos/tiktok%20partner.png"
                           alt="TikTok Creative Partner"
                           width={280}
                           height={90}
@@ -1421,7 +1421,7 @@ export default function Page1() {
                       </div>
                       <div className="flex items-center justify-center">
                         <Image
-                          src="/Partner Logos/amazon.png"
+                          src="/Partner%20Logos/amazon.png"
                           alt="Amazon Ads Verified Partner"
                           width={280}
                           height={90}
@@ -1434,7 +1434,7 @@ export default function Page1() {
                     <div className="flex flex-wrap items-center justify-center gap-6 lg:gap-8 w-full mt-4">
                       <div className="flex items-center justify-center">
                         <Image
-                          src="/Partner Logos/google marketing.png"
+                          src="/Partner%20Logos/google%20marketing.png"
                           alt="Google Marketing Platform Certified"
                           width={280}
                           height={70}
@@ -1443,7 +1443,7 @@ export default function Page1() {
                       </div>
                       <div className="flex items-center justify-center">
                         <Image
-                          src="/Partner Logos/google cloud.png"
+                          src="/Partner%20Logos/google%20cloud.png"
                           alt="Google Partner"
                           width={160}
                           height={60}
