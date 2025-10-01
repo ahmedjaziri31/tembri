@@ -1322,38 +1322,38 @@ export default function Page1() {
                     <div className="flex flex-wrap items-center justify-center gap-6 lg:gap-8 w-full">
                       <div className="flex items-center justify-center">
                         <Image
-                          src="/Partner Logos/Meta Business Partner Logo.png"
+                          src="/Partner Logos/meta.png"
                           alt="Meta Business Partner"
                           width={280}
                           height={90}
-                          className="w-auto h-16 lg:h-20 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
+                          className="w-auto h-24 lg:h-28 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
                         />
                       </div>
                       <div className="flex items-center justify-center">
                         <Image
-                          src="/Partner Logos/Tiktok for business logo.png"
+                          src="/Partner Logos/tiktok for business.png"
                           alt="TikTok Marketing Partner"
                           width={280}
                           height={90}
-                          className="w-auto h-16 lg:h-20 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
+                          className="w-auto h-24 lg:h-28 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
                         />
                       </div>
                       <div className="flex items-center justify-center">
                         <Image
-                          src="/Partner Logos/Tiktok Creative Partner logo.webp"
+                          src="/Partner Logos/tiktok partner.png"
                           alt="TikTok Creative Partner"
                           width={280}
                           height={90}
-                          className="w-auto h-16 lg:h-20 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
+                          className="w-auto h-24 lg:h-28 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
                         />
                       </div>
                       <div className="flex items-center justify-center">
                         <Image
-                          src="/Partner Logos/Amazon - Verified partner badge.png"
+                          src="/Partner Logos/amazon.png"
                           alt="Amazon Ads Verified Partner"
-                          width={200}
-                          height={80}
-                          className="w-auto h-14 lg:h-16 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
+                          width={280}
+                          height={90}
+                          className="w-auto h-24 lg:h-28 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
                         />
                       </div>
                     </div>
@@ -1362,20 +1362,20 @@ export default function Page1() {
                     <div className="flex flex-wrap items-center justify-center gap-6 lg:gap-8 w-full mt-4">
                       <div className="flex items-center justify-center">
                         <Image
-                          src="/Partner Logos/Google Marketing Platfrom logo.png"
+                          src="/Partner Logos/google marketing.png"
                           alt="Google Marketing Platform Certified"
                           width={280}
                           height={70}
-                          className="w-auto h-14 lg:h-16 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
+                          className="w-auto h-20 lg:h-24 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
                         />
                       </div>
                       <div className="flex items-center justify-center">
                         <Image
-                          src="/Partner Logos/Google Cloud.png"
+                          src="/Partner Logos/google cloud.png"
                           alt="Google Partner"
                           width={220}
                           height={70}
-                          className="w-auto h-14 lg:h-16 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
+                          className="w-auto h-20 lg:h-24 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
                         />
                       </div>
                     </div>
