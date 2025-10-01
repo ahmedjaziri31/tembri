@@ -1445,8 +1445,8 @@ export default function HomePage() {
                 <Image
                   src="/Partner Logos/google cloud.png"
                   alt="Google Partner"
-                  width={160}
-                  height={60}
+                  width={280}
+                  height={70}
                   className="w-auto h-16 lg:h-20 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
                 />
               </div>
