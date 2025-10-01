@@ -226,6 +226,21 @@ export default function HomePage() {
         y: isMobile ? -30 : 0
       })
 
+      // CTA initial visibility: show immediately on mobile, animate on desktop
+      if (isMobile) {
+        gsap.set(caseStudyButtonRef.current, {
+          opacity: 1,
+          y: 0,
+          scale: 1
+        })
+      } else {
+        gsap.set(caseStudyButtonRef.current, {
+          opacity: 0,
+          y: 30,
+          scale: 0.8
+        })
+      }
+
       gsap.set("#bottomText", {
         y: isMobile ? 30 : 50
       })
@@ -284,54 +299,57 @@ export default function HomePage() {
           y: 0,
           duration: 1,
           ease: "power2.out"
-        }, "-=0.7")
+        }, "-=0.7");
         
-        // Case Study Button - appears after tagline with bounce effect
-        .to(caseStudyButtonRef.current, {
-          opacity: 1,
-          y: 0,
-          scale: 1,
-          duration: 0.8,
-        ease: "back.out(1.7)"
-        }, "-=0.3")
+        // Case Study Button - appears after tagline with bounce effect (desktop only)
+        if (!isMobile) {
+          masterTimeline.to(caseStudyButtonRef.current, {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            duration: 0.8,
+            ease: "back.out(1.7)"
+          }, "-=0.3");
+        }
       
-        // Phase 4: Bottom text appears
-        .to("#bottomText", {
+      // Phase 4: Bottom text appears
+      masterTimeline.to("#bottomText", {
         opacity: 1,
         y: 0,
         duration: 0.8,
         ease: "power2.out"
-        }, "-=0.3")
+      }, "-=0.3");
       
-        // Phase 5: Simple header fade in (faster)
-        .to("#stickyHeader", {
+      // Phase 5: Simple header fade in (faster)
+      masterTimeline.to("#stickyHeader", {
         opacity: 1,
-          duration: 0.8,
-          ease: "power2.out"
-        }, "+=0.3") // Reduced delay from 0.5s to 0.3s
+        duration: 0.8,
+        ease: "power2.out"
+      }, "+=0.3"); // Reduced delay from 0.5s to 0.3s
+      
+      // Enable scroll right after header appears - much faster
+      masterTimeline.call(() => {
+        console.log('Enabling scroll - much faster timing')
+        setScrollEnabled(true)
+        document.body.style.overflow = 'auto'
+        document.documentElement.style.overflow = 'auto'
         
-        // Enable scroll right after header appears - much faster
-        .call(() => {
-          console.log('Enabling scroll - much faster timing')
-          setScrollEnabled(true)
-          document.body.style.overflow = 'auto'
-          document.documentElement.style.overflow = 'auto'
-          
-          // Setup scroll animations immediately
-          setupAboutAnimations()
-          setupServicesAnimations()
-          setupSocialMediaAnimations()
-        }, [], "+=0.1") // Enable scroll just 0.1s after header starts fading in
+        // Setup scroll animations immediately
+        setupAboutAnimations()
+        setupServicesAnimations()
+        setupSocialMediaAnimations()
+      }, [], "+=0.1"); // Enable scroll just 0.1s after header starts fading in
 
-        // Phase 6: Footer fade in (happens in parallel with scroll enable)
+      // Phase 6: Footer fade in (happens in parallel with scroll enable)
+      masterTimeline
         .call(() => {
           setShowHeaderFooter(true)
         }, [], "+=0.2")
         .to("footer", {
-              opacity: 1,
+          opacity: 1,
           duration: 1,
           ease: "power2.out"
-        }, "-=0.5") // Start footer animation 0.5s earlier
+        }, "-=0.5"); // Start footer animation 0.5s earlier
 
       // Function to setup About section scroll animations
       const setupAboutAnimations = () => {
@@ -770,9 +788,9 @@ export default function HomePage() {
             <Image
               src="/Flot.png"
               alt="Maison Elaris Card"
-              width={350}
-              height={450}
-              className="w-56 sm:w-64 h-auto object-contain drop-shadow-2xl"
+              width={320}
+              height={420}
+              className="w-48 sm:w-56 h-auto object-contain drop-shadow-2xl"
               priority
             />
           </div>
@@ -797,7 +815,6 @@ export default function HomePage() {
               <button 
                 ref={caseStudyButtonRef}
                 className="group bg-[#336b62] hover:bg-[#9b8075] text-white px-6 py-3 sm:px-8 sm:py-4 rounded-lg transition-all duration-300 font-body font-medium text-base sm:text-lg transform hover:scale-105 hover:shadow-2xl"
-                style={{ opacity: 0 }}
               >
                 <span className="flex items-center gap-2">
                   Explore Our Services

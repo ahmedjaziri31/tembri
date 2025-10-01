@@ -226,9 +226,20 @@ export default function Page1() {
         y: isMobile ? -30 : 0
       })
 
-      gsap.set("#bottomText", {
-        y: isMobile ? 30 : 50
-      })
+      // CTA initial visibility: show immediately on mobile, animate on desktop
+      if (isMobile) {
+        gsap.set(caseStudyButtonRef.current, {
+          opacity: 1,
+          y: 0,
+          scale: 1
+        })
+      } else {
+        gsap.set(caseStudyButtonRef.current, {
+          opacity: 0,
+          y: 30,
+          scale: 0.8
+        })
+      }
 
 
        // Create the master timeline
@@ -284,25 +295,27 @@ export default function Page1() {
           y: 0,
           duration: 1,
           ease: "power2.out"
-        }, "-=0.7")
+        }, "-=0.7");
         
-        // Case Study Button - appears after tagline with bounce effect
-        .to(caseStudyButtonRef.current, {
-          opacity: 1,
-          y: 0,
-          scale: 1,
-          duration: 0.8,
-          ease: "back.out(1.7)"
-        }, "-=0.3")
-
-        // Phase 4: Bottom text appears
-        .to("#bottomText", {
+        // Case Study Button - appears after tagline with bounce effect (desktop only)
+        if (!isMobile) {
+          masterTimeline.to(caseStudyButtonRef.current, {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            duration: 0.8,
+            ease: "back.out(1.7)"
+          }, "-=0.3");
+        }
+      
+      // Phase 4: Bottom text appears
+      masterTimeline.to("#bottomText", {
           opacity: 1,
           y: 0,
           duration: 0.8,
           ease: "power2.out"
         }, "-=0.3")
-
+      
         // Phase 5: Simple header fade in (faster)
         .to("#stickyHeader", {
         opacity: 1,
@@ -770,9 +783,9 @@ export default function Page1() {
             <Image
               src="/Flot.png"
               alt="Maison Elaris Card"
-              width={350}
-              height={450}
-              className="w-56 sm:w-64 h-auto object-contain drop-shadow-2xl"
+              width={320}
+              height={420}
+              className="w-48 sm:w-56 h-auto object-contain drop-shadow-2xl"
               priority
             />
           </div>
@@ -797,7 +810,6 @@ export default function Page1() {
               <button 
                 ref={caseStudyButtonRef}
                 className="group bg-[#336b62] hover:bg-[#9b8075] text-white px-6 py-3 sm:px-8 sm:py-4 rounded-lg transition-all duration-300 font-body font-medium text-base sm:text-lg transform hover:scale-105 hover:shadow-2xl"
-                style={{ opacity: 0 }}
               >
                 <span className="flex items-center gap-2">
                   Explore Our Services
