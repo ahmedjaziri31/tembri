@@ -89,7 +89,7 @@ export default function AboutSection() {
                 We are Maison Elaris, where clarity meets craft, and ideas thrive through collaboration.
               </p>
               <p>
-                Our borderless collective spans Europe, the Middle East, and Asia, keeping us close to cultures, talent, and trends that matter. From strategy spints in Paris to creative reviews across time zones, we work with agility and precision to deliver brilliance without compromise.
+                Our borderless collective spans Europe, the Middle East, and Asia, keeping us close to cultures, talent, and trends that matter. From strategy spints in  Paris to  creative reviews across time zones, we work with agility and precision to deliver brilliance without compromise.
               </p>
             </div>
             

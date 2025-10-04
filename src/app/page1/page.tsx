@@ -1042,7 +1042,7 @@ export default function Page1() {
                     </p>
                     
                     <p className="text-gray-300 text-lg lg:text-xl font-body leading-relaxed">
-                      From strategy spints in Paris to creative reviews across time zones, we work with agility and precision to deliver brilliance without compromise.
+                      From strategy spints in  Paris  to creative reviews across time zones, we work with agility and precision to deliver brilliance without compromise.
                     </p>
                   </div>
 
