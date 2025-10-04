@@ -51,7 +51,7 @@ export default function Footer() {
               <p className="font-medium text-gray-300 mb-2 sm:mb-3 text-xs sm:text-sm">Our Global Presence</p>
               <div className="space-y-1 text-xs text-gray-400">
                 <p>London • Dubai HQ • Doha</p>
-                <p>Singapore • Jakarta</p>
+                <p>Singapore • Jakarta • Amsterdam • Paris</p>
               </div>
             </div>
           </div>

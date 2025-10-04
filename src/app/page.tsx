@@ -1415,7 +1415,7 @@ export default function HomePage() {
                   alt="Meta Business Partner"
                   width={280}
                   height={90}
-                  className="w-auto h-24 lg:h-28 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
+                  className="w-auto h-16 lg:h-20 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
                 />
               </div>
               <div className="flex items-center justify-center">
@@ -1424,7 +1424,7 @@ export default function HomePage() {
                   alt="TikTok Marketing Partner"
                   width={280}
                   height={90}
-                  className="w-auto h-24 lg:h-28 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
+                  className="w-auto h-16 lg:h-20 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
                 />
               </div>
               <div className="flex items-center justify-center">
@@ -1433,7 +1433,7 @@ export default function HomePage() {
                   alt="TikTok Creative Partner"
                   width={280}
                   height={90}
-                  className="w-auto h-24 lg:h-28 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
+                  className="w-auto h-16 lg:h-20 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
                 />
               </div>
               <div className="flex items-center justify-center">
@@ -1442,7 +1442,7 @@ export default function HomePage() {
                   alt="Amazon Ads Verified Partner"
                   width={280}
                   height={90}
-                  className="w-auto h-24 lg:h-28 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
+                  className="w-auto h-16 lg:h-20 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
                 />
               </div>
             </div>
@@ -1455,7 +1455,7 @@ export default function HomePage() {
                   alt="Google Marketing Platform Certified"
                   width={280}
                   height={70}
-                  className="w-auto h-20 lg:h-24 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
+                  className="w-auto h-14 lg:h-16 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
                 />
               </div>
               <div className="flex items-center justify-center">
@@ -1464,7 +1464,7 @@ export default function HomePage() {
                   alt="Google Partner"
                   width={280}
                   height={70}
-                  className="w-auto h-16 lg:h-20 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
+                  className="w-auto h-12 lg:h-14 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
                 />
               </div>
             </div>
