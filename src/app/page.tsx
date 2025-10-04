@@ -1047,7 +1047,7 @@ export default function HomePage() {
                     </p>
                     
                     <p className="text-gray-300 text-lg lg:text-xl font-body leading-relaxed">
-                      From strategy sprints in Amsterdam to creative reviews across time zones, we work with agility and precision to deliver brilliance without compromise.
+                      From strategy sprints in Paris to creative reviews across time zones, we work with agility and precision to deliver brilliance without compromise.
                     </p>
               </div>
 
