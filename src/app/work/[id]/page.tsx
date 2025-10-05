@@ -527,6 +527,45 @@ export default function ProductDetailsPage() {
                       </p>
               </div>
                   </>
+                ) : projectId === '5' ? (
+                  // NIVEA + Eucerin specific layout
+                  <>
+                    <div className="text-center">
+                      <h3 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-heading font-bold text-white mb-4">
+                        +23%
+                      </h3>
+                      <p className="text-base sm:text-lg lg:text-xl font-body">
+                        <span className="text-gray-300">in dermatologist</span>
+                        <br className="hidden sm:block" />
+                        <span className="text-gray-300">recommended </span>
+                        <span style={{ color: '#5a9f98' }} className="font-bold">click-throughs</span>
+                      </p>
+                    </div>
+                    <div className="text-center">
+                      <h3 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-heading font-bold text-white mb-4">
+                        Top 3
+                      </h3>
+                      <p className="text-base sm:text-lg lg:text-xl font-body">
+                        <span className="text-gray-300">ranking on </span>
+                        <span style={{ color: '#5a9f98' }} className="font-bold">product</span>
+                        <br className="hidden sm:block" />
+                        <span style={{ color: '#5a9f98' }} className="font-bold">keywords</span>
+                        <br className="hidden sm:block" />
+                        <span className="text-gray-300">within 2 months</span>
+                      </p>
+                    </div>
+                    <div className="text-center">
+                      <h3 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-heading font-bold text-white mb-4">
+                        +42%
+                      </h3>
+                      <p className="text-base sm:text-lg lg:text-xl font-body">
+                        <span className="text-gray-300">in </span>
+                        <span style={{ color: '#5a9f98' }} className="font-bold">pharmacy</span>
+                        <br className="hidden sm:block" />
+                        <span style={{ color: '#5a9f98' }} className="font-bold">retail footfall YoY</span>
+                      </p>
+                    </div>
+                  </>
                 ) : projectId === '6' ? (
                   // Samsung specific layout
                   <>
@@ -596,7 +635,7 @@ export default function ProductDetailsPage() {
             <div className="relative max-w-5xl mx-auto">
               <div className="relative overflow-hidden rounded-3xl">
                 <Image
-                  src={projectId === '1' ? '/work/GS.png' : projectId === '2' ? '/work/MC.png' : projectId === '3' ? '/work/SA.png' : projectId === '6' ? '/work/SM.png' : '/work/reel.png'}
+                  src={projectId === '1' ? '/work/GS.png' : projectId === '2' ? '/work/MC.png' : projectId === '3' ? '/work/SA.png' : projectId === '5' ? '/work/NV.png' : projectId === '6' ? '/work/SM.png' : '/work/reel.png'}
                   alt="Campaign Results"
                   width={1200}
                   height={600}
