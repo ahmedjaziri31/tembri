@@ -255,15 +255,15 @@ export default function ProductDetailsPage() {
             </div>
             
             {/* Dark Overlay for text readability */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
           </div>
 
           {/* Content Overlay */}
-          <div className="relative z-10 w-full h-full flex flex-col px-6 lg:px-8 pt-32 pb-16">
+          <div className="relative z-10 w-full h-full flex flex-col px-6 lg:px-8 pt-32 pb-0">
             {/* Title and Subtitle - Bottom Left */}
-            <div className="flex-1 flex flex-col justify-end max-w-2xl">
-              <div className="mb-8">
-                <h1 className="text-5xl lg:text-7xl xl:text-8xl font-heading font-bold text-white mb-4 leading-none text-left">
+            <div className="flex-1 flex flex-col justify-end max-w-2xl -mb-32">
+              <div className="mb-0">
+                <h1 className="text-5xl lg:text-7xl xl:text-8xl font-heading font-bold text-white mb-0 leading-none text-left">
                   {project.title}
                 </h1>
                 <p className="text-xl lg:text-2xl text-gray-200 font-body font-light text-left">
@@ -272,13 +272,13 @@ export default function ProductDetailsPage() {
               </div>
 
               {/* Description */}
-              <p className="text-lg lg:text-xl text-gray-200 font-body font-light leading-relaxed max-w-xl text-left mb-8">
+              <p className="text-lg lg:text-xl text-gray-200 font-body font-light leading-relaxed max-w-xl text-left mb-0">
                 {project.description}
               </p>
             </div>
 
             {/* Mission Tags - Bottom Right */}
-            <div className="absolute bottom-16 right-6 lg:right-8">
+            <div className="absolute -bottom-16 right-6 lg:right-8">
               <div className="flex flex-wrap gap-3 justify-end">
                 {project.mission.map((tag, index) => (
                   <span
