@@ -261,7 +261,7 @@ export default function ProductDetailsPage() {
           {/* Content Overlay */}
           <div className="relative z-10 w-full h-full flex flex-col px-6 lg:px-8 pt-32 pb-0">
             {/* Title and Subtitle - Bottom Left */}
-            <div className="flex-1 flex flex-col justify-end max-w-2xl -mb-32">
+            <div className="flex-1 flex flex-col justify-end max-w-2xl -mb-32 lg:-mb-32 -mb-16">
               <div className="mb-0">
                 <h1 className="text-5xl lg:text-7xl xl:text-8xl font-heading font-bold text-white mb-0 leading-none text-left">
                   {project.title}
@@ -277,9 +277,23 @@ export default function ProductDetailsPage() {
               </p>
             </div>
 
-            {/* Mission Tags - Bottom Right */}
-            <div className="absolute -bottom-16 right-6 lg:right-8">
+            {/* Mission Tags - Bottom Right on Desktop, Below Content on Mobile */}
+            <div className="absolute -bottom-16 right-6 lg:right-8 hidden lg:block">
               <div className="flex flex-wrap gap-3 justify-end">
+                {project.mission.map((tag, index) => (
+                  <span
+                    key={index}
+                    className="px-4 py-2 bg-white/20 backdrop-blur-sm border border-white/30 rounded-full text-sm font-secondary font-medium text-white tracking-wider hover:bg-white/30 transition-all duration-300"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            {/* Mission Tags - Below Content on Mobile */}
+            <div className="block lg:hidden mt-4 -mb-8">
+              <div className="flex flex-wrap gap-3 justify-start">
                 {project.mission.map((tag, index) => (
                   <span
                     key={index}
