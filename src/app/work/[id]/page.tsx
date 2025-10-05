@@ -260,39 +260,21 @@ export default function ProductDetailsPage() {
 
           {/* Content Overlay */}
           <div className="relative z-10 w-full h-full flex flex-col px-6 lg:px-8 pt-32 pb-0">
-            {/* Title and Subtitle - Bottom Left */}
-            <div className="flex-1 flex flex-col justify-end max-w-2xl -mb-32 lg:-mb-32 -mb-16">
-              <div className="mb-0">
-                <h1 className="text-5xl lg:text-7xl xl:text-8xl font-heading font-bold text-white mb-0 leading-none text-left">
+            {/* Mobile Layout - Stacked Content */}
+            <div className="lg:hidden flex flex-col justify-end h-full pb-8">
+              <div className="mb-6">
+                <h1 className="text-4xl sm:text-5xl font-heading font-bold text-white mb-2 leading-none text-left">
                   {project.title}
                 </h1>
-                <p className="text-xl lg:text-2xl text-gray-200 font-body font-light text-left">
+                <p className="text-lg sm:text-xl text-gray-200 font-body font-light text-left mb-4">
                   {project.subtitle}
                 </p>
+                <p className="text-base sm:text-lg text-gray-200 font-body font-light leading-relaxed text-left mb-6">
+                  {project.description}
+                </p>
               </div>
-
-              {/* Description */}
-              <p className="text-lg lg:text-xl text-gray-200 font-body font-light leading-relaxed max-w-xl text-left mb-0">
-                {project.description}
-              </p>
-            </div>
-
-            {/* Mission Tags - Bottom Right on Desktop, Below Content on Mobile */}
-            <div className="absolute -bottom-16 right-6 lg:right-8 hidden lg:block">
-              <div className="flex flex-wrap gap-3 justify-end">
-                {project.mission.map((tag, index) => (
-                  <span
-                    key={index}
-                    className="px-4 py-2 bg-white/20 backdrop-blur-sm border border-white/30 rounded-full text-sm font-secondary font-medium text-white tracking-wider hover:bg-white/30 transition-all duration-300"
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
-            </div>
-
-            {/* Mission Tags - Below Content on Mobile */}
-            <div className="block lg:hidden mt-4 -mb-8">
+              
+              {/* Mission Tags - Below Content on Mobile */}
               <div className="flex flex-wrap gap-3 justify-start">
                 {project.mission.map((tag, index) => (
                   <span
@@ -302,6 +284,40 @@ export default function ProductDetailsPage() {
                     {tag}
                   </span>
                 ))}
+              </div>
+            </div>
+
+            {/* Desktop Layout - Original Positioning */}
+            <div className="hidden lg:flex flex-col h-full">
+              {/* Title and Subtitle - Bottom Left */}
+              <div className="flex-1 flex flex-col justify-end max-w-2xl -mb-32">
+                <div className="mb-0">
+                  <h1 className="text-5xl lg:text-7xl xl:text-8xl font-heading font-bold text-white mb-0 leading-none text-left">
+                    {project.title}
+                  </h1>
+                  <p className="text-xl lg:text-2xl text-gray-200 font-body font-light text-left">
+                    {project.subtitle}
+                  </p>
+                </div>
+
+                {/* Description */}
+                <p className="text-lg lg:text-xl text-gray-200 font-body font-light leading-relaxed max-w-xl text-left mb-0">
+                  {project.description}
+                </p>
+              </div>
+
+              {/* Mission Tags - Bottom Right on Desktop */}
+              <div className="absolute -bottom-16 right-6 lg:right-8">
+                <div className="flex flex-wrap gap-3 justify-end">
+                  {project.mission.map((tag, index) => (
+                    <span
+                      key={index}
+                      className="px-4 py-2 bg-white/20 backdrop-blur-sm border border-white/30 rounded-full text-sm font-secondary font-medium text-white tracking-wider hover:bg-white/30 transition-all duration-300"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
