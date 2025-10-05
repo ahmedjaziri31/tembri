@@ -261,15 +261,15 @@ export default function ProductDetailsPage() {
           {/* Content Overlay */}
           <div className="relative z-10 w-full h-full flex flex-col px-6 lg:px-8 pt-32 pb-0">
             {/* Mobile Layout - Stacked Content */}
-            <div className="lg:hidden flex flex-col justify-end h-full pb-8">
-              <div className="mb-6">
-                <h1 className="text-4xl sm:text-5xl font-heading font-bold text-white mb-2 leading-none text-left">
+            <div className="lg:hidden flex flex-col justify-end h-full pb-2">
+              <div className="mb-4">
+                <h1 className="text-4xl sm:text-5xl font-heading font-bold text-white mb-1 leading-none text-left">
                   {project.title}
                 </h1>
-                <p className="text-lg sm:text-xl text-gray-200 font-body font-light text-left mb-4">
+                <p className="text-lg sm:text-xl text-gray-200 font-body font-light text-left mb-2">
                   {project.subtitle}
                 </p>
-                <p className="text-base sm:text-lg text-gray-200 font-body font-light leading-relaxed text-left mb-6">
+                <p className="text-base sm:text-lg text-gray-200 font-body font-light leading-relaxed text-left mb-4">
                   {project.description}
                 </p>
               </div>
