@@ -19,6 +19,18 @@ export default function LocationPage() {
       image: 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=800&h=1200&fit=crop'
     },
     {
+      id: 'paris',
+      name: 'Paris',
+      address: 'Paris, France',
+      image: 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=800&h=1200&fit=crop'
+    },
+    {
+      id: 'amsterdam',
+      name: 'Amsterdam',
+      address: 'Amsterdam, Netherlands',
+      image: 'https://images.unsplash.com/photo-1534351590666-13e3e96b5017?w=800&h=1200&fit=crop'
+    },
+    {
       id: 'doha',
       name: 'Doha', 
       address: '17th Floor, Office 16, Tornado Tower, West Bay, Doha, Qatar',
