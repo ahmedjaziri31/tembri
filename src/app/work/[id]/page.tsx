@@ -260,8 +260,8 @@ export default function ProductDetailsPage() {
 
           {/* Content Overlay */}
           <div className="relative z-10 w-full h-full flex flex-col px-6 lg:px-8 pt-32 pb-16">
-            {/* Title and Subtitle - Left Aligned */}
-            <div className="flex-1 flex flex-col justify-center max-w-2xl">
+            {/* Title and Subtitle - Bottom Left */}
+            <div className="flex-1 flex flex-col justify-end max-w-2xl">
               <div className="mb-8">
                 <h1 className="text-5xl lg:text-7xl xl:text-8xl font-heading font-bold text-white mb-4 leading-none text-left">
                   {project.title}
@@ -272,7 +272,7 @@ export default function ProductDetailsPage() {
               </div>
 
               {/* Description */}
-              <p className="text-lg lg:text-xl text-gray-200 font-body font-light leading-relaxed max-w-xl text-left">
+              <p className="text-lg lg:text-xl text-gray-200 font-body font-light leading-relaxed max-w-xl text-left mb-8">
                 {project.description}
               </p>
             </div>
