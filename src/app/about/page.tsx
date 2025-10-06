@@ -898,68 +898,61 @@ export default function AboutPage() {
               </p>
             </div>
 
-            {/* Partner Logos - Flowing Layout */}
-            <div className="flex flex-wrap items-center justify-center gap-6 lg:gap-12 max-w-6xl mx-auto">
-              {/* Top Row */}
-              <div className="flex flex-wrap items-center justify-center gap-6 lg:gap-8 w-full">
-                <div className="flex items-center justify-center">
-                  <Image
-                    src="/Partner%20Logos/meta.png"
-                    alt="Meta Business Partner"
-                    width={280}
-                    height={90}
-                    className="w-auto h-16 lg:h-20 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
-                  />
-                </div>
-                <div className="flex items-center justify-center">
-                  <Image
-                    src="/Partner%20Logos/tiktok%20for%20business.png"
-                    alt="TikTok Marketing Partner"
-                    width={280}
-                    height={90}
-                    className="w-auto h-16 lg:h-20 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
-                  />
-                </div>
-                <div className="flex items-center justify-center">
-                  <Image
-                    src="/Partner%20Logos/tiktok%20partner.png"
-                    alt="TikTok Creative Partner"
-                    width={280}
-                    height={90}
-                    className="w-auto h-16 lg:h-20 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
-                  />
-                </div>
-                <div className="flex items-center justify-center">
-                  <Image
-                    src="/Partner%20Logos/amazon.png"
-                    alt="Amazon Ads Verified Partner"
-                    width={280}
-                    height={90}
-                    className="w-auto h-16 lg:h-20 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
-                  />
-                </div>
+            {/* Partner Logos - Responsive Single Line on Desktop */}
+            <div className="flex flex-wrap items-center justify-center gap-4 md:gap-6 lg:gap-8 max-w-7xl mx-auto">
+              <div className="flex items-center justify-center">
+                <Image
+                  src="/Partner%20Logos/meta.png"
+                  alt="Meta Business Partner"
+                  width={280}
+                  height={90}
+                  className="w-auto h-12 md:h-14 lg:h-16 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
+                />
               </div>
-              
-              {/* Bottom Row */}
-              <div className="flex flex-wrap items-center justify-center gap-6 lg:gap-8 w-full mt-4">
-                <div className="flex items-center justify-center">
-                  <Image
-                    src="/Partner%20Logos/google%20marketing.png"
-                    alt="Google Marketing Platform Certified"
-                    width={280}
-                    height={70}
-                    className="w-auto h-14 lg:h-16 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
-                  />
-                </div>
-                <div className="flex items-center justify-center">
-                  <Image
-                    src="/Partner%20Logos/google-cloud.png"
-                    alt="Google Partner"
-                    width={160}
-                    height={60}
-                    className="w-auto h-12 lg:h-14 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
-                  />
-                </div>
+              <div className="flex items-center justify-center">
+                <Image
+                  src="/Partner%20Logos/tiktok%20for%20business.png"
+                  alt="TikTok Marketing Partner"
+                  width={280}
+                  height={90}
+                  className="w-auto h-12 md:h-14 lg:h-16 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
+                />
+              </div>
+              <div className="flex items-center justify-center">
+                <Image
+                  src="/Partner%20Logos/tiktok%20partner.png"
+                  alt="TikTok Creative Partner"
+                  width={280}
+                  height={90}
+                  className="w-auto h-12 md:h-14 lg:h-16 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
+                />
+              </div>
+              <div className="flex items-center justify-center">
+                <Image
+                  src="/Partner%20Logos/amazon.png"
+                  alt="Amazon Ads Verified Partner"
+                  width={280}
+                  height={90}
+                  className="w-auto h-12 md:h-14 lg:h-16 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
+                />
+              </div>
+              <div className="flex items-center justify-center">
+                <Image
+                  src="/Partner%20Logos/google%20marketing.png"
+                  alt="Google Marketing Platform Certified"
+                  width={280}
+                  height={70}
+                  className="w-auto h-12 md:h-14 lg:h-16 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
+                />
+              </div>
+              <div className="flex items-center justify-center">
+                <Image
+                  src="/Partner%20Logos/google-cloud.png"
+                  alt="Google Partner"
+                  width={280}
+                  height={70}
+                  className="w-auto h-10 md:h-12 lg:h-14 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
+                />
               </div>
             </div>
           </div>
