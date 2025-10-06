@@ -760,8 +760,8 @@ export default function HomePage() {
           id="firstSectionGradient"
           className="absolute inset-0 z-0 bg-gradient-to-b from-transparent via-[#336b62] to-transparent opacity-0"
           style={{
-            top: '20%',
-            height: '60%'
+            top: '0%',
+            height: '100%'
           }}
         ></div>
 
