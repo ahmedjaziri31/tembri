@@ -177,16 +177,23 @@ export default function CRMPage() {
   const handleDeleteCustomer = async () => {
     if (!selectedCustomer) return
     
+    setIsProcessing(selectedCustomer._id)
+    
     try {
       await crmApi.delete(selectedCustomer._id)
-      setCustomers(customers.filter(customer => customer._id !== selectedCustomer._id))
       setShowDeleteModal(false)
       setSelectedCustomer(null)
       setSuccessMessage('Customer deleted successfully')
       setTimeout(() => setSuccessMessage(null), 3000)
+      
+      // Refresh the customer list from API
+      await fetchCustomers()
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : 'Failed to delete customer')
+      setShowDeleteModal(false)
       setTimeout(() => setError(null), 3000)
+    } finally {
+      setIsProcessing(null)
     }
   }
 
@@ -598,11 +605,19 @@ Sales Team`)
                 Are you sure you want to delete &ldquo;{selectedCustomer.displayName || `${selectedCustomer.firstName || ''} ${selectedCustomer.lastName || ''}`.trim() || 'this customer'}&rdquo; from {selectedCustomer.companyName || 'their company'}? This action cannot be undone and will remove all interaction history.
               </p>
               <div className="flex justify-end gap-3">
-                <Button variant="outline" onClick={() => setShowDeleteModal(false)}>
+                <Button 
+                  variant="outline" 
+                  onClick={() => setShowDeleteModal(false)}
+                  disabled={isProcessing === selectedCustomer._id}
+                >
                   Cancel
                 </Button>
-                <Button variant="destructive" onClick={handleDeleteCustomer}>
-                  Delete
+                <Button 
+                  variant="destructive" 
+                  onClick={handleDeleteCustomer}
+                  disabled={isProcessing === selectedCustomer._id}
+                >
+                  {isProcessing === selectedCustomer._id ? 'Deleting...' : 'Delete'}
                 </Button>
               </div>
             </div>
