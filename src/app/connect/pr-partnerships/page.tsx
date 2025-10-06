@@ -4,6 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import Header from '../../../components/Header'
 import Footer from '../../../components/Footer'
+import { crmApi } from '../../../lib/api'
 
 export default function PRPartnershipsPage() {
   const [formData, setFormData] = useState({
@@ -20,6 +21,12 @@ export default function PRPartnershipsPage() {
     receiveInfo: false,
     agreeTerms: false
   })
+  
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitStatus, setSubmitStatus] = useState<{
+    type: 'success' | 'error' | null
+    message: string
+  }>({ type: null, message: '' })
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target
@@ -37,10 +44,75 @@ export default function PRPartnershipsPage() {
     }
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // Handle form submission
-    console.log('PR & Partnerships form submitted:', formData)
+    setIsSubmitting(true)
+    setSubmitStatus({ type: null, message: '' })
+    
+    try {
+      // Determine priority based on budget
+      let priority = 'medium'
+      if (formData.budget === '500k-plus' || formData.budget === '100k-500k') {
+        priority = 'high'
+      } else if (formData.budget === 'under-10k') {
+        priority = 'low'
+      }
+      
+      // Prepare CRM data
+      const crmData = {
+        type: formData.company ? 'company' : 'individual',
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        companyName: formData.company || undefined,
+        email: formData.email,
+        source: 'website-pr-partnerships',
+        tags: ['pr-partnerships', 'partnership-inquiry', formData.inquiryType].filter(Boolean),
+        priority,
+        customFields: [
+          { name: 'Job Title', value: formData.jobTitle, type: 'text' },
+          { name: 'Inquiry Type', value: formData.inquiryType, type: 'text' },
+          { name: 'Partnership Type', value: formData.partnershipType, type: 'text' },
+          { name: 'Budget Range', value: formData.budget, type: 'text' },
+          { name: 'Timeline', value: formData.timeline, type: 'text' },
+          { name: 'Receive Info', value: formData.receiveInfo ? 'Yes' : 'No', type: 'text' }
+        ].filter(field => field.value),
+        notes: formData.message || 'No message provided',
+        lifecycle: {
+          stage: 'interest',
+          temperature: priority === 'high' ? 'hot' : 'warm'
+        }
+      }
+
+      await crmApi.create(crmData)
+      
+      setSubmitStatus({
+        type: 'success',
+        message: 'Thank you for your partnership inquiry! Our team will review your submission and contact you soon.'
+      })
+      
+      // Reset form
+      setFormData({
+        firstName: '',
+        lastName: '',
+        company: '',
+        email: '',
+        jobTitle: '',
+        inquiryType: '',
+        partnershipType: '',
+        budget: '',
+        timeline: '',
+        message: '',
+        receiveInfo: false,
+        agreeTerms: false
+      })
+    } catch (error) {
+      setSubmitStatus({
+        type: 'error',
+        message: error instanceof Error ? error.message : 'Failed to submit form. Please try again.'
+      })
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
@@ -74,6 +146,17 @@ export default function PRPartnershipsPage() {
               and let's discuss how we can collaborate to create something extraordinary together.
             </p>
           </div>
+
+          {/* Status Message */}
+          {submitStatus.type && (
+            <div className={`p-4 rounded-lg mb-6 ${
+              submitStatus.type === 'success' 
+                ? 'bg-green-900/30 border border-green-500 text-green-300' 
+                : 'bg-red-900/30 border border-red-500 text-red-300'
+            }`}>
+              {submitStatus.message}
+            </div>
+          )}
 
           {/* Contact Form */}
           <form onSubmit={handleSubmit} className="space-y-8">
@@ -296,9 +379,10 @@ export default function PRPartnershipsPage() {
             <div className="flex justify-end pt-6">
               <button
                 type="submit"
-                className="bg-[#336b62] hover:bg-[#2a5751] text-white px-12 py-3 rounded-full transition-colors duration-300 font-body font-medium"
+                disabled={isSubmitting}
+                className="bg-[#336b62] hover:bg-[#2a5751] disabled:bg-gray-600 disabled:cursor-not-allowed text-white px-12 py-3 rounded-full transition-colors duration-300 font-body font-medium"
               >
-                Submit Partnership Inquiry
+                {isSubmitting ? 'Submitting...' : 'Submit Partnership Inquiry'}
               </button>
             </div>
           </form>

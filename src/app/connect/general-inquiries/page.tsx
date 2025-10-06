@@ -4,6 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import Header from '../../../components/Header'
 import Footer from '../../../components/Footer'
+import { crmApi } from '../../../lib/api'
 
 export default function GeneralInquiriesPage() {
   const [formData, setFormData] = useState({
@@ -17,6 +18,12 @@ export default function GeneralInquiriesPage() {
     receiveInfo: false,
     agreeTerms: false
   })
+  
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitStatus, setSubmitStatus] = useState<{
+    type: 'success' | 'error' | null
+    message: string
+  }>({ type: null, message: '' })
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value, type } = e.target
@@ -34,10 +41,61 @@ export default function GeneralInquiriesPage() {
     }
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // Handle form submission
-    console.log('Form submitted:', formData)
+    setIsSubmitting(true)
+    setSubmitStatus({ type: null, message: '' })
+    
+    try {
+      // Prepare CRM data
+      const crmData = {
+        type: formData.company ? 'company' : 'individual',
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        companyName: formData.company || undefined,
+        email: formData.email,
+        source: 'website-general-inquiry',
+        tags: ['general-inquiry', 'contact-form'],
+        priority: 'medium',
+        customFields: [
+          { name: 'Job Title', value: formData.jobTitle, type: 'text' },
+          { name: 'Market', value: formData.market, type: 'text' },
+          { name: 'Receive Info', value: formData.receiveInfo ? 'Yes' : 'No', type: 'text' }
+        ],
+        notes: formData.message || 'No message provided',
+        lifecycle: {
+          stage: 'awareness',
+          temperature: 'cold'
+        }
+      }
+
+      await crmApi.create(crmData)
+      
+      setSubmitStatus({
+        type: 'success',
+        message: 'Thank you for reaching out! We\'ll get back to you shortly.'
+      })
+      
+      // Reset form
+      setFormData({
+        firstName: '',
+        lastName: '',
+        company: '',
+        email: '',
+        jobTitle: '',
+        market: '',
+        message: '',
+        receiveInfo: false,
+        agreeTerms: false
+      })
+    } catch (error) {
+      setSubmitStatus({
+        type: 'error',
+        message: error instanceof Error ? error.message : 'Failed to submit form. Please try again.'
+      })
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
@@ -71,6 +129,17 @@ export default function GeneralInquiriesPage() {
               if there's an immediate opportunity within the agency.
             </p>
           </div>
+
+          {/* Status Message */}
+          {submitStatus.type && (
+            <div className={`p-4 rounded-lg mb-6 ${
+              submitStatus.type === 'success' 
+                ? 'bg-green-900/30 border border-green-500 text-green-300' 
+                : 'bg-red-900/30 border border-red-500 text-red-300'
+            }`}>
+              {submitStatus.message}
+            </div>
+          )}
 
           {/* Contact Form */}
           <form onSubmit={handleSubmit} className="space-y-8">
@@ -221,9 +290,10 @@ export default function GeneralInquiriesPage() {
             <div className="flex justify-end pt-6">
               <button
                 type="submit"
-                className="bg-[#336b62] hover:bg-[#2a5751] text-white px-12 py-3 rounded-full transition-colors duration-300 font-body font-medium"
+                disabled={isSubmitting}
+                className="bg-[#336b62] hover:bg-[#2a5751] disabled:bg-gray-600 disabled:cursor-not-allowed text-white px-12 py-3 rounded-full transition-colors duration-300 font-body font-medium"
               >
-                Submit
+                {isSubmitting ? 'Submitting...' : 'Submit'}
               </button>
             </div>
           </form>
