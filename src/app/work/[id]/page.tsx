@@ -1,10 +1,11 @@
 'use client'
 
 import { useParams } from 'next/navigation'
-import React from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import Header from '../../../components/Header'
 import Footer from '../../../components/Footer'
 import Image from 'next/image'
+import CountUp from '../../../components/CountUp'
 
 // Project data
 const projectsData = {
@@ -193,6 +194,33 @@ export default function ProductDetailsPage() {
   const projectId = params?.id as string
   
   const project = projectsData[projectId as keyof typeof projectsData]
+  
+  // State for count-up animation trigger
+  const [statsInView, setStatsInView] = useState(false)
+  const statsRef = useRef<HTMLDivElement>(null)
+
+  // Detect when stats section comes into view
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !statsInView) {
+          setStatsInView(true)
+        }
+      },
+      { threshold: 0.3 }
+    )
+
+    const currentRef = statsRef.current
+    if (currentRef) {
+      observer.observe(currentRef)
+    }
+
+    return () => {
+      if (currentRef) {
+        observer.unobserve(currentRef)
+      }
+    }
+  }, [statsInView])
 
   // Fallback if project not found
   if (!project) {
@@ -422,13 +450,13 @@ export default function ProductDetailsPage() {
           <div className="max-w-7xl mx-auto">
             {/* Performance Metrics - Top Section */}
             {project.details.results && (
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12 mb-16">
+              <div ref={statsRef} className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12 mb-16">
                 {projectId === '1' ? (
                   // Under Armour specific layout
                   <>
                     <div className="text-center">
                       <h3 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-heading font-bold text-white mb-4">
-                        +3.2X
+                        +<CountUp end={3.2} decimals={1} suffix="X" trigger={statsInView} />
                       </h3>
                       <p className="text-base sm:text-lg lg:text-xl font-body">
                         <span className="text-gray-300">in product page </span>
@@ -437,7 +465,7 @@ export default function ProductDetailsPage() {
                     </div>
                     <div className="text-center">
                       <h3 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-heading font-bold text-white mb-4">
-                        -45%
+                        -<CountUp end={45} suffix="%" trigger={statsInView} />
                       </h3>
                       <p className="text-base sm:text-lg lg:text-xl font-body">
                         <span className="text-gray-300">in cart</span>
@@ -447,7 +475,7 @@ export default function ProductDetailsPage() {
                     </div>
                     <div className="text-center">
                       <h3 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-heading font-bold text-white mb-4">
-                        5.6X
+                        <CountUp end={5.6} decimals={1} suffix="X" trigger={statsInView} />
                       </h3>
                       <p className="text-base sm:text-lg lg:text-xl font-body">
                         <span style={{ color: '#5a9f98' }} className="font-bold">ROAS</span>
@@ -461,7 +489,7 @@ export default function ProductDetailsPage() {
                   <>
                     <div className="text-center">
                       <h3 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-heading font-bold text-white mb-4">
-                        6.4X
+                        <CountUp end={6.4} decimals={1} suffix="X" trigger={statsInView} />
                       </h3>
                       <p className="text-base sm:text-lg lg:text-xl font-body">
                         <span style={{ color: '#5a9f98' }} className="font-bold">ROAS </span>
@@ -470,7 +498,7 @@ export default function ProductDetailsPage() {
                     </div>
                     <div className="text-center">
                       <h3 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-heading font-bold text-white mb-4">
-                        2.1X
+                        <CountUp end={2.1} decimals={1} suffix="X" trigger={statsInView} />
                       </h3>
                       <p className="text-base sm:text-lg lg:text-xl font-body">
                         <span className="text-gray-300">higher </span>
@@ -482,7 +510,7 @@ export default function ProductDetailsPage() {
                     </div>
                     <div className="text-center">
                       <h3 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-heading font-bold text-white mb-4">
-                        +27%
+                        +<CountUp end={27} suffix="%" trigger={statsInView} />
                       </h3>
                       <p className="text-base sm:text-lg lg:text-xl font-body">
                         <span style={{ color: '#5a9f98' }} className="font-bold">new customer</span>
@@ -496,7 +524,7 @@ export default function ProductDetailsPage() {
                   <>
                     <div className="text-center">
                       <h3 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-heading font-bold text-white mb-4">
-                        +41%
+                        +<CountUp end={41} suffix="%" trigger={statsInView} />
                       </h3>
                       <p className="text-base sm:text-lg lg:text-xl font-body">
                         <span className="text-gray-300">in </span>
@@ -505,7 +533,7 @@ export default function ProductDetailsPage() {
                     </div>
                     <div className="text-center">
                       <h3 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-heading font-bold text-white mb-4">
-                        +12%
+                        +<CountUp end={12} suffix="%" trigger={statsInView} />
                       </h3>
                       <p className="text-base sm:text-lg lg:text-xl font-body">
                         <span style={{ color: '#5a9f98' }} className="font-bold">order value</span>
@@ -517,7 +545,7 @@ export default function ProductDetailsPage() {
                     </div>
                     <div className="text-center">
                       <h3 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-heading font-bold text-white mb-4">
-                        +9%
+                        +<CountUp end={9} suffix="%" trigger={statsInView} />
                       </h3>
                       <p className="text-base sm:text-lg lg:text-xl font-body">
                         <span className="text-gray-300">in BLS</span>
@@ -529,7 +557,7 @@ export default function ProductDetailsPage() {
                   <>
                     <div className="text-center">
                       <h3 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-heading font-bold text-white mb-4">
-                        3.9X
+                        <CountUp end={3.9} decimals={1} suffix="X" trigger={statsInView} />
                       </h3>
                       <p className="text-base sm:text-lg lg:text-xl font-body">
                         <span style={{ color: '#5a9f98' }} className="font-bold">global sales increase</span>
@@ -539,10 +567,9 @@ export default function ProductDetailsPage() {
                     </div>
                     <div className="text-center">
                       <h3 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-heading font-bold text-white mb-4">
-                        Market
+                        <CountUp end={2} suffix="" trigger={statsInView} />
                       </h3>
                       <p className="text-base sm:text-lg lg:text-xl font-body">
-                        <span className="text-gray-300">2 </span>
                         <span style={{ color: '#5a9f98' }} className="font-bold">new markets opened</span>
                         <br className="hidden sm:block" />
                         <span className="text-gray-300">(UK & Malaysia)</span>
@@ -550,7 +577,7 @@ export default function ProductDetailsPage() {
                 </div>
                     <div className="text-center">
                       <h3 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-heading font-bold text-white mb-4">
-                        16.7M
+                        <CountUp end={16.7} decimals={1} suffix="M" trigger={statsInView} />
                       </h3>
                       <p className="text-base sm:text-lg lg:text-xl font-body">
                         <span style={{ color: '#5a9f98' }} className="font-bold">views </span>
@@ -563,7 +590,7 @@ export default function ProductDetailsPage() {
                   <>
                     <div className="text-center">
                       <h3 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-heading font-bold text-white mb-4">
-                        +23%
+                        +<CountUp end={23} suffix="%" trigger={statsInView} />
                       </h3>
                       <p className="text-base sm:text-lg lg:text-xl font-body">
                         <span className="text-gray-300">in dermatologist</span>
@@ -574,7 +601,7 @@ export default function ProductDetailsPage() {
                     </div>
                     <div className="text-center">
                       <h3 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-heading font-bold text-white mb-4">
-                        Top 3
+                        Top <CountUp end={3} suffix="" trigger={statsInView} />
                       </h3>
                       <p className="text-base sm:text-lg lg:text-xl font-body">
                         <span className="text-gray-300">ranking on </span>
@@ -587,7 +614,7 @@ export default function ProductDetailsPage() {
                     </div>
                     <div className="text-center">
                       <h3 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-heading font-bold text-white mb-4">
-                        +42%
+                        +<CountUp end={42} suffix="%" trigger={statsInView} />
                       </h3>
                       <p className="text-base sm:text-lg lg:text-xl font-body">
                         <span className="text-gray-300">in </span>
@@ -602,7 +629,7 @@ export default function ProductDetailsPage() {
                   <>
                     <div className="text-center">
                       <h3 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-heading font-bold text-white mb-4">
-                        +32%
+                        +<CountUp end={32} suffix="%" trigger={statsInView} />
                       </h3>
                       <p className="text-base sm:text-lg lg:text-xl font-body">
                         <span className="text-gray-300">increase in </span>
@@ -611,7 +638,7 @@ export default function ProductDetailsPage() {
                       </div>
                     <div className="text-center">
                       <h3 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-heading font-bold text-white mb-4">
-                        -18%
+                        -<CountUp end={18} suffix="%" trigger={statsInView} />
                       </h3>
                       <p className="text-base sm:text-lg lg:text-xl font-body">
                         <span className="text-gray-300">in cost per</span>
@@ -621,7 +648,7 @@ export default function ProductDetailsPage() {
                     </div>
                     <div className="text-center">
                       <h3 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-heading font-bold text-white mb-4">
-                        25M
+                        <CountUp end={25} suffix="M" trigger={statsInView} />
                       </h3>
                       <p className="text-base sm:text-lg lg:text-xl font-body">
                         <span style={{ color: '#5a9f98' }} className="font-bold">impressions</span>
