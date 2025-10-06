@@ -26,7 +26,6 @@ export default function Footer() {
             <div className="space-y-2 sm:space-y-3 text-sm sm:text-base text-gray-300 mb-4 sm:mb-6">
               <a href="mailto:hello@maisonelaris.com" className="hover:text-white transition-colors break-all sm:break-normal block cursor-pointer">hello@maisonelaris.com</a>
               <a href="tel:+33186760010" className="hover:text-white transition-colors block cursor-pointer">+971 55 76 33 614</a>
-              <p className="hover:text-white transition-colors text-xs sm:text-sm">Mon–Fri | 9:00 – 18:00 CET</p>
             </div>
 
             {/* PR & Partnerships */}
@@ -62,7 +61,7 @@ export default function Footer() {
         <div className="flex flex-col lg:flex-row justify-between items-center pt-8 sm:pt-12 border-t border-gray-700">
           {/* Copyright */}
           <div className="mb-4 sm:mb-6 lg:mb-0">
-            <p className="text-xs sm:text-sm text-gray-400">Tembri rights / 2025</p>
+            <p className="text-xs sm:text-sm text-gray-400">maison elaris rights</p>
           </div>
 
           {/* Social Links */}

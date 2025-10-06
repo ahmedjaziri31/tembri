@@ -912,7 +912,7 @@ export default function HomePage() {
                 LATEST<br />PROJECTS
               </h2>
             </div>
-            <Link href="/projects">
+            <Link href="/work">
               <button className="bg-[#336b62] hover:bg-[#9b8075] text-white px-6 py-3 rounded-lg transition-colors duration-300 font-body font-medium">
               See What We Do
             </button>
@@ -1306,7 +1306,7 @@ export default function HomePage() {
                     GET IN CONTACT
                   </button>
                 </Link>
-                <Link href="/contact/careers">
+                <Link href="/connect/careers">
                           <button className="bg-transparent border-2 border-[#336b62] hover:bg-[#336b62] text-[#336b62] hover:text-white px-6 py-3 rounded-lg transition-colors duration-300 font-body font-medium">
                     VIEW CAREERS
                   </button>

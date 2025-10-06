@@ -155,7 +155,7 @@ export default function ScrollVideoSection() {
               
               {/* Contact Button */}
               <div className="pt-4">
-                <Link href="/contact">
+                <Link href="/connect/general-inquiries">
                   <button className="bg-[#ffe9c7] hover:bg-white text-[#336b62] px-8 py-4 rounded-full transition-colors duration-300 font-body font-bold text-lg">
                     CONTACT US
                   </button>
@@ -203,7 +203,7 @@ export default function ScrollVideoSection() {
               
               {/* Contact Button */}
               <div className="pt-4">
-                <Link href="/contact">
+                <Link href="/connect/general-inquiries">
                   <button className="bg-[#ffe9c7] hover:bg-white text-[#336b62] px-8 py-4 rounded-full transition-colors duration-300 font-body font-bold text-lg">
                     CONTACT US
                   </button>
@@ -250,7 +250,7 @@ export default function ScrollVideoSection() {
               
               {/* Contact Button */}
               <div className="pt-4">
-                <Link href="/contact">
+                <Link href="/connect/general-inquiries">
                   <button className="bg-[#ffe9c7] hover:bg-white text-[#336b62] px-8 py-4 rounded-full transition-colors duration-300 font-body font-bold text-lg">
                     CONTACT US
                   </button>
@@ -298,7 +298,7 @@ export default function ScrollVideoSection() {
               
               {/* Contact Button */}
               <div className="pt-4">
-                <Link href="/contact">
+                <Link href="/connect/general-inquiries">
                   <button className="bg-[#ffe9c7] hover:bg-white text-[#336b62] px-8 py-4 rounded-full transition-colors duration-300 font-body font-bold text-lg">
                     CONTACT US
                   </button>
@@ -346,7 +346,7 @@ export default function ScrollVideoSection() {
               
               {/* Contact Button */}
               <div className="pt-4">
-                <Link href="/contact">
+                <Link href="/connect/general-inquiries">
                   <button className="bg-[#ffe9c7] hover:bg-white text-[#336b62] px-8 py-4 rounded-full transition-colors duration-300 font-body font-bold text-lg">
                     CONTACT US
                   </button>

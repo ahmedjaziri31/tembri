@@ -263,7 +263,7 @@ export default function ProductDetailsPage() {
             {/* Mobile Layout - Stacked Content */}
             <div className="lg:hidden flex flex-col justify-end h-full pb-0 -mb-16">
               <div className="-mb-20">
-                <h1 className="text-4xl sm:text-5xl font-heading font-bold text-white mb-0 leading-none text-left">
+                <h1 className="text-3xl sm:text-4xl font-heading font-bold text-white mb-0 leading-none text-left">
                   {project.title}
                 </h1>
                 <p className="text-lg sm:text-xl text-gray-200 font-body font-light text-left mb-2">

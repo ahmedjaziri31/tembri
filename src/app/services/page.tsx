@@ -415,7 +415,7 @@ export default function ServicesPage() {
             </div>
 
             {/* Contact Button */}
-            <Link href="/connect">
+            <Link href="/connect/general-inquiries">
               <button 
                 ref={contactButtonRef}
                 className="bg-[#336b62] hover:bg-[#9b8075] text-white px-8 py-4 rounded-lg transition-all duration-300 font-body font-medium text-lg transform hover:scale-105 hover:shadow-2xl"
@@ -585,7 +585,7 @@ export default function ServicesPage() {
                           </p>
                         </div>
                         
-                        <Link href="/connect">
+                        <Link href="/connect/general-inquiries">
                           <button className="bg-[#336b62] hover:bg-[#9b8075] text-white px-6 py-3 rounded-lg transition-all duration-300 font-body font-medium">
                             CONTACT US
                           </button>
@@ -681,7 +681,7 @@ export default function ServicesPage() {
                           </p>
                         </div>
                         
-                        <Link href="/connect">
+                        <Link href="/connect/general-inquiries">
                           <button className="bg-[#336b62] hover:bg-[#9b8075] text-white px-6 py-3 rounded-lg transition-all duration-300 font-body font-medium">
                             CONTACT US
                           </button>
@@ -773,7 +773,7 @@ export default function ServicesPage() {
                           </p>
                         </div>
                         
-                        <Link href="/connect">
+                        <Link href="/connect/general-inquiries">
                           <button className="bg-[#336b62] hover:bg-[#9b8075] text-white px-6 py-3 rounded-lg transition-all duration-300 font-body font-medium">
                             CONTACT US
                           </button>
@@ -869,7 +869,7 @@ export default function ServicesPage() {
                           </p>
                         </div>
                         
-                        <Link href="/connect">
+                        <Link href="/connect/general-inquiries">
                           <button className="bg-[#336b62] hover:bg-[#9b8075] text-white px-6 py-3 rounded-lg transition-all duration-300 font-body font-medium">
                             CONTACT US
                           </button>
@@ -965,7 +965,7 @@ export default function ServicesPage() {
                           </p>
                         </div>
                         
-                        <Link href="/connect">
+                        <Link href="/connect/general-inquiries">
                           <button className="bg-[#336b62] hover:bg-[#9b8075] text-white px-6 py-3 rounded-lg transition-all duration-300 font-body font-medium">
                             CONTACT US
                           </button>
