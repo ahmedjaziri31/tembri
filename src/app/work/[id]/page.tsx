@@ -708,7 +708,7 @@ export default function ProductDetailsPage() {
                   </div>
                   
                   {/* Mid Video */}
-                  <div className="relative overflow-hidden rounded-2xl">
+                  <div className="relative overflow-hidden rounded-2xl bg-gray-900">
                     <video
                       src="/work/project 4/mid.mp4"
                       className="w-full h-full object-cover rounded-2xl"
@@ -716,6 +716,7 @@ export default function ProductDetailsPage() {
                       loop
                       muted
                       playsInline
+                      preload="auto"
                     />
                   </div>
                   
@@ -734,7 +735,7 @@ export default function ProductDetailsPage() {
                 
                 {/* Mobile: Only mid video */}
                 <div className="block md:hidden relative max-w-xs mx-auto">
-                  <div className="relative overflow-hidden rounded-2xl">
+                  <div className="relative overflow-hidden rounded-2xl bg-gray-900">
                     <video
                       src="/work/project 4/mid.mp4"
                       className="w-full h-auto object-cover rounded-2xl"
@@ -742,6 +743,7 @@ export default function ProductDetailsPage() {
                       loop
                       muted
                       playsInline
+                      preload="auto"
                     />
                   </div>
                 </div>
