@@ -25,7 +25,7 @@ export default function Footer() {
             {/* Main Contact */}
             <div className="space-y-2 sm:space-y-3 text-sm sm:text-base text-gray-300 mb-4 sm:mb-6">
               <a href="mailto:hello@maisonelaris.com" className="hover:text-white transition-colors break-all sm:break-normal block cursor-pointer">hello@maisonelaris.com</a>
-              <a href="tel:+33186760010" className="hover:text-white transition-colors block cursor-pointer">+971 55 76 33 614</a>
+              <a href="tel:+971557633614" className="hover:text-white transition-colors block cursor-pointer">+971 55 76 33 614</a>
             </div>
 
             {/* PR & Partnerships */}
