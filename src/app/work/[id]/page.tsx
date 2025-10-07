@@ -694,24 +694,24 @@ export default function ProductDetailsPage() {
               // Special layout for Project 4 - Estée Lauder
               <>
                 {/* Desktop: 3 media assets side by side */}
-                <div className="hidden md:grid md:grid-cols-3 gap-6 lg:gap-8 max-w-7xl mx-auto">
+                <div className="hidden md:grid md:grid-cols-3 gap-4 lg:gap-6 max-w-4xl mx-auto">
                   {/* Left Image */}
-                  <div className="relative overflow-hidden rounded-3xl">
+                  <div className="relative overflow-hidden rounded-2xl">
                     <Image
                       src="/work/project 4/left.png"
                       alt="Estée Lauder Campaign Left"
-                      width={400}
-                      height={600}
+                      width={300}
+                      height={450}
                       className="w-full h-auto object-contain"
                       priority
                     />
                   </div>
                   
                   {/* Mid Video */}
-                  <div className="relative overflow-hidden rounded-3xl">
+                  <div className="relative overflow-hidden rounded-2xl">
                     <video
                       src="/work/project 4/mid.mp4"
-                      className="w-full h-full object-cover rounded-3xl"
+                      className="w-full h-full object-cover rounded-2xl"
                       autoPlay
                       loop
                       muted
@@ -720,12 +720,12 @@ export default function ProductDetailsPage() {
                   </div>
                   
                   {/* Right Image */}
-                  <div className="relative overflow-hidden rounded-3xl">
+                  <div className="relative overflow-hidden rounded-2xl">
                     <Image
                       src="/work/project 4/right.png"
                       alt="Estée Lauder Campaign Right"
-                      width={400}
-                      height={600}
+                      width={300}
+                      height={450}
                       className="w-full h-auto object-contain"
                       priority
                     />
@@ -733,11 +733,11 @@ export default function ProductDetailsPage() {
                 </div>
                 
                 {/* Mobile: Only mid video */}
-                <div className="block md:hidden relative max-w-lg mx-auto">
-                  <div className="relative overflow-hidden rounded-3xl">
+                <div className="block md:hidden relative max-w-xs mx-auto">
+                  <div className="relative overflow-hidden rounded-2xl">
                     <video
                       src="/work/project 4/mid.mp4"
-                      className="w-full h-auto object-cover rounded-3xl"
+                      className="w-full h-auto object-cover rounded-2xl"
                       autoPlay
                       loop
                       muted
