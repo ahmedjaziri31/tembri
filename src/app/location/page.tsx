@@ -22,15 +22,15 @@ export default function LocationPage() {
     },
     {
       id: 'paris',
-      name: 'Paris',
-      address: 'Paris, France',
+      name: 'France',
+      address: '33 Rue La Fayette, 75009 Paris, France',
       image: 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=800&h=1200&fit=crop',
       mapLink: 'https://maps.app.goo.gl/nPk8xkaYcnkiGUih9?g_st=ipc'
     },
     {
       id: 'amsterdam',
-      name: 'Amsterdam',
-      address: 'Amsterdam, Netherlands',
+      name: 'Netherlands',
+      address: 'Wibautstraat 131D, 1091 GL Amsterdam',
       image: 'https://images.unsplash.com/photo-1534351590666-13e3e96b5017?w=800&h=1200&fit=crop',
       mapLink: 'https://maps.app.goo.gl/Lfw5WARbKcNdL7o28?g_st=ipc'
     },
