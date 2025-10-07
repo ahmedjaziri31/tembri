@@ -690,18 +690,77 @@ export default function ProductDetailsPage() {
             )}
 
             {/* Campaign Images */}
-            <div className="relative max-w-5xl mx-auto">
-              <div className="relative overflow-hidden rounded-3xl">
-                <Image
-                  src={projectId === '1' ? '/work/GS.png' : projectId === '2' ? '/work/MC.png' : projectId === '3' ? '/work/SA.png' : projectId === '5' ? '/work/NV.png' : projectId === '6' ? '/work/SM.png' : '/work/reel.png'}
-                  alt="Campaign Results"
-                  width={1200}
-                  height={600}
-                  className="w-full h-auto object-contain"
-                  priority
-                />
+            {projectId === '4' ? (
+              // Special layout for Project 4 - Estée Lauder
+              <>
+                {/* Desktop: 3 media assets side by side */}
+                <div className="hidden md:grid md:grid-cols-3 gap-6 lg:gap-8 max-w-7xl mx-auto">
+                  {/* Left Image */}
+                  <div className="relative overflow-hidden rounded-3xl">
+                    <Image
+                      src="/work/project 4/left.png"
+                      alt="Estée Lauder Campaign Left"
+                      width={400}
+                      height={600}
+                      className="w-full h-auto object-contain"
+                      priority
+                    />
+                  </div>
+                  
+                  {/* Mid Video */}
+                  <div className="relative overflow-hidden rounded-3xl">
+                    <video
+                      src="/work/project 4/mid.mp4"
+                      className="w-full h-full object-cover rounded-3xl"
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                    />
+                  </div>
+                  
+                  {/* Right Image */}
+                  <div className="relative overflow-hidden rounded-3xl">
+                    <Image
+                      src="/work/project 4/right.png"
+                      alt="Estée Lauder Campaign Right"
+                      width={400}
+                      height={600}
+                      className="w-full h-auto object-contain"
+                      priority
+                    />
+                  </div>
+                </div>
+                
+                {/* Mobile: Only mid video */}
+                <div className="block md:hidden relative max-w-lg mx-auto">
+                  <div className="relative overflow-hidden rounded-3xl">
+                    <video
+                      src="/work/project 4/mid.mp4"
+                      className="w-full h-auto object-cover rounded-3xl"
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                    />
+                  </div>
+                </div>
+              </>
+            ) : (
+              // Default layout for other projects
+              <div className="relative max-w-5xl mx-auto">
+                <div className="relative overflow-hidden rounded-3xl">
+                  <Image
+                    src={projectId === '1' ? '/work/GS.png' : projectId === '2' ? '/work/MC.png' : projectId === '3' ? '/work/SA.png' : projectId === '5' ? '/work/NV.png' : projectId === '6' ? '/work/SM.png' : '/work/reel.png'}
+                    alt="Campaign Results"
+                    width={1200}
+                    height={600}
+                    className="w-full h-auto object-contain"
+                    priority
+                  />
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </section>
       </main>
