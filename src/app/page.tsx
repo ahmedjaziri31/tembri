@@ -83,7 +83,6 @@ export default function HomePage() {
     { src: "/companies/dyson-logo-png_seeklogo-498548.png", alt: "Dyson" },
     { src: "/companies/hitachi-logo-2048x868.png", alt: "Hitachi" },
     { src: "/companies/under_armour_logo1.png", alt: "Under Armour" },
-    { src: "/companies/estee-lauder-logo.png", alt: "ESTÉE LAUDER" },
     { src: "/companies/accenture-logo-2020-present.png", alt: "Accenture" },
     { src: "/companies/olay-logo.png", alt: "Olay" },
     { src: "/companies/51r+kopkmll._ac_sl1000_.png", alt: "McDonald's" },

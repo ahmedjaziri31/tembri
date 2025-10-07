@@ -1052,14 +1052,14 @@ export default function ServicesPage() {
             </div>
           </div>
 
-          {/* Book IOI Now Button */}
+          {/* Book Call Now Button */}
           <div className="text-center py-8 -mt-14">
             <div className="max-w-7xl mx-auto px-6">
-              <Link href="/connect">
+              <a href="https://calendly.com/hello-maisonelaris" target="_blank" rel="noopener noreferrer">
                 <button className="bg-[#336b62] hover:bg-[#9b8075] text-white px-12 py-4 rounded-full transition-all duration-300 font-body font-medium text-lg transform hover:scale-105 hover:shadow-2xl">
-                  BOOK IOI NOW
+                  Book Call Now!
                 </button>
-              </Link>
+              </a>
             </div>
           </div>
         </section>
