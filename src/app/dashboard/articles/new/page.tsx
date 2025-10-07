@@ -11,6 +11,7 @@ import { LoadingButton } from '../../../../components/ui/loading-button'
 import { ArrowLeft, Save, FileText, ChevronDown, AlertCircle, X, Upload, Image as ImageIcon } from 'lucide-react'
 import { articlesApi } from '../../../../lib/api'
 import Image from 'next/image'
+import RichTextEditor from '../../../../components/RichTextEditor'
 
 export default function NewArticlePage() {
   const router = useRouter()
@@ -194,18 +195,16 @@ export default function NewArticlePage() {
 
                 <div>
                   <Label htmlFor="content">Content *</Label>
-                  <Textarea
-                    id="content"
-                    value={formData.content}
-                    onChange={(e) => handleInputChange('content', e.target.value)}
-                    placeholder="Write your article content here..."
-                    required
-                    rows={12}
-                    className="mt-1"
-                  />
+                  <div className="mt-1">
+                    <RichTextEditor
+                      value={formData.content}
+                      onChange={(value) => handleInputChange('content', value)}
+                      placeholder="Write your article content here... Use the toolbar to format text with bold, headings, lists, and more."
+                    />
+                  </div>
                   {formData.content && (
-                    <p className="text-sm text-gray-500 mt-1">
-                      Estimated read time: {calculateReadTime(formData.content)} minutes
+                    <p className="text-sm text-gray-500 mt-2">
+                      Estimated read time: {calculateReadTime(formData.content.replace(/<[^>]*>/g, ''))} minutes
                     </p>
                   )}
                 </div>

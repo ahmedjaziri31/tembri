@@ -233,12 +233,178 @@ export default function ArticleDetailsPage() {
         {/* Article Content */}
         <section className="pb-20 lg:pb-32">
           <div className="max-w-4xl mx-auto px-6">
-            <div className="prose prose-lg prose-invert max-w-none">
+            <div className="article-content">
               <div 
                 className="text-gray-300 leading-relaxed"
                 dangerouslySetInnerHTML={{ __html: article.content }}
               />
             </div>
+            
+            <style jsx>{`
+              .article-content :global(h1) {
+                font-size: 2.5rem;
+                font-weight: 700;
+                color: #ffffff;
+                margin-top: 2rem;
+                margin-bottom: 1rem;
+                line-height: 1.2;
+                font-family: var(--font-heading);
+              }
+              
+              .article-content :global(h2) {
+                font-size: 2rem;
+                font-weight: 700;
+                color: #ffffff;
+                margin-top: 1.75rem;
+                margin-bottom: 0.875rem;
+                line-height: 1.3;
+                font-family: var(--font-heading);
+              }
+              
+              .article-content :global(h3) {
+                font-size: 1.5rem;
+                font-weight: 600;
+                color: #ffffff;
+                margin-top: 1.5rem;
+                margin-bottom: 0.75rem;
+                line-height: 1.4;
+                font-family: var(--font-heading);
+              }
+              
+              .article-content :global(h4) {
+                font-size: 1.25rem;
+                font-weight: 600;
+                color: #ffffff;
+                margin-top: 1.25rem;
+                margin-bottom: 0.625rem;
+                line-height: 1.5;
+              }
+              
+              .article-content :global(p) {
+                font-size: 1.125rem;
+                line-height: 1.75;
+                color: #d1d5db;
+                margin-bottom: 1rem;
+              }
+              
+              .article-content :global(strong),
+              .article-content :global(b) {
+                font-weight: 700;
+                color: #ffffff;
+              }
+              
+              .article-content :global(em),
+              .article-content :global(i) {
+                font-style: italic;
+              }
+              
+              .article-content :global(u) {
+                text-decoration: underline;
+              }
+              
+              .article-content :global(ul) {
+                list-style-type: disc;
+                margin-left: 2rem;
+                margin-bottom: 1rem;
+                color: #d1d5db;
+              }
+              
+              .article-content :global(ol) {
+                list-style-type: decimal;
+                margin-left: 2rem;
+                margin-bottom: 1rem;
+                color: #d1d5db;
+              }
+              
+              .article-content :global(li) {
+                font-size: 1.125rem;
+                line-height: 1.75;
+                margin-bottom: 0.5rem;
+                color: #d1d5db;
+              }
+              
+              .article-content :global(a) {
+                color: #336b62;
+                text-decoration: underline;
+                transition: color 0.3s;
+              }
+              
+              .article-content :global(a:hover) {
+                color: #9b8075;
+              }
+              
+              .article-content :global(blockquote) {
+                border-left: 4px solid #336b62;
+                padding-left: 1.5rem;
+                margin: 1.5rem 0;
+                font-style: italic;
+                color: #9ca3af;
+              }
+              
+              .article-content :global(code) {
+                background-color: #1f2937;
+                padding: 0.2rem 0.4rem;
+                border-radius: 0.25rem;
+                font-size: 0.9em;
+                color: #f9fafb;
+              }
+              
+              .article-content :global(pre) {
+                background-color: #1f2937;
+                padding: 1rem;
+                border-radius: 0.5rem;
+                overflow-x: auto;
+                margin: 1.5rem 0;
+              }
+              
+              .article-content :global(img) {
+                max-width: 100%;
+                height: auto;
+                border-radius: 0.5rem;
+                margin: 1.5rem 0;
+              }
+              
+              .article-content :global([style*="text-align: center"]) {
+                text-align: center;
+              }
+              
+              .article-content :global([style*="text-align: right"]) {
+                text-align: right;
+              }
+              
+              .article-content :global([style*="text-align: left"]) {
+                text-align: left;
+              }
+              
+              /* Font size variations */
+              .article-content :global(font[size="1"]) {
+                font-size: 0.625rem;
+              }
+              
+              .article-content :global(font[size="2"]) {
+                font-size: 0.875rem;
+              }
+              
+              .article-content :global(font[size="3"]) {
+                font-size: 1.125rem;
+              }
+              
+              .article-content :global(font[size="4"]) {
+                font-size: 1.5rem;
+              }
+              
+              .article-content :global(font[size="5"]) {
+                font-size: 2rem;
+              }
+              
+              .article-content :global(font[size="6"]) {
+                font-size: 2.5rem;
+              }
+              
+              .article-content :global(font[size="7"]) {
+                font-size: 3rem;
+              }
+            `}</style>
 
             {/* Tags */}
             {article.tags && article.tags.length > 0 && (
