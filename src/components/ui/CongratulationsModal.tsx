@@ -42,7 +42,7 @@ export function CongratulationsModal({
         <div className="flex justify-center mb-8">
           <div className="w-64 h-48 relative">
             <Image
-              src="/Auth/postalworkerschangedpassword.png"
+              src="/Auth/postalworkerschangedpassword.webp"
               alt="Password reset success"
               fill
               className="object-contain"

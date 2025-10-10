@@ -38,37 +38,37 @@ export default function Page1() {
   // Project items for circular gallery - Using tablet portrait images with optimized paths
   const projectItems = [
     { 
-      image: "/elaris banners/DIMENSION TABLETTE/768×1024 px (en mode portrait)/under armour   portrait.png", 
+      image: "/elaris banners/DIMENSION TABLETTE/768×1024 px (en mode portrait)/under armour   portrait.webp", 
       text: "Under Armour",
       width: 768,
       height: 1024
     },
     { 
-      image: "/elaris banners/DIMENSION TABLETTE/768×1024 px (en mode portrait)/samsung.png", 
+      image: "/elaris banners/DIMENSION TABLETTE/768×1024 px (en mode portrait)/samsung.webp", 
       text: "Samsung",
       width: 768,
       height: 1024
     },
     { 
-      image: "/elaris banners/DIMENSION TABLETTE/768×1024 px (en mode portrait)/Swiss Arabian  portrait.png", 
+      image: "/elaris banners/DIMENSION TABLETTE/768×1024 px (en mode portrait)/Swiss Arabian  portrait.webp", 
       text: "Swiss Arabian",
       width: 768,
       height: 1024
     },
     { 
-      image: "/elaris banners/DIMENSION TABLETTE/768×1024 px (en mode portrait)/mcdo.png", 
+      image: "/elaris banners/DIMENSION TABLETTE/768×1024 px (en mode portrait)/mcdo.webp", 
       text: "McDonald's",
       width: 768,
       height: 1024
     },
     { 
-      image: "/elaris banners/DIMENSION TABLETTE/768×1024 px (en mode portrait)/Eucerin portrait.png", 
+      image: "/elaris banners/DIMENSION TABLETTE/768×1024 px (en mode portrait)/Eucerin portrait.webp", 
       text: "Eucerin",
       width: 768,
       height: 1024
     },
     { 
-      image: "/elaris banners/DIMENSION TABLETTE/768×1024 px (en mode portrait)/nivea portrait.png", 
+      image: "/elaris banners/DIMENSION TABLETTE/768×1024 px (en mode portrait)/nivea portrait.webp", 
       text: "Nivea",
       width: 768,
       height: 1024
@@ -77,17 +77,17 @@ export default function Page1() {
 
   // Company logos for partners section
   const companyLogos = [
-    { src: "/companies/640px-hp_logo_2012.svg.png", alt: "HP" },
-    { src: "/companies/samsung_logo.svg.png", alt: "Samsung" },
-    { src: "/companies/nivea_logo.svg.png", alt: "Nivea" },
-    { src: "/companies/dyson-logo-png_seeklogo-498548.png", alt: "Dyson" },
-    { src: "/companies/hitachi-logo-2048x868.png", alt: "Hitachi" },
-    { src: "/companies/under_armour_logo1.png", alt: "Under Armour" },
-    { src: "/companies/eucerin-logo.png", alt: "Eucerin" },
-    { src: "/companies/accenture-logo-2020-present.png", alt: "Accenture" },
-    { src: "/companies/olay-logo.png", alt: "Olay" },
-    { src: "/companies/51r+kopkmll._ac_sl1000_.png", alt: "McDonald's" },
-    { src: "/companies/8df4c5_dcc9e0d07bd046ef811598b74df1675d~mv2.png", alt: "Swiss Arabian" }
+    { src: "/companies/640px-hp_logo_2012.svg.webp", alt: "HP" },
+    { src: "/companies/samsung_logo.svg.webp", alt: "Samsung" },
+    { src: "/companies/nivea_logo.svg.webp", alt: "Nivea" },
+    { src: "/companies/dyson-logo-png_seeklogo-498548.webp", alt: "Dyson" },
+    { src: "/companies/hitachi-logo-2048x868.webp", alt: "Hitachi" },
+    { src: "/companies/under_armour_logo1.webp", alt: "Under Armour" },
+    { src: "/companies/eucerin-logo.webp", alt: "Eucerin" },
+    { src: "/companies/accenture-logo-2020-present.webp", alt: "Accenture" },
+    { src: "/companies/olay-logo.webp", alt: "Olay" },
+    { src: "/companies/51r+kopkmll._ac_sl1000_.webp", alt: "McDonald's" },
+    { src: "/companies/8df4c5_dcc9e0d07bd046ef811598b74df1675d~mv2.webp", alt: "Swiss Arabian" }
   ]
 
   // Refs for animations
@@ -164,21 +164,21 @@ export default function Page1() {
             id: 1,
             title: "THE AWESOME PRODUCT ADVENTURE",
             category: "Product",
-            image: "/news/image.png",
+            image: "/news/image.webp",
             type: "article"
           },
           {
             id: 2,
             title: "Reduces irritation in just 1 hour",
             category: "Beauty", 
-            image: "/news/image.png",
+            image: "/news/image.webp",
             type: "article"
           },
           {
             id: 3,
             title: "NIVEA SUN",
             category: "Campaign",
-            image: "/news/image.png",
+            image: "/news/image.webp",
             type: "article"
           }
         ]
@@ -781,7 +781,7 @@ export default function Page1() {
             className="relative flex-shrink-0"
           >
             <Image
-              src="/Flot.png"
+              src="/Flot.webp"
               alt="Maison Elaris Card"
               width={320}
               height={420}
@@ -835,7 +835,7 @@ export default function Page1() {
             className="relative"
           >
             <Image
-              src="/Flot.png"
+              src="/Flot.webp"
               alt="Maison Elaris Card"
               width={350}
               height={450}
@@ -971,7 +971,7 @@ export default function Page1() {
           {/* Left Center Shape */}
           <div className="absolute top-1/2 -translate-y-1/2 -left-60 w-[700px] h-[700px] rotate-12 opacity-40">
             <Image
-              src="/shape.png"
+              src="/shape.webp"
               alt=""
               fill
               className="object-contain"
@@ -982,7 +982,7 @@ export default function Page1() {
           {/* Right Center Shape */}
           <div className="absolute top-1/2 -translate-y-1/2 -right-60 w-[700px] h-[700px] -rotate-12 opacity-40">
             <Image
-              src="/shape.png"
+              src="/shape.webp"
               alt=""
               fill
               className="object-contain"
@@ -1006,7 +1006,7 @@ export default function Page1() {
                   <div className="relative">
                     <div className="w-80 md:w-96 lg:w-[420px] h-auto">
                       <Image
-                        src="/about.png"
+                        src="/about.webp"
                         alt="Campaign Ideas - Maison Elaris Creative Process"
                         width={420}
                         height={500}
@@ -1080,7 +1080,7 @@ export default function Page1() {
             {/* Main Card (initially visible) */}
             <div ref={servicesCardRef} className="absolute top-0 left-1/2 transform -translate-x-1/2 w-full max-w-sm lg:max-w-md">
               <Image
-                src="/card.png"
+                src="/card.webp"
                 alt="Maison Elaris Services Card"
                 width={400}
                 height={600}
@@ -1095,7 +1095,7 @@ export default function Page1() {
               <div ref={card1Ref} className="flex justify-center">
                 <div className="relative w-full max-w-sm">
                   <Image
-                    src="/card1.png"
+                    src="/card1.webp"
                     alt="Service Card 1"
                     width={400}
                     height={600}
@@ -1109,7 +1109,7 @@ export default function Page1() {
               <div ref={card2Ref} className="flex justify-center">
                 <div className="relative w-full max-w-sm">
                   <Image
-                    src="/card2.png"
+                    src="/card2.webp"
                     alt="Service Card 2"
                     width={400}
                     height={600}
@@ -1123,7 +1123,7 @@ export default function Page1() {
               <div ref={card3Ref} className="flex justify-center">
                 <div className="relative w-full max-w-sm">
                   <Image
-                    src="/card3.png"
+                    src="/card3.webp"
                     alt="Service Card 3"
                     width={400}
                     height={600}
@@ -1192,7 +1192,7 @@ export default function Page1() {
                  {/* Samsung - Top Left */}
                  <div className="hidden md:block absolute top-6 lg:top-10 left-4 lg:left-16 w-20 md:w-24 lg:w-96 h-16 md:h-20 lg:h-80 z-30 opacity-30 lg:opacity-90" id="socialSamsung">
                    <Image
-                     src="/elaris banners/DIMENSION PC 640x512/Maison elaris samsung.png"
+                     src="/elaris banners/DIMENSION PC 640x512/Maison elaris samsung.webp"
                      alt="Samsung"
                      fill
                      className="object-contain rounded-lg shadow-2xl"
@@ -1202,7 +1202,7 @@ export default function Page1() {
                  {/* Nivea - Left Side */}
                  <div className="hidden md:block absolute top-1/2 -translate-y-1/2 left-2 lg:left-12 w-16 md:w-20 lg:w-88 h-12 md:h-16 lg:h-72 z-30 opacity-30 lg:opacity-90" id="socialNivea">
                    <Image
-                     src="/elaris banners/DIMENSION PC 640x512/MAISON ELARIS NIVEA.png"
+                     src="/elaris banners/DIMENSION PC 640x512/MAISON ELARIS NIVEA.webp"
                      alt="Nivea"
                      fill
                      className="object-contain rounded-lg shadow-2xl"
@@ -1212,7 +1212,7 @@ export default function Page1() {
                  {/* Under Armour - Bottom Left */}
                  <div className="hidden md:block absolute bottom-6 lg:bottom-10 left-4 lg:left-16 w-20 md:w-24 lg:w-96 h-16 md:h-20 lg:h-80 z-30 opacity-30 lg:opacity-90" id="socialUnderArmour">
                    <Image
-                     src="/elaris banners/DIMENSION PC 640x512/MAISON ELARIS under armour.png"
+                     src="/elaris banners/DIMENSION PC 640x512/MAISON ELARIS under armour.webp"
                      alt="Under Armour"
                      fill
                      className="object-contain rounded-lg shadow-2xl"
@@ -1222,7 +1222,7 @@ export default function Page1() {
                  {/* Eucerin - Top Right */}
                  <div className="hidden md:block absolute top-6 lg:top-10 right-4 lg:right-16 w-20 md:w-24 lg:w-96 h-16 md:h-20 lg:h-80 z-30 opacity-30 lg:opacity-90" id="socialEucerin">
                    <Image
-                     src="/elaris banners/DIMENSION PC 640x512/MAISON ELARIS Eucerin.png"
+                     src="/elaris banners/DIMENSION PC 640x512/MAISON ELARIS Eucerin.webp"
                      alt="Eucerin"
                      fill
                      className="object-contain rounded-lg shadow-2xl"
@@ -1232,7 +1232,7 @@ export default function Page1() {
                  {/* McDonald's - Bottom Right */}
                  <div className="hidden md:block absolute bottom-6 lg:bottom-10 right-4 lg:right-16 w-20 md:w-24 lg:w-96 h-16 md:h-20 lg:h-80 z-30 opacity-30 lg:opacity-90" id="socialMcDonalds">
                    <Image
-                     src="/elaris banners/DIMENSION PC 640x512/Maison elaris mcdonalds.png"
+                     src="/elaris banners/DIMENSION PC 640x512/Maison elaris mcdonalds.webp"
                      alt="McDonald's"
                      fill
                      className="object-contain rounded-lg shadow-2xl"
@@ -1242,7 +1242,7 @@ export default function Page1() {
                  {/* Swiss Arabian - Right Side */}
                  <div className="hidden md:block absolute top-1/2 -translate-y-1/2 right-2 lg:right-12 w-16 md:w-20 lg:w-88 h-12 md:h-16 lg:h-72 z-30 opacity-30 lg:opacity-90" id="socialSwissArabian">
                    <Image
-                     src="/elaris banners/DIMENSION PC 640x512/MAISON ELARIS Swiss Arabian.png"
+                     src="/elaris banners/DIMENSION PC 640x512/MAISON ELARIS Swiss Arabian.webp"
                      alt="Swiss Arabian"
                      fill
                      className="object-contain rounded-lg shadow-2xl"
@@ -1255,14 +1255,14 @@ export default function Page1() {
                 {/* Background Decorative Shapes */}
                 <div className="absolute inset-0">
                   <Image
-                    src="/shape.png"
+                    src="/shape.webp"
                     alt=""
                     width={700}
                     height={700}
                     className="bg-shape-1 absolute top-1 -right-50 rotate-12 opacity-60 filter brightness-150"
                   />
                   <Image
-                    src="/shape.png"
+                    src="/shape.webp"
                     alt=""
                     width={600}
                     height={600}
@@ -1346,14 +1346,14 @@ export default function Page1() {
                         <div key={article.id} className="relative bg-black/20 backdrop-blur-sm border border-white/10 rounded-2xl overflow-hidden shadow-2xl hover:scale-105 transition-transform duration-300">
                           <div className="relative h-48 lg:h-56">
                             <Image
-                              src={article.image || article.featuredImage || "/news/image.png"}
+                              src={article.image || article.featuredImage || "/news/image.webp"}
                               alt={article.title}
                               fill
                               className="object-cover"
                               onError={(e) => {
                                 // Fallback to placeholder on image error
                                 const target = e.target as HTMLImageElement
-                                target.src = "/news/image.png"
+                                target.src = "/news/image.webp"
                               }}
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
@@ -1406,7 +1406,7 @@ export default function Page1() {
                     <div className="flex flex-wrap items-center justify-center gap-6 lg:gap-8 w-full">
                       <div className="flex items-center justify-center">
                         <Image
-                          src="/Partner%20Logos/meta.png"
+                          src="/Partner%20Logos/meta.webp"
                           alt="Meta Business Partner"
                           width={280}
                           height={90}
@@ -1415,7 +1415,7 @@ export default function Page1() {
                       </div>
                       <div className="flex items-center justify-center">
                         <Image
-                          src="/Partner%20Logos/tiktok%20for%20business.png"
+                          src="/Partner%20Logos/tiktok%20for%20business.webp"
                           alt="TikTok Marketing Partner"
                           width={280}
                           height={90}
@@ -1424,7 +1424,7 @@ export default function Page1() {
                       </div>
                       <div className="flex items-center justify-center">
                         <Image
-                          src="/Partner%20Logos/tiktok%20partner.png"
+                          src="/Partner%20Logos/tiktok%20partner.webp"
                           alt="TikTok Creative Partner"
                           width={280}
                           height={90}
@@ -1433,7 +1433,7 @@ export default function Page1() {
                       </div>
                       <div className="flex items-center justify-center">
                         <Image
-                          src="/Partner%20Logos/amazon.png"
+                          src="/Partner%20Logos/amazon.webp"
                           alt="Amazon Ads Verified Partner"
                           width={280}
                           height={90}
@@ -1446,7 +1446,7 @@ export default function Page1() {
                     <div className="flex flex-wrap items-center justify-center gap-6 lg:gap-8 w-full mt-4">
                       <div className="flex items-center justify-center">
                         <Image
-                          src="/Partner%20Logos/google%20marketing.png"
+                          src="/Partner%20Logos/google%20marketing.webp"
                           alt="Google Marketing Platform Certified"
                           width={280}
                           height={70}
@@ -1455,7 +1455,7 @@ export default function Page1() {
                       </div>
                       <div className="flex items-center justify-center">
                         <Image
-                          src="/Partner%20Logos/google-cloud.png"
+                          src="/Partner%20Logos/google-cloud.webp"
                           alt="Google Partner"
                           width={160}
                           height={60}

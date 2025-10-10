@@ -6,17 +6,17 @@ import Image from 'next/image'
 const CompaniesSection = memo(function CompaniesSection() {
   // Company logos data
   const companyLogos = useMemo(() => [
-    { src: '/companies/640px-hp_logo_2012.svg.png', alt: 'HP' },
-    { src: '/companies/samsung_logo.svg.png', alt: 'Samsung' },
-    { src: '/companies/nivea_logo.svg.png', alt: 'Nivea' },
-    { src: '/companies/dyson-logo-png_seeklogo-498548.png', alt: 'Dyson' },
-    { src: '/companies/hitachi-logo-2048x868.png', alt: 'Hitachi' },
-    { src: '/companies/under_armour_logo1.png', alt: 'Under Armour' },
-    { src: '/companies/eucerin-logo.png', alt: 'Eucerin' },
-    { src: '/companies/olay-logo.png', alt: 'Olay' },
-    { src: '/companies/accenture-logo-2020-present.png', alt: 'Accenture' },
-    { src: '/companies/8df4c5_dcc9e0d07bd046ef811598b74df1675d~mv2.png', alt: 'Partner' },
-    { src: '/companies/51r+kopkmll._ac_sl1000_.png', alt: 'Partner' }
+    { src: '/companies/640px-hp_logo_2012.svg.webp', alt: 'HP' },
+    { src: '/companies/samsung_logo.svg.webp', alt: 'Samsung' },
+    { src: '/companies/nivea_logo.svg.webp', alt: 'Nivea' },
+    { src: '/companies/dyson-logo-png_seeklogo-498548.webp', alt: 'Dyson' },
+    { src: '/companies/hitachi-logo-2048x868.webp', alt: 'Hitachi' },
+    { src: '/companies/under_armour_logo1.webp', alt: 'Under Armour' },
+    { src: '/companies/eucerin-logo.webp', alt: 'Eucerin' },
+    { src: '/companies/olay-logo.webp', alt: 'Olay' },
+    { src: '/companies/accenture-logo-2020-present.webp', alt: 'Accenture' },
+    { src: '/companies/8df4c5_dcc9e0d07bd046ef811598b74df1675d~mv2.webp', alt: 'Partner' },
+    { src: '/companies/51r+kopkmll._ac_sl1000_.webp', alt: 'Partner' }
   ], [])
 
   // Memoize the logo elements to prevent unnecessary re-renders

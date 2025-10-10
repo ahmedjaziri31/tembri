@@ -164,28 +164,28 @@ const projectsData = {
 // Mapping project IDs to their corresponding banner images
 const projectBannerImages = {
   '1': {
-    landscape: '/elaris banners/DIMENSION TABLETTE/1024×768 px (en mode paysage)/MAISON ELARIS under armourtablette paysage.png',
-    portrait: '/elaris banners/DIMENSION TABLETTE/768×1024 px (en mode portrait)/under armour   portrait.png'
+    landscape: '/elaris banners/DIMENSION TABLETTE/1024×768 px (en mode paysage)/MAISON ELARIS under armourtablette paysage.webp',
+    portrait: '/elaris banners/DIMENSION TABLETTE/768×1024 px (en mode portrait)/under armour   portrait.webp'
   },
   '2': {
-    landscape: '/elaris banners/DIMENSION TABLETTE/1024×768 px (en mode paysage)/mcdo.png',
-    portrait: '/elaris banners/DIMENSION TABLETTE/768×1024 px (en mode portrait)/mcdo.png'
+    landscape: '/elaris banners/DIMENSION TABLETTE/1024×768 px (en mode paysage)/mcdo.webp',
+    portrait: '/elaris banners/DIMENSION TABLETTE/768×1024 px (en mode portrait)/mcdo.webp'
   },
   '3': {
-    landscape: '/elaris banners/DIMENSION TABLETTE/1024×768 px (en mode paysage)/MAISON ELARIS Swiss Arabian tablette paysage.png',
-    portrait: '/elaris banners/DIMENSION TABLETTE/768×1024 px (en mode portrait)/Swiss Arabian  portrait.png'
+    landscape: '/elaris banners/DIMENSION TABLETTE/1024×768 px (en mode paysage)/MAISON ELARIS Swiss Arabian tablette paysage.webp',
+    portrait: '/elaris banners/DIMENSION TABLETTE/768×1024 px (en mode portrait)/Swiss Arabian  portrait.webp'
   },
   '4': {
-    landscape: '/elaris banners/DIMENSION TABLETTE/1024×768 px (en mode paysage)/MAISON ELARIS Eucerin tablette paysage.png',
-    portrait: '/elaris banners/DIMENSION TABLETTE/768×1024 px (en mode portrait)/Eucerin portrait.png'
+    landscape: '/elaris banners/DIMENSION TABLETTE/1024×768 px (en mode paysage)/MAISON ELARIS Eucerin tablette paysage.webp',
+    portrait: '/elaris banners/DIMENSION TABLETTE/768×1024 px (en mode portrait)/Eucerin portrait.webp'
   },
   '5': {
-    landscape: '/elaris banners/DIMENSION TABLETTE/1024×768 px (en mode paysage)/MAISON ELARIS nivea tablette paysage.png',
-    portrait: '/elaris banners/DIMENSION TABLETTE/768×1024 px (en mode portrait)/nivea portrait.png'
+    landscape: '/elaris banners/DIMENSION TABLETTE/1024×768 px (en mode paysage)/MAISON ELARIS nivea tablette paysage.webp',
+    portrait: '/elaris banners/DIMENSION TABLETTE/768×1024 px (en mode portrait)/nivea portrait.webp'
   },
   '6': {
-    landscape: '/elaris banners/DIMENSION TABLETTE/1024×768 px (en mode paysage)/samsung tablette.png',
-    portrait: '/elaris banners/DIMENSION TABLETTE/768×1024 px (en mode portrait)/samsung.png'
+    landscape: '/elaris banners/DIMENSION TABLETTE/1024×768 px (en mode paysage)/samsung tablette.webp',
+    portrait: '/elaris banners/DIMENSION TABLETTE/768×1024 px (en mode portrait)/samsung.webp'
   }
 }
 
@@ -244,8 +244,8 @@ export default function ProductDetailsPage() {
 
   // Get responsive background images
   const bannerImages = projectBannerImages[projectId as keyof typeof projectBannerImages]
-  const landscapeImage = bannerImages?.landscape || `/work/project${projectId}.png`
-  const portraitImage = bannerImages?.portrait || `/work/project${projectId}.png`
+  const landscapeImage = bannerImages?.landscape || `/work/project${projectId}.webp`
+  const portraitImage = bannerImages?.portrait || `/work/project${projectId}.webp`
 
   return (
     <div className="min-h-screen bg-black text-white relative">
@@ -698,7 +698,7 @@ export default function ProductDetailsPage() {
                   {/* Left Image */}
                   <div className="relative overflow-hidden rounded-2xl">
                     <Image
-                      src="/work/project 4/left.png"
+                      src="/work/project 4/left.webp"
                       alt="Estée Lauder Campaign Left"
                       width={300}
                       height={450}
@@ -723,7 +723,7 @@ export default function ProductDetailsPage() {
                   {/* Right Image */}
                   <div className="relative overflow-hidden rounded-2xl">
                     <Image
-                      src="/work/project 4/right.png"
+                      src="/work/project 4/right.webp"
                       alt="Estée Lauder Campaign Right"
                       width={300}
                       height={450}
@@ -753,7 +753,7 @@ export default function ProductDetailsPage() {
               <div className="relative max-w-5xl mx-auto">
                 <div className="relative overflow-hidden rounded-3xl">
                   <Image
-                    src={projectId === '1' ? '/work/GS.png' : projectId === '2' ? '/work/MC.png' : projectId === '3' ? '/work/SA.png' : projectId === '5' ? '/work/NV.png' : projectId === '6' ? '/work/SM.png' : '/work/reel.png'}
+                    src={projectId === '1' ? '/work/GS.webp' : projectId === '2' ? '/work/MC.webp' : projectId === '3' ? '/work/SA.webp' : projectId === '5' ? '/work/NV.webp' : projectId === '6' ? '/work/SM.webp' : '/work/reel.webp'}
                     alt="Campaign Results"
                     width={1200}
                     height={600}

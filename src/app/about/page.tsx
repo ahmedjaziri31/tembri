@@ -589,7 +589,7 @@ export default function AboutPage() {
                     {/* Circle Image Behind GROWTH */}
                     <div ref={growthCircleRef} className="absolute -inset-4 lg:-inset-6">
                   <Image
-                        src="/about/circel.png"
+                        src="/about/circel.webp"
                         alt="Growth circle"
                         width={300}
                         height={150}
@@ -626,7 +626,7 @@ export default function AboutPage() {
               {/* Right Image - Centered with left text */}
               <div ref={storyImage1Ref} className="flex justify-center lg:justify-end">
                 <Image
-                  src="/about/image1.png"
+                  src="/about/image1.webp"
                   alt="People connecting"
                   width={400}
                   height={300}
@@ -641,7 +641,7 @@ export default function AboutPage() {
               {/* Left Image - Centered with right text */}
               <div ref={storyImage2Ref} className="flex justify-center lg:justify-start order-2 lg:order-1">
                 <Image
-                  src="/about/image2.png"
+                  src="/about/image2.webp"
                   alt="What's your story?"
                   width={400}
                   height={300}
@@ -767,7 +767,7 @@ export default function AboutPage() {
             {/* Where Minds Unite Image - Bigger on larger screens */}
             <div ref={mindsUniteImageRef} className="mb-8 lg:mb-12">
                 <Image
-                src="/about/wheremindsunite.png"
+                src="/about/wheremindsunite.webp"
                 alt="Where Minds Unite - Maison Elaris"
                 width={900}
                 height={450}
@@ -791,7 +791,7 @@ export default function AboutPage() {
             {/* 1 Vision Image - Smaller */}
             <div ref={visionImageRef} className="mb-6 lg:mb-8">
               <Image
-                src="/about/1vision.png"
+                src="/about/1vision.webp"
                 alt="1 Vision - to create ideas that travel and impact that lasts"
                 width={600}
                 height={300}
@@ -850,7 +850,7 @@ export default function AboutPage() {
             {/* Planet Image */}
             <div ref={planetImageRef} className="mb-6 lg:mb-8">
               <Image
-                src="/about/planet.png"
+                src="/about/planet.webp"
                 alt="Planet"
                 width={600}
                 height={600}
@@ -874,7 +874,7 @@ export default function AboutPage() {
             {/* Partner Image - Smaller */}
             <div ref={partnerImageRef} className="mb-4">
               <Image
-                src="/about/partner.png"
+                src="/about/partner.webp"
                 alt="Partner"
                 width={600}
                 height={300}
@@ -902,7 +902,7 @@ export default function AboutPage() {
             <div className="flex flex-wrap items-center justify-center gap-4 md:gap-6 lg:gap-8 max-w-7xl mx-auto">
               <div className="flex items-center justify-center">
                 <Image
-                  src="/Partner%20Logos/meta.png"
+                  src="/Partner%20Logos/meta.webp"
                   alt="Meta Business Partner"
                   width={280}
                   height={90}
@@ -911,7 +911,7 @@ export default function AboutPage() {
               </div>
               <div className="flex items-center justify-center">
                 <Image
-                  src="/Partner%20Logos/tiktok%20for%20business.png"
+                  src="/Partner%20Logos/tiktok%20for%20business.webp"
                   alt="TikTok Marketing Partner"
                   width={280}
                   height={90}
@@ -920,7 +920,7 @@ export default function AboutPage() {
               </div>
               <div className="flex items-center justify-center">
                 <Image
-                  src="/Partner%20Logos/tiktok%20partner.png"
+                  src="/Partner%20Logos/tiktok%20partner.webp"
                   alt="TikTok Creative Partner"
                   width={280}
                   height={90}
@@ -929,7 +929,7 @@ export default function AboutPage() {
               </div>
               <div className="flex items-center justify-center">
                 <Image
-                  src="/Partner%20Logos/amazon.png"
+                  src="/Partner%20Logos/amazon.webp"
                   alt="Amazon Ads Verified Partner"
                   width={280}
                   height={90}
@@ -938,7 +938,7 @@ export default function AboutPage() {
               </div>
               <div className="flex items-center justify-center">
                 <Image
-                  src="/Partner%20Logos/google%20marketing.png"
+                  src="/Partner%20Logos/google%20marketing.webp"
                   alt="Google Marketing Platform Certified"
                   width={280}
                   height={70}
@@ -947,7 +947,7 @@ export default function AboutPage() {
               </div>
               <div className="flex items-center justify-center">
                 <Image
-                  src="/Partner%20Logos/google-cloud.png"
+                  src="/Partner%20Logos/google-cloud.webp"
                   alt="Google Partner"
                   width={280}
                   height={70}

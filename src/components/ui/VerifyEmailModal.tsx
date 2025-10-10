@@ -53,7 +53,7 @@ export function VerifyEmailModal({
         <div className="flex justify-center mb-6">
           <div className="w-64 h-48 relative">
             <Image
-              src="/Auth/postalworkersdeliveringmail.png"
+              src="/Auth/postalworkersdeliveringmail.webp"
               alt="Postal workers delivering mail"
               fill
               className="object-contain"

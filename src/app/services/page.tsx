@@ -386,7 +386,7 @@ export default function ServicesPage() {
             className="absolute inset-0 flex items-center justify-center z-0 pointer-events-none"
           >
             <Image
-              src="/services/backwriting.png"
+              src="/services/backwriting.webp"
               alt=""
               width={800}
               height={800}
@@ -447,7 +447,7 @@ export default function ServicesPage() {
                   <div className="flex justify-center lg:justify-start">
                     <div className="relative w-full max-w-md">
                       <Image
-                        src="/services/image1.png"
+                        src="/services/image1.webp"
                         alt="Think Bigger"
                         width={400}
                         height={300}
@@ -487,7 +487,7 @@ export default function ServicesPage() {
                   <div className="flex justify-center lg:justify-end order-1 lg:order-2">
                     <div className="relative w-full max-w-md">
                       <Image
-                        src="/services/image2.png"
+                        src="/services/image2.webp"
                         alt="Megaphone Services"
                         width={400}
                         height={300}
@@ -537,7 +537,7 @@ export default function ServicesPage() {
                       <div className="hidden lg:flex justify-center lg:justify-start order-2 lg:order-1">
                         <div className="relative w-full max-w-[220px]">
                           <Image
-                            src="/card.png"
+                            src="/card.webp"
                             alt="Strategic Media Planning"
                             width={220}
                             height={275}
@@ -629,7 +629,7 @@ export default function ServicesPage() {
                       <div className="hidden lg:flex justify-center lg:justify-start order-2 lg:order-1">
                         <div className="relative w-full max-w-[220px]">
                           <Image
-                            src="/card.png"
+                            src="/card.webp"
                             alt="Creative Content Development"
                             width={220}
                             height={275}
@@ -725,7 +725,7 @@ export default function ServicesPage() {
                       <div className="hidden lg:flex justify-center lg:justify-start order-2 lg:order-1">
                         <div className="relative w-full max-w-[220px]">
                           <Image
-                            src="/card.png"
+                            src="/card.webp"
                             alt="Data-driven Marketing"
                             width={220}
                             height={275}
@@ -817,7 +817,7 @@ export default function ServicesPage() {
                       <div className="hidden lg:flex justify-center lg:justify-start order-2 lg:order-1">
                         <div className="relative w-full max-w-[220px]">
                           <Image
-                            src="/card.png"
+                            src="/card.webp"
                             alt="Digital Transformation"
                             width={220}
                             height={275}
@@ -913,7 +913,7 @@ export default function ServicesPage() {
                       <div className="hidden lg:flex justify-center lg:justify-start order-2 lg:order-1">
                         <div className="relative w-full max-w-[220px]">
                           <Image
-                            src="/card.png"
+                            src="/card.webp"
                             alt="Retail Media & Commerce"
                             width={220}
                             height={275}
@@ -995,7 +995,7 @@ export default function ServicesPage() {
                   className="inline-block mx-2 relative top-4"
                 >
                   <Image
-                    src="/services/choose.png"
+                    src="/services/choose.webp"
                     alt="Choose"
                     width={300}
                     height={80}
@@ -1069,14 +1069,14 @@ export default function ServicesPage() {
           {/* Background Decorative Shapes */}
           <div className="absolute inset-0">
             <Image
-              src="/shape.png"
+              src="/shape.webp"
               alt=""
               width={700}
               height={700}
               className="bg-shape-1 absolute top-1 -right-50 rotate-12 opacity-60 filter brightness-150"
             />
             <Image
-              src="/shape.png"
+              src="/shape.webp"
               alt=""
               width={600}
               height={600}

@@ -13,7 +13,7 @@ export default function Footer() {
             <div className="mb-6 sm:mb-8">
               <Link href="/">
                 <Image
-                  src="/logo.png"
+                  src="/logo.webp"
                   alt="Maison Elaris"
                   width={240}
                   height={120}
@@ -78,42 +78,42 @@ export default function Footer() {
         <div className="absolute inset-0 flex items-center">
           <div className="flex animate-infinite-scroll gap-12 lg:gap-16">
             <Image
-              src="/footer/footer.png"
+              src="/footer/footer.webp"
               alt="Maison Elaris"
               width={800}
               height={128}
               className="h-full object-contain flex-shrink-0"
             />
             <Image
-              src="/footer/footer.png"
+              src="/footer/footer.webp"
               alt="Maison Elaris"
               width={800}
               height={128}
               className="h-full object-contain flex-shrink-0"
             />
             <Image
-              src="/footer/footer.png"
+              src="/footer/footer.webp"
               alt="Maison Elaris"
               width={800}
               height={128}
               className="h-full object-contain flex-shrink-0"
             />
             <Image
-              src="/footer/footer.png"
+              src="/footer/footer.webp"
               alt="Maison Elaris"
               width={800}
               height={128}
               className="h-full object-contain flex-shrink-0"
             />
             <Image
-              src="/footer/footer.png"
+              src="/footer/footer.webp"
               alt="Maison Elaris"
               width={800}
               height={128}
               className="h-full object-contain flex-shrink-0"
             />
             <Image
-              src="/footer/footer.png"
+              src="/footer/footer.webp"
               alt="Maison Elaris"
               width={800}
               height={128}

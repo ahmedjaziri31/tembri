@@ -19,17 +19,17 @@ export default function WorkPage() {
 
   // Company logos for partners section
   const companyLogos = [
-    { src: "/companies/samsung_logo.svg.png", alt: "Samsung" },
-    { src: "/companies/51r+kopkmll._ac_sl1000_.png", alt: "McDonald's" },
-    { src: "/companies/nivea_logo.svg.png", alt: "Nivea" },
-    { src: "/companies/eucerin-logo.png", alt: "Eucerin" },
-    { src: "/companies/under_armour_logo1.png", alt: "Under Armour" },
-    { src: "/companies/8df4c5_dcc9e0d07bd046ef811598b74df1675d~mv2.png", alt: "Swiss Arabian" },
-    { src: "/companies/olay-logo.png", alt: "Olay" },
-    { src: "/companies/dyson-logo-png_seeklogo-498548.png", alt: "Dyson" },
-    { src: "/companies/hitachi-logo-2048x868.png", alt: "Hitachi" },
-    { src: "/companies/accenture-logo-2020-present.png", alt: "Accenture" },
-    { src: "/companies/640px-hp_logo_2012.svg.png", alt: "HP" }
+    { src: "/companies/samsung_logo.svg.webp", alt: "Samsung" },
+    { src: "/companies/51r+kopkmll._ac_sl1000_.webp", alt: "McDonald's" },
+    { src: "/companies/nivea_logo.svg.webp", alt: "Nivea" },
+    { src: "/companies/eucerin-logo.webp", alt: "Eucerin" },
+    { src: "/companies/under_armour_logo1.webp", alt: "Under Armour" },
+    { src: "/companies/8df4c5_dcc9e0d07bd046ef811598b74df1675d~mv2.webp", alt: "Swiss Arabian" },
+    { src: "/companies/olay-logo.webp", alt: "Olay" },
+    { src: "/companies/dyson-logo-png_seeklogo-498548.webp", alt: "Dyson" },
+    { src: "/companies/hitachi-logo-2048x868.webp", alt: "Hitachi" },
+    { src: "/companies/accenture-logo-2020-present.webp", alt: "Accenture" },
+    { src: "/companies/640px-hp_logo_2012.svg.webp", alt: "HP" }
   ]
 
   // GSAP Animation for intro quote
@@ -157,7 +157,7 @@ export default function WorkPage() {
               <Link href="/work/4">
                 <div className="group relative overflow-hidden rounded-3xl aspect-[4/3] cursor-pointer transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl">
                   <Image
-                    src="/elaris banners/DIMENSION TABLETTE/1024×768 px (en mode paysage)/MAISON ELARIS Eucerin tablette paysage.png"
+                    src="/elaris banners/DIMENSION TABLETTE/1024×768 px (en mode paysage)/MAISON ELARIS Eucerin tablette paysage.webp"
                     alt="Performance Meets Prestige - Estée Lauder Campaign"
                     fill
                     className="object-contain"
@@ -196,7 +196,7 @@ export default function WorkPage() {
               <Link href="/work/2">
                 <div className="group relative overflow-hidden rounded-3xl aspect-[4/3] cursor-pointer transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl">
                   <Image
-                    src="/elaris banners/DIMENSION TABLETTE/1024×768 px (en mode paysage)/mcdo.png"
+                    src="/elaris banners/DIMENSION TABLETTE/1024×768 px (en mode paysage)/mcdo.webp"
                     alt="Moments that Matter - McDonald's Campaign"
                     fill
                     className="object-contain"
@@ -235,7 +235,7 @@ export default function WorkPage() {
               <Link href="/work/5">
                 <div className="group relative overflow-hidden rounded-3xl aspect-[4/3] cursor-pointer transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl">
                   <Image
-                    src="/elaris banners/DIMENSION TABLETTE/1024×768 px (en mode paysage)/MAISON ELARIS nivea tablette paysage.png"
+                    src="/elaris banners/DIMENSION TABLETTE/1024×768 px (en mode paysage)/MAISON ELARIS nivea tablette paysage.webp"
                     alt="Wellness in Motion - NIVEA + Eucerin Campaign"
                     fill
                     className="object-contain"
@@ -274,7 +274,7 @@ export default function WorkPage() {
               <Link href="/work/6">
                 <div className="group relative overflow-hidden rounded-3xl aspect-[4/3] cursor-pointer transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl">
                   <Image
-                    src="/elaris banners/DIMENSION TABLETTE/1024×768 px (en mode paysage)/samsung tablette.png"
+                    src="/elaris banners/DIMENSION TABLETTE/1024×768 px (en mode paysage)/samsung tablette.webp"
                     alt="Scaling with Signal - Samsung Campaign"
                     fill
                     className="object-contain"
@@ -312,7 +312,7 @@ export default function WorkPage() {
               <Link href="/work/1">
                 <div className="group relative overflow-hidden rounded-3xl aspect-[4/3] cursor-pointer transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl">
                   <Image
-                    src="/elaris banners/DIMENSION TABLETTE/1024×768 px (en mode paysage)/MAISON ELARIS under armourtablette paysage.png"
+                    src="/elaris banners/DIMENSION TABLETTE/1024×768 px (en mode paysage)/MAISON ELARIS under armourtablette paysage.webp"
                     alt="Athlete Engine - Under Armour Campaign"
                     fill
                     className="object-contain"
@@ -350,7 +350,7 @@ export default function WorkPage() {
               <Link href="/work/3">
                 <div className="group relative overflow-hidden rounded-3xl aspect-[4/3] cursor-pointer transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl">
                   <Image
-                    src="/elaris banners/DIMENSION TABLETTE/1024×768 px (en mode paysage)/MAISON ELARIS Swiss Arabian tablette paysage.png"
+                    src="/elaris banners/DIMENSION TABLETTE/1024×768 px (en mode paysage)/MAISON ELARIS Swiss Arabian tablette paysage.webp"
                     alt="Digital Bloom - Swiss Arabian Campaign"
                     fill
                     className="object-contain"
@@ -418,14 +418,14 @@ export default function WorkPage() {
           {/* Background Shapes */}
           <div className="absolute inset-0">
             <Image
-              src="/shape.png"
+              src="/shape.webp"
               alt=""
               width={700}
               height={700}
               className="absolute top-1 -right-50 rotate-12 opacity-60 filter brightness-150"
             />
             <Image
-              src="/shape.png"
+              src="/shape.webp"
               alt=""
               width={600}
               height={600}

@@ -28,7 +28,7 @@ export default function AboutSection() {
       <div className="absolute inset-0">
         {/* Left shape - rotated to match design */}
         <Image
-          src="/home/shape.png"
+          src="/home/shape.webp"
           alt=""
           width={600}
           height={600}
@@ -36,7 +36,7 @@ export default function AboutSection() {
         />
         {/* Right shape */}
         <Image
-          src="/shape.png"
+          src="/shape.webp"
           alt=""
           width={700}
           height={700}

@@ -32,7 +32,7 @@ export default function NewsPage() {
               <div className="relative w-full h-[500px] lg:h-[600px] overflow-hidden rounded-3xl">
                 {/* Full Width Background Image */}
                 <Image
-                  src="/news/image.png"
+                  src="/news/image.webp"
                   alt="Creative Trends 2025"
                   fill
                   className="object-cover"

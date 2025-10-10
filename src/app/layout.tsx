@@ -42,11 +42,11 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head>
         {/* Preload critical resources */}
-        <link rel="preload" href="/home/logo2.png" as="image" fetchPriority="high" />
+        <link rel="preload" href="/home/logo2.webp" as="image" fetchPriority="high" />
         {/* Preload project images for better performance */}
-        <link rel="preload" href="/elaris banners/DIMENSION TABLETTE/768×1024 px (en mode portrait)/under armour   portrait.png" as="image" />
-        <link rel="preload" href="/elaris banners/DIMENSION TABLETTE/768×1024 px (en mode portrait)/samsung.png" as="image" />
-        <link rel="preload" href="/elaris banners/DIMENSION TABLETTE/768×1024 px (en mode portrait)/Swiss Arabian  portrait.png" as="image" />
+        <link rel="preload" href="/elaris banners/DIMENSION TABLETTE/768×1024 px (en mode portrait)/under armour   portrait.webp" as="image" />
+        <link rel="preload" href="/elaris banners/DIMENSION TABLETTE/768×1024 px (en mode portrait)/samsung.webp" as="image" />
+        <link rel="preload" href="/elaris banners/DIMENSION TABLETTE/768×1024 px (en mode portrait)/Swiss Arabian  portrait.webp" as="image" />
         <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
         <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
         <link rel="dns-prefetch" href="https://vercel.live" />

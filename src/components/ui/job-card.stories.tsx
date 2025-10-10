@@ -26,7 +26,7 @@ import { JobCard, CompanyCard, TestCard } from "@/components/ui/job-card"
 
 // Job posting card
 <JobCard
-  company={{ name: "Google", logo: "google-logo.png", verified: true }}
+  company={{ name: "Google", logo: "google-logo.webp", verified: true }}
   position="Senior UX Designer"
   location="New York, NY"
   description="Join our design team..."

@@ -61,21 +61,21 @@ export default function ArticlesSection() {
             id: 1,
             title: "THE AWESOME PRODUCT ADVENTURE",
             category: "Product",
-            image: "/news/image.png",
+            image: "/news/image.webp",
             type: "article"
           },
           {
             id: 2,
             title: "Reduces irritation in just 1 hour",
             category: "Beauty", 
-            image: "/news/image.png",
+            image: "/news/image.webp",
             type: "article"
           },
           {
             id: 3,
             title: "NIVEA SUN",
             category: "Campaign",
-            image: "/news/image.png",
+            image: "/news/image.webp",
             type: "article"
           }
         ]
@@ -105,7 +105,7 @@ export default function ArticlesSection() {
       <div className="absolute inset-0">
         {/* Left shape */}
         <Image
-          src="/shape.png"
+          src="/shape.webp"
           alt=""
           width={600}
           height={600}
@@ -113,7 +113,7 @@ export default function ArticlesSection() {
         />
         {/* Right shape */}
         <Image
-          src="/shape.png"
+          src="/shape.webp"
           alt=""
           width={700}
           height={700}

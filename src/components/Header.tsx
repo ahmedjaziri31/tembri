@@ -38,7 +38,7 @@ export default function Header() {
         <div className="text-white">
           <Link href="/" className="block">
             <Image
-              src="/logo.png"
+              src="/logo.webp"
               alt="Maison Elaris"
               width={180}
               height={90}
@@ -111,7 +111,7 @@ export default function Header() {
         <div className="flex flex-col items-center justify-center h-full space-y-8 relative z-10">
           <div className="text-center mb-8">
             <Image
-              src="/logo.png"
+              src="/logo.webp"
               alt="Maison Elaris"
               width={200}
               height={100}
