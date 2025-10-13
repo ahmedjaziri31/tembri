@@ -3,6 +3,7 @@
 import { useRef, useState, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
+import Head from 'next/head'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 // Lazy load heavy components with GSAP/OGL
@@ -738,7 +739,20 @@ export default function HomePage() {
   }, [animationsComplete])
 
   return (
-    <div ref={containerRef} className="min-h-screen w-full relative overflow-hidden bg-black">
+    <>
+      <Head>
+        <title>Maison Elaris | Global Integrated Marketing Communications Agency</title>
+        <meta name="description" content="A global IMC partner uniting brand strategy, creative, media, and data. AI-driven planning, retail media, and performance—network-grade outcomes with boutique speed." />
+        <meta name="keywords" content="integrated marketing communications agency, global marketing agency, creative and media agency, data-driven marketing, retail media, performance marketing" />
+        <meta property="og:title" content="Maison Elaris | Global Integrated Marketing Communications Agency" />
+        <meta property="og:description" content="A global IMC partner uniting brand strategy, creative, media, and data. AI-driven planning, retail media, and performance—network-grade outcomes with boutique speed." />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Maison Elaris | Global Integrated Marketing Communications Agency" />
+        <meta name="twitter:description" content="A global IMC partner uniting brand strategy, creative, media, and data. AI-driven planning, retail media, and performance—network-grade outcomes with boutique speed." />
+        <link rel="canonical" href="https://www.maisonelaris.com/" />
+      </Head>
+      <div ref={containerRef} className="min-h-screen w-full relative overflow-hidden bg-black">
 
       {/* Dark Loading Overlay */}
       {isLoading && (
@@ -1484,6 +1498,7 @@ export default function HomePage() {
 
       {/* Footer - Initially hidden */}
       {showHeaderFooter && <Footer />}
-    </div>
+      </div>
+    </>
   )
 }

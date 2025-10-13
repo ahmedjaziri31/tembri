@@ -29,8 +29,48 @@ const poppinsSecondary = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "Maison Elaris",
-  description: "Maison Elaris - Marketing Agency",
+  title: {
+    default: "Maison Elaris | Global Integrated Marketing Communications Agency",
+    template: "%s | Maison Elaris"
+  },
+  description: "A global IMC partner uniting brand strategy, creative, media, and data. AI-driven planning, retail media, and performance—network-grade outcomes with boutique speed.",
+  keywords: ["integrated marketing communications agency", "global marketing agency", "creative and media agency", "data-driven marketing", "retail media", "performance marketing"],
+  authors: [{ name: "Maison Elaris" }],
+  creator: "Maison Elaris",
+  publisher: "Maison Elaris",
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+  metadataBase: new URL('https://www.maisonelaris.com'),
+  alternates: {
+    canonical: '/',
+  },
+  openGraph: {
+    title: "Maison Elaris | Global Integrated Marketing Communications Agency",
+    description: "A global IMC partner uniting brand strategy, creative, media, and data. AI-driven planning, retail media, and performance—network-grade outcomes with boutique speed.",
+    url: 'https://www.maisonelaris.com',
+    siteName: 'Maison Elaris',
+    locale: 'en_US',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: "Maison Elaris | Global Integrated Marketing Communications Agency",
+    description: "A global IMC partner uniting brand strategy, creative, media, and data. AI-driven planning, retail media, and performance—network-grade outcomes with boutique speed.",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
 };
 
 export default function RootLayout({

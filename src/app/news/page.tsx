@@ -1,5 +1,6 @@
 'use client'
 
+import Head from 'next/head'
 import Header from '../../components/Header'
 import Footer from '../../components/Footer'
 import ArticlesSection from '../../components/ArticlesSection'
@@ -8,9 +9,22 @@ import Link from 'next/link'
 
 export default function NewsPage() {
   return (
-    <div className="min-h-screen bg-black text-white">
-      {/* Header */}
-      <Header />
+    <>
+      <Head>
+        <title>News & Insights | AI, Retail Media & Brand Strategy | Maison Elaris</title>
+        <meta name="description" content="Research and playbooks for modern CMOs—AI-driven media, creative effectiveness, MMM, and retail media trends from global markets." />
+        <meta name="keywords" content="marketing insights, retail media trends, ai in advertising, creative effectiveness, mmm guides" />
+        <meta property="og:title" content="News & Insights | AI, Retail Media & Brand Strategy | Maison Elaris" />
+        <meta property="og:description" content="Research and playbooks for modern CMOs—AI-driven media, creative effectiveness, MMM, and retail media trends from global markets." />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="News & Insights | AI, Retail Media & Brand Strategy | Maison Elaris" />
+        <meta name="twitter:description" content="Research and playbooks for modern CMOs—AI-driven media, creative effectiveness, MMM, and retail media trends from global markets." />
+        <link rel="canonical" href="https://www.maisonelaris.com/news" />
+      </Head>
+      <div className="min-h-screen bg-black text-white">
+        {/* Header */}
+        <Header />
       
       {/* Main Content */}
       <main className="relative">
@@ -77,6 +91,7 @@ export default function NewsPage() {
       
       {/* Footer */}
       <Footer />
-    </div>
+      </div>
+    </>
   )
 }

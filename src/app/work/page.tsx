@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
+import Head from 'next/head'
 import Header from '../../components/Header'
 import Footer from '../../components/Footer'
 import Image from 'next/image'
@@ -110,8 +111,21 @@ export default function WorkPage() {
   })
 
   return (
-    <div className="min-h-screen bg-black text-white relative">
-      {/* Animated Quote Intro Overlay */}
+    <>
+      <Head>
+        <title>Our Work | Global IMC Case Studies & Growth Playbooks</title>
+        <meta name="description" content="Campaigns and platforms across brand, performance, and retail media. Explore creative automation, MMM, and AI workflows delivering network-grade results worldwide." />
+        <meta name="keywords" content="marketing case studies, integrated campaigns, retail media results, creative automation, marketing mix modeling" />
+        <meta property="og:title" content="Our Work | Global IMC Case Studies & Growth Playbooks" />
+        <meta property="og:description" content="Campaigns and platforms across brand, performance, and retail media. Explore creative automation, MMM, and AI workflows delivering network-grade results worldwide." />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Our Work | Global IMC Case Studies & Growth Playbooks" />
+        <meta name="twitter:description" content="Campaigns and platforms across brand, performance, and retail media. Explore creative automation, MMM, and AI workflows delivering network-grade results worldwide." />
+        <link rel="canonical" href="https://www.maisonelaris.com/work" />
+      </Head>
+      <div className="min-h-screen bg-black text-white relative">
+        {/* Animated Quote Intro Overlay */}
       {showIntro && (
         <div 
           ref={introRef}
@@ -475,6 +489,7 @@ export default function WorkPage() {
         {/* Footer - only show when content is visible */}
         {showContent && <Footer />}
       </div>
-    </div>
+      </div>
+    </>
   )
 }

@@ -3,6 +3,7 @@
 import { useRef, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+import Head from 'next/head'
 import Header from '../../components/Header'
 import Footer from '../../components/Footer'
 import { useGSAP } from '../../hooks/useGSAP'
@@ -364,9 +365,22 @@ export default function ServicesPage() {
   }, { dependencies: [expandedService] })
 
   return (
-    <div className="min-h-screen bg-black text-white">
-      {/* Header */}
-      <Header />
+    <>
+      <Head>
+        <title>Services | Strategy, Creative, Media, Retail & Analytics | Maison Elaris</title>
+        <meta name="description" content="End-to-end IMC: brand strategy, design systems, content, media planning/buying, retail media, analytics, MMM, and experimentation—engineered for profitable growth." />
+        <meta name="keywords" content="integrated marketing services, media planning and buying, retail media services, analytics and MMM, brand strategy" />
+        <meta property="og:title" content="Services | Strategy, Creative, Media, Retail & Analytics | Maison Elaris" />
+        <meta property="og:description" content="End-to-end IMC: brand strategy, design systems, content, media planning/buying, retail media, analytics, MMM, and experimentation—engineered for profitable growth." />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Services | Strategy, Creative, Media, Retail & Analytics | Maison Elaris" />
+        <meta name="twitter:description" content="End-to-end IMC: brand strategy, design systems, content, media planning/buying, retail media, analytics, MMM, and experimentation—engineered for profitable growth." />
+        <link rel="canonical" href="https://www.maisonelaris.com/services" />
+      </Head>
+      <div className="min-h-screen bg-black text-white">
+        {/* Header */}
+        <Header />
       
       {/* Main Content */}
       <main className="relative pt-0">
@@ -1122,6 +1136,7 @@ export default function ServicesPage() {
       
       {/* Footer */}
       <Footer />
-    </div>
+      </div>
+    </>
   )
 }

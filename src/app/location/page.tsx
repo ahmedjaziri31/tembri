@@ -1,5 +1,6 @@
 'use client'
 
+import Head from 'next/head'
 import Header from '../../components/Header'
 import Footer from '../../components/Footer'
 import Image from 'next/image'
@@ -58,9 +59,22 @@ export default function LocationPage() {
   ]
 
   return (
-    <div className="min-h-screen bg-black text-white">
-      {/* Header */}
-      <Header />
+    <>
+      <Head>
+        <title>Locations | Global Footprint | Maison Elaris</title>
+        <meta name="description" content="Dubai & Paris HQ with active operations across KSA, UAE, Europe & APAC. One operating model with local nuance, governance, and QA." />
+        <meta name="keywords" content="global agency locations, dubai hq, paris hq, international marketing agency, mena europe apac" />
+        <meta property="og:title" content="Locations | Global Footprint | Maison Elaris" />
+        <meta property="og:description" content="Dubai & Paris HQ with active operations across KSA, UAE, Europe & APAC. One operating model with local nuance, governance, and QA." />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Locations | Global Footprint | Maison Elaris" />
+        <meta name="twitter:description" content="Dubai & Paris HQ with active operations across KSA, UAE, Europe & APAC. One operating model with local nuance, governance, and QA." />
+        <link rel="canonical" href="https://www.maisonelaris.com/location" />
+      </Head>
+      <div className="min-h-screen bg-black text-white">
+        {/* Header */}
+        <Header />
       
       {/* Main Content */}
       <main className="relative">
@@ -125,6 +139,7 @@ export default function LocationPage() {
       
       {/* Footer */}
       <Footer />
-    </div>
+      </div>
+    </>
   )
 }

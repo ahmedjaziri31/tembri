@@ -1,14 +1,28 @@
 'use client'
 
 import Link from 'next/link'
+import Head from 'next/head'
 import Header from '../../components/Header'
 import Footer from '../../components/Footer'
 
 export default function ConnectPage() {
   return (
-    <div className="min-h-screen bg-black text-white">
-      {/* Header */}
-      <Header />
+    <>
+      <Head>
+        <title>Contact Maison Elaris | Global Integrated Marketing Communications Partner</title>
+        <meta name="description" content="Speak with specialists in strategy, creative, media, and analytics. Global coverage from Doha and Europe with fast discovery, clear scopes, and measurable outcomes." />
+        <meta name="keywords" content="contact global marketing agency, new business enquiries, integrated marketing partner, media and analytics" />
+        <meta property="og:title" content="Contact Maison Elaris | Global Integrated Marketing Communications Partner" />
+        <meta property="og:description" content="Speak with specialists in strategy, creative, media, and analytics. Global coverage from Doha and Europe with fast discovery, clear scopes, and measurable outcomes." />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Contact Maison Elaris | Global Integrated Marketing Communications Partner" />
+        <meta name="twitter:description" content="Speak with specialists in strategy, creative, media, and analytics. Global coverage from Doha and Europe with fast discovery, clear scopes, and measurable outcomes." />
+        <link rel="canonical" href="https://www.maisonelaris.com/connect" />
+      </Head>
+      <div className="min-h-screen bg-black text-white">
+        {/* Header */}
+        <Header />
       
       {/* Main Content */}
       <main className="relative min-h-screen flex items-center justify-center">
@@ -102,6 +116,7 @@ export default function ConnectPage() {
       
       {/* Footer */}
       <Footer />
-    </div>
+      </div>
+    </>
   )
 }

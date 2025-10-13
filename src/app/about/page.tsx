@@ -1,6 +1,7 @@
 'use client'
 
 import { useRef } from 'react'
+import Head from 'next/head'
 import Header from '../../components/Header'
 import Footer from '../../components/Footer'
 import Image from 'next/image'
@@ -554,8 +555,21 @@ export default function AboutPage() {
   }, { dependencies: [] })
 
   return (
-    <div className="min-h-screen bg-black text-white">
-      {/* Header - Absolutely positioned to overlay background */}
+    <>
+      <Head>
+        <title>About Maison Elaris | Global Integrated Marketing Communications Agency</title>
+        <meta name="description" content="We blend brand craft with enterprise media and analytics. Leadership with network pedigree, startup agility, and delivery across Europe, MENA & APAC." />
+        <meta name="keywords" content="about maison elaris, integrated marketing communications, global agency leadership, creative media data" />
+        <meta property="og:title" content="About Maison Elaris | Global Integrated Marketing Communications Agency" />
+        <meta property="og:description" content="We blend brand craft with enterprise media and analytics. Leadership with network pedigree, startup agility, and delivery across Europe, MENA & APAC." />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="About Maison Elaris | Global Integrated Marketing Communications Agency" />
+        <meta name="twitter:description" content="We blend brand craft with enterprise media and analytics. Leadership with network pedigree, startup agility, and delivery across Europe, MENA & APAC." />
+        <link rel="canonical" href="https://www.maisonelaris.com/about" />
+      </Head>
+      <div className="min-h-screen bg-black text-white">
+        {/* Header - Absolutely positioned to overlay background */}
       <div className="absolute top-0 left-0 right-0 z-50">
         <Header />
       </div>
@@ -1005,6 +1019,7 @@ export default function AboutPage() {
       
       {/* Footer */}
       <Footer />
-    </div>
+      </div>
+    </>
   )
 } 
