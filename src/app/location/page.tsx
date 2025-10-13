@@ -10,49 +10,49 @@ export default function LocationPage() {
       id: 'dubai',
       name: 'Dubai HQ',
       address: 'DMCC, Unit No. 30-01-5980, Jumeirah Lakes Tower, Dubai, United Arab Emirates',
-      image: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=800&h=1200&fit=crop',
+      image: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c',
       mapLink: 'https://maps.app.goo.gl/LFpbEPeURDdW7wsS9?g_st=ipc'
     },
     {
       id: 'london', 
       name: 'London',
       address: 'Greenside House, 50 Station Road, London N22 7DE',
-      image: 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=800&h=1200&fit=crop',
+      image: 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad',
       mapLink: 'https://maps.app.goo.gl/Yi9itwjKYc7ZyFKS9?g_st=ipc'
     },
     {
       id: 'paris',
       name: 'France',
       address: '33 Rue La Fayette, 75009 Paris, France',
-      image: 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=800&h=1200&fit=crop',
+      image: 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34',
       mapLink: 'https://maps.app.goo.gl/nPk8xkaYcnkiGUih9?g_st=ipc'
     },
     {
       id: 'amsterdam',
       name: 'Netherlands',
       address: 'Wibautstraat 131D, 1091 GL Amsterdam',
-      image: 'https://images.unsplash.com/photo-1534351590666-13e3e96b5017?w=800&h=1200&fit=crop',
+      image: 'https://images.unsplash.com/photo-1534351590666-13e3e96b5017',
       mapLink: 'https://maps.app.goo.gl/Lfw5WARbKcNdL7o28?g_st=ipc'
     },
     {
       id: 'doha',
       name: 'Doha', 
       address: '17th Floor, Office 16, Tornado Tower, West Bay, Doha, Qatar',
-      image: 'https://images.unsplash.com/photo-1568632234097-b41a75e6d716?w=800&h=1200&fit=crop',
+      image: 'https://images.unsplash.com/photo-1568632234097-b41a75e6d716',
       mapLink: 'https://maps.google.com?q=Netways,%20Palm%20(B)%20Tower,%2016%20Floor%20-%20Office%20%23%201602,%20Doha,%20Qatar&ftid=0x3e45c4c71e017a7d:0xf96d0348b40be2c6&entry=gps&lucs=,94275411,94284469,94224825,94227247,94227248,94231188,94280568,47071704,47069508,94218641,94280827,94282134,94203019,47084304&g_st=ipc'
     },
     {
       id: 'singapore',
       name: 'Singapore',
       address: '71 Robinson Road, Singapore 068895',
-      image: 'https://images.unsplash.com/photo-1525625293386-3f8f99389edd?w=800&h=1200&fit=crop',
+      image: 'https://images.unsplash.com/photo-1525625293386-3f8f99389edd',
       mapLink: 'https://maps.app.goo.gl/tZmeNwbAaKXai6WD7?g_st=ipc'
     },
     {
       id: 'jakarta',
       name: 'Jakarta',
       address: 'Noble House, Jl. Prof.Dr. Satrio Jl. Mega Kuningan Barat Kav E 4.2, Daerah Khusus Ibukota Jakarta 12950, Indonesia',
-      image: 'https://images.unsplash.com/photo-1555993539-1732b0258235?w=800&h=1200&fit=crop',
+      image: 'https://images.unsplash.com/photo-1555993539-1732b0258235',
       mapLink: 'https://maps.app.goo.gl/PgovBdtLuX7K4t8Y7?g_st=ipc'
     }
   ]
