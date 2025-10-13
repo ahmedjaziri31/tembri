@@ -102,9 +102,9 @@ export default function AboutSection() {
                 visibility: isAboutButtonVisible ? 'visible' : 'hidden'
               }}
             >
-              <Link href="/about">
+              <Link href="/about" aria-label="Learn more about Maison Elaris and our mission">
                 <button className="bg-[#336b62] hover:bg-[#9b8075] text-white px-8 py-4 rounded-lg transition-colors duration-300 font-body font-medium text-lg">
-                  Learn More
+                  Learn More About Us
                 </button>
               </Link>
             </div>

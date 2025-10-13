@@ -1048,9 +1048,9 @@ export default function Page1() {
 
                   {/* Learn More Button */}
                   <div className="flex justify-center lg:justify-start">
-                    <Link href="/about">
+                    <Link href="/about" aria-label="Learn more about Maison Elaris and our mission">
                       <button ref={aboutButtonRef} className="bg-[#336b62] hover:bg-[#9b8075] text-white px-8 py-4 rounded-lg transition-colors duration-300 font-body font-medium text-lg">
-                        Learn More
+                        Learn More About Us
                       </button>
                     </Link>
                   </div>
