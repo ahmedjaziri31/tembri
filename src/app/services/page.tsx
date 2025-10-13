@@ -323,7 +323,7 @@ export default function ServicesPage() {
       scrollTimeline.kill()
       
       // Reset all card positions to default
-      cardElements.forEach((card, index) => {
+      cardElements.forEach((card) => {
         if (card) {
           gsap.set(card, { clearProps: "all" })
         }
