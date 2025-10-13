@@ -243,11 +243,15 @@ export default function ServicesPage() {
     // Reset all cards to initial state
     cardElements.forEach((card, index) => {
       if (card) {
+        // First clear any previous animations
+        gsap.killTweensOf(card)
+        // Then set initial position
         gsap.set(card, { 
           y: index === 0 ? "0%" : "100%", 
           scale: 1, 
           rotation: 0,
-          clearProps: "all" // Clear any previous inline styles
+          opacity: 1,
+          force3D: true // Force GPU acceleration for better performance
         })
       }
     })
@@ -308,9 +312,16 @@ export default function ServicesPage() {
       ScrollTrigger.refresh()
     }, 100)
 
+    // Add window resize handler to refresh ScrollTrigger on resize
+    const handleResize = () => {
+      ScrollTrigger.refresh()
+    }
+    window.addEventListener('resize', handleResize)
+
     // Cleanup function
     return () => {
       clearTimeout(refreshTimeout)
+      window.removeEventListener('resize', handleResize)
       
       // Kill the specific ScrollTrigger for sticky cards
       ScrollTrigger.getAll().forEach(trigger => {
@@ -325,7 +336,7 @@ export default function ServicesPage() {
       // Reset all card positions to default
       cardElements.forEach((card) => {
         if (card) {
-          gsap.set(card, { clearProps: "all" })
+          gsap.set(card, { clearProps: "transform,opacity" })
         }
       })
     }
@@ -999,6 +1010,7 @@ export default function ServicesPage() {
                     cardRefs.current[index] = el
                   }}
                   className="absolute inset-0 bg-gradient-to-br from-white/15 to-white/5 backdrop-blur-sm border border-white/20 rounded-3xl p-8 lg:p-12 flex flex-col justify-center"
+                  style={{ zIndex: cardData.length - index }}
                 >
                   {/* Card Number Badge */}
                   <div className="mb-8">
