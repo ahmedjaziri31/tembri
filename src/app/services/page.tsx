@@ -118,7 +118,7 @@ export default function ServicesPage() {
     }
   }
 
-  // GSAP Animation
+  // Hero section animations - runs once
   useGSAP(() => {
     if (!topTextRef.current || !bottomTextRef.current || !contactButtonRef.current || !backgroundShapeRef.current) return
 
@@ -193,7 +193,7 @@ export default function ServicesPage() {
     // Start cycling after entrance animation
     entranceTl.call(startCycling)
 
-    // Continuous subtle floating animation for background shape (stays in place)
+    // Continuous subtle floating animation for background shape
     gsap.to(backgroundShapeRef.current, {
       rotation: 2,
       scale: 1.02,
@@ -203,172 +203,153 @@ export default function ServicesPage() {
       ease: "sine.inOut"
     })
 
-    // Initialize service content animation states
-    if (service1ContentRef.current) {
-      gsap.set(service1ContentRef.current, { 
-        height: expandedService === 1 ? 'auto' : 0,
-        opacity: expandedService === 1 ? 1 : 0 
-      })
-    }
-    
-    if (service2ContentRef.current) {
-      gsap.set(service2ContentRef.current, { 
-        height: expandedService === 2 ? 'auto' : 0,
-        opacity: expandedService === 2 ? 1 : 0 
-      })
-    }
-    
-    if (service3ContentRef.current) {
-      gsap.set(service3ContentRef.current, { 
-        height: expandedService === 3 ? 'auto' : 0,
-        opacity: expandedService === 3 ? 1 : 0 
-      })
-    }
-    
-    if (service4ContentRef.current) {
-      gsap.set(service4ContentRef.current, { 
-        height: expandedService === 4 ? 'auto' : 0,
-        opacity: expandedService === 4 ? 1 : 0 
-      })
-    }
-    
-    if (service5ContentRef.current) {
-      gsap.set(service5ContentRef.current, { 
-        height: expandedService === 5 ? 'auto' : 0,
-        opacity: expandedService === 5 ? 1 : 0 
+    // Choose image floating animation
+    if (chooseImageRef.current) {
+      gsap.to(chooseImageRef.current, {
+        y: -15,
+        rotation: 2,
+        duration: 4,
+        repeat: -1,
+        yoyo: true,
+        ease: "sine.inOut"
       })
     }
 
-    // Why Choose section - Sticky Card Animation
-    if (whyChooseSectionRef.current && stickyContainerRef.current) {
-      // Register ScrollTrigger plugin
-      gsap.registerPlugin(ScrollTrigger)
-      
-      const cardElements = cardRefs.current.filter(Boolean)
-      const totalCards = cardElements.length
+    // Cleanup
+    return () => {
+      gsap.killTweensOf([backgroundShapeRef.current, chooseImageRef.current, topTextRef.current, bottomTextRef.current, contactButtonRef.current])
+    }
+  }, { dependencies: [] })
 
-      if (cardElements.length > 0 && totalCards > 1) {
-        // Kill any existing ScrollTriggers to prevent conflicts
-        ScrollTrigger.getAll().forEach(trigger => {
-          if (trigger.trigger === stickyContainerRef.current) {
-            trigger.kill()
-          }
+  // Sticky card animation - separate from expandedService to prevent re-initialization
+  useGSAP(() => {
+    if (!whyChooseSectionRef.current || !stickyContainerRef.current) return
+
+    // Register ScrollTrigger plugin
+    gsap.registerPlugin(ScrollTrigger)
+    
+    const cardElements = cardRefs.current.filter(Boolean)
+    const totalCards = cardElements.length
+
+    if (cardElements.length === 0 || totalCards <= 1) return
+
+    // Kill all existing ScrollTriggers for this container to prevent duplicates
+    ScrollTrigger.getAll().forEach(trigger => {
+      if (trigger.trigger === stickyContainerRef.current) {
+        trigger.kill(true)
+      }
+    })
+
+    // Reset all cards to initial state
+    cardElements.forEach((card, index) => {
+      if (card) {
+        gsap.set(card, { 
+          y: index === 0 ? "0%" : "100%", 
+          scale: 1, 
+          rotation: 0,
+          clearProps: "all" // Clear any previous inline styles
         })
+      }
+    })
 
-        // Set initial positions - first card visible, others stacked below
-        gsap.set(cardElements[0], { y: "0%", scale: 1, rotation: 0 })
+    // Calculate scroll distance
+    const endValue = window.innerHeight * (totalCards - 1) * 1.5
 
-        for (let i = 1; i < totalCards; i++) {
-          if (cardElements[i]) {
-            gsap.set(cardElements[i], { y: "100%", scale: 1, rotation: 0 })
-          }
-        }
+    // Create scroll timeline for sticky cards
+    const scrollTimeline = gsap.timeline({
+      scrollTrigger: {
+        trigger: stickyContainerRef.current,
+        start: "top top",
+        end: `+=${endValue}`,
+        pin: true,
+        scrub: 0.5,
+        pinSpacing: true,
+        anticipatePin: 1,
+        invalidateOnRefresh: true,
+        refreshPriority: 1,
+        id: "sticky-cards" // Add ID for easier debugging
+      }
+    })
 
-        // Calculate end value with more generous scroll distance
-        const endValue = Math.max(window.innerHeight * (totalCards - 1) * 1.2, window.innerHeight * 2)
+    // Animate each card transition
+    for (let i = 0; i < totalCards - 1; i++) {
+      const currentCard = cardElements[i]
+      const nextCard = cardElements[i + 1]
+      const position = i / (totalCards - 1)
 
-        // Create scroll timeline for sticky cards with improved settings
-        const scrollTimeline = gsap.timeline({
-          scrollTrigger: {
-            trigger: stickyContainerRef.current,
-            start: "top top",
-            end: `+=${endValue}`,
-            pin: true,
-            scrub: 1, // Slower scrub for better control
-            pinSpacing: true,
-            anticipatePin: 1,
-            invalidateOnRefresh: true,
-            refreshPriority: -1,
-            onToggle: (self) => {
-              // Ensure animation works properly
-              if (self.isActive) {
-                console.log('Sticky animation activated')
-              }
-            },
-            onUpdate: (self) => {
-              // Ensure final state when animation completes
-              if (self.progress === 1) {
-                gsap.set(cardElements[totalCards - 1], { y: "0%", scale: 1, rotation: 0 })
-              }
-            }
+      if (currentCard && nextCard) {
+        // Current card scales down and rotates
+        scrollTimeline.to(
+          currentCard,
+          {
+            scale: 0.7,
+            rotation: 5,
+            duration: 1 / (totalCards - 1),
+            ease: "power2.inOut"
           },
-        })
+          position
+        )
 
-        // Animate each card transition with improved timing
-        for (let i = 0; i < totalCards - 1; i++) {
-          const currentCard = cardElements[i]
-          const nextCard = cardElements[i + 1]
-          const position = i / (totalCards - 1) // Normalized position
-
-          if (currentCard && nextCard) {
-            // Current card scales down and rotates
-            scrollTimeline.to(
-              currentCard,
-              {
-                scale: 0.7,
-                rotation: 5,
-                duration: 1 / (totalCards - 1), // Proportional duration
-                ease: "power2.inOut",
-              },
-              position,
-            )
-
-            // Next card slides up
-            scrollTimeline.to(
-              nextCard,
-              {
-                y: "0%",
-                duration: 1 / (totalCards - 1), // Proportional duration
-                ease: "power2.inOut",
-              },
-              position,
-            )
-          }
-        }
-
-        // Force a refresh after setup
-        setTimeout(() => {
-          ScrollTrigger.refresh()
-        }, 100)
-      }
-
-      // Choose image floating animation
-      if (chooseImageRef.current) {
-        gsap.to(chooseImageRef.current, {
-          y: -15,
-          rotation: 2,
-          duration: 4,
-          repeat: -1,
-          yoyo: true,
-          ease: "sine.inOut"
-        })
+        // Next card slides up
+        scrollTimeline.to(
+          nextCard,
+          {
+            y: "0%",
+            duration: 1 / (totalCards - 1),
+            ease: "power2.inOut"
+          },
+          position
+        )
       }
     }
 
-    // Add window resize handler to refresh ScrollTrigger
-    const handleResize = () => {
+    // Refresh ScrollTrigger after a short delay to ensure proper setup
+    const refreshTimeout = setTimeout(() => {
       ScrollTrigger.refresh()
-    }
-
-    window.addEventListener('resize', handleResize)
+    }, 100)
 
     // Cleanup function
     return () => {
-      // Remove resize listener
-      window.removeEventListener('resize', handleResize)
+      clearTimeout(refreshTimeout)
       
-      // Kill all ScrollTriggers related to this component
+      // Kill the specific ScrollTrigger for sticky cards
       ScrollTrigger.getAll().forEach(trigger => {
-        if (trigger.trigger === stickyContainerRef.current || 
-            trigger.trigger === whyChooseSectionRef.current) {
-          trigger.kill()
+        if (trigger.vars.id === "sticky-cards" || trigger.trigger === stickyContainerRef.current) {
+          trigger.kill(true)
         }
       })
       
-      // Kill any timeline animations
-      gsap.killTweensOf([chooseImageRef.current])
+      // Kill the timeline
+      scrollTimeline.kill()
+      
+      // Reset all card positions to default
+      cardElements.forEach((card, index) => {
+        if (card) {
+          gsap.set(card, { clearProps: "all" })
+        }
+      })
     }
+  }, { dependencies: [] })
 
+  // Service expansion animation - separate effect for expandedService changes
+  useGSAP(() => {
+    // Initialize service content animation states
+    const contentRefs = [
+      service1ContentRef,
+      service2ContentRef,
+      service3ContentRef,
+      service4ContentRef,
+      service5ContentRef
+    ]
+
+    contentRefs.forEach((ref, index) => {
+      if (ref.current) {
+        gsap.set(ref.current, { 
+          height: expandedService === (index + 1) ? 'auto' : 0,
+          opacity: expandedService === (index + 1) ? 1 : 0 
+        })
+      }
+    })
   }, { dependencies: [expandedService] })
 
   return (

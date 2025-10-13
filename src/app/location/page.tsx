@@ -38,7 +38,7 @@ export default function LocationPage() {
       id: 'doha',
       name: 'Doha', 
       address: '17th Floor, Office 16, Tornado Tower, West Bay, Doha, Qatar',
-      image: 'https://images.pexels.com/photos/3069345/pexels-photo-3069345.webp',
+      image: 'https://images.unsplash.com/photo-1568632234097-b41a75e6d716?w=800&h=1200&fit=crop',
       mapLink: 'https://maps.google.com?q=Netways,%20Palm%20(B)%20Tower,%2016%20Floor%20-%20Office%20%23%201602,%20Doha,%20Qatar&ftid=0x3e45c4c71e017a7d:0xf96d0348b40be2c6&entry=gps&lucs=,94275411,94284469,94224825,94227247,94227248,94231188,94280568,47071704,47069508,94218641,94280827,94282134,94203019,47084304&g_st=ipc'
     },
     {

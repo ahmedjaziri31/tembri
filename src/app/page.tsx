@@ -5,8 +5,9 @@ import Image from 'next/image'
 import Link from 'next/link'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
-import CircularGallery from '../components/CircularGallery'
-import LogoLoop from '../components/LogoLoop'
+// Lazy load heavy components with GSAP/OGL
+import CircularGallery from '../components/LazyCircularGallery'
+import LogoLoop from '../components/LazyLogoLoop'
 import { useGSAP } from '../hooks/useGSAP'
 import { gsap, ScrollTrigger } from '../lib/gsap'
 import { articlesApi } from '../lib/api'
@@ -63,7 +64,7 @@ export default function HomePage() {
     },
     { 
       image: "/elaris banners/DIMENSION TABLETTE/768×1024 px (en mode portrait)/Eucerin portrait.webp", 
-      text: "Eucerin",
+      text: "Estee Lauder",
       width: 768,
       height: 1024
     },
@@ -1347,35 +1348,41 @@ export default function HomePage() {
                     ) : (
                       // Render articles dynamically
                       articles.map((article) => (
-                        <div key={article.id} className="relative bg-black/20 backdrop-blur-sm border border-white/10 rounded-2xl overflow-hidden shadow-2xl hover:scale-105 transition-transform duration-300">
-                          <div className="relative h-48 lg:h-56">
-                            <Image
-                              src={article.image || article.featuredImage || "/news/image.webp"}
-                              alt={article.title}
-                              fill
-                              className="object-cover"
-                              onError={(e) => {
-                                // Fallback to placeholder on image error
-                                const target = e.target as HTMLImageElement
-                                target.src = "/news/image.webp"
-                              }}
-                            />
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                            <div className="absolute bottom-4 left-4 right-4">
-                              <h3 className="text-white text-lg font-heading font-bold mb-2 line-clamp-2">
-                                {article.title}
-                              </h3>
-                              <p className="text-gray-300 text-sm font-body line-clamp-2">
-                                {article.excerpt || `Latest updates in ${article.category} - Stay informed with our latest developments.`}
-                              </p>
-                              {article.category && (
-                                <span className="inline-block bg-[#336b62] text-white text-xs px-2 py-1 rounded mt-2">
-                                  {article.category}
-                                </span>
-                              )}
+                        <Link 
+                          key={article.id} 
+                          href={`/news/${article.id}`}
+                          className="block"
+                        >
+                          <div className="relative bg-black/20 backdrop-blur-sm border border-white/10 rounded-2xl overflow-hidden shadow-2xl hover:scale-105 transition-transform duration-300 cursor-pointer">
+                            <div className="relative h-48 lg:h-56">
+                              <Image
+                                src={article.image || article.featuredImage || "/news/image.webp"}
+                                alt={article.title}
+                                fill
+                                className="object-cover"
+                                onError={(e) => {
+                                  // Fallback to placeholder on image error
+                                  const target = e.target as HTMLImageElement
+                                  target.src = "/news/image.webp"
+                                }}
+                              />
+                              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                              <div className="absolute bottom-4 left-4 right-4">
+                                <h3 className="text-white text-lg font-heading font-bold mb-2 line-clamp-2">
+                                  {article.title}
+                                </h3>
+                                <p className="text-gray-300 text-sm font-body line-clamp-2">
+                                  {article.excerpt || `Latest updates in ${article.category} - Stay informed with our latest developments.`}
+                                </p>
+                                {article.category && (
+                                  <span className="inline-block bg-[#336b62] text-white text-xs px-2 py-1 rounded mt-2">
+                                    {article.category}
+                                  </span>
+                                )}
+                              </div>
                             </div>
                           </div>
-                        </div>
+                        </Link>
                       ))
                     )}
                   </div>
