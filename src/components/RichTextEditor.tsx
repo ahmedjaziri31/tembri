@@ -34,9 +34,35 @@ export default function RichTextEditor({ value, onChange, placeholder, className
       if (document.queryCommandState('italic')) formats.add('italic')
       if (document.queryCommandState('underline')) formats.add('underline')
       
-      // Check list formats
-      if (document.queryCommandState('insertUnorderedList')) formats.add('ul')
-      if (document.queryCommandState('insertOrderedList')) formats.add('ol')
+      // Check list formats with better detection
+      try {
+        if (document.queryCommandState('insertUnorderedList')) {
+          formats.add('ul')
+        }
+        if (document.queryCommandState('insertOrderedList')) {
+          formats.add('ol')
+        }
+      } catch (e) {
+        // Fallback: check if cursor is in a list element
+        const selection = window.getSelection()
+        if (selection && selection.anchorNode) {
+          let node = selection.anchorNode.nodeType === Node.TEXT_NODE 
+            ? selection.anchorNode.parentElement 
+            : selection.anchorNode as HTMLElement
+          
+          while (node && node !== editorRef.current) {
+            if (node.tagName === 'UL') {
+              formats.add('ul')
+              break
+            }
+            if (node.tagName === 'OL') {
+              formats.add('ol')
+              break
+            }
+            node = node.parentElement as HTMLElement
+          }
+        }
+      }
       
       // Check alignment
       if (document.queryCommandState('justifyLeft')) formats.add('left')
@@ -44,10 +70,14 @@ export default function RichTextEditor({ value, onChange, placeholder, className
       if (document.queryCommandState('justifyRight')) formats.add('right')
       
       // Check block format (headings)
-      const formatBlock = document.queryCommandValue('formatBlock').toLowerCase()
-      if (formatBlock === 'h1') formats.add('h1')
-      if (formatBlock === 'h2') formats.add('h2')
-      if (formatBlock === 'h3') formats.add('h3')
+      try {
+        const formatBlock = document.queryCommandValue('formatBlock').toLowerCase()
+        if (formatBlock === 'h1') formats.add('h1')
+        if (formatBlock === 'h2') formats.add('h2')
+        if (formatBlock === 'h3') formats.add('h3')
+      } catch (e) {
+        // Ignore format block errors
+      }
       
       setActiveFormats(formats)
     } catch (error) {
@@ -143,6 +173,38 @@ export default function RichTextEditor({ value, onChange, placeholder, className
       executeCommand('formatBlock', tag)
     }
   }, [executeCommand])
+
+  // Toggle list format with better handling
+  const toggleList = useCallback((listType: 'insertUnorderedList' | 'insertOrderedList') => {
+    editorRef.current?.focus()
+    
+    try {
+      // Save selection
+      const selection = window.getSelection()
+      if (!selection || !selection.rangeCount) return
+      
+      // Check if already in a list
+      const isActive = document.queryCommandState(listType)
+      
+      // Execute the list command
+      document.execCommand(listType, false, undefined)
+      
+      // Force update after a short delay to ensure DOM has updated
+      setTimeout(() => {
+        if (editorRef.current) {
+          handleInput()
+          updateActiveFormats()
+        }
+      }, 50)
+    } catch (error) {
+      console.error('List command failed:', error)
+      // Fallback: try again
+      setTimeout(() => {
+        document.execCommand(listType, false, undefined)
+        handleInput()
+      }, 10)
+    }
+  }, [])
 
   // Toolbar button component with active state and improved interactions
   const ToolbarButton = ({ 
@@ -262,13 +324,13 @@ export default function RichTextEditor({ value, onChange, placeholder, className
         {/* Lists */}
         <div className="flex gap-1 border-r border-gray-300 dark:border-gray-600 pr-2 mr-1">
           <ToolbarButton
-            onClick={() => executeCommand('insertUnorderedList')}
+            onClick={() => toggleList('insertUnorderedList')}
             icon={List}
             title="Bullet List"
             isActive={activeFormats.has('ul')}
           />
           <ToolbarButton
-            onClick={() => executeCommand('insertOrderedList')}
+            onClick={() => toggleList('insertOrderedList')}
             icon={ListOrdered}
             title="Numbered List"
             isActive={activeFormats.has('ol')}
@@ -401,8 +463,36 @@ export default function RichTextEditor({ value, onChange, placeholder, className
           padding-left: 2em;
         }
         
+        [contenteditable] :global(ul) {
+          list-style-type: disc;
+        }
+        
+        [contenteditable] :global(ol) {
+          list-style-type: decimal;
+        }
+        
         [contenteditable] :global(li) {
           margin: 0.5em 0;
+          display: list-item;
+        }
+        
+        [contenteditable] :global(ul li) {
+          list-style-type: disc;
+        }
+        
+        [contenteditable] :global(ol li) {
+          list-style-type: decimal;
+        }
+        
+        /* Nested lists */
+        [contenteditable] :global(ul ul) {
+          list-style-type: circle;
+          margin: 0.25em 0;
+        }
+        
+        [contenteditable] :global(ol ol) {
+          list-style-type: lower-alpha;
+          margin: 0.25em 0;
         }
       `}</style>
     </div>
