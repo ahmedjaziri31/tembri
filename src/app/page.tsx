@@ -13,7 +13,8 @@ import { gsap, ScrollTrigger } from '../lib/gsap'
 import { articlesApi } from '../lib/api'
 
 interface Article {
-  id: number
+  _id?: string
+  id?: number | string
   title: string
   category: string
   image?: string
@@ -152,7 +153,16 @@ export default function HomePage() {
         if (response.success && response.data) {
           // Handle nested articles structure from API response
           const articlesData = (response.data as any).articles || response.data
-          setArticles(Array.isArray(articlesData) ? articlesData.slice(0, 3) : []) // Limit to 3 articles
+          
+          // Map articles to ensure id field is properly set from _id
+          const mappedArticles = Array.isArray(articlesData) 
+            ? articlesData.map((article: any) => ({
+                ...article,
+                id: article._id || article.id // Use _id as id if available
+              })).slice(0, 3) // Limit to 3 articles
+            : []
+          
+          setArticles(mappedArticles)
         } else {
           throw new Error('API response not successful')
         }
@@ -1349,8 +1359,8 @@ export default function HomePage() {
                       // Render articles dynamically
                       articles.map((article) => (
                         <Link 
-                          key={article.id} 
-                          href={`/news/${article.id}`}
+                          key={article.id || article._id} 
+                          href={`/news/${article.id || article._id}`}
                           className="block"
                         >
                           <div className="relative bg-black/20 backdrop-blur-sm border border-white/10 rounded-2xl overflow-hidden shadow-2xl hover:scale-105 transition-transform duration-300 cursor-pointer">
