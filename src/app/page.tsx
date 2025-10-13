@@ -778,7 +778,7 @@ export default function HomePage() {
 
 
       {/* Main Content Area */}
-      <main className="relative z-20 min-h-screen px-2 sm:px-4">
+      <main className="relative z-20 min-h-screen px-2 sm:px-4 md:px-6 lg:px-8">
         {/* Light Gradient Background Effect - Only in First Section */}
         <div 
           id="firstSectionGradient"
@@ -856,41 +856,41 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* Desktop Layout - Original Absolute Positioning */}
-        <div className="hidden md:flex items-center justify-center min-h-screen">
-          {/* Animated Card */}
+        {/* Desktop Layout - Responsive with Better Positioning */}
+        <div className="hidden md:flex items-center justify-center min-h-screen relative">
+          {/* Animated Card - Centered */}
           <div
             ref={cardRef}
-            className="relative"
+            className="relative z-10"
           >
             <Image
               src="/Flot.webp"
               alt="Maison Elaris Card"
               width={350}
               height={450}
-              className="w-64 lg:w-72 xl:w-80 h-auto object-contain drop-shadow-2xl"
+              className="w-56 md:w-64 lg:w-72 xl:w-80 2xl:w-96 h-auto object-contain drop-shadow-2xl"
               priority
             />
           </div>
 
-          {/* First Text - Left Side */}
+          {/* First Text - Left Side - Responsive Positioning */}
           <div
             ref={taglineRef}
-            className="absolute left-8 lg:left-12 top-1/2 transform -translate-y-1/2"
+            className="absolute left-4 md:left-6 lg:left-12 xl:left-16 2xl:left-24 top-1/2 transform -translate-y-1/2"
             style={{ top: 'clamp(35%, 45%, 55%)' }}
           >
-            <div className="max-w-md">
-              <h1 className="text-white text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-heading font-bold leading-tight tracking-wide">
+            <div className="max-w-[280px] md:max-w-[320px] lg:max-w-md xl:max-w-lg 2xl:max-w-xl">
+              <h1 className="text-white text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-heading font-bold leading-tight tracking-wide">
                 WHERE STRATEGY<br />
                 MEETS STORY.
               </h1>
               
               {/* CTA Button */}
-              <div className="mt-6 lg:mt-8">
+              <div className="mt-4 md:mt-6 lg:mt-8">
                 <Link href="/services">
                   <button 
                     ref={caseStudyButtonRef}
-                    className="group bg-[#336b62] hover:bg-[#9b8075] text-white px-6 py-3 lg:px-8 lg:py-4 rounded-lg transition-all duration-300 font-body font-medium text-base lg:text-lg transform hover:scale-105 hover:shadow-2xl"
+                    className="group bg-[#336b62] hover:bg-[#9b8075] text-white px-5 py-2.5 md:px-6 md:py-3 lg:px-8 lg:py-4 rounded-lg transition-all duration-300 font-body font-medium text-sm md:text-base lg:text-lg transform hover:scale-105 hover:shadow-2xl"
                     style={{ opacity: 0 }}
                   >
                     <span className="flex items-center gap-2">
@@ -910,14 +910,14 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* Second Text - Bottom Right */}
+          {/* Second Text - Bottom Right - Responsive Positioning */}
           <div
-            className="absolute bottom-12 lg:bottom-16 right-8 lg:right-12 text-right"
-            style={{ opacity: 0, bottom: 'clamp(2.5rem, 12vh, 4rem)' }}
+            className="absolute bottom-8 md:bottom-10 lg:bottom-16 xl:bottom-20 2xl:bottom-24 right-4 md:right-6 lg:right-12 xl:right-16 2xl:right-24 text-right"
+            style={{ opacity: 0 }}
             id="bottomText"
           >
-            <div className="max-w-lg">
-              <h2 className="text-white text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-heading font-bold leading-tight tracking-wide">
+            <div className="max-w-[320px] md:max-w-[380px] lg:max-w-lg xl:max-w-xl 2xl:max-w-2xl">
+              <h2 className="text-white text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-heading font-bold leading-tight tracking-wide">
                 POWERED BY DATA.<br />
                 DRIVEN BY VISION.
               </h2>
