@@ -1010,7 +1010,7 @@ export default function ServicesPage() {
                     cardRefs.current[index] = el
                   }}
                   className="absolute inset-0 bg-gradient-to-br from-white/15 to-white/5 backdrop-blur-sm border border-white/20 rounded-3xl p-8 lg:p-12 flex flex-col justify-center"
-                  style={{ zIndex: cardData.length - index }}
+                  style={{ zIndex: index + 1 }}
                 >
                   {/* Card Number Badge */}
                   <div className="mb-8">
