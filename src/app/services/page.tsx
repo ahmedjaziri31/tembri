@@ -69,7 +69,7 @@ export default function ServicesPage() {
 
   // Text cycling data
   const textCycles = [
-    { top: "digital-first", bottom: "media intelligence" },
+    { top: "DIGITAL-FIRST", bottom: "media intelligence" },
     { top: "DATA-LED", bottom: "PERFORMANCE" },
     { top: "CREATIVE", bottom: "IMPACT" }
   ]
@@ -410,7 +410,7 @@ export default function ServicesPage() {
                 className="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl 2xl:text-9xl font-heading font-bold leading-none mb-0"
                 style={{ color: '#336b62' }}
               >
-                digital-first
+                DIGITAL-FIRST
               </h1>
               <h2 
                 ref={bottomTextRef}
