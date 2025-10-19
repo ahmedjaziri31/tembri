@@ -886,7 +886,7 @@ export default function HomePage() {
               alt="Maison Elaris Card"
               width={350}
               height={450}
-              className="w-56 md:w-64 lg:w-72 xl:w-80 2xl:w-96 h-auto object-contain drop-shadow-2xl"
+              className="w-56 md:w-48 lg:w-54 xl:w-60 2xl:w-72 h-auto object-contain drop-shadow-2xl"
               priority
             />
           </div>
