@@ -1,7 +1,7 @@
 'use client'
 
 import { useRef, useEffect, useState, useCallback } from 'react'
-import { Bold, Italic, Underline, List, ListOrdered, Heading1, Heading2, Heading3, Type, AlignLeft, AlignCenter, AlignRight, Undo, Redo } from 'lucide-react'
+import { Bold, Italic, Underline, List, ListOrdered, Heading1, Heading2, Heading3, Type, AlignLeft, AlignCenter, AlignRight } from 'lucide-react'
 
 interface RichTextEditorProps {
   value: string
@@ -104,25 +104,6 @@ export default function RichTextEditor({ value, onChange, placeholder, className
   // Handle keyboard shortcuts
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
     if (!editorRef.current?.contains(document.activeElement)) return
-
-    // Keyboard shortcuts with Ctrl/Cmd
-    if (e.ctrlKey || e.metaKey) {
-      switch (e.key.toLowerCase()) {
-        case 'z':
-          if (e.shiftKey) {
-            e.preventDefault()
-            document.execCommand('redo')
-          } else {
-            e.preventDefault()
-            document.execCommand('undo')
-          }
-          break
-        case 'y':
-          e.preventDefault()
-          document.execCommand('redo')
-          break
-      }
-    }
     
     // Update formats after any key press
     setTimeout(updateActiveFormats, 10)
@@ -160,17 +141,64 @@ export default function RichTextEditor({ value, onChange, placeholder, className
 
   // Toggle heading format (removes heading if already applied)
   const toggleHeading = useCallback((tag: string) => {
+    editorRef.current?.focus()
+    
     try {
+      const selection = window.getSelection()
+      if (!selection || !selection.rangeCount) return
+      
+      const range = selection.getRangeAt(0)
       const currentFormat = document.queryCommandValue('formatBlock').toLowerCase()
       
-      // If already this heading, convert to paragraph (toggle off)
-      if (currentFormat === tag) {
-        executeCommand('formatBlock', 'p')
+      // If no text is selected, apply to current block
+      if (range.collapsed) {
+        // Get the current block element
+        let node = selection.anchorNode
+        if (node?.nodeType === Node.TEXT_NODE) {
+          node = node.parentElement
+        }
+        
+        // Find the block-level parent
+        while (node && node !== editorRef.current) {
+          const tagName = (node as HTMLElement).tagName?.toLowerCase()
+          if (['p', 'div', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'].includes(tagName)) {
+            break
+          }
+          node = (node as HTMLElement).parentElement
+        }
+        
+        // If already this heading, convert to paragraph (toggle off)
+        if (currentFormat === tag) {
+          document.execCommand('formatBlock', false, 'p')
+        } else {
+          document.execCommand('formatBlock', false, tag)
+        }
       } else {
-        executeCommand('formatBlock', tag)
+        // Text is selected - apply to selection only
+        if (currentFormat === tag) {
+          document.execCommand('formatBlock', false, 'p')
+        } else {
+          document.execCommand('formatBlock', false, tag)
+        }
       }
+      
+      // Ensure we don't auto-apply bold
+      setTimeout(() => {
+        if (document.queryCommandState('bold')) {
+          document.execCommand('bold', false, undefined)
+        }
+        handleInput()
+      }, 10)
     } catch (error) {
-      executeCommand('formatBlock', tag)
+      console.error('Heading command failed:', error)
+      document.execCommand('formatBlock', false, tag)
+      // Remove bold if it was auto-applied
+      setTimeout(() => {
+        if (document.queryCommandState('bold')) {
+          document.execCommand('bold', false, undefined)
+        }
+        handleInput()
+      }, 10)
     }
   }, [executeCommand])
 
@@ -252,22 +280,6 @@ export default function RichTextEditor({ value, onChange, placeholder, className
         ref={toolbarRef}
         className={`bg-gray-50 dark:bg-gray-800 border-b border-gray-300 dark:border-gray-600 p-2 flex flex-wrap gap-1 transition-all duration-200 ${isSticky ? 'sticky top-0 z-10 shadow-md' : ''}`}
       >
-        {/* Undo/Redo */}
-        <div className="flex gap-1 border-r border-gray-300 dark:border-gray-600 pr-2 mr-1">
-          <ToolbarButton
-            onClick={() => executeCommand('undo')}
-            icon={Undo}
-            title="Undo"
-            shortcut="Ctrl+Z"
-          />
-          <ToolbarButton
-            onClick={() => executeCommand('redo')}
-            icon={Redo}
-            title="Redo"
-            shortcut="Ctrl+Y"
-          />
-        </div>
-
         {/* Text Style */}
         <div className="flex gap-1 border-r border-gray-300 dark:border-gray-600 pr-2 mr-1">
           <ToolbarButton
@@ -427,19 +439,19 @@ export default function RichTextEditor({ value, onChange, placeholder, className
         /* Ensure proper styling for formatted content */
         [contenteditable] :global(h1) {
           font-size: 2em;
-          font-weight: bold;
+          font-weight: normal;
           margin: 0.67em 0;
         }
         
         [contenteditable] :global(h2) {
           font-size: 1.5em;
-          font-weight: bold;
+          font-weight: normal;
           margin: 0.75em 0;
         }
         
         [contenteditable] :global(h3) {
           font-size: 1.17em;
-          font-weight: bold;
+          font-weight: normal;
           margin: 0.83em 0;
         }
         
