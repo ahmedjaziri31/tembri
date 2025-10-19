@@ -202,6 +202,24 @@ export default function HomePage() {
     fetchArticles()
   }, [])
 
+  // Handle hash navigation after scroll is enabled
+  useEffect(() => {
+    if (scrollEnabled && typeof window !== 'undefined') {
+      const hash = window.location.hash
+      if (hash) {
+        // Wait a bit for animations to settle, then scroll to the hash
+        const timer = setTimeout(() => {
+          const element = document.querySelector(hash)
+          if (element) {
+            element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+          }
+        }, 500) // 500ms delay to ensure animations are complete
+        
+        return () => clearTimeout(timer)
+      }
+    }
+  }, [scrollEnabled])
+
   // Main GSAP animation sequence
   useGSAP(() => {
     // Ensure all required elements exist before proceeding
@@ -1167,7 +1185,7 @@ export default function HomePage() {
       </section>
 
               {/* Social Media Section */}
-              <section ref={socialSectionRef} className="relative z-20 py-16 md:py-20 lg:min-h-screen bg-black overflow-hidden flex items-center justify-center px-4 sm:px-6">
+              <section id="social-media" ref={socialSectionRef} className="relative z-20 py-16 md:py-20 lg:min-h-screen bg-black overflow-hidden flex items-center justify-center px-4 sm:px-6">
                 {/* Central Content */}
                 <div className="relative z-10 text-center max-w-4xl mx-auto">
                   <div className="mb-6 sm:mb-8">
