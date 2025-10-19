@@ -69,7 +69,7 @@ export default function ServicesPage() {
 
   // Text cycling data
   const textCycles = [
-    { top: "DIGITAL-FIRST", bottom: "media intelligence" },
+    { top: "DIGITAL-FIRST", bottom: "MEDIA INTELLIGENCE" },
     { top: "DATA-LED", bottom: "PERFORMANCE" },
     { top: "CREATIVE", bottom: "IMPACT" }
   ]
@@ -416,7 +416,7 @@ export default function ServicesPage() {
                 ref={bottomTextRef}
                 className="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl 2xl:text-9xl font-heading font-bold leading-none text-white"
               >
-                media intelligence
+                MEDIA INTELLIGENCE
               </h2>
             </div>
 
