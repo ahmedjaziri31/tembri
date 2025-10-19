@@ -374,14 +374,19 @@ export default function RichTextEditor({ value, onChange, placeholder, className
         {/* Font Size */}
         <div className="flex items-center">
           <select
-            onMouseDown={(e) => e.preventDefault()}
             onChange={(e) => {
-              editorRef.current?.focus()
-              executeCommand('fontSize', e.target.value)
-              // Reset to default after applying
-              setTimeout(() => {
-                e.target.value = '3'
-              }, 100)
+              const value = e.target.value
+              if (value && editorRef.current) {
+                editorRef.current.focus()
+                executeCommand('fontSize', value)
+                // Reset to default after applying
+                setTimeout(() => {
+                  e.target.value = '3'
+                }, 100)
+              }
+            }}
+            onClick={(e) => {
+              e.stopPropagation()
             }}
             className="text-sm border border-gray-300 dark:border-gray-600 rounded px-2 py-1.5 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 cursor-pointer focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all duration-200 hover:border-blue-400"
             defaultValue="3"
@@ -416,7 +421,7 @@ export default function RichTextEditor({ value, onChange, placeholder, className
           const text = e.clipboardData.getData('text/plain')
           document.execCommand('insertText', false, text)
         }}
-        className="min-h-[300px] p-4 focus:outline-none bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 prose prose-sm dark:prose-invert max-w-none transition-colors duration-200"
+        className="min-h-[300px] p-4 focus:outline-none bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 max-w-none transition-colors duration-200"
         data-placeholder={placeholder}
         style={{
           overflowY: 'auto',
@@ -436,23 +441,26 @@ export default function RichTextEditor({ value, onChange, placeholder, className
           display: block;
         }
         
-        /* Ensure proper styling for formatted content */
+        /* Ensure proper styling for formatted content - more specific selectors to override prose */
         [contenteditable] :global(h1) {
-          font-size: 2em;
-          font-weight: normal;
-          margin: 0.67em 0;
+          font-size: 2em !important;
+          font-weight: normal !important;
+          margin: 0.67em 0 !important;
+          line-height: 1.2 !important;
         }
         
         [contenteditable] :global(h2) {
-          font-size: 1.5em;
-          font-weight: normal;
-          margin: 0.75em 0;
+          font-size: 1.5em !important;
+          font-weight: normal !important;
+          margin: 0.75em 0 !important;
+          line-height: 1.3 !important;
         }
         
         [contenteditable] :global(h3) {
-          font-size: 1.17em;
-          font-weight: normal;
-          margin: 0.83em 0;
+          font-size: 1.17em !important;
+          font-weight: normal !important;
+          margin: 0.83em 0 !important;
+          line-height: 1.4 !important;
         }
         
         [contenteditable] :global(b),
