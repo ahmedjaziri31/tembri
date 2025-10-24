@@ -41,7 +41,7 @@ export default function MaintenancePage() {
                   strokeLinecap="round" 
                   strokeLinejoin="round" 
                   strokeWidth={2} 
-                  d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" 
+                  d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" 
                 />
               </svg>
             </div>
@@ -49,7 +49,7 @@ export default function MaintenancePage() {
 
           {/* Main Content */}
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-white mb-6 tracking-tight">
-            Service Temporarily
+            Service
             <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#336b62] to-[#9b8075]">
               Unavailable
@@ -57,7 +57,7 @@ export default function MaintenancePage() {
           </h1>
 
           <p className="text-lg md:text-xl text-gray-300 mb-8 leading-relaxed max-w-xl mx-auto">
-            This website is currently undergoing maintenance due to pending contractual obligations.
+            This website is currently undergoing maintenance. We apologize for any inconvenience.
           </p>
 
           <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-8 mb-8">
@@ -79,11 +79,10 @@ export default function MaintenancePage() {
               </div>
               <div>
                 <h3 className="text-white font-heading font-semibold text-lg mb-2">
-                  For Account Holders
+                  We&apos;ll Be Back Soon
                 </h3>
                 <p className="text-gray-400 text-sm leading-relaxed">
-                  If you are the owner of this website, please complete your outstanding payment to restore full access. 
-                  Once payment is processed, all services will be immediately reactivated.
+                  Our website is currently being updated. Please check back later for access to our full services and content.
                 </p>
               </div>
             </div>
@@ -91,12 +90,12 @@ export default function MaintenancePage() {
 
           {/* Contact Information */}
           <div className="text-gray-400 text-sm">
-            <p className="mb-2">Need assistance?</p>
+            <p className="mb-2">Need immediate assistance?</p>
             <a 
-              href="mailto:hello@maisonelaris.com" 
+              href="mailto:contact@maisonelaris.com" 
               className="text-[#336b62] hover:text-[#9b8075] transition-colors duration-300 font-medium"
             >
-              hello@maisonelaris.com
+              contact@maisonelaris.com
             </a>
           </div>
 
