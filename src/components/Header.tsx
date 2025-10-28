@@ -55,7 +55,7 @@ export default function Header() {
             className="group flex flex-col items-center space-y-2 py-2 px-4 rounded-full hover:bg-white/10 transition-all duration-300"
             aria-label="Toggle navigation menu"
           >
-            <div className="text-xs text-gray-400 group-hover:text-white transition-colors duration-300 font-body">
+            <div className="text-base lg:text-lg text-gray-400 group-hover:text-white transition-colors duration-300 font-body">
               Menu
             </div>
             <div className={`h-0.5 bg-white/60 group-hover:bg-white rounded-full transition-all duration-300 ${isSlideMenuOpen ? 'w-16' : 'w-20'}`}></div>
