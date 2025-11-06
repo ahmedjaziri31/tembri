@@ -576,11 +576,36 @@ export default function AboutPage() {
       
       {/* Main Content */}
       <main className="relative">
-        {/* Hero Section - Empty spacer */}
-        <section className="relative px-6 lg:px-8 overflow-hidden pt-20 pb-4">
-          <div className="relative max-w-7xl mx-auto text-center">
-            {/* Empty spacer for header */}
+        {/* Video Hero Section */}
+        <section className="relative w-full h-screen overflow-hidden">
+          {/* Video Background */}
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="absolute inset-0 w-full h-full object-cover"
+          >
+            <source src="/about/rend.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+          
+          {/* Optional Overlay for better text readability */}
+          <div className="absolute inset-0 bg-black/20"></div>
+          
+          {/* Optional Content Over Video (uncomment if needed) */}
+          {/* 
+          <div className="relative z-10 h-full flex items-center justify-center">
+            <div className="text-center px-6">
+              <h1 className="text-5xl lg:text-7xl xl:text-8xl font-heading font-bold text-white mb-6">
+                YOUR HEADLINE
+              </h1>
+              <p className="text-xl lg:text-2xl text-white/90 font-body">
+                Your subtitle text here
+              </p>
+            </div>
           </div>
+          */}
         </section>
 
         {/* Unlocking True Growth Section */}
