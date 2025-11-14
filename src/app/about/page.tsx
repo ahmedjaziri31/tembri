@@ -593,19 +593,22 @@ export default function AboutPage() {
           {/* Optional Overlay for better text readability */}
           <div className="absolute inset-0 bg-black/20"></div>
           
-          {/* Optional Content Over Video (uncomment if needed) */}
-          {/* 
-          <div className="relative z-10 h-full flex items-center justify-center">
-            <div className="text-center px-6">
-              <h1 className="text-5xl lg:text-7xl xl:text-8xl font-heading font-bold text-white mb-6">
-                YOUR HEADLINE
-              </h1>
-              <p className="text-xl lg:text-2xl text-white/90 font-body">
-                Your subtitle text here
-              </p>
-            </div>
+          {/* CTA Button - Bottom Left */}
+          <div className="absolute bottom-8 left-8 lg:bottom-12 lg:left-12 z-20">
+            <Link href="/work">
+              <button className="group flex items-center gap-3 bg-white/90 hover:bg-white backdrop-blur-sm text-black px-6 py-3 lg:px-8 lg:py-4 rounded-full font-body font-medium text-base lg:text-lg transition-all duration-300 transform hover:scale-105 hover:shadow-2xl">
+                <span>See Our Work</span>
+                <svg 
+                  className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" 
+                  fill="none" 
+                  stroke="currentColor" 
+                  viewBox="0 0 24 24"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </button>
+            </Link>
           </div>
-          */}
         </section>
 
         {/* Unlocking True Growth Section */}
