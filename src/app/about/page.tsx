@@ -944,8 +944,8 @@ export default function AboutPage() {
             <div className="flex flex-wrap items-center justify-center gap-4 md:gap-6 lg:gap-8 max-w-7xl mx-auto">
               <div className="flex items-center justify-center">
                 <Image
-                  src="/Partner%20Logos/meta.webp"
-                  alt="Meta Business Partner"
+                  src="/Partner%20Logos/E1.png"
+                  alt="Partner Logo"
                   width={280}
                   height={90}
                   className="w-auto h-12 md:h-14 lg:h-16 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
@@ -953,8 +953,8 @@ export default function AboutPage() {
               </div>
               <div className="flex items-center justify-center">
                 <Image
-                  src="/Partner%20Logos/tiktok%20for%20business.webp"
-                  alt="TikTok Marketing Partner"
+                  src="/Partner%20Logos/E2.png"
+                  alt="Partner Logo"
                   width={280}
                   height={90}
                   className="w-auto h-12 md:h-14 lg:h-16 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
@@ -962,8 +962,8 @@ export default function AboutPage() {
               </div>
               <div className="flex items-center justify-center">
                 <Image
-                  src="/Partner%20Logos/tiktok%20partner.webp"
-                  alt="TikTok Creative Partner"
+                  src="/Partner%20Logos/E3.png"
+                  alt="Partner Logo"
                   width={280}
                   height={90}
                   className="w-auto h-12 md:h-14 lg:h-16 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
@@ -971,8 +971,8 @@ export default function AboutPage() {
               </div>
               <div className="flex items-center justify-center">
                 <Image
-                  src="/Partner%20Logos/amazon.webp"
-                  alt="Amazon Ads Verified Partner"
+                  src="/Partner%20Logos/E4.png"
+                  alt="Partner Logo"
                   width={280}
                   height={90}
                   className="w-auto h-12 md:h-14 lg:h-16 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
@@ -980,20 +980,29 @@ export default function AboutPage() {
               </div>
               <div className="flex items-center justify-center">
                 <Image
-                  src="/Partner%20Logos/google%20marketing.webp"
-                  alt="Google Marketing Platform Certified"
+                  src="/Partner%20Logos/E5.png"
+                  alt="Partner Logo"
                   width={280}
-                  height={70}
+                  height={90}
                   className="w-auto h-12 md:h-14 lg:h-16 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
                 />
               </div>
               <div className="flex items-center justify-center">
                 <Image
-                  src="/Partner%20Logos/google-cloud.webp"
-                  alt="Google Partner"
+                  src="/Partner%20Logos/E6.png"
+                  alt="Partner Logo"
                   width={280}
-                  height={70}
-                  className="w-auto h-10 md:h-12 lg:h-14 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
+                  height={90}
+                  className="w-auto h-12 md:h-14 lg:h-16 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
+                />
+              </div>
+              <div className="flex items-center justify-center">
+                <Image
+                  src="/Partner%20Logos/E7.png"
+                  alt="Partner Logo"
+                  width={280}
+                  height={90}
+                  className="w-auto h-12 md:h-14 lg:h-16 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
                 />
               </div>
             </div>
