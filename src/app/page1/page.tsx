@@ -1408,36 +1408,36 @@ export default function Page1() {
                         <Image
                           src="/Partner%20Logos/E1.png"
                           alt="Partner Logo"
-                          width={280}
-                          height={90}
-                          className="w-auto h-24 lg:h-28 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
+                          width={1120}
+                          height={360}
+                          className="w-auto h-96 lg:h-[448px] object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
                         />
                       </div>
                       <div className="flex items-center justify-center">
                         <Image
                           src="/Partner%20Logos/E2.png"
                           alt="Partner Logo"
-                          width={280}
-                          height={90}
-                          className="w-auto h-24 lg:h-28 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
+                          width={1120}
+                          height={360}
+                          className="w-auto h-96 lg:h-[448px] object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
                         />
                       </div>
                       <div className="flex items-center justify-center">
                         <Image
                           src="/Partner%20Logos/E3.png"
                           alt="Partner Logo"
-                          width={280}
-                          height={90}
-                          className="w-auto h-24 lg:h-28 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
+                          width={1120}
+                          height={360}
+                          className="w-auto h-96 lg:h-[448px] object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
                         />
                       </div>
                       <div className="flex items-center justify-center">
                         <Image
                           src="/Partner%20Logos/E4.png"
                           alt="Partner Logo"
-                          width={280}
-                          height={90}
-                          className="w-auto h-24 lg:h-28 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
+                          width={1120}
+                          height={360}
+                          className="w-auto h-96 lg:h-[448px] object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
                         />
                       </div>
                     </div>
@@ -1448,27 +1448,27 @@ export default function Page1() {
                         <Image
                           src="/Partner%20Logos/E5.png"
                           alt="Partner Logo"
-                          width={280}
-                          height={90}
-                          className="w-auto h-20 lg:h-24 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
+                          width={1120}
+                          height={360}
+                          className="w-auto h-80 lg:h-96 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
                         />
                       </div>
                       <div className="flex items-center justify-center">
                         <Image
                           src="/Partner%20Logos/E6.png"
                           alt="Partner Logo"
-                          width={280}
-                          height={90}
-                          className="w-auto h-20 lg:h-24 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
+                          width={1120}
+                          height={360}
+                          className="w-auto h-80 lg:h-96 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
                         />
                       </div>
                       <div className="flex items-center justify-center">
                         <Image
                           src="/Partner%20Logos/E7.png"
                           alt="Partner Logo"
-                          width={280}
-                          height={90}
-                          className="w-auto h-20 lg:h-24 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
+                          width={1120}
+                          height={360}
+                          className="w-auto h-80 lg:h-96 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
                         />
                       </div>
                     </div>

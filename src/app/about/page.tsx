@@ -946,63 +946,63 @@ export default function AboutPage() {
                 <Image
                   src="/Partner%20Logos/E1.png"
                   alt="Partner Logo"
-                  width={280}
-                  height={90}
-                  className="w-auto h-12 md:h-14 lg:h-16 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
+                  width={1120}
+                  height={360}
+                  className="w-auto h-48 md:h-56 lg:h-64 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
                 />
               </div>
               <div className="flex items-center justify-center">
                 <Image
                   src="/Partner%20Logos/E2.png"
                   alt="Partner Logo"
-                  width={280}
-                  height={90}
-                  className="w-auto h-12 md:h-14 lg:h-16 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
+                  width={1120}
+                  height={360}
+                  className="w-auto h-48 md:h-56 lg:h-64 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
                 />
               </div>
               <div className="flex items-center justify-center">
                 <Image
                   src="/Partner%20Logos/E3.png"
                   alt="Partner Logo"
-                  width={280}
-                  height={90}
-                  className="w-auto h-12 md:h-14 lg:h-16 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
+                  width={1120}
+                  height={360}
+                  className="w-auto h-48 md:h-56 lg:h-64 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
                 />
               </div>
               <div className="flex items-center justify-center">
                 <Image
                   src="/Partner%20Logos/E4.png"
                   alt="Partner Logo"
-                  width={280}
-                  height={90}
-                  className="w-auto h-12 md:h-14 lg:h-16 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
+                  width={1120}
+                  height={360}
+                  className="w-auto h-48 md:h-56 lg:h-64 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
                 />
               </div>
               <div className="flex items-center justify-center">
                 <Image
                   src="/Partner%20Logos/E5.png"
                   alt="Partner Logo"
-                  width={280}
-                  height={90}
-                  className="w-auto h-12 md:h-14 lg:h-16 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
+                  width={1120}
+                  height={360}
+                  className="w-auto h-48 md:h-56 lg:h-64 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
                 />
               </div>
               <div className="flex items-center justify-center">
                 <Image
                   src="/Partner%20Logos/E6.png"
                   alt="Partner Logo"
-                  width={280}
-                  height={90}
-                  className="w-auto h-12 md:h-14 lg:h-16 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
+                  width={1120}
+                  height={360}
+                  className="w-auto h-48 md:h-56 lg:h-64 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
                 />
               </div>
               <div className="flex items-center justify-center">
                 <Image
                   src="/Partner%20Logos/E7.png"
                   alt="Partner Logo"
-                  width={280}
-                  height={90}
-                  className="w-auto h-12 md:h-14 lg:h-16 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
+                  width={1120}
+                  height={360}
+                  className="w-auto h-48 md:h-56 lg:h-64 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
                 />
               </div>
             </div>
