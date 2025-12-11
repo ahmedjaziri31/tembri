@@ -1413,15 +1413,6 @@ export default function Page1() {
                           className="w-auto h-96 lg:h-[448px] object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
                         />
                       </div>
-                      {/* <div className="flex items-center justify-center">
-                        <Image
-                          src="/Partner%20Logos/E2.png"
-                          alt="Partner Logo"
-                          width={1120}
-                          height={360}
-                          className="w-auto h-96 lg:h-[448px] object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
-                        />
-                      </div> */}
                       <div className="flex items-center justify-center">
                         <Image
                           src="/Partner%20Logos/E3.png.svg"
