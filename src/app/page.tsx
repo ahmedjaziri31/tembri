@@ -1457,8 +1457,8 @@ export default function HomePage() {
           <div className="flex flex-wrap items-center justify-center gap-4 md:gap-6 lg:gap-8 max-w-7xl mx-auto">
             <div className="flex items-center justify-center">
               <Image
-                src="/Partner%20Logos/E1.png"
-                alt="Partner Logo"
+                src="/partner-logos/meta-business-partner.png"
+                alt="Meta Business Partner"
                 width={1120}
                 height={360}
                 className="w-auto h-48 md:h-56 lg:h-64 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
@@ -1466,8 +1466,8 @@ export default function HomePage() {
             </div>
             <div className="flex items-center justify-center">
               <Image
-                src="/Partner%20Logos/E3.png.svg"
-                alt="Partner Logo"
+                src="/partner-logos/tiktok-business.svg"
+                alt="TikTok for Business"
                 width={1120}
                 height={360}
                 className="w-auto h-48 md:h-56 lg:h-64 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
@@ -1475,8 +1475,8 @@ export default function HomePage() {
             </div>
             <div className="flex items-center justify-center">
               <Image
-                src="/Partner%20Logos/E4.png"
-                alt="Partner Logo"
+                src="/partner-logos/tiktok-creative.png"
+                alt="TikTok Creative Partner"
                 width={1120}
                 height={360}
                 className="w-auto h-48 md:h-56 lg:h-64 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
@@ -1484,8 +1484,8 @@ export default function HomePage() {
             </div>
             <div className="flex items-center justify-center">
               <Image
-                src="/Partner%20Logos/E5.png"
-                alt="Partner Logo"
+                src="/partner-logos/amazon-ads.png"
+                alt="Amazon Ads Partner"
                 width={1120}
                 height={360}
                 className="w-auto h-48 md:h-56 lg:h-64 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
@@ -1493,8 +1493,8 @@ export default function HomePage() {
             </div>
             <div className="flex items-center justify-center">
               <Image
-                src="/Partner%20Logos/E6.png"
-                alt="Partner Logo"
+                src="/partner-logos/google-partner.png"
+                alt="Google Partner"
                 width={1120}
                 height={360}
                 className="w-auto h-48 md:h-56 lg:h-64 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
@@ -1502,8 +1502,8 @@ export default function HomePage() {
             </div>
             <div className="flex items-center justify-center">
               <Image
-                src="/Partner%20Logos/E7.png"
-                alt="Partner Logo"
+                src="/partner-logos/snapchat-partner.png"
+                alt="Snapchat Marketing Partner"
                 width={1120}
                 height={360}
                 className="w-auto h-48 md:h-56 lg:h-64 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
