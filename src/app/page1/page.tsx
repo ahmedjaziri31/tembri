@@ -1410,7 +1410,7 @@ export default function Page1() {
                           alt="Meta Business Partner"
                           width={1120}
                           height={360}
-                          className="w-auto h-96 lg:h-[448px] object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
+                          className="w-auto h-24 md:h-28 lg:h-32 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
                         />
                       </div>
                       <div className="flex items-center justify-center">
@@ -1419,7 +1419,7 @@ export default function Page1() {
                           alt="TikTok for Business"
                           width={1120}
                           height={360}
-                          className="w-auto h-96 lg:h-[448px] object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
+                          className="w-auto h-24 md:h-28 lg:h-32 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
                         />
                       </div>
                       <div className="flex items-center justify-center">
@@ -1428,7 +1428,7 @@ export default function Page1() {
                           alt="TikTok Creative Partner"
                           width={1120}
                           height={360}
-                          className="w-auto h-96 lg:h-[448px] object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
+                          className="w-auto h-24 md:h-28 lg:h-32 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
                         />
                       </div>
                     </div>
@@ -1441,7 +1441,7 @@ export default function Page1() {
                           alt="Amazon Ads Partner"
                           width={1120}
                           height={360}
-                          className="w-auto h-80 lg:h-96 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
+                          className="w-auto h-24 md:h-28 lg:h-32 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
                         />
                       </div>
                       <div className="flex items-center justify-center">
@@ -1450,7 +1450,7 @@ export default function Page1() {
                           alt="Google Partner"
                           width={1120}
                           height={360}
-                          className="w-auto h-80 lg:h-96 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
+                          className="w-auto h-24 md:h-28 lg:h-32 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
                         />
                       </div>
                       <div className="flex items-center justify-center">
@@ -1459,7 +1459,7 @@ export default function Page1() {
                           alt="Snapchat Marketing Partner"
                           width={1120}
                           height={360}
-                          className="w-auto h-80 lg:h-96 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
+                          className="w-auto h-24 md:h-28 lg:h-32 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
                         />
                       </div>
                     </div>
