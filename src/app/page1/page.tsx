@@ -1403,7 +1403,7 @@ export default function Page1() {
                   {/* Partner Logos - Flowing Layout */}
                   <div className="flex flex-wrap items-center justify-center gap-6 lg:gap-12 max-w-6xl mx-auto">
                     {/* Top Row */}
-                    <div className="flex flex-wrap items-center justify-center gap-6 lg:gap-8 w-full">
+                    <div className="flex flex-wrap lg:flex-nowrap items-center justify-center gap-6 lg:gap-8 w-full">
                       <div className="flex items-center justify-center">
                         <Image
                           src="/partner-logos/meta-business-partner.png"
@@ -1434,7 +1434,7 @@ export default function Page1() {
                     </div>
                     
                     {/* Bottom Row */}
-                    <div className="flex flex-wrap items-center justify-center gap-6 lg:gap-8 w-full mt-4">
+                    <div className="flex flex-wrap lg:flex-nowrap items-center justify-center gap-6 lg:gap-8 w-full mt-4">
                       <div className="flex items-center justify-center">
                         <Image
                           src="/partner-logos/amazon-ads.png"

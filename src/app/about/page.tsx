@@ -941,7 +941,7 @@ export default function AboutPage() {
             </div>
 
             {/* Partner Logos - Responsive Single Line on Desktop */}
-            <div className="flex flex-wrap items-center justify-center gap-4 md:gap-6 lg:gap-8 max-w-7xl mx-auto">
+            <div className="flex flex-wrap lg:flex-nowrap items-center justify-center gap-4 md:gap-6 lg:gap-8 max-w-7xl mx-auto">
               <div className="flex items-center justify-center">
                 <Image
                   src="/partner-logos/meta-business-partner.png"
