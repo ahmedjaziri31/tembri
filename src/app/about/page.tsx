@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import Head from 'next/head'
 import Header from '../../components/Header'
 import Footer from '../../components/Footer'
@@ -10,6 +10,9 @@ import { useGSAP } from '../../hooks/useGSAP'
 import { gsap, ScrollTrigger } from '../../lib/gsap'
 
 export default function AboutPage() {
+  // State for video source based on screen size
+  const [videoSrc, setVideoSrc] = useState('/about/rend.mp4')
+  
   // Refs for image animations
   const planetImageRef = useRef<HTMLDivElement>(null)
   const partnerImageRef = useRef<HTMLDivElement>(null)
@@ -57,6 +60,26 @@ export default function AboutPage() {
   const unlockingTitleRef = useRef<HTMLDivElement>(null)
   const growthCircleRef = useRef<HTMLDivElement>(null)
   const unlockingDescRef = useRef<HTMLDivElement>(null)
+
+  // Set video source based on screen size
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 768) {
+        setVideoSrc('/about/rend_mobile.mp4')
+      } else {
+        setVideoSrc('/about/rend.mp4')
+      }
+    }
+
+    // Set initial video source
+    handleResize()
+
+    // Add event listener for window resize
+    window.addEventListener('resize', handleResize)
+
+    // Cleanup
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
 
   // Casual floating animation for planet image
   useGSAP(() => {
@@ -580,13 +603,14 @@ export default function AboutPage() {
         <section className="relative w-full h-screen overflow-hidden">
           {/* Video Background */}
           <video
+            key={videoSrc}
             autoPlay
             loop
             muted
             playsInline
             className="absolute inset-0 w-full h-full object-cover"
           >
-            <source src="/about/rend.mp4" type="video/mp4" />
+            <source src={videoSrc} type="video/mp4" />
             Your browser does not support the video tag.
           </video>
           
@@ -941,7 +965,7 @@ export default function AboutPage() {
             </div>
 
             {/* Partner Logos - Responsive Single Line on Desktop */}
-            <div className="flex flex-wrap lg:flex-nowrap items-center justify-center gap-4 md:gap-6 lg:gap-8 max-w-7xl mx-auto">
+            <div className="flex flex-wrap items-center justify-center gap-4 md:gap-6 lg:gap-8 max-w-7xl mx-auto">
               <div className="flex items-center justify-center">
                 <Image
                   src="/partner-logos/meta-business-partner.png"
