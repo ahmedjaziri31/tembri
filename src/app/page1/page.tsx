@@ -1441,7 +1441,7 @@ export default function Page1() {
                           alt="Amazon Ads Partner"
                           width={1120}
                           height={360}
-                          className="w-auto h-20 md:h-24 lg:h-28 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
+                          className="w-auto h-10 md:h-12 lg:h-14 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
                         />
                       </div>
                       <div className="flex items-center justify-center">
