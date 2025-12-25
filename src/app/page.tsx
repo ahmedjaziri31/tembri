@@ -1461,7 +1461,7 @@ export default function HomePage() {
                 alt="Meta Business Partner"
                 width={1120}
                 height={360}
-                className="w-auto h-16 md:h-20 lg:h-24 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
+                className="w-auto h-12 md:h-14 lg:h-16 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
               />
             </div>
             <div className="flex items-center justify-center">
@@ -1497,7 +1497,7 @@ export default function HomePage() {
                 alt="Google Partner"
                 width={1120}
                 height={360}
-                className="w-auto h-16 md:h-20 lg:h-24 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
+                className="w-auto h-12 md:h-14 lg:h-16 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
               />
             </div>
             <div className="flex items-center justify-center">
@@ -1506,7 +1506,7 @@ export default function HomePage() {
                 alt="Snapchat Marketing Partner"
                 width={1120}
                 height={360}
-                className="w-auto h-16 md:h-20 lg:h-24 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
+                className="w-auto h-12 md:h-14 lg:h-16 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
               />
             </div>
           </div>
