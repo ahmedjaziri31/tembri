@@ -465,7 +465,7 @@ export default function ServicesPage() {
                   {/* Text Content */}
                   <div className="text-center lg:text-left">
                     <p className="text-gray-300 text-lg lg:text-xl font-body leading-relaxed">
-                      At Maison Elaris, marketing is a connected system. We unite media, creative, and data to design work that meets people where they are—across markets—delivering ideas that are distinctive, measurable, and built for compounding growth at scale with rigor, accountability.
+                      At Maison Elaris, marketing runs as an agentic growth system. We connect media, creative, and data to build work that meets people where they are across markets, delivering ideas that are distinctive, measurable, and designed to compound at scale through rigor and accountability.
                     </p>
                   </div>
                 </div>
@@ -478,7 +478,7 @@ export default function ServicesPage() {
                   {/* Text Content */}
                   <div className="text-center lg:text-left order-2 lg:order-1">
                     <p className="text-gray-300 text-lg lg:text-xl font-body leading-relaxed mb-8">
-                      Our services are designed to help you win in the new age of media, whether you&apos;re launching a product, scaling globally, or reimagining brand engagement. With capabilities spanning content creation to performance marketing and retail media, we help you build influence, drive demand, and shape culture.
+                      Our services are built to help you win in the agentic era of media, whether you are launching a product, scaling globally, or rethinking how your brand connects. From creative systems and content to media intelligence and measurement, we help you build influence, engineer demand, and shape culture.
                     </p>
                     
                     {/* Need Help Button */}
@@ -555,11 +555,11 @@ export default function ServicesPage() {
                       {/* Content */}
                       <div className="order-1 lg:order-2">
                         <h4 className="text-[#336b62] text-xl lg:text-2xl font-heading font-bold mb-6">
-                          Maximize Your Investments Across Every Touchpoint
+                          Strategic Media Systems Across Every Touchpoint
                         </h4>
                         
                         <p className="text-gray-300 text-base lg:text-lg font-body leading-relaxed mb-6">
-                          We design data-driven media strategies rooted in deep audience understanding and modern platform fluency. Our approach combines human insight and machine intelligence to architect full-funnel plans — from awareness to performance.
+                           We design agent-assisted media systems rooted in deep audience understanding and modern platform fluency. Our approach blends human taste with machine intelligence to structure end-to-end plans, from awareness through conversion, without losing brand clarity
                         </p>
                         
                         <div className="mb-6">
@@ -567,19 +567,19 @@ export default function ServicesPage() {
                           <ul className="space-y-2 text-gray-300">
                             <li className="flex items-start gap-3">
                               <span className="text-[#336b62] mt-1">•</span>
-                              <span>Omnichannel media planning (Digital, Offline, CTV, OOH)</span>
+                              <span>Integrated media planning</span>
                             </li>
                             <li className="flex items-start gap-3">
                               <span className="text-[#336b62] mt-1">•</span>
-                              <span>Programmatic & platform-specific execution (Google, Meta, TikTok, Amazon, etc.)</span>
+                              <span>Platform activation and experimentation (Google, Meta, Snap, TikTok, Amazon, etc.)</span>
                             </li>
                             <li className="flex items-start gap-3">
                               <span className="text-[#336b62] mt-1">•</span>
-                              <span>Budget optimization & pacing intelligence</span>
+                              <span>Budget allocation guidance and pacing governance</span>
                             </li>
                             <li className="flex items-start gap-3">
                               <span className="text-[#336b62] mt-1">•</span>
-                              <span>Brand lift, attention, and outcome measurement</span>
+                              <span>Measurement frameworks for lift, attention, and business outcomes</span>
                             </li>
                           </ul>
                         </div>
@@ -587,7 +587,7 @@ export default function ServicesPage() {
                         <div className="mb-8">
                           <h5 className="text-white text-lg font-heading font-bold mb-4">Perfect for:</h5>
                           <p className="text-gray-300">
-                            Global campaigns, performance-driven growth, and high-velocity launches.
+                            Multi-market campaigns, growth-focused brands, and high-velocity launches
                           </p>
                         </div>
                         
@@ -647,11 +647,11 @@ export default function ServicesPage() {
                       {/* Content */}
                       <div className="order-1 lg:order-2">
                         <h4 className="text-[#336b62] text-xl lg:text-2xl font-heading font-bold mb-6">
-                          Craft Narratives That Convert & Content That Travels
+                          Build Narratives That Move People and Content That Scales
                         </h4>
                         
                         <p className="text-gray-300 text-base lg:text-lg font-body leading-relaxed mb-6">
-                          We blend brand identity with audience intent to produce emotionally resonant and platform-native content. From high-concept campaigns to always-on assets, our creative is designed to stop thumbs and start conversations.
+                          We operate as one agentic creative and media system. We fuse brand truth with audience signals to generate, adapt, and refine platform-native stories at speed, while keeping human taste in control. From campaign concepts to always-on assets, our work is built to earn attention, spark conversation, and travel across markets with consistency.
                         </p>
                         
                         <div className="mb-6">
@@ -659,23 +659,23 @@ export default function ServicesPage() {
                           <ul className="space-y-2 text-gray-300">
                             <li className="flex items-start gap-3">
                               <span className="text-[#336b62] mt-1">•</span>
-                              <span>Video, image, and animation production</span>
+                              <span>Agent-assisted creative development (variants, iterations, localization)</span>
                             </li>
                             <li className="flex items-start gap-3">
                               <span className="text-[#336b62] mt-1">•</span>
-                              <span>Platform-first content for Meta, TikTok, YouTube, DOOH</span>
+                              <span>Video, image, and motion production for scaled delivery</span>
                             </li>
                             <li className="flex items-start gap-3">
                               <span className="text-[#336b62] mt-1">•</span>
-                              <span>UGC + branded storytelling</span>
+                              <span>Platform-native creative for Meta, TikTok, YouTube, and DOOH</span>
                             </li>
                             <li className="flex items-start gap-3">
                               <span className="text-[#336b62] mt-1">•</span>
-                              <span>Creator strategy and influencer integration</span>
+                              <span>UGC and branded storytelling frameworks with creator collaboration</span>
                             </li>
                             <li className="flex items-start gap-3">
                               <span className="text-[#336b62] mt-1">•</span>
-                              <span>Visual systems for global campaign consistency</span>
+                              <span>Visual systems that maintain global campaign consistency</span>
                             </li>
                           </ul>
                         </div>
@@ -683,7 +683,7 @@ export default function ServicesPage() {
                         <div className="mb-8">
                           <h5 className="text-white text-lg font-heading font-bold mb-4">Perfect for:</h5>
                           <p className="text-gray-300">
-                            Beauty, fashion, FMCG, and consumer tech brands seeking creative consistency across regions.
+                            Beauty, fashion, FMCG, and consumer tech brands that need creative clarity, faster iteration, and consistency across regions
                           </p>
                         </div>
                         
@@ -743,11 +743,11 @@ export default function ServicesPage() {
                       {/* Content */}
                       <div className="order-1 lg:order-2">
                         <h4 className="text-[#336b62] text-xl lg:text-2xl font-heading font-bold mb-6">
-                           Your Brand&apos;s Sharpest Tool Is Knowing Who, When, And Why.
+                           Your Brand’s Sharpest Advantage Is Knowing Who, When, and Why
                         </h4>
                         
                         <p className="text-gray-300 text-base lg:text-lg font-body leading-relaxed mb-6">
-                          From first-party enrichment to lookalike modeling, we transform data into decisions. Our analytics team integrates platform insights with custom dashboards and machine learning signals to find and activate the audiences that matter most.
+                           With Maison Elaris, intelligence becomes an agentic workflow, not a static report. We turn signals into decisions through audience understanding, measurement frameworks, and automated insight loops that guide creative and media actions, while humans set the guardrails.
                         </p>
                         
                         <div className="mb-6">
@@ -755,11 +755,11 @@ export default function ServicesPage() {
                           <ul className="space-y-2 text-gray-300">
                             <li className="flex items-start gap-3">
                               <span className="text-[#336b62] mt-1">•</span>
-                              <span>Audience segmentation & persona development</span>
+                              <span>Audience segmentation and persona systems</span>
                             </li>
                             <li className="flex items-start gap-3">
                               <span className="text-[#336b62] mt-1">•</span>
-                              <span>Cross-platform performance analytics</span>
+                              <span>Cross-channel insight reporting and experimentation learnings</span>
                             </li>
                             <li className="flex items-start gap-3">
                               <span className="text-[#336b62] mt-1">•</span>
@@ -767,7 +767,7 @@ export default function ServicesPage() {
                             </li>
                             <li className="flex items-start gap-3">
                               <span className="text-[#336b62] mt-1">•</span>
-                              <span>Marketing mix modeling & budget reallocation</span>
+                              <span>Measurement strategy and budget reallocation guidance</span>
                             </li>
                           </ul>
                         </div>
@@ -775,7 +775,7 @@ export default function ServicesPage() {
                         <div className="mb-8">
                           <h5 className="text-white text-lg font-heading font-bold mb-4">Perfect for:</h5>
                           <p className="text-gray-300">
-                            Brands aiming to scale sustainably or decode campaign ROI.
+                            Brands that want to scale sustainably and clearly understand what is driving ROI
                           </p>
                         </div>
                         
@@ -835,11 +835,11 @@ export default function ServicesPage() {
                       {/* Content */}
                       <div className="order-1 lg:order-2">
                         <h4 className="text-[#336b62] text-xl lg:text-2xl font-heading font-bold mb-6">
-                          Bridge Brand Vision With Technology-Driven Marketing Execution
+                          Bridge Brand Vision With Technology-Driven Growth Systems
                         </h4>
                         
                         <p className="text-gray-300 text-base lg:text-lg font-body leading-relaxed mb-6">
-                          Maison Elaris guides businesses through transformation integrating modern media, martech, and measurement. From tech stack audits to innovation sprints, we partner with clients on the journey toward scalable, future-facing ecosystems.
+                          Maison Elaris helps businesses modernize how marketing operates by integrating media, martech, and measurement into one connected, agent-ready ecosystem. From stack audits to innovation sprints, we partner with teams to build scalable workflows that are future-facing and repeatable.
                         </p>
                         
                         <div className="mb-6">
@@ -847,23 +847,23 @@ export default function ServicesPage() {
                           <ul className="space-y-2 text-gray-300">
                             <li className="flex items-start gap-3">
                               <span className="text-[#336b62] mt-1">•</span>
-                              <span>Martech & data architecture consulting</span>
+                              <span> Martech and data architecture consulting</span>
                             </li>
                             <li className="flex items-start gap-3">
                               <span className="text-[#336b62] mt-1">•</span>
-                              <span>Performance media transformation</span>
+                              <span>Media operating model redesign and workflow automation</span>
                             </li>
                             <li className="flex items-start gap-3">
                               <span className="text-[#336b62] mt-1">•</span>
-                              <span>CRM strategy & implementation</span>
+                              <span>CRM strategy and implementation</span>
                             </li>
                             <li className="flex items-start gap-3">
                               <span className="text-[#336b62] mt-1">•</span>
-                              <span>AI + automation frameworks for campaign management</span>
+                              <span>AI agent and automation frameworks for campaign operations</span>
                             </li>
                             <li className="flex items-start gap-3">
                               <span className="text-[#336b62] mt-1">•</span>
-                              <span>Retail, CRM, CDP, and analytics stack alignment</span>
+                              <span>CRM, CDP, analytics, and retail platform stack alignment</span>
                             </li>
                           </ul>
                         </div>
@@ -871,7 +871,7 @@ export default function ServicesPage() {
                         <div className="mb-8">
                           <h5 className="text-white text-lg font-heading font-bold mb-4">Perfect for:</h5>
                           <p className="text-gray-300">
-                            Organizations scaling internal teams or replatforming tech capabilities.
+                            Organizations scaling internal teams or upgrading core marketing technology and operating systems.
                           </p>
                         </div>
                         
@@ -931,11 +931,11 @@ export default function ServicesPage() {
                       {/* Content */}
                       <div className="order-1 lg:order-2">
                         <h4 className="text-[#336b62] text-xl lg:text-2xl font-heading font-bold mb-6">
-                          Turn Shelf Space Into Screen Space.
+                          Turn Shelf Space Into Screen Space
                         </h4>
                         
                         <p className="text-gray-300 text-base lg:text-lg font-body leading-relaxed mb-6">
-                          In a world where every touchpoint is shoppable, we help brands navigate and master retail media networks — from Amazon to Carrefour. We build performance-driven commerce strategies integrated across media, shelf, and content.
+                          Shopping is now embedded in every channel. Maison Elaris run retail growth as an agentic workflow, where signals from marketplaces, content, and catalogs continuously guide what to create, where to place it, and how to optimize it. The result is a commerce system that moves from discovery to checkout with speed, consistency, and control.
                         </p>
                         
                         <div className="mb-6">
@@ -943,23 +943,23 @@ export default function ServicesPage() {
                           <ul className="space-y-2 text-gray-300">
                             <li className="flex items-start gap-3">
                               <span className="text-[#336b62] mt-1">•</span>
-                              <span>Amazon Ads, Walmart Connect, Carrefour, TikTok Shop, Lazada, Shopee</span>
+                              <span>Agent-led activation across retail networks and marketplaces (Amazon, Walmart, Carrefour, TikTok Shop, Lazada, Shopee)</span>
                             </li>
                             <li className="flex items-start gap-3">
                               <span className="text-[#336b62] mt-1">•</span>
-                              <span>Content-to-cart pathways across social + e-commerce</span>
+                              <span>Content-to-cart journeys generated, tested, and localized at scale</span>
                             </li>
                             <li className="flex items-start gap-3">
                               <span className="text-[#336b62] mt-1">•</span>
-                              <span>DSP management, feed optimization</span>
+                              <span>Catalog, feed, and listing optimization with automated checks and iteration loops</span>
                             </li>
                             <li className="flex items-start gap-3">
                               <span className="text-[#336b62] mt-1">•</span>
-                              <span>Offline & retail attribution integrations</span>
+                              <span>Attribution and incrementality frameworks across online and offline touchpoints</span>
                             </li>
                             <li className="flex items-start gap-3">
                               <span className="text-[#336b62] mt-1">•</span>
-                              <span>Promotion calendar alignment</span>
+                              <span>Promotion calendar orchestration aligned to inventory, pricing, and creative updates</span>
                             </li>
                           </ul>
                         </div>
@@ -967,7 +967,7 @@ export default function ServicesPage() {
                         <div className="mb-8">
                           <h5 className="text-white text-lg font-heading font-bold mb-4">Perfect for:</h5>
                           <p className="text-gray-300">
-                            FMCG, beauty, electronics, and DTC brands leveraging retailer ecosystems.
+                             FMCG, beauty, electronics, and DTC brands scaling through retailer ecosystems.
                           </p>
                         </div>
                         

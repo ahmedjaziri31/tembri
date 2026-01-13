@@ -670,7 +670,7 @@ export default function AboutPage() {
             {/* Description Text */}
             <div ref={unlockingDescRef} className="max-w-4xl mx-auto">
               <p className="text-gray-300 text-lg lg:text-xl xl:text-2xl font-body leading-relaxed">
-                Business Growth is under pressure. Signal loss, walled-off gardens and clutter make attention scarce; spray-and-pray no longer works. Brands need precision, speed and ideas that travel globally.
+                Business growth is under pressure. Signal loss, walled ecosystems, and endless clutter make attention scarce, and spray-and-pray no longer works. Brands need precision, speed, and ideas that can travel globally.
               </p>
             </div>
           </div>
@@ -685,7 +685,7 @@ export default function AboutPage() {
               {/* Left Text */}
               <div ref={storyLeftTextRef} className="lg:pr-8">
                 <p className="text-white text-lg lg:text-xl xl:text-2xl font-body leading-relaxed">
-                  Maison Elaris was created to answer that reality. We unite strategy, creativity, and data to close gaps between spend and impact. With multi-disciplinary talent, we design work to reach people and move business.
+                  We are an AI agentic digital-first media communications Company that unites strategy, creativity, and data to close the gap between spend and impact. With multidisciplinary talent and agent-powered workflows, we design work that reaches the right people, learns fast, and moves the business.
         </p>
       </div>
 
@@ -719,7 +719,7 @@ export default function AboutPage() {
               {/* Right Text */}
               <div ref={storyRightTextRef} className="lg:pl-8 order-1 lg:order-2">
                 <p className="text-white text-lg lg:text-xl xl:text-2xl font-body leading-relaxed">
-                  Growth is earned, not shouted. We fuse stories with product truth, service design and media that scale. Craft moves fast, but human taste ensures real relevance and results and fairness.
+                  Growth is earned, not shouted. We fuse stories with product truth, service design, and scalable media execution. Craft moves quickly, but human taste leads every decision, keeping work relevant, fair, and results-driven.
                 </p>
               </div>
             </div>
@@ -754,7 +754,7 @@ export default function AboutPage() {
               {/* Description Text */}
               <div ref={designingImpactDescRef} className="text-center max-w-4xl mx-auto mt-8 sm:mt-12 px-4 sm:px-6 lg:px-8">
                 <p className="text-gray-300 text-base sm:text-lg md:text-xl lg:text-2xl font-body leading-relaxed">
-                  We don&apos;t just market; we engineer demand. We don&apos;t design; we build systems where ideas data and media compound. Tools assist; humans own judgment—so growth is brand-safe, measurable and built to last.
+                  We do not just design, we build systems where ideas, data, and media compound over time. Tools accelerate, humans own judgment, so growth stays brand-safe, measurable, and built to last.
                 </p>
               </div>
             </div>
@@ -785,9 +785,7 @@ export default function AboutPage() {
               {/* Description Text */}
               <div ref={creativityDescRef} className="text-center max-w-4xl mx-auto mt-8 sm:mt-12 px-4 sm:px-6 lg:px-8">
                 <p className="text-gray-300 text-base sm:text-lg md:text-xl lg:text-2xl font-body leading-relaxed">
-                  A team of creators, strategists, and visionaries who believe 
-                  the future of growth lies in authenticity, creativity, 
-                  and connection.
+                 We are a collective of creators, strategists, technologists, and operators who believe the future of growth comes from authenticity, intelligence, and real connection.
                 </p>
               </div>
             </div>
@@ -818,9 +816,7 @@ export default function AboutPage() {
               {/* Description Text */}
               <div ref={craftDescRef} className="text-center max-w-4xl mx-auto mt-8 sm:mt-12 px-4 sm:px-6 lg:px-8">
                 <p className="text-gray-300 text-base sm:text-lg md:text-xl lg:text-2xl font-body leading-relaxed">
-                  We build with our clients, not just for them, sharing knowledge, 
-                  staying transparent, and holding ourselves accountable every 
-                  step of the way.
+                  We build with our clients, not just for them, sharing knowledge, staying transparent, and holding ourselves accountable at every step.
                 </p>
               </div>
             </div>
@@ -845,7 +841,7 @@ export default function AboutPage() {
             {/* Where Minds Unite Text - Animated on scroll */}
             <div ref={mindsUniteTextRef} className="max-w-4xl mx-auto">
               <p className="text-gray-300 text-lg lg:text-xl xl:text-2xl font-body leading-relaxed">
-                At Maison Elaris, the best ideas win. A borderless collective—strategy, creative, tech &amp; analytics as one team. Diverse minds, purpose, and standards; no boundaries, only outcomes.
+                At Maison Elaris, the best ideas win. Borderless, integrated, and outcome-led, one team across strategy, creative, tech, and analytics. Diverse minds, shared standards, no boundaries, only impact.
               </p>
             </div>
           </div>

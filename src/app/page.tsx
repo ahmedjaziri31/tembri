@@ -1081,15 +1081,15 @@ export default function HomePage() {
                   {/* Description */}
                   <div ref={aboutDescRef} className="space-y-6 mb-10">
                     <p className="text-gray-300 text-lg lg:text-xl font-body leading-relaxed">
-                      We are Maison Elaris, where clarity meets craft, and ideas thrive through collaboration.
+                      We are Maison Elaris, where creative intelligence meets data, and growth is driven through intelligent collaboration.
                     </p>
                     
                     <p className="text-gray-300 text-lg lg:text-xl font-body leading-relaxed">
-                      Our borderless collective spans: Europe, the Middle East, and Asia, keeping us close to cultures, talent, and trends that matter.
+                      Our borderless, AI-powered collective spans Europe, the Middle East, and Asia, keeping us connected to cultures, signals, and insights that shape modern markets.
                     </p>
                     
                     <p className="text-gray-300 text-lg lg:text-xl font-body leading-relaxed">
-                      From Stratrgy sprints in Paris, London and Singapore to creative reviews across time zones, we work with agility and precision to deliver brilliance without compromise.
+                      From agent-led strategy sprints in Paris, London, and Singapore to continuous creative optimization across time zones, we operate with precision and speed to deliver impact without compromise.
                     </p>
               </div>
 
