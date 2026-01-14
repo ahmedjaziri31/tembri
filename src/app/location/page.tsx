@@ -49,13 +49,14 @@ export default function LocationPage() {
       image: 'https://images.unsplash.com/photo-1525625293386-3f8f99389edd',
       mapLink: 'https://maps.app.goo.gl/tZmeNwbAaKXai6WD7?g_st=ipc'
     },
+    /*
     {
       id: 'jakarta',
       name: 'Jakarta',
       address: 'Noble House, Jl. Prof.Dr. Satrio Jl. Mega Kuningan Barat Kav E 4.2, Daerah Khusus Ibukota Jakarta 12950, Indonesia',
       image: 'https://images.unsplash.com/photo-1555993539-1732b0258235',
       mapLink: 'https://maps.app.goo.gl/PgovBdtLuX7K4t8Y7?g_st=ipc'
-    }
+    }*/
   ]
 
   return (
