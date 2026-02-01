@@ -51,7 +51,7 @@ export default function Footer() {
               <div className="space-y-1 text-xs text-gray-400">
                 <p>London • Dubai HQ • Doha</p>
                 <p>Singapore • Jakarta </p>
-                <p>Amsterdam • Paris</p>
+                <p>Paris</p>
               </div>
             </div>
           </div>

@@ -28,13 +28,14 @@ export default function LocationPage() {
       image: 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34',
       mapLink: 'https://maps.app.goo.gl/nPk8xkaYcnkiGUih9?g_st=ipc'
     },
+    /*
     {
       id: 'amsterdam',
       name: 'Netherlands',
       address: 'Wibautstraat 131D, 1091 GL Amsterdam',
       image: 'https://images.unsplash.com/photo-1534351590666-13e3e96b5017',
       mapLink: 'https://maps.app.goo.gl/Lfw5WARbKcNdL7o28?g_st=ipc'
-    },
+    },*/
     {
       id: 'doha',
       name: 'Doha', 
