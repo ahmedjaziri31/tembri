@@ -30,11 +30,11 @@ const poppinsSecondary = Poppins({
 
 export const metadata: Metadata = {
   title: {
-    default: "Maison Elaris | Global Integrated Marketing Communications Agency",
+    default: "Maison Elaris | Global AI Agentic Integrated Marketing and Media Company",
     template: "%s | Maison Elaris"
   },
-  description: "A global IMC partner uniting brand strategy, creative, media, and data. AI-driven planning, retail media, and performance—network-grade outcomes with boutique speed.",
-  keywords: ["integrated marketing communications agency", "global marketing agency", "creative and media agency", "data-driven marketing", "retail media", "performance marketing"],
+  description: "AI agentic integrated marketing and media company delivering creative, content, media planning, and activation with automation built for performance at scale.",
+  keywords: ["Maison Elaris, AI agentic media company, integrated marketing, integrated media, creative automation, performance creative, campaign automation, , creative production, content marketing, marketing analytics"],
   authors: [{ name: "Maison Elaris" }],
   creator: "Maison Elaris",
   publisher: "Maison Elaris",
