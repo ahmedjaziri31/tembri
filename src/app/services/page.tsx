@@ -453,7 +453,7 @@ export default function ServicesPage() {
                   <div className="flex justify-center lg:justify-start">
                     <div className="relative w-full max-w-md">
                       <Image
-                        src="/services/image1.webp"
+                        src="/services/image1-V2.webp"
                         alt="Think Bigger"
                         width={400}
                         height={300}
@@ -493,7 +493,7 @@ export default function ServicesPage() {
                   <div className="flex justify-center lg:justify-end order-1 lg:order-2">
                     <div className="relative w-full max-w-md">
                       <Image
-                        src="/services/image2.webp"
+                        src="/services/image2-V2.webp"
                         alt="Megaphone Services"
                         width={400}
                         height={300}

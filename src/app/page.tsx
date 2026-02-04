@@ -1207,9 +1207,9 @@ export default function HomePage() {
       </section>
 
               {/* Social Media Section */}
-              <section id="social-media" ref={socialSectionRef} className="relative z-20 py-16 md:py-20 lg:min-h-screen bg-black overflow-hidden flex items-center justify-center px-4 sm:px-6">
+              <section id="social-media" ref={socialSectionRef} className="relative isolate z-20 py-16 md:py-20 lg:min-h-screen bg-black overflow-hidden flex items-center justify-center">
                 {/* Central Content */}
-                <div className="relative z-10 text-center max-w-4xl mx-auto">
+                <div className="relative z-20 text-center max-w-4xl mx-auto">
                   <div className="mb-6 sm:mb-8">
                     <p className="text-[#336b62] text-base sm:text-lg lg:text-xl font-heading font-medium tracking-wider mb-3 sm:mb-4 uppercase">
                       FOLLOW ON
@@ -1256,67 +1256,71 @@ export default function HomePage() {
                     </a>
                 </div>
               </div>
+            {/* Floating Images Layer */}
+                <div className="absolute inset-0 z-10 pointer-events-none">
+                  
+                  {/* Samsung - Top Left */}
+                  <div className="hidden md:block absolute top-6 lg:top-10 left-4 lg:left-16 w-20 md:w-24 lg:w-96 h-16 md:h-20 lg:h-80 opacity-30 lg:opacity-90" id="socialSamsung">
+                    <Image
+                      src="/elaris banners/DIMENSION PC 640x512/X Twitter.png"
+                      alt="X"
+                      fill
+                      className="object-contain rounded-lg shadow-2xl"
+                    />
+                  </div>
 
-                {/* Overlay Brand Images - Hidden on mobile, visible on larger screens */}
-                {/* Samsung - Top Left */}
-                <div className="hidden md:block absolute top-6 lg:top-10 left-4 lg:left-16 w-20 md:w-24 lg:w-96 h-16 md:h-20 lg:h-80 z-30 opacity-30 lg:opacity-90" id="socialSamsung">
-                  <Image
-                    src="/elaris banners/DIMENSION PC 640x512/X Twitter.png"
-                    alt="Samsung"
-                    fill
-                    className="object-contain rounded-lg shadow-2xl"
-                  />
+                  {/* Facebook */}
+                  <div className="hidden md:block absolute top-1/2 -translate-y-1/2 left-2 lg:left-12 w-16 md:w-20 lg:w-88 h-12 md:h-16 lg:h-72 opacity-30 lg:opacity-90" id="socialNivea">
+                    <Image
+                      src="/elaris banners/DIMENSION PC 640x512/Facebook.png"
+                      alt="Facebook"
+                      fill
+                      className="object-contain rounded-lg shadow-2xl"
+                    />
+                  </div>
+
+                  {/* Instagram */}
+                  <div className="hidden md:block absolute bottom-6 lg:bottom-10 left-4 lg:left-16 w-20 md:w-24 lg:w-96 h-16 md:h-20 lg:h-80 opacity-30 lg:opacity-90" id="socialUnderArmour">
+                    <Image
+                      src="/elaris banners/DIMENSION PC 640x512/Instagram.png"
+                      alt="Instagram"
+                      fill
+                      className="object-contain rounded-lg shadow-2xl"
+                    />
+                  </div>
+
+                  {/* LinkedIn */}
+                  <div className="hidden md:block absolute top-6 lg:top-10 right-4 lg:right-16 w-20 md:w-24 lg:w-96 h-16 md:h-20 lg:h-80 opacity-30 lg:opacity-90" id="socialEucerin">
+                    <Image
+                      src="/elaris banners/DIMENSION PC 640x512/LinkedIn.png"
+                      alt="LinkedIn"
+                      fill
+                      className="object-contain rounded-lg shadow-2xl"
+                    />
+                  </div>
+
+                  {/* Snapchat */}
+                  <div className="hidden md:block absolute top-1/2 -translate-y-1/2 right-2 lg:right-12 w-16 md:w-20 lg:w-88 h-12 md:h-16 lg:h-72 opacity-30 lg:opacity-90" id="socialSwissArabian">
+                    <Image
+                      src="/elaris banners/DIMENSION PC 640x512/Snapchat.png"
+                      alt="Snapchat"
+                      fill
+                      className="object-contain rounded-lg shadow-2xl"
+                    />
+                  </div>
+
+                  {/* TikTok */}
+                  <div className="hidden md:block absolute bottom-6 lg:bottom-10 right-4 lg:right-16 w-20 md:w-24 lg:w-96 h-16 md:h-20 lg:h-80 opacity-30 lg:opacity-90" id="socialMcDonalds">
+                    <Image
+                      src="/elaris banners/DIMENSION PC 640x512/TikTok.png"
+                      alt="TikTok"
+                      fill
+                      className="object-contain rounded-lg shadow-2xl"
+                    />
+                  </div>
+
                 </div>
 
-                {/* Nivea - Left Side */}
-                <div className="hidden md:block absolute top-1/2 -translate-y-1/2 left-2 lg:left-12 w-16 md:w-20 lg:w-88 h-12 md:h-16 lg:h-72 z-30 opacity-30 lg:opacity-90" id="socialNivea">
-                  <Image
-                    src="/elaris banners/DIMENSION PC 640x512/Facebook.png"
-                    alt="Nivea"
-                    fill
-                    className="object-contain rounded-lg shadow-2xl"
-                  />
-                </div>
-                
-                {/* Under Armour - Bottom Left */}
-                <div className="hidden md:block absolute bottom-6 lg:bottom-10 left-4 lg:left-16 w-20 md:w-24 lg:w-96 h-16 md:h-20 lg:h-80 z-30 opacity-30 lg:opacity-90" id="socialUnderArmour">
-                  <Image
-                    src="/elaris banners/DIMENSION PC 640x512/Instagram.png"
-                    alt="Under Armour"
-                    fill
-                    className="object-contain rounded-lg shadow-2xl"
-                  />
-                </div>
-
-                {/* Eucerin - Top Right */}
-                <div className="hidden md:block absolute top-6 lg:top-10 right-4 lg:right-16 w-20 md:w-24 lg:w-96 h-16 md:h-20 lg:h-80 z-30 opacity-30 lg:opacity-90" id="socialEucerin">
-                  <Image
-                    src="/elaris banners/DIMENSION PC 640x512/LinkedIn.png"
-                    alt="Eucerin"
-                    fill
-                    className="object-contain rounded-lg shadow-2xl"
-                  />
-                </div>
-
-                {/* Swiss Arabian - Right Side */}
-                <div className="hidden md:block absolute top-1/2 -translate-y-1/2 right-2 lg:right-12 w-16 md:w-20 lg:w-88 h-12 md:h-16 lg:h-72 z-30 opacity-30 lg:opacity-90" id="socialSwissArabian">
-                  <Image
-                    src="/elaris banners/DIMENSION PC 640x512/Snapchat.png"
-                    alt="Swiss Arabian"
-                    fill
-                    className="object-contain rounded-lg shadow-2xl"
-                  />
-                </div>
-
-                {/* McDonald's - Bottom Right */}
-                <div className="hidden md:block absolute bottom-6 lg:bottom-10 right-4 lg:right-16 w-20 md:w-24 lg:w-96 h-16 md:h-20 lg:h-80 z-30 opacity-30 lg:opacity-90" id="socialMcDonalds">
-                  <Image
-                    src="/elaris banners/DIMENSION PC 640x512/TikTok.png"
-                    alt="McDonald's"
-                    fill
-                    className="object-contain rounded-lg shadow-2xl"
-                  />
-                </div>
               </section>
 
               {/* Connect CTA Section */}
