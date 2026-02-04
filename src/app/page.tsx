@@ -94,23 +94,23 @@ export default function HomePage() {
  // New company logos
     const companyLogos = [
       { src: "/companies/logos-01.webp", alt: "cityScape Qatar" },
-      { src: "/companies/logos-02.webp", alt: "Partner Logo 2" },
-      { src: "/companies/logos-03.webp", alt: "Partner Logo 3" },
-      { src: "/companies/logos-04.webp", alt: "Partner Logo 4" },
-      { src: "/companies/logos-05.webp", alt: "Partner Logo 5" },
-      { src: "/companies/logos-06.webp", alt: "Partner Logo 6" },
-      { src: "/companies/logos-07.webp", alt: "Partner Logo 7" },
-      { src: "/companies/logos-08.webp", alt: "Partner Logo 8" },
-      { src: "/companies/logos-09.webp", alt: "Partner Logo 9" },
-      { src: "/companies/logos-10.webp", alt: "Partner Logo 10" },
-      { src: "/companies/logos-11.webp", alt: "Partner Logo 11" },
-      { src: "/companies/logos-12.webp", alt: "Partner Logo 12" },
-      { src: "/companies/logos-13.webp", alt: "Partner Logo 13" },
-      { src: "/companies/logos-14.webp", alt: "Partner Logo 14" },
-      { src: "/companies/logos-15.webp", alt: "Partner Logo 15" },
-      { src: "/companies/logos-16.webp", alt: "Partner Logo 16" },
-      { src: "/companies/logos-17.webp", alt: "Partner Logo 17" },
-      { src: "/companies/logos-18.webp", alt: "Partner Logo 18" }
+      { src: "/companies/logos-02.webp", alt: "Homesrus" },
+      { src: "/companies/logos-03.webp", alt: "Daiso" },
+      { src: "/companies/logos-04.webp", alt: "DFC" },
+      { src: "/companies/logos-05.webp", alt: "MCD" },
+      { src: "/companies/logos-06.webp", alt: "KFC" },
+      { src: "/companies/logos-07.webp", alt: "Toyta" },
+      { src: "/companies/logos-08.webp", alt: "honda" },
+      { src: "/companies/logos-09.webp", alt: "VFS-global" },
+      { src: "/companies/logos-10.webp", alt: "LG" },
+      { src: "/companies/logos-11.webp", alt: "Samsung" },
+      { src: "/companies/logos-12.webp", alt: "Hitachi" },
+      { src: "/companies/logos-13.webp", alt: "P&G" },
+      { src: "/companies/logos-14.webp", alt: "pepsico" },
+      { src: "/companies/logos-15.webp", alt: "vodafone" },
+      { src: "/companies/logos-16.webp", alt: "citi" },
+      { src: "/companies/logos-17.webp", alt: "hsbc" },
+      { src: "/companies/logos-18.webp", alt: "marriott" }
       ];
 
 
