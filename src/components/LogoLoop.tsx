@@ -59,8 +59,8 @@ export default function LogoLoop({
               className="logo-loop__image"
               style={{ 
                 width: 'auto', 
-                height: '70px',
-                maxWidth: '160px',
+                height: '180px',
+                maxWidth: '280px',
                 objectFit: 'contain'
               }}
               sizes="(max-width: 768px) 120px, 160px"

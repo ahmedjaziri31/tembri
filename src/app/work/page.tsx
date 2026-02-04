@@ -407,7 +407,7 @@ export default function WorkPage() {
           <div className="max-w-7xl mx-auto px-6 text-center mb-12">
             <div>
               <h2 className="text-[#f5e6d3] text-4xl lg:text-5xl xl:text-6xl font-heading font-bold leading-tight mb-6">
-                OUR PARTNERS
+                BRANDS THAT TRUST US
               </h2>
               <p className="text-white text-lg lg:text-xl font-body font-light max-w-4xl mx-auto leading-relaxed">
                 WE WORK WITH THE WORLD&apos;S MOST MEANINGFUL BRANDS, WITH AN ICONIC ROSTER THAT INCLUDES:
@@ -473,12 +473,15 @@ export default function WorkPage() {
                 
                 {/* CTA Buttons */}
                 <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-                  <button className="bg-[#336b62] hover:bg-[#9b8075] text-white px-6 py-3 rounded-lg transition-colors duration-300 font-body font-medium">
+                  <Link href="/connect"><button className="bg-[#336b62] hover:bg-[#9b8075] text-white px-6 py-3 rounded-lg transition-colors duration-300 font-body font-medium">
                     GET IN CONTACT
                   </button>
+                  </Link>
+                  <Link href="/connect/careers">
                   <button className="bg-transparent border-2 border-[#336b62] hover:bg-[#336b62] text-[#336b62] hover:text-white px-6 py-3 rounded-lg transition-colors duration-300 font-body font-medium">
                     VIEW CAREERS
                   </button>
+                  </Link>
                 </div>
               </div>
             </div>

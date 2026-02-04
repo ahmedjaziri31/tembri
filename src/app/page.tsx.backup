@@ -991,7 +991,7 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-6 text-center mb-12">
           <div>
             <h2 className="text-[#f5e6d3] text-4xl lg:text-5xl xl:text-6xl font-heading font-bold leading-tight mb-6">
-              OUR PARTNERS
+              BRANDS THAT TRUST US
             </h2>
             <p className="text-white text-lg lg:text-xl font-body font-light max-w-4xl mx-auto leading-relaxed">
               WE WORK WITH THE WORLD&apos;S MOST MEANINGFUL BRANDS, WITH AN ICONIC ROSTER THAT INCLUDES:

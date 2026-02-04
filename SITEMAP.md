@@ -86,11 +86,12 @@ https://www.maisonelaris.com/
 **Key Sections**:
 - Hero with animated text
 - Service categories (expandable):
-  1. Strategic Media Planning & Buying
-  2. Creative Content Development & Storytelling
-  3. Data-Driven Marketing & Audience Intelligence
-  4. Digital Transformation & Consultancy
-  5. Retail Media & Commerce Strategy
+  1. STRATEGIC MEDIA PLANNING & BUYING
+  2. CREATIVE CONTENT & STORYTELLING
+  3. BRAND EXPERIENCES & ACTIVATIONS
+  4. DATA & AUDIENCE INTELLIGENCE 
+  5. DIGITAL TRANSFORMATION & CONSULTING
+
 - "Why Clients Choose Maison Elaris" (sticky cards)
 
 **SEO Elements**:

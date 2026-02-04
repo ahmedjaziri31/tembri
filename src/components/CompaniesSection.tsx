@@ -5,7 +5,7 @@ import Image from 'next/image'
 
 const CompaniesSection = memo(function CompaniesSection() {
   // Company logos data
-  const companyLogos = useMemo(() => [
+  /*const companyLogos = useMemo(() => [
     { src: '/companies/640px-hp_logo_2012.svg.webp', alt: 'HP' },
     { src: '/companies/samsung_logo.svg.webp', alt: 'Samsung' },
     { src: '/companies/nivea_logo.svg.webp', alt: 'Nivea' },
@@ -17,7 +17,27 @@ const CompaniesSection = memo(function CompaniesSection() {
     { src: '/companies/accenture-logo-2020-present.webp', alt: 'Accenture' },
     { src: '/companies/8df4c5_dcc9e0d07bd046ef811598b74df1675d~mv2.webp', alt: 'Partner' },
     { src: '/companies/51r+kopkmll._ac_sl1000_.webp', alt: 'Partner' }
-  ], [])
+  ],*/
+      const companyLogos = useMemo(() =>[
+      { src: "/companies/logos-01.webp", alt: "Partner Logo 1" },
+      { src: "/companies/logos-02.webp", alt: "Partner Logo 2" },
+      { src: "/companies/logos-03.webp", alt: "Partner Logo 3" },
+      { src: "/companies/logos-04.webp", alt: "Partner Logo 4" },
+      { src: "/companies/logos-05.webp", alt: "Partner Logo 5" },
+      { src: "/companies/logos-06.webp", alt: "Partner Logo 6" },
+      { src: "/companies/logos-07.webp", alt: "Partner Logo 7" },
+      { src: "/companies/logos-08.webp", alt: "Partner Logo 8" },
+      { src: "/companies/logos-09.webp", alt: "Partner Logo 9" },
+      { src: "/companies/logos-10.webp", alt: "Partner Logo 10" },
+      { src: "/companies/logos-11.webp", alt: "Partner Logo 11" },
+      { src: "/companies/logos-12.webp", alt: "Partner Logo 12" },
+      { src: "/companies/logos-13.webp", alt: "Partner Logo 13" },
+      { src: "/companies/logos-14.webp", alt: "Partner Logo 14" },
+      { src: "/companies/logos-15.webp", alt: "Partner Logo 15" },
+      { src: "/companies/logos-16.webp", alt: "Partner Logo 16" },
+      { src: "/companies/logos-17.webp", alt: "Partner Logo 17" },
+      { src: "/companies/logos-18.webp", alt: "Partner Logo 18" }
+        ], [])
 
   // Memoize the logo elements to prevent unnecessary re-renders
   const logoElements = useMemo(() => {

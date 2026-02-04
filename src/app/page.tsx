@@ -79,7 +79,7 @@ export default function HomePage() {
   ]
 
   // Company logos for partners section
-  const companyLogos = [
+  /*const companyLogos = [
     { src: "/companies/640px-hp_logo_2012.svg.webp", alt: "HP" },
     { src: "/companies/samsung_logo.svg.webp", alt: "Samsung" },
     { src: "/companies/nivea_logo.svg.webp", alt: "Nivea" },
@@ -90,7 +90,29 @@ export default function HomePage() {
     { src: "/companies/olay-logo.webp", alt: "Olay" },
     { src: "/companies/51r+kopkmll._ac_sl1000_.webp", alt: "McDonald's" },
     { src: "/companies/8df4c5_dcc9e0d07bd046ef811598b74df1675d~mv2.webp", alt: "Swiss Arabian" }
-  ]
+  ]*/
+ // New company logos
+    const companyLogos = [
+      { src: "/companies/logos-01.webp", alt: "cityScape Qatar" },
+      { src: "/companies/logos-02.webp", alt: "Partner Logo 2" },
+      { src: "/companies/logos-03.webp", alt: "Partner Logo 3" },
+      { src: "/companies/logos-04.webp", alt: "Partner Logo 4" },
+      { src: "/companies/logos-05.webp", alt: "Partner Logo 5" },
+      { src: "/companies/logos-06.webp", alt: "Partner Logo 6" },
+      { src: "/companies/logos-07.webp", alt: "Partner Logo 7" },
+      { src: "/companies/logos-08.webp", alt: "Partner Logo 8" },
+      { src: "/companies/logos-09.webp", alt: "Partner Logo 9" },
+      { src: "/companies/logos-10.webp", alt: "Partner Logo 10" },
+      { src: "/companies/logos-11.webp", alt: "Partner Logo 11" },
+      { src: "/companies/logos-12.webp", alt: "Partner Logo 12" },
+      { src: "/companies/logos-13.webp", alt: "Partner Logo 13" },
+      { src: "/companies/logos-14.webp", alt: "Partner Logo 14" },
+      { src: "/companies/logos-15.webp", alt: "Partner Logo 15" },
+      { src: "/companies/logos-16.webp", alt: "Partner Logo 16" },
+      { src: "/companies/logos-17.webp", alt: "Partner Logo 17" },
+      { src: "/companies/logos-18.webp", alt: "Partner Logo 18" }
+      ];
+
 
   // Refs for animations
   const containerRef = useRef<HTMLDivElement>(null)
@@ -991,7 +1013,7 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-6 text-center mb-12">
           <div>
             <h2 className="text-[#f5e6d3] text-4xl lg:text-5xl xl:text-6xl font-heading font-bold leading-tight mb-6">
-              OUR PARTNERS
+              BRANDS THAT TRUST US
             </h2>
             <p className="text-white text-lg lg:text-xl font-body font-light max-w-4xl mx-auto leading-relaxed">
               WE WORK WITH THE WORLD&apos;S MOST MEANINGFUL BRANDS, WITH AN ICONIC ROSTER THAT INCLUDES:
@@ -1239,7 +1261,7 @@ export default function HomePage() {
                 {/* Samsung - Top Left */}
                 <div className="hidden md:block absolute top-6 lg:top-10 left-4 lg:left-16 w-20 md:w-24 lg:w-96 h-16 md:h-20 lg:h-80 z-30 opacity-30 lg:opacity-90" id="socialSamsung">
                   <Image
-                    src="/elaris banners/DIMENSION PC 640x512/Maison elaris samsung.webp"
+                    src="/elaris banners/DIMENSION PC 640x512/X Twitter.png"
                     alt="Samsung"
                     fill
                     className="object-contain rounded-lg shadow-2xl"
@@ -1249,7 +1271,7 @@ export default function HomePage() {
                 {/* Nivea - Left Side */}
                 <div className="hidden md:block absolute top-1/2 -translate-y-1/2 left-2 lg:left-12 w-16 md:w-20 lg:w-88 h-12 md:h-16 lg:h-72 z-30 opacity-30 lg:opacity-90" id="socialNivea">
                   <Image
-                    src="/elaris banners/DIMENSION PC 640x512/MAISON ELARIS NIVEA.webp"
+                    src="/elaris banners/DIMENSION PC 640x512/Facebook.png"
                     alt="Nivea"
                     fill
                     className="object-contain rounded-lg shadow-2xl"
@@ -1259,7 +1281,7 @@ export default function HomePage() {
                 {/* Under Armour - Bottom Left */}
                 <div className="hidden md:block absolute bottom-6 lg:bottom-10 left-4 lg:left-16 w-20 md:w-24 lg:w-96 h-16 md:h-20 lg:h-80 z-30 opacity-30 lg:opacity-90" id="socialUnderArmour">
                   <Image
-                    src="/elaris banners/DIMENSION PC 640x512/MAISON ELARIS under armour.webp"
+                    src="/elaris banners/DIMENSION PC 640x512/Instagram.png"
                     alt="Under Armour"
                     fill
                     className="object-contain rounded-lg shadow-2xl"
@@ -1269,7 +1291,7 @@ export default function HomePage() {
                 {/* Eucerin - Top Right */}
                 <div className="hidden md:block absolute top-6 lg:top-10 right-4 lg:right-16 w-20 md:w-24 lg:w-96 h-16 md:h-20 lg:h-80 z-30 opacity-30 lg:opacity-90" id="socialEucerin">
                   <Image
-                    src="/elaris banners/DIMENSION PC 640x512/MAISON ELARIS Eucerin.webp"
+                    src="/elaris banners/DIMENSION PC 640x512/LinkedIn.png"
                     alt="Eucerin"
                     fill
                     className="object-contain rounded-lg shadow-2xl"
@@ -1279,7 +1301,7 @@ export default function HomePage() {
                 {/* Swiss Arabian - Right Side */}
                 <div className="hidden md:block absolute top-1/2 -translate-y-1/2 right-2 lg:right-12 w-16 md:w-20 lg:w-88 h-12 md:h-16 lg:h-72 z-30 opacity-30 lg:opacity-90" id="socialSwissArabian">
                   <Image
-                    src="/elaris banners/DIMENSION PC 640x512/MAISON ELARIS Swiss Arabian.webp"
+                    src="/elaris banners/DIMENSION PC 640x512/Snapchat.png"
                     alt="Swiss Arabian"
                     fill
                     className="object-contain rounded-lg shadow-2xl"
@@ -1289,7 +1311,7 @@ export default function HomePage() {
                 {/* McDonald's - Bottom Right */}
                 <div className="hidden md:block absolute bottom-6 lg:bottom-10 right-4 lg:right-16 w-20 md:w-24 lg:w-96 h-16 md:h-20 lg:h-80 z-30 opacity-30 lg:opacity-90" id="socialMcDonalds">
                   <Image
-                    src="/elaris banners/DIMENSION PC 640x512/Maison elaris mcdonalds.webp"
+                    src="/elaris banners/DIMENSION PC 640x512/TikTok.png"
                     alt="McDonald's"
                     fill
                     className="object-contain rounded-lg shadow-2xl"

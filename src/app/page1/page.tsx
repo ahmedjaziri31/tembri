@@ -76,7 +76,7 @@ export default function Page1() {
   ]
 
   // Company logos for partners section
-  const companyLogos = [
+  /*const companyLogos = [
     { src: "/companies/640px-hp_logo_2012.svg.webp", alt: "HP" },
     { src: "/companies/samsung_logo.svg.webp", alt: "Samsung" },
     { src: "/companies/nivea_logo.svg.webp", alt: "Nivea" },
@@ -88,7 +88,27 @@ export default function Page1() {
     { src: "/companies/olay-logo.webp", alt: "Olay" },
     { src: "/companies/51r+kopkmll._ac_sl1000_.webp", alt: "McDonald's" },
     { src: "/companies/8df4c5_dcc9e0d07bd046ef811598b74df1675d~mv2.webp", alt: "Swiss Arabian" }
-  ]
+  ]*/
+ const companyLogos = [
+      { src: "/companies/logos-01.webp", alt: "cityScape Qatar" },
+      { src: "/companies/logos-02.webp", alt: "Partner Logo 2" },
+      { src: "/companies/logos-03.webp", alt: "Partner Logo 3" },
+      { src: "/companies/logos-04.webp", alt: "Partner Logo 4" },
+      { src: "/companies/logos-05.webp", alt: "Partner Logo 5" },
+      { src: "/companies/logos-06.webp", alt: "Partner Logo 6" },
+      { src: "/companies/logos-07.webp", alt: "Partner Logo 7" },
+      { src: "/companies/logos-08.webp", alt: "Partner Logo 8" },
+      { src: "/companies/logos-09.webp", alt: "Partner Logo 9" },
+      { src: "/companies/logos-10.webp", alt: "Partner Logo 10" },
+      { src: "/companies/logos-11.webp", alt: "Partner Logo 11" },
+      { src: "/companies/logos-12.webp", alt: "Partner Logo 12" },
+      { src: "/companies/logos-13.webp", alt: "Partner Logo 13" },
+      { src: "/companies/logos-14.webp", alt: "Partner Logo 14" },
+      { src: "/companies/logos-15.webp", alt: "Partner Logo 15" },
+      { src: "/companies/logos-16.webp", alt: "Partner Logo 16" },
+      { src: "/companies/logos-17.webp", alt: "Partner Logo 17" },
+      { src: "/companies/logos-18.webp", alt: "Partner Logo 18" }
+      ];
 
   // Refs for animations
   const containerRef = useRef<HTMLDivElement>(null)
@@ -944,7 +964,7 @@ export default function Page1() {
         <div className="max-w-7xl mx-auto px-6 text-center mb-12">
           <div>
             <h2 className="text-[#f5e6d3] text-4xl lg:text-5xl xl:text-6xl font-heading font-bold leading-tight mb-6">
-              OUR PARTNERS
+              BRANDS THAT TRUST US
             </h2>
             <p className="text-white text-lg lg:text-xl font-body font-light max-w-4xl mx-auto leading-relaxed">
               WE WORK WITH THE WORLD&apos;S MOST MEANINGFUL BRANDS, WITH AN ICONIC ROSTER THAT INCLUDES:
@@ -1301,7 +1321,7 @@ export default function Page1() {
                             GET IN CONTACT
                           </button>
                         </Link>
-                        <Link href="/contact/careers">
+                        <Link href="/connect/careers">
                           <button className="bg-transparent border-2 border-[#336b62] hover:bg-[#336b62] text-[#336b62] hover:text-white px-6 py-3 rounded-lg transition-colors duration-300 font-body font-medium">
                             VIEW CAREERS
                           </button>
