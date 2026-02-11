@@ -217,7 +217,7 @@ export default function WorkPage() {
               <Link href="/work/2">
                 <div className="group relative overflow-hidden rounded-3xl aspect-[4/3] cursor-pointer transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl">
                   <Image
-                    src="/elaris banners/DIMENSION TABLETTE/1024×768 px (en mode paysage)/mcdo.webp"
+                    src="/elaris banners/DIMENSION TABLETTE/1024×768 px (en mode paysage)/mcdonalds.webp"
                     alt="Moments that Matter - McDonald's Campaign"
                     fill
                     className="object-contain"

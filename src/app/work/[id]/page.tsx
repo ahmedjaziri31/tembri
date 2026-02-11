@@ -168,7 +168,7 @@ const projectBannerImages = {
     portrait: '/elaris banners/DIMENSION TABLETTE/768×1024 px (en mode portrait)/under armour   portrait.webp'
   },
   '2': {
-    landscape: '/elaris banners/DIMENSION TABLETTE/1024×768 px (en mode paysage)/mcdo.webp',
+    landscape: '/elaris banners/DIMENSION TABLETTE/1024×768 px (en mode paysage)/mcdonalds.webp',
     portrait: '/elaris banners/DIMENSION TABLETTE/768×1024 px (en mode portrait)/mcdo.webp'
   },
   '3': {

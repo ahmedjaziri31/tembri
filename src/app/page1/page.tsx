@@ -56,7 +56,7 @@ export default function Page1() {
       height: 1024
     },
     { 
-      image: "/elaris banners/DIMENSION TABLETTE/768×1024 px (en mode portrait)/mcdo.webp", 
+      image: "/elaris banners/DIMENSION TABLETTE/768×1024 px (en mode portrait)/mcdonalds.webp", 
       text: "McDonald's",
       width: 768,
       height: 1024
