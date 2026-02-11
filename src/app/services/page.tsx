@@ -543,7 +543,7 @@ export default function ServicesPage() {
                       <div className="hidden lg:flex justify-center lg:justify-start order-2 lg:order-1">
                         <div className="relative w-full max-w-[220px]">
                           <Image
-                            src="/card.webp"
+                            src="/strategic-media-planning.png"
                             alt="Strategic Media Planning"
                             width={220}
                             height={275}
@@ -635,7 +635,7 @@ export default function ServicesPage() {
                       <div className="hidden lg:flex justify-center lg:justify-start order-2 lg:order-1">
                         <div className="relative w-full max-w-[220px]">
                           <Image
-                            src="/card.webp"
+                            src="/creative-content.png"
                             alt="Creative Content Development"
                             width={220}
                             height={275}
@@ -735,7 +735,7 @@ export default function ServicesPage() {
                       <div className="hidden lg:flex justify-center lg:justify-start order-2 lg:order-1">
                         <div className="relative w-full max-w-[220px]">
                           <Image
-                            src="/card.webp"
+                            src="/brand-exp.png"
                             alt="Data-driven Marketing"
                             width={220}
                             height={275}
@@ -846,7 +846,7 @@ export default function ServicesPage() {
                       <div className="hidden lg:flex justify-center lg:justify-start order-2 lg:order-1">
                         <div className="relative w-full max-w-[220px]">
                           <Image
-                            src="/card.webp"
+                            src="/data-audience.png"
                             alt="Digital Transformation"
                             width={220}
                             height={275}
@@ -946,7 +946,7 @@ export default function ServicesPage() {
                       <div className="hidden lg:flex justify-center lg:justify-start order-2 lg:order-1">
                         <div className="relative w-full max-w-[220px]">
                           <Image
-                            src="/card.webp"
+                            src="/digital-transfermation.png"
                             alt="Retail Media & Commerce"
                             width={220}
                             height={275}
@@ -1161,7 +1161,7 @@ export default function ServicesPage() {
                       GET IN CONTACT
                     </button>
                   </Link>
-                  <Link href="/connnect/careers">
+                  <Link href="/connect/careers">
                     <button className="bg-transparent border-2 border-[#336b62] hover:bg-[#336b62] text-[#336b62] hover:text-white px-6 py-3 rounded-lg transition-colors duration-300 font-body font-medium">
                       VIEW CAREERS
                     </button>

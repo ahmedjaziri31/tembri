@@ -30,13 +30,13 @@ const CompaniesSection = memo(function CompaniesSection() {
     { src: "/companies/lg.webp", alt: "LG" },
     { src: "/companies/samsung.webp", alt: "Samsung" },
     { src: "/companies/hitachi.webp", alt: "Hitachi" },
-    { src: "/companies/pg.webp", alt: "P&G" },
+    /*{ src: "/companies/pg.webp", alt: "P&G" },*/
     { src: "/companies/pepsico.webp", alt: "PepsiCo" },
     { src: "/companies/vodafone.webp", alt: "Vodafone" },
     { src: "/companies/citi.webp", alt: "Citi" },
     { src: "/companies/hsbc.webp", alt: "HSBC" },
     { src: "/companies/marriott.webp", alt: "Marriott" },
-    { src: "/companies/vfs-global.webp", alt: "VFS Global" }
+    /*{ src: "/companies/vfs-global.webp", alt: "VFS Global" }*/
         ], [])
 
   // Memoize the logo elements to prevent unnecessary re-renders

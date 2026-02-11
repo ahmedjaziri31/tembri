@@ -90,25 +90,25 @@ export default function Page1() {
     { src: "/companies/8df4c5_dcc9e0d07bd046ef811598b74df1675d~mv2.webp", alt: "Swiss Arabian" }
   ]*/
  const companyLogos = [
-      { src: "/companies/logos-01.webp", alt: "cityScape Qatar" },
-      { src: "/companies/logos-02.webp", alt: "Partner Logo 2" },
-      { src: "/companies/logos-03.webp", alt: "Partner Logo 3" },
-      { src: "/companies/logos-04.webp", alt: "Partner Logo 4" },
-      { src: "/companies/logos-05.webp", alt: "Partner Logo 5" },
-      { src: "/companies/logos-06.webp", alt: "Partner Logo 6" },
-      { src: "/companies/logos-07.webp", alt: "Partner Logo 7" },
-      { src: "/companies/logos-08.webp", alt: "Partner Logo 8" },
-      { src: "/companies/logos-09.webp", alt: "Partner Logo 9" },
-      { src: "/companies/logos-10.webp", alt: "Partner Logo 10" },
-      { src: "/companies/logos-11.webp", alt: "Partner Logo 11" },
-      { src: "/companies/logos-12.webp", alt: "Partner Logo 12" },
-      { src: "/companies/logos-13.webp", alt: "Partner Logo 13" },
-      { src: "/companies/logos-14.webp", alt: "Partner Logo 14" },
-      { src: "/companies/logos-15.webp", alt: "Partner Logo 15" },
-      { src: "/companies/logos-16.webp", alt: "Partner Logo 16" },
-      { src: "/companies/logos-17.webp", alt: "Partner Logo 17" },
-      { src: "/companies/logos-18.webp", alt: "Partner Logo 18" }
-      ];
+  { src: "/companies/cityscape-qatar.webp", alt: "Cityscape Qatar" },
+  { src: "/companies/homesrus.webp", alt: "HomesRUs" },
+  { src: "/companies/daiso.webp", alt: "Daiso" },
+  { src: "/companies/dfc.webp", alt: "DFC" },
+  { src: "/companies/mcd.webp", alt: "McDonald's" },
+  { src: "/companies/kfc.webp", alt: "KFC" },
+  { src: "/companies/toyota.webp", alt: "Toyota" },
+  { src: "/companies/honda.webp", alt: "Honda" },
+  { src: "/companies/lg.webp", alt: "LG" },
+  { src: "/companies/samsung.webp", alt: "Samsung" },
+  { src: "/companies/hitachi.webp", alt: "Hitachi" },
+  /*{ src: "/companies/pg.webp", alt: "P&G" },*/
+  { src: "/companies/pepsico.webp", alt: "PepsiCo" },
+  { src: "/companies/vodafone.webp", alt: "Vodafone" },
+  { src: "/companies/citi.webp", alt: "Citi" },
+  { src: "/companies/hsbc.webp", alt: "HSBC" },
+  { src: "/companies/marriott.webp", alt: "Marriott" },
+  /*{ src: "/companies/vfs-global.webp", alt: "VFS Global" },*/
+];
 
   // Refs for animations
   const containerRef = useRef<HTMLDivElement>(null)

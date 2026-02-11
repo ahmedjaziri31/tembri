@@ -20,18 +20,25 @@ export default function WorkPage() {
 
   // Company logos for partners section
   const companyLogos = [
-    { src: "/companies/samsung_logo.svg.webp", alt: "Samsung" },
-    { src: "/companies/51r+kopkmll._ac_sl1000_.webp", alt: "McDonald's" },
-    { src: "/companies/nivea_logo.svg.webp", alt: "Nivea" },
-    { src: "/companies/eucerin-logo.webp", alt: "Eucerin" },
-    { src: "/companies/under_armour_logo1.webp", alt: "Under Armour" },
-    { src: "/companies/8df4c5_dcc9e0d07bd046ef811598b74df1675d~mv2.webp", alt: "Swiss Arabian" },
-    { src: "/companies/olay-logo.webp", alt: "Olay" },
-    { src: "/companies/dyson-logo-png_seeklogo-498548.webp", alt: "Dyson" },
-    { src: "/companies/hitachi-logo-2048x868.webp", alt: "Hitachi" },
-    { src: "/companies/accenture-logo-2020-present.webp", alt: "Accenture" },
-    { src: "/companies/640px-hp_logo_2012.svg.webp", alt: "HP" }
-  ]
+  { src: "/companies/cityscape-qatar.webp", alt: "Cityscape Qatar" },
+  { src: "/companies/homesrus.webp", alt: "HomesRUs" },
+  { src: "/companies/daiso.webp", alt: "Daiso" },
+  { src: "/companies/dfc.webp", alt: "DFC" },
+  { src: "/companies/mcd.webp", alt: "McDonald's" },
+  { src: "/companies/kfc.webp", alt: "KFC" },
+  { src: "/companies/toyota.webp", alt: "Toyota" },
+  { src: "/companies/honda.webp", alt: "Honda" },
+  { src: "/companies/lg.webp", alt: "LG" },
+  { src: "/companies/samsung.webp", alt: "Samsung" },
+  { src: "/companies/hitachi.webp", alt: "Hitachi" },
+  /*{ src: "/companies/pg.webp", alt: "P&G" },*/
+  { src: "/companies/pepsico.webp", alt: "PepsiCo" },
+  { src: "/companies/vodafone.webp", alt: "Vodafone" },
+  { src: "/companies/citi.webp", alt: "Citi" },
+  { src: "/companies/hsbc.webp", alt: "HSBC" },
+  { src: "/companies/marriott.webp", alt: "Marriott" },
+  /*{ src: "/companies/vfs-global.webp", alt: "VFS Global" },*/
+  ];
 
   // GSAP Animation for intro quote
   useGSAP(() => {
@@ -309,12 +316,12 @@ export default function WorkPage() {
                     <div className="absolute bottom-4 right-4 flex flex-col gap-2 text-right">
                       <div className="bg-gradient-to-r from-black/70 to-black/50 backdrop-blur-sm border border-white/20 px-3 py-1.5 rounded-full">
                         <span className="text-white font-body font-semibold text-xs lg:text-sm uppercase tracking-wider">
-                          PROGRAMMATIC DISPLAY
+                          UX/UI DESIGN
                         </span>
                       </div>
                       <div className="bg-gradient-to-r from-black/70 to-black/50 backdrop-blur-sm border border-white/20 px-3 py-1.5 rounded-full">
                         <span className="text-white font-body font-semibold text-xs lg:text-sm uppercase tracking-wider">
-                          CROSS-PLATFORM
+                          BRANDING
                         </span>
                       </div>
                     </div>
