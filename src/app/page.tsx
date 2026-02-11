@@ -92,26 +92,26 @@ export default function HomePage() {
     { src: "/companies/8df4c5_dcc9e0d07bd046ef811598b74df1675d~mv2.webp", alt: "Swiss Arabian" }
   ]*/
  // New company logos
-      const companyLogos = [
-      { src: "/companies/cityscape-qatar.webp", alt: "Cityscape Qatar" },
-      { src: "/companies/homesrus.webp", alt: "Homesrus" },
-      { src: "/companies/daiso.webp", alt: "Daiso" },
-      { src: "/companies/dfc.webp", alt: "DFC" },
-      { src: "/companies/mcd.webp", alt: "McDonald's" },
-      { src: "/companies/kfc.webp", alt: "KFC" },
-      { src: "/companies/toyota.webp", alt: "Toyota" },
-      { src: "/companies/honda.webp", alt: "Honda" },
-      { src: "/companies/vfs-global.webp", alt: "VFS Global" },
-      { src: "/companies/lg.webp", alt: "LG" },
-      { src: "/companies/samsung.webp", alt: "Samsung" },
-      { src: "/companies/hitachi.webp", alt: "Hitachi" },
-      { src: "/companies/pg.webp", alt: "P&G" },
-      { src: "/companies/pepsico.webp", alt: "PepsiCo" },
-      { src: "/companies/vodafone.webp", alt: "Vodafone" },
-      { src: "/companies/citi.webp", alt: "Citi" },
-      { src: "/companies/hsbc.webp", alt: "HSBC" },
-      { src: "/companies/marriott.webp", alt: "Marriott" },
-    ];
+        const companyLogos = [
+        { src: "/companies/cityscape-qatar.webp", alt: "Cityscape Qatar" },
+        { src: "/companies/homesrus.webp", alt: "Homesrus" },
+        { src: "/companies/daiso.webp", alt: "Daiso" },
+        { src: "/companies/dfc.webp", alt: "DFC" },
+        { src: "/companies/mcd.webp", alt: "McDonald's" },
+        { src: "/companies/kfc.webp", alt: "KFC" },
+        { src: "/companies/toyota.webp", alt: "Toyota" },
+        { src: "/companies/honda.webp", alt: "Honda" },
+        /*{ src: "/companies/vfs-global.webp", alt: "VFS Global" },*/
+        { src: "/companies/lg.webp", alt: "LG" },
+        { src: "/companies/samsung.webp", alt: "Samsung" },
+        { src: "/companies/hitachi.webp", alt: "Hitachi" },
+        /*{ src: "/companies/pg.webp", alt: "P&G" },*/
+        { src: "/companies/pepsico.webp", alt: "PepsiCo" },
+        { src: "/companies/vodafone.webp", alt: "Vodafone" },
+        { src: "/companies/citi.webp", alt: "Citi" },
+        { src: "/companies/hsbc.webp", alt: "HSBC" },
+        { src: "/companies/marriott.webp", alt: "Marriott" },
+      ];
 
 
   // Refs for animations

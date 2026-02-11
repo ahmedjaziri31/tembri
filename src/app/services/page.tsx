@@ -543,7 +543,7 @@ export default function ServicesPage() {
                       <div className="hidden lg:flex justify-center lg:justify-start order-2 lg:order-1">
                         <div className="relative w-full max-w-[220px]">
                           <Image
-                            src="/strategic-media-planning.png"
+                            src="/services/strategic-media-planning.png"
                             alt="Strategic Media Planning"
                             width={220}
                             height={275}
@@ -635,7 +635,7 @@ export default function ServicesPage() {
                       <div className="hidden lg:flex justify-center lg:justify-start order-2 lg:order-1">
                         <div className="relative w-full max-w-[220px]">
                           <Image
-                            src="/creative-content.png"
+                            src="/services/creative-content.png"
                             alt="Creative Content Development"
                             width={220}
                             height={275}
@@ -735,7 +735,7 @@ export default function ServicesPage() {
                       <div className="hidden lg:flex justify-center lg:justify-start order-2 lg:order-1">
                         <div className="relative w-full max-w-[220px]">
                           <Image
-                            src="/brand-exp.png"
+                            src="/services/brand-exp.png"
                             alt="Data-driven Marketing"
                             width={220}
                             height={275}
@@ -846,7 +846,7 @@ export default function ServicesPage() {
                       <div className="hidden lg:flex justify-center lg:justify-start order-2 lg:order-1">
                         <div className="relative w-full max-w-[220px]">
                           <Image
-                            src="/data-audience.png"
+                            src="/services/data-audience.png"
                             alt="Digital Transformation"
                             width={220}
                             height={275}
@@ -946,7 +946,7 @@ export default function ServicesPage() {
                       <div className="hidden lg:flex justify-center lg:justify-start order-2 lg:order-1">
                         <div className="relative w-full max-w-[220px]">
                           <Image
-                            src="/digital-transfermation.png"
+                            src="/services/digital-transfermation.png"
                             alt="Retail Media & Commerce"
                             width={220}
                             height={275}
