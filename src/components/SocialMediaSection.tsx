@@ -71,7 +71,7 @@ export default function SocialMediaSection() {
   // Project images data
   const projectImages = [
     { src: '/elaris banners/DIMENSION TABLETTE/1024×768 px (en mode paysage)/MAISON ELARIS under armourtablette paysage.webp', alt: 'Under Armour Campaign' },
-    { src: '/elaris banners/DIMENSION TABLETTE/1024×768 px (en mode paysage)/mcdo.webp', alt: 'McDonald\'s Campaign' },
+    { src: '/elaris banners/DIMENSION TABLETTE/1024×768 px (en mode paysage)/mcdonalds.webp', alt: 'McDonald\'s Campaign' },
     { src: '/elaris banners/DIMENSION TABLETTE/1024×768 px (en mode paysage)/MAISON ELARIS Swiss Arabian tablette paysage.webp', alt: 'Swiss Arabian Campaign' },
     { src: '/elaris banners/DIMENSION TABLETTE/1024×768 px (en mode paysage)/MAISON ELARIS Eucerin tablette paysage.webp', alt: 'Estée Lauder Campaign' },
     { src: '/elaris banners/DIMENSION TABLETTE/1024×768 px (en mode paysage)/MAISON ELARIS nivea tablette paysage.webp', alt: 'NIVEA + Eucerin Campaign' },
