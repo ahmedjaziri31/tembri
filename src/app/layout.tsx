@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import { AuthProvider } from "../contexts/AuthContext";
 import "./globals.css";
+import CookieBanner from "../components/CookieBanner";
+
 
 // Poppins for headings and titles - Bold and Extra Bold weights
 const poppinsHeading = Poppins({
@@ -93,7 +95,20 @@ export default function RootLayout({
         <link rel="preconnect" href="https://vitals.vercel-insights.com" />
         {/* Optimize resource loading */}
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta httpEquiv="Content-Security-Policy" content="img-src 'self' data: https:; connect-src 'self' https:;" />
+        <meta
+  httpEquiv="Content-Security-Policy"
+  content="
+  default-src 'self';
+  script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://connect.facebook.net https://analytics.tiktok.com;
+  style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+  font-src 'self' https://fonts.gstatic.com;
+  img-src 'self' data: https:;
+  connect-src 'self' https:;
+  frame-src https://www.googletagmanager.com;
+"
+/>
+
+
       </head>
       <body
         className={`${poppinsHeading.variable} ${poppinsBody.variable} ${poppinsSecondary.variable} antialiased`}
@@ -101,6 +116,7 @@ export default function RootLayout({
       >
         <AuthProvider>
           {children}
+          <CookieBanner />
         </AuthProvider>
       </body>
     </html>
