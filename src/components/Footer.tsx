@@ -26,14 +26,6 @@ export default function Footer() {
             <div className="space-y-2 sm:space-y-3 text-sm sm:text-base text-gray-300 mb-4 sm:mb-6">
               <a href="mailto:hello@maisonelaris.com" className="hover:text-white transition-colors break-all sm:break-normal block cursor-pointer">hello@maisonelaris.com</a>
               <div className="flex flex-wrap gap-x-2 gap-y-1 text-gray-300">
-              <a
-                href="tel:+971557633614"
-                className="hover:text-white transition-colors cursor-pointer"
-              >
-                Dubai: +971 5576 33614
-              </a>
-
-              <span className="text-gray-500">•</span>
 
               <a
                 href="tel:+97466100725"
